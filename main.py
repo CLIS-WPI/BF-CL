@@ -123,7 +123,9 @@ def generate_channel(task, num_slots):
         for i, rx in enumerate(rxs):
             rx.position += [speeds[i] * 0.001 * np.cos(t * 0.1), speeds[i] * 0.001 * np.sin(t * 0.1), 0]
         # Generate channel
-        h_t = channel_model([BATCH_SIZE])  # Pass batch_size as input
+        x = tf.ones([BATCH_SIZE, NUM_ANTENNAS], dtype=tf.complex64)
+        no = tf.ones([BATCH_SIZE, NUM_USERS], dtype=tf.complex64)
+        h_t = channel_model([x, no])
         h.append(h_t)  # [batch_size, num_antennas, num_users]
     return tf.stack(h)
 
