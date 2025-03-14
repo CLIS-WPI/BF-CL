@@ -13,8 +13,8 @@ NUM_ANTENNAS = 64  # Number of BS antennas
 NUM_USERS = 10     # Number of users
 FREQ = 28e9        # Frequency: 28 GHz (mmWave)
 POWER = 1.0        # Normalized power
-NUM_SLOTS = 1000   # Number of time slots per task
-BATCH_SIZE = 128   # Batch size
+NUM_SLOTS = 500   # Number of time slots per task
+BATCH_SIZE = 32   # Batch size
 LAMBDA_EWC = 10.0  # Strong regularization for EWC
 NUM_EPOCHS = 10    # Number of epochs
 
@@ -31,6 +31,7 @@ TASKS = [
 class BeamformingModel(Model):
     def __init__(self, num_antennas, num_users):
         super(BeamformingModel, self).__init__()
+        self.use_gradient_checkpointing = True  # Enable gradient checkpointing
         self.num_antennas = num_antennas
         self.num_users = num_users
         self.dense1_real = layers.Dense(128, activation="relu")
@@ -115,40 +116,49 @@ def generate_channel(task, num_slots, task_idx=0):
         carrier_frequency=FREQ
     )
 
-    # Use TDL model with mobility
+ 
     channel_model = sn.channel.tr38901.TDL(
-        model="A",              # TDL-A model (urban micro-like)
-        delay_spread=100e-9,    # Delay spread in seconds
-        carrier_frequency=FREQ,
+        model="A",
+        delay_spread=tf.cast(100e-9, dtype=tf.float32),
+        carrier_frequency=tf.cast(FREQ, dtype=tf.float32),
         num_tx_ant=NUM_ANTENNAS,
         num_rx_ant=NUM_USERS,
-        min_speed=speeds.min(),  # Minimum speed in m/s
-        max_speed=speeds.max()   # Maximum speed in m/s
+        min_speed=tf.cast(speeds.min(), dtype=tf.float32),
+        max_speed=tf.cast(speeds.max(), dtype=tf.float32),
+        dtype=tf.complex64  # Explicitly use complex64 instead of complex128
     )
 
     print(f"Task {task['name']}: User speeds range: {speeds.min():.2f} to {speeds.max():.2f} km/h, "
           f"Avg speed: {avg_speed:.2f} m/s")
 
-    # Generate channels
+    # Generate channels in smaller chunks
     h = []
     start_time = time.time()
     
-    # Define sampling frequency (for example, 1000 Hz)
     sampling_frequency = 1000  # Hz
+    num_time_steps = 5  # Reduced from 10
     
-    # Number of time steps per channel realization
-    num_time_steps = 10  # Adjust this value based on your needs
-    
-    for t in range(num_slots):
-        if t % 200 == 0:
-            print(f"Generating channel for slot {t}/{num_slots}")
-        channel_response = channel_model(
-            batch_size=BATCH_SIZE,
-            num_time_steps=num_time_steps,
-            sampling_frequency=sampling_frequency
-        )
-        h.append(channel_response[0])  # channel_response returns (h, tau), we only need h
-    
+    # Process in smaller chunks
+    chunk_size = 50  # Process 50 slots at a time
+    for chunk_start in range(0, num_slots, chunk_size):
+        chunk_end = min(chunk_start + chunk_size, num_slots)
+        if chunk_start % 200 == 0:
+            print(f"Generating channel for slots {chunk_start}-{chunk_end}/{num_slots}")
+        
+        # Clear any previous tensors
+        tf.keras.backend.clear_session()
+        
+        for t in range(chunk_start, chunk_end):
+            channel_response = channel_model(
+                batch_size=BATCH_SIZE,
+                num_time_steps=num_time_steps,
+                sampling_frequency=sampling_frequency
+            )
+            h.append(channel_response[0])  # channel_response returns (h, tau), we only need h
+            
+            # Explicitly delete the channel response to free memory
+            del channel_response
+            
     channel_gen_time = time.time() - start_time
     print(f"Channel generation time: {channel_gen_time:.2f} seconds")
     
@@ -162,6 +172,15 @@ def main():
     print(f"TensorFlow version: {tf.__version__}")
     print(f"Available GPU devices: {tf.config.list_physical_devices('GPU')}")
     
+        # At the start of main()
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        for gpu in gpus:
+            try:
+                tf.config.experimental.set_memory_growth(gpu, True)
+            except RuntimeError as e:
+                print(e)
+
     model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
     results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting"]}
