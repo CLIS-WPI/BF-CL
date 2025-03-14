@@ -15,7 +15,7 @@ FREQ = 28e9        # Frequency: 28 GHz (mmWave)
 POWER = 1.0        # Normalized power
 NUM_SLOTS = 1000   # Number of time slots per task
 BATCH_SIZE = 128   # Batch size
-LAMBDA_EWC = 1.0   # Increased EWC coefficient for stronger regularization
+LAMBDA_EWC = 10.0  # Increased for stronger regularization
 NUM_EPOCHS = 10    # Number of epochs
 
 # Define Tasks (speeds in km/h)
@@ -90,10 +90,11 @@ def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
         loss += lambda_ewc * ewc_penalty
     return loss
 
-# 4. Channel Generation with SIONNA (Updated to TR38901UMi)
+# 4. Channel Generation with SIONNA (FlatFadingChannel with Doppler)
 def generate_channel(task, num_slots, task_idx=0):
-    scene = sn.rt.Scene(frequency=FREQ)
+    scene = sn.rt.Scene()
     task_suffix = f"_{task_idx}"
+    
     tx = sn.rt.Transmitter(name=f"tx{task_suffix}", position=[0, 0, 10])
     rx_positions = np.random.uniform(-100, 100, (NUM_USERS, 3))
     rx_positions[:, 2] = 1.5  # User height
@@ -109,21 +110,38 @@ def generate_channel(task, num_slots, task_idx=0):
     for rx in rxs:
         scene.add(rx)
 
-    # Use TR38901UMi channel model
-    channel_model = sn.channel.TR38901UMi(scene=scene, carrier_frequency=FREQ, direction="downlink")
-    
+    # Calculate average speed for Doppler
     speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], NUM_USERS)
-    print(f"Task {task['name']}: User speeds range: {speeds.min():.2f} to {speeds.max():.2f} km/h")
+    avg_speed = np.mean(speeds) * 1000 / 3600  # Convert km/h to m/s
+    doppler_freq = avg_speed * FREQ / 3e8  # Doppler shift
+    
+    channel_model = sn.channel.FlatFadingChannel(
+        num_tx_ant=NUM_ANTENNAS,
+        num_rx_ant=NUM_USERS,
+        add_awgn=True,
+        return_channel=True,
+        doppler_frequency=doppler_freq  # Add Doppler effect
+    )
+    
+    print(f"Task {task['name']}: User speeds range: {speeds.min():.2f} to {speeds.max():.2f} km/h, "
+          f"Doppler frequency: {doppler_freq:.2f} Hz")
     
     h = []
+    start_time = time.time()
     for t in range(num_slots):
         if t % 200 == 0:
             print(f"Generating channel for slot {t}/{num_slots}")
         for i, rx in enumerate(rxs):
             rx.position += [speeds[i] * 0.001 * np.cos(t * 0.1), speeds[i] * 0.001 * np.sin(t * 0.1), 0]
-        channel = channel_model(batch_size=BATCH_SIZE)
-        h_t = channel[0][:, 0, :, 0]  # [batch_size, num_antennas, num_users]
-        h.append(h_t)
+        x = tf.ones([BATCH_SIZE, NUM_ANTENNAS], dtype=tf.complex64)
+        no = tf.ones([BATCH_SIZE, NUM_USERS], dtype=tf.complex64)
+        channel_output = channel_model([x, no])
+        channel_matrix = channel_output[1]  # Extract channel matrix
+        h.append(channel_matrix)
+    
+    channel_gen_time = time.time() - start_time
+    print(f"Channel generation time: {channel_gen_time:.2f} seconds")
+    
     result = tf.stack(h)
     print(f"Channel data shape: {result.shape}")
     return result
@@ -139,16 +157,18 @@ def main():
     results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting"]}
     old_params = {}
     fisher_dict = {}
-    task_performance = []  # Initial performance per task
+    task_performance = []
+    task_channels = {}
 
     for task_idx, task in enumerate(TASKS):
         print(f"\n----------------------------------------------")
         print(f"Training on Task {task_idx+1}/{len(TASKS)}: {task['name']}")
         print(f"----------------------------------------------")
         
-        # Generate channel data
+        # Generate and store channel data
         h = generate_channel(task, NUM_SLOTS, task_idx)
-        x = h  # Use channel data as input
+        task_channels[task_idx] = h
+        x = h
         
         # Train model with timing
         start_time = time.time()
@@ -180,14 +200,13 @@ def main():
         throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(w * h, axis=1))**2).numpy()
         task_performance.append(throughput)
         
-        # Compute forgetting by re-evaluating past tasks
+        # Compute forgetting by re-evaluating past tasks on full data
         forgetting = 0.0
         if task_idx > 0:
             past_performances = []
             for past_idx in range(task_idx):
-                past_h = generate_channel(TASKS[past_idx], NUM_SLOTS, past_idx)
-                past_x = past_h
-                past_w = model(past_x)
+                past_h = task_channels[past_idx]
+                past_w = model(past_h)
                 past_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(past_w * past_h, axis=1))**2).numpy()
                 forgetting_delta = task_performance[past_idx] - past_throughput
                 past_performances.append(forgetting_delta)
@@ -197,8 +216,8 @@ def main():
         old_params = {w.name: w.numpy() for w in model.trainable_weights}
         fisher_dict = compute_fisher(model, x)
         
-        # Energy estimation (simplified: time-based proxy)
-        energy = training_time * 100  # Arbitrary watts (adjust based on GPU specs)
+        # Energy estimation
+        energy = training_time * 100  # Arbitrary watts
         
         # Store results
         results["throughput"].append(throughput)
@@ -229,6 +248,5 @@ def main():
 if __name__ == "__main__":
     tf.get_logger().setLevel('ERROR')
     main()
-
 # Note: For a baseline comparison (retraining from scratch), duplicate this loop 
 # with a fresh model per task and no EWC, then compare results.
