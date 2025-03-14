@@ -23,6 +23,7 @@ TASKS = [
 ]
 
 # 1. Define Beamforming Model
+# Fixed BeamformingModel implementation to avoid dtype warnings
 class BeamformingModel(Model):
     def __init__(self, num_antennas, num_users):
         super(BeamformingModel, self).__init__()
@@ -30,22 +31,23 @@ class BeamformingModel(Model):
         self.num_users = num_users
         
         # Define separate layers for real and imaginary parts
-        self.dense1_real = layers.Dense(128, activation="relu", dtype=tf.float32)
-        self.dense1_imag = layers.Dense(128, activation="relu", dtype=tf.float32)
+        # Remove the dtype=tf.float32 from these definitions
+        self.dense1_real = layers.Dense(128, activation="relu")
+        self.dense1_imag = layers.Dense(128, activation="relu")
         
-        self.dense2_real = layers.Dense(64, activation="relu", dtype=tf.float32)
-        self.dense2_imag = layers.Dense(64, activation="relu", dtype=tf.float32)
+        self.dense2_real = layers.Dense(64, activation="relu")
+        self.dense2_imag = layers.Dense(64, activation="relu")
         
-        self.output_real = layers.Dense(num_antennas, dtype=tf.float32)
-        self.output_imag = layers.Dense(num_antennas, dtype=tf.float32)
+        self.output_real = layers.Dense(num_antennas)
+        self.output_imag = layers.Dense(num_antennas)
 
     def call(self, inputs):
         # Get batch size and reshape inputs
         batch_size = tf.shape(inputs)[0]
         
-        # Extract real and imaginary parts without casting warnings
-        real_inputs = tf.math.real(inputs)
-        imag_inputs = tf.math.imag(inputs)
+        # Extract real and imaginary parts and explicitly cast to float32
+        real_inputs = tf.cast(tf.math.real(inputs), tf.float32)
+        imag_inputs = tf.cast(tf.math.imag(inputs), tf.float32)
         
         # Process real and imaginary parts separately
         real_x = self.dense1_real(real_inputs)
