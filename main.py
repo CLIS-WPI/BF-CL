@@ -96,7 +96,7 @@ def generate_channel(task, num_slots, task_idx=0):
     speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], NUM_USERS)
     avg_speed = np.mean(speeds) * 1000 / 3600  # Convert km/h to m/s
 
-    # Setup antenna arrays (using PanelArray as per TR38.901)
+    # Setup antenna arrays (using PanelArray as per TR38901)
     tx_array = sn.channel.tr38901.PanelArray(
         num_rows_per_panel=8,
         num_cols_per_panel=8,
@@ -120,11 +120,10 @@ def generate_channel(task, num_slots, task_idx=0):
         model="A",              # TDL-A model (urban micro-like)
         delay_spread=100e-9,    # Delay spread in seconds
         carrier_frequency=FREQ,
+        num_tx_ant=NUM_ANTENNAS,
+        num_rx_ant=NUM_USERS,
         min_speed=speeds.min(),  # Minimum speed in m/s
-        max_speed=speeds.max(),  # Maximum speed in m/s
-        num_sinusoids=20,       # Number of sinusoids for the sum-of-sinusoids model
-        los_angle_of_arrival=np.pi/4,  # Angle of arrival for LoS path
-        dtype=tf.complex64
+        max_speed=speeds.max()   # Maximum speed in m/s
     )
 
     print(f"Task {task['name']}: User speeds range: {speeds.min():.2f} to {speeds.max():.2f} km/h, "
@@ -133,11 +132,22 @@ def generate_channel(task, num_slots, task_idx=0):
     # Generate channels
     h = []
     start_time = time.time()
+    
+    # Define sampling frequency (for example, 1000 Hz)
+    sampling_frequency = 1000  # Hz
+    
+    # Number of time steps per channel realization
+    num_time_steps = 10  # Adjust this value based on your needs
+    
     for t in range(num_slots):
         if t % 200 == 0:
             print(f"Generating channel for slot {t}/{num_slots}")
-        channel_response = channel_model(batch_size=BATCH_SIZE)
-        h.append(channel_response)
+        channel_response = channel_model(
+            batch_size=BATCH_SIZE,
+            num_time_steps=num_time_steps,
+            sampling_frequency=sampling_frequency
+        )
+        h.append(channel_response[0])  # channel_response returns (h, tau), we only need h
     
     channel_gen_time = time.time() - start_time
     print(f"Channel generation time: {channel_gen_time:.2f} seconds")
