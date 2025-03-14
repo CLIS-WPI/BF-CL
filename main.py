@@ -120,9 +120,11 @@ def generate_channel(task, num_slots, task_idx=0):
         model="A",              # TDL-A model (urban micro-like)
         delay_spread=100e-9,    # Delay spread in seconds
         carrier_frequency=FREQ,
-        num_tx_ant=NUM_ANTENNAS,
-        num_rx_ant=NUM_USERS,
-        ut_velocity=avg_speed   # User terminal velocity in m/s
+        min_speed=speeds.min(),  # Minimum speed in m/s
+        max_speed=speeds.max(),  # Maximum speed in m/s
+        num_sinusoids=20,       # Number of sinusoids for the sum-of-sinusoids model
+        los_angle_of_arrival=np.pi/4,  # Angle of arrival for LoS path
+        dtype=tf.complex64
     )
 
     print(f"Task {task['name']}: User speeds range: {speeds.min():.2f} to {speeds.max():.2f} km/h, "
