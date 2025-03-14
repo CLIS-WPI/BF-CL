@@ -15,7 +15,7 @@ FREQ = 28e9        # Frequency: 28 GHz (mmWave)
 POWER = 1.0        # Normalized power
 NUM_SLOTS = 1000   # Number of time slots per task
 BATCH_SIZE = 128   # Batch size
-LAMBDA_EWC = 10.0  # Increased for stronger regularization
+LAMBDA_EWC = 10.0  # Strong regularization for EWC
 NUM_EPOCHS = 10    # Number of epochs
 
 # Define Tasks (speeds in km/h)
@@ -90,54 +90,52 @@ def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
         loss += lambda_ewc * ewc_penalty
     return loss
 
-# 4. Channel Generation with SIONNA (FlatFadingChannel with Doppler)
+# 4. Channel Generation with SIONNA (Using TDL Model)
 def generate_channel(task, num_slots, task_idx=0):
-    scene = sn.rt.Scene()
-    task_suffix = f"_{task_idx}"
-    
-    tx = sn.rt.Transmitter(name=f"tx{task_suffix}", position=[0, 0, 10])
-    rx_positions = np.random.uniform(-100, 100, (NUM_USERS, 3))
-    rx_positions[:, 2] = 1.5  # User height
-    rxs = [sn.rt.Receiver(name=f"rx-{i}{task_suffix}", position=rx_positions[i]) for i in range(NUM_USERS)]
-
-    wavelength = 3e8 / FREQ
-    spacing = wavelength / 2
-    scene.tx_array = sn.rt.PlanarArray(num_rows=8, num_cols=8, vertical_spacing=spacing, 
-                                       horizontal_spacing=spacing, pattern="iso", polarization="V")
-    scene.rx_array = sn.rt.PlanarArray(num_rows=1, num_cols=1, vertical_spacing=spacing, 
-                                       horizontal_spacing=spacing, pattern="iso", polarization="V")
-    scene.add(tx)
-    for rx in rxs:
-        scene.add(rx)
-
     # Calculate average speed for Doppler
     speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], NUM_USERS)
     avg_speed = np.mean(speeds) * 1000 / 3600  # Convert km/h to m/s
-    doppler_freq = avg_speed * FREQ / 3e8  # Doppler shift
-    
-    channel_model = sn.channel.FlatFadingChannel(
-        num_tx_ant=NUM_ANTENNAS,
-        num_rx_ant=NUM_USERS,
-        add_awgn=True,
-        return_channel=True,
-        doppler_frequency=doppler_freq  # Add Doppler effect
+
+    # Setup antenna arrays (using PanelArray as per TR38.901)
+    tx_array = sn.channel.tr38901.PanelArray(
+        num_rows_per_panel=8,
+        num_cols_per_panel=8,
+        polarization="single",
+        polarization_type="V",
+        antenna_pattern="38.901",
+        carrier_frequency=FREQ
     )
     
+    rx_array = sn.channel.tr38901.PanelArray(
+        num_rows_per_panel=1,
+        num_cols_per_panel=1,
+        polarization="single",
+        polarization_type="V",
+        antenna_pattern="38.901",
+        carrier_frequency=FREQ
+    )
+
+    # Use TDL model with mobility
+    channel_model = sn.channel.tr38901.TDL(
+        model="A",              # TDL-A model (urban micro-like)
+        delay_spread=100e-9,    # Delay spread in seconds
+        carrier_frequency=FREQ,
+        num_tx_ant=NUM_ANTENNAS,
+        num_rx_ant=NUM_USERS,
+        ut_velocity=avg_speed   # User terminal velocity in m/s
+    )
+
     print(f"Task {task['name']}: User speeds range: {speeds.min():.2f} to {speeds.max():.2f} km/h, "
-          f"Doppler frequency: {doppler_freq:.2f} Hz")
-    
+          f"Avg speed: {avg_speed:.2f} m/s")
+
+    # Generate channels
     h = []
     start_time = time.time()
     for t in range(num_slots):
         if t % 200 == 0:
             print(f"Generating channel for slot {t}/{num_slots}")
-        for i, rx in enumerate(rxs):
-            rx.position += [speeds[i] * 0.001 * np.cos(t * 0.1), speeds[i] * 0.001 * np.sin(t * 0.1), 0]
-        x = tf.ones([BATCH_SIZE, NUM_ANTENNAS], dtype=tf.complex64)
-        no = tf.ones([BATCH_SIZE, NUM_USERS], dtype=tf.complex64)
-        channel_output = channel_model([x, no])
-        channel_matrix = channel_output[1]  # Extract channel matrix
-        h.append(channel_matrix)
+        channel_response = channel_model(batch_size=BATCH_SIZE)
+        h.append(channel_response)
     
     channel_gen_time = time.time() - start_time
     print(f"Channel generation time: {channel_gen_time:.2f} seconds")
@@ -200,7 +198,7 @@ def main():
         throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(w * h, axis=1))**2).numpy()
         task_performance.append(throughput)
         
-        # Compute forgetting by re-evaluating past tasks on full data
+        # Compute forgetting by re-evaluating past tasks
         forgetting = 0.0
         if task_idx > 0:
             past_performances = []
@@ -248,5 +246,3 @@ def main():
 if __name__ == "__main__":
     tf.get_logger().setLevel('ERROR')
     main()
-# Note: For a baseline comparison (retraining from scratch), duplicate this loop 
-# with a fresh model per task and no EWC, then compare results.
