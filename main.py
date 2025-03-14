@@ -107,11 +107,12 @@ def generate_channel(task, num_slots):
         scene.add(rx)
 
     # Use FlatFadingChannel with correct parameters
+    # With this corrected version:
     channel_model = sn.channel.FlatFadingChannel(
-        in_channels=NUM_ANTENNAS,  # Number of transmit antennas
-        out_channels=NUM_USERS,    # Number of users (receivers)
-        add_awgn=True,             # Add noise
-        return_channel=True        # Return channel coefficients
+        num_tx_ant=NUM_ANTENNAS,  # Number of transmit antennas
+        num_rx_ant=NUM_USERS,     # Number of users (receivers)
+        add_awgn=True,            # Add noise
+        return_channel=True       # Return channel coefficients
     )
 
     # Generate channel with mobility
