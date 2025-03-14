@@ -3,6 +3,45 @@ import tensorflow as tf
 import sionna as sn
 import matplotlib.pyplot as plt
 from tensorflow.keras import layers, Model
+import traceback
+import sys
+import os
+
+# Enable TensorFlow debug logging for casting operations
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'  # Show all logs
+tf.debugging.set_log_device_placement(True)
+
+# Redirect TensorFlow warnings to capture them
+import logging
+tf_logger = tf.get_logger()
+tf_logger.setLevel(logging.DEBUG)
+
+# Custom debug logger for complex operations
+class ComplexCastingDebugger:
+    def __init__(self):
+        self.active = True
+        self.watched_ops = ['cast', 'real', 'imag', 'complex']
+        
+    def watch_tensor(self, name, tensor):
+        if not self.active:
+            return tensor
+            
+        if hasattr(tensor, 'dtype'):
+            if 'complex' in str(tensor.dtype):
+                print(f"DEBUG-COMPLEX: {name} is complex {tensor.dtype}")
+                # Print stack trace to find where this complex tensor is being used
+                traceback.print_stack(limit=10)
+                
+        return tensor
+        
+    def trace_op(self, op_name, *args, **kwargs):
+        if op_name in self.watched_ops:
+            print(f"DEBUG-OP: {op_name} called with types: {[type(a) for a in args]}")
+            if len(args) > 0 and hasattr(args[0], 'dtype'):
+                print(f"DEBUG-OP: {op_name} input dtype: {args[0].dtype}")
+            traceback.print_stack(limit=5)
+            
+debugger = ComplexCastingDebugger()
 
 # Initial Settings
 NUM_ANTENNAS = 64  # Number of BS antennas
@@ -22,173 +61,158 @@ TASKS = [
     {"name": "Random", "speed_range": [10, 100]},
 ]
 
-# 1. Define Beamforming Model with extensive debug prints
+# Override tf.math operations to add debugging
+original_real = tf.math.real
+original_imag = tf.math.imag
+original_complex = tf.complex
+
+def debug_real(input):
+    print("DEBUG-OVERRIDE: tf.math.real called")
+    print(f"DEBUG-OVERRIDE: Input type: {type(input)}, dtype: {input.dtype if hasattr(input, 'dtype') else 'unknown'}")
+    traceback.print_stack(limit=10)
+    return original_real(input)
+
+def debug_imag(input):
+    print("DEBUG-OVERRIDE: tf.math.imag called")
+    print(f"DEBUG-OVERRIDE: Input type: {type(input)}, dtype: {input.dtype if hasattr(input, 'dtype') else 'unknown'}")
+    traceback.print_stack(limit=10)
+    return original_imag(input)
+
+def debug_complex(real, imag):
+    print("DEBUG-OVERRIDE: tf.complex called")
+    print(f"DEBUG-OVERRIDE: Real type: {type(real)}, dtype: {real.dtype if hasattr(real, 'dtype') else 'unknown'}")
+    print(f"DEBUG-OVERRIDE: Imag type: {type(imag)}, dtype: {imag.dtype if hasattr(imag, 'dtype') else 'unknown'}")
+    traceback.print_stack(limit=10)
+    return original_complex(real, imag)
+
+# Uncomment to add extreme debugging
+#tf.math.real = debug_real
+#tf.math.imag = debug_imag
+#tf.complex = debug_complex
+
+# 1. Define Beamforming Model with super detailed debugging
 class BeamformingModel(Model):
     def __init__(self, num_antennas, num_users):
         super(BeamformingModel, self).__init__()
         self.num_antennas = num_antennas
         self.num_users = num_users
         
-        # Define separate layers for real and imaginary parts
-        # Define all layers with tf.keras.layers.Dense to have full control
-        self.dense1_real = tf.keras.layers.Dense(128, activation="relu", name="dense1_real")
-        self.dense1_imag = tf.keras.layers.Dense(128, activation="relu", name="dense1_imag")
+        # Define separate layers for real and imaginary parts explicitly with float32 dtype
+        self.dense1_real = layers.Dense(128, activation="relu", dtype=tf.float32, name="dense1_real")
+        self.dense1_imag = layers.Dense(128, activation="relu", dtype=tf.float32, name="dense1_imag")
         
-        self.dense2_real = tf.keras.layers.Dense(64, activation="relu", name="dense2_real")
-        self.dense2_imag = tf.keras.layers.Dense(64, activation="relu", name="dense2_imag")
+        self.dense2_real = layers.Dense(64, activation="relu", dtype=tf.float32, name="dense2_real")
+        self.dense2_imag = layers.Dense(64, activation="relu", dtype=tf.float32, name="dense2_imag")
         
-        self.output_real = tf.keras.layers.Dense(num_antennas, name="output_real")
-        self.output_imag = tf.keras.layers.Dense(num_antennas, name="output_imag")
+        self.output_real = layers.Dense(num_antennas, dtype=tf.float32, name="output_real")
+        self.output_imag = layers.Dense(num_antennas, dtype=tf.float32, name="output_imag")
         
-        print("DEBUG: Model initialized with layers:")
-        print(f"  dense1_real: {self.dense1_real}")
-        print(f"  dense1_imag: {self.dense1_imag}")
-        
+        print("DEBUG: Model initialized - layer dtypes explicitly set to float32")
+
     def call(self, inputs):
-        # Debug input shape and dtype
-        print("\nDEBUG CALL START ===========================")
-        print(f"Input shape: {inputs.shape}, dtype: {inputs.dtype}")
+        print(f"\nDEBUG-CALL: Input shape: {inputs.shape}, dtype: {inputs.dtype}")
+        
+        # Special debug for first call to identify specific shape and ordering
+        if not hasattr(self, '_first_call_done'):
+            self._first_call_done = True
+            if len(inputs.shape) >= 3:
+                first_dims = [i for i in range(len(inputs.shape))]
+                print(f"DEBUG-FIRST-CALL: Input has {len(inputs.shape)} dimensions")
+                print(f"DEBUG-FIRST-CALL: Interpreting as: batch_dim={first_dims[0]}, dim1={first_dims[1]}, dim2={first_dims[2]}")
+                print(f"DEBUG-FIRST-CALL: Input tensor has shape {inputs.shape}")
         
         # Get batch size
         batch_size = tf.shape(inputs)[0]
-        print(f"Batch size: {batch_size}")
         
-        # Extract real and imaginary parts and explicitly cast to float32
-        # Adding debug prints
-        print(f"Before extraction - inputs dtype: {inputs.dtype}")
-        
-        # Use tf.debugging.check_numerics to verify inputs
-        try:
-            tf.debugging.check_numerics(inputs, "Input tensor contains invalid values")
-            print("Input tensor passed numeric check")
-        except Exception as e:
-            print(f"Input tensor check failed: {e}")
-        
+        # Extract real and imaginary parts and EXPLICITLY cast to float32
+        print("DEBUG-CALL: Extracting real part...")
         real_inputs = tf.cast(tf.math.real(inputs), tf.float32)
+        print(f"DEBUG-CALL: real_inputs dtype: {real_inputs.dtype}")
+        
+        print("DEBUG-CALL: Extracting imaginary part...")
         imag_inputs = tf.cast(tf.math.imag(inputs), tf.float32)
-        
-        print(f"After extraction - real_inputs: {real_inputs.dtype}, imag_inputs: {imag_inputs.dtype}")
-        
-        # Check layer dtypes
-        print(f"dense1_real input dtype policy: {self.dense1_real.dtype_policy}")
-        print(f"dense1_imag input dtype policy: {self.dense1_imag.dtype_policy}")
+        print(f"DEBUG-CALL: imag_inputs dtype: {imag_inputs.dtype}")
         
         # Process real and imaginary parts separately
-        # Adding debug before each layer call
-        print("Before dense1_real - real_inputs shape:", real_inputs.shape)
+        print("DEBUG-CALL: Passing through dense1_real...")
         real_x = self.dense1_real(real_inputs)
-        print(f"After dense1_real - real_x: {real_x.dtype}, shape: {real_x.shape}")
         
-        print("Before dense1_imag - imag_inputs shape:", imag_inputs.shape)
+        print("DEBUG-CALL: Passing through dense1_imag...")
         imag_x = self.dense1_imag(imag_inputs)
-        print(f"After dense1_imag - imag_x: {imag_x.dtype}, shape: {imag_x.shape}")
         
         real_x = self.dense2_real(real_x)
-        print(f"After dense2_real - real_x: {real_x.dtype}, shape: {real_x.shape}")
-        
         imag_x = self.dense2_imag(imag_x)
-        print(f"After dense2_imag - imag_x: {imag_x.dtype}, shape: {imag_x.shape}")
         
         real_output = self.output_real(real_x)
-        print(f"After output_real - real_output: {real_output.dtype}, shape: {real_output.shape}")
-        
         imag_output = self.output_imag(imag_x)
-        print(f"After output_imag - imag_output: {imag_output.dtype}, shape: {imag_output.shape}")
         
         # Combine into complex output
-        print("Before combining to complex - checking output types:")
-        print(f"  real_output: {real_output.dtype}")
-        print(f"  imag_output: {imag_output.dtype}")
-        
+        print("DEBUG-CALL: Creating complex output...")
         w = tf.complex(real_output, imag_output)
-        print(f"After combining to complex - w: {w.dtype}, shape: {w.shape}")
+        print(f"DEBUG-CALL: Complex output w dtype: {w.dtype}")
         
-        # Normalize beamforming weights
-        norm = tf.sqrt(tf.reduce_sum(tf.abs(w)**2, axis=1, keepdims=True))
-        print(f"Norm computed: {norm.dtype}, shape: {norm.shape}")
+        # Normalize beamforming weights with proper casting
+        print("DEBUG-CALL: Computing normalization...")
+        norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=1, keepdims=True)
+        norm = tf.cast(tf.sqrt(norm_squared), dtype=tf.complex64)
+        print(f"DEBUG-CALL: norm dtype: {norm.dtype}")
         
         power = tf.complex(tf.sqrt(POWER), 0.0)
-        print(f"Power: {power.dtype}")
+        print(f"DEBUG-CALL: power dtype: {power.dtype}")
         
         w = w / norm * power
-        print(f"Final output - w: {w.dtype}, shape: {w.shape}")
-        print("DEBUG CALL END ===========================\n")
+        print(f"DEBUG-CALL: Normalized w dtype: {w.dtype}")
+        print("DEBUG-CALL: Returning output")
         
         return w
 
-# 2. Compute Fisher Information for EWC with debug info
-def compute_fisher(model, data, num_samples=100):
-    print(f"\nDEBUG: compute_fisher - data shape: {data.shape}, dtype: {data.dtype}")
-    print(f"DEBUG: compute_fisher - num_samples: {num_samples}")
-    
-    fisher = {w.name: tf.zeros_like(w) for w in model.trainable_weights}
-    print(f"DEBUG: Initialized fisher dict with {len(fisher)} keys")
-    
-    for s in range(num_samples):
-        if s == 0:  # Only print for first sample to avoid spam
-            print(f"DEBUG: compute_fisher - processing sample {s+1}/{num_samples}")
-            
-        idx = np.random.randint(0, len(data), BATCH_SIZE)
-        x_batch = data[idx]
-        
-        if s == 0:
-            print(f"DEBUG: x_batch shape: {x_batch.shape}, dtype: {x_batch.dtype}")
-        
-        with tf.GradientTape() as tape:
-            logits = model(x_batch, training=True)
-            log_likelihood = tf.reduce_mean(tf.math.log(tf.reduce_sum(tf.abs(logits)**2, axis=1)))
-            
-            if s == 0:
-                print(f"DEBUG: logits shape: {logits.shape}, dtype: {logits.dtype}")
-                print(f"DEBUG: log_likelihood: {log_likelihood.numpy()}")
-        
-        grads = tape.gradient(log_likelihood, model.trainable_weights)
-        
-        if s == 0:
-            print(f"DEBUG: Got {len(grads)} gradients")
-            
-        for w, g in zip(model.trainable_weights, grads):
-            if g is not None:
-                fisher[w.name] += g**2 / num_samples
-                
-    print(f"DEBUG: Finished compute_fisher with {len(fisher)} parameters\n")
-    return fisher
-
-# 3. Loss Function with EWC with debug
+# Loss Function with debugging
 def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
-    print(f"\nDEBUG: ewc_loss - x shape: {x.shape}, dtype: {x.dtype}")
-    print(f"DEBUG: ewc_loss - h shape: {h.shape}, dtype: {h.dtype}")
-    print(f"DEBUG: ewc_loss - Using fisher: {fisher is not None}")
+    print(f"\nDEBUG-LOSS: x shape: {x.shape}, dtype: {x.dtype}")
+    print(f"DEBUG-LOSS: h shape: {h.shape}, dtype: {h.dtype}")
     
     w = model(x)
-    print(f"DEBUG: ewc_loss - model output w shape: {w.shape}, dtype: {w.dtype}")
+    print(f"DEBUG-LOSS: model output w shape: {w.shape}, dtype: {w.dtype}")
     
+    # This is where another complex-to-float conversion might be happening
+    print(f"DEBUG-LOSS: Computing signal power...")
+    
+    # Add detailed inspection of intermediate values
     mult_result = w * h
-    print(f"DEBUG: ewc_loss - w*h result shape: {mult_result.shape}, dtype: {mult_result.dtype}")
+    print(f"DEBUG-LOSS: w*h result shape: {mult_result.shape}, dtype: {mult_result.dtype}")
     
-    signal_power = tf.reduce_mean(tf.abs(tf.reduce_sum(mult_result, axis=1))**2)
-    print(f"DEBUG: ewc_loss - signal_power: {signal_power.numpy()}")
+    sum_result = tf.reduce_sum(mult_result, axis=1)
+    print(f"DEBUG-LOSS: sum_result shape: {sum_result.shape}, dtype: {sum_result.dtype}")
+    
+    abs_result = tf.abs(sum_result)
+    print(f"DEBUG-LOSS: abs_result shape: {abs_result.shape}, dtype: {abs_result.dtype}")
+    
+    squared = abs_result**2
+    print(f"DEBUG-LOSS: squared shape: {squared.shape}, dtype: {squared.dtype}")
+    
+    signal_power = tf.reduce_mean(squared)
+    print(f"DEBUG-LOSS: signal_power: {signal_power.numpy()}, dtype: {signal_power.dtype}")
     
     loss = -signal_power  # Maximize signal power
     
     if fisher:
         ewc_penalty = 0.0
-        print(f"DEBUG: ewc_loss - calculating EWC penalty with {len(fisher)} parameters")
+        print(f"DEBUG-LOSS: Calculating EWC penalty with {len(fisher)} parameters")
         
         for w in model.trainable_weights:
             w_name = w.name
             if w_name in fisher:
                 ewc_penalty += tf.reduce_sum(fisher[w_name] * (w - old_params[w_name])**2)
                 
-        print(f"DEBUG: ewc_loss - ewc_penalty: {ewc_penalty.numpy()}")
+        print(f"DEBUG-LOSS: ewc_penalty: {ewc_penalty.numpy() if hasattr(ewc_penalty, 'numpy') else ewc_penalty}")
         loss += lambda_ewc * ewc_penalty
         
-    print(f"DEBUG: ewc_loss - final loss: {loss.numpy()}\n")
+    print(f"DEBUG-LOSS: final loss: {loss.numpy() if hasattr(loss, 'numpy') else loss}")
     return loss
 
-# Fixed generate_channel function
+# Fixed generate_channel function with EXTENSIVE debugging
 def generate_channel(task, num_slots):
-    print(f"\nDEBUG: generate_channel - task: {task['name']}, num_slots: {num_slots}")
+    print(f"\nDEBUG-CHANNEL: generate_channel for task: {task['name']}")
     
     # Create scene
     scene = sn.rt.Scene()
@@ -198,8 +222,6 @@ def generate_channel(task, num_slots):
     rx_positions = np.random.uniform(-100, 100, (NUM_USERS, 3))
     rx_positions[:, 2] = 1.5  # User height
     rxs = [sn.rt.Receiver(name=f"rx-{i}", position=rx_positions[i]) for i in range(NUM_USERS)]
-    
-    print(f"DEBUG: Created scene with 1 transmitter and {NUM_USERS} receivers")
     
     # Configure antenna arrays with spacing and pattern
     wavelength = 3e8 / FREQ  # Wavelength = c/f
@@ -221,12 +243,12 @@ def generate_channel(task, num_slots):
         polarization="V"
     )
     
-    print(f"DEBUG: Configured antenna arrays")
-    
     # Add devices to scene
     scene.add(tx)
     for rx in rxs:
         scene.add(rx)
+    
+    print("DEBUG-CHANNEL: Created scene and added devices")
     
     # Use FlatFadingChannel with correct parameters
     channel_model = sn.channel.FlatFadingChannel(
@@ -236,181 +258,118 @@ def generate_channel(task, num_slots):
         return_channel=True       # Return channel coefficients
     )
     
-    print(f"DEBUG: Created channel model")
+    print("DEBUG-CHANNEL: Created channel model")
     
     # Generate channel with mobility
     speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], NUM_USERS)
-    print(f"DEBUG: User speeds range: {speeds.min():.2f} to {speeds.max():.2f} km/h")
+    print(f"DEBUG-CHANNEL: User speeds range: {speeds.min():.2f} to {speeds.max():.2f} km/h")
     
     h = []
     for t in range(num_slots):
         if t % 100 == 0:
-            print(f"DEBUG: Generating channel for slot {t}/{num_slots}")
+            print(f"DEBUG-CHANNEL: Generating channel for slot {t}/{num_slots}")
             
         # Update receiver positions to simulate mobility
         for i, rx in enumerate(rxs):
             rx.position += [speeds[i] * 0.001 * np.cos(t * 0.1), speeds[i] * 0.001 * np.sin(t * 0.1), 0]
             
         # Generate channel
+        print(f"DEBUG-CHANNEL: Creating input tensors for channel model") if t == 0 else None
         x = tf.ones([BATCH_SIZE, NUM_ANTENNAS], dtype=tf.complex64)
         no = tf.ones([BATCH_SIZE, NUM_USERS], dtype=tf.complex64)
         
-        # FlatFadingChannel returns a tuple, need to extract the channel part
+        if t == 0:
+            print(f"DEBUG-CHANNEL: x shape: {x.shape}, dtype: {x.dtype}")
+            print(f"DEBUG-CHANNEL: no shape: {no.shape}, dtype: {no.dtype}")
+        
+        # FlatFadingChannel returns a tuple, extract the channel part
+        print(f"DEBUG-CHANNEL: Calling channel_model") if t == 0 else None
         channel_output = channel_model([x, no])
         
         # Debug the output tuple
         if t == 0:
-            print(f"DEBUG: channel_output is a tuple of length: {len(channel_output)}")
+            print(f"DEBUG-CHANNEL: channel_output is a tuple of length: {len(channel_output)}")
             for i, item in enumerate(channel_output):
                 if hasattr(item, 'shape'):
-                    print(f"DEBUG: channel_output[{i}] shape: {item.shape}, dtype: {item.dtype}")
+                    print(f"DEBUG-CHANNEL: channel_output[{i}] shape: {item.shape}, dtype: {item.dtype}")
+                    
+                    # Debug the first few values to see if they're actually complex
+                    if 'complex' in str(item.dtype):
+                        sample = item.numpy().flatten()[:5]
+                        print(f"DEBUG-CHANNEL: Sample values: {sample}")
+                        print(f"DEBUG-CHANNEL: Real parts: {np.real(sample)}")
+                        print(f"DEBUG-CHANNEL: Imag parts: {np.imag(sample)}")
                 else:
-                    print(f"DEBUG: channel_output[{i}] type: {type(item)}")
+                    print(f"DEBUG-CHANNEL: channel_output[{i}] type: {type(item)}")
         
-        # Extract the channel matrix (typically the first or second element)
-        # Let's try to find which element is the channel matrix
-        channel_matrix = None
-        
-        if hasattr(channel_output, 'shape'):  # If it's a single tensor
-            channel_matrix = channel_output
-        else:  # If it's a tuple
-            # Try to find the channel matrix by looking for complex tensor with right shape
-            for item in channel_output:
-                if hasattr(item, 'shape') and len(item.shape) >= 2:
-                    if item.shape[-2:] == (NUM_ANTENNAS, NUM_USERS) or item.shape[-2:] == (NUM_USERS, NUM_ANTENNAS):
-                        channel_matrix = item
-                        break
-            
-            # If we couldn't find it, take the first complex tensor
-            if channel_matrix is None:
-                for item in channel_output:
-                    if hasattr(item, 'dtype') and 'complex' in str(item.dtype):
-                        channel_matrix = item
-                        break
-            
-            # If we still couldn't find it, take the first tensor
-            if channel_matrix is None and len(channel_output) > 0:
-                for item in channel_output:
-                    if hasattr(item, 'shape'):
-                        channel_matrix = item
-                        break
+        # Extract the channel matrix (element 1 based on your logs)
+        channel_matrix = channel_output[1]
         
         if t == 0:
-            if channel_matrix is not None:
-                print(f"DEBUG: Selected channel_matrix shape: {channel_matrix.shape}, dtype: {channel_matrix.dtype}")
-            else:
-                print("DEBUG: CRITICAL ERROR - Could not find channel matrix in output")
-                # Placeholder for error case - just use zeros
-                channel_matrix = tf.zeros([BATCH_SIZE, NUM_ANTENNAS, NUM_USERS], dtype=tf.complex64)
+            print(f"DEBUG-CHANNEL: Selected channel_matrix shape: {channel_matrix.shape}, dtype: {channel_matrix.dtype}")
+            
+            # Check if the channel matrix is what we expect
+            if channel_matrix.shape[-2:] != (NUM_USERS, NUM_ANTENNAS) and channel_matrix.shape[-2:] != (NUM_ANTENNAS, NUM_USERS):
+                print(f"DEBUG-CHANNEL: WARNING - Channel matrix shape doesn't match expected dimensions")
         
         h.append(channel_matrix)
     
     result = tf.stack(h)
-    print(f"DEBUG: Final channel data shape: {result.shape}, dtype: {result.dtype}\n")
+    print(f"DEBUG-CHANNEL: Final stacked channel data shape: {result.shape}, dtype: {result.dtype}")
+    
+    # Add extra check for the channel structure
+    print(f"DEBUG-CHANNEL: Channel dimensions interpretation:")
+    if len(result.shape) == 4:
+        print(f"  dimension 0: {result.shape[0]} time slots")
+        print(f"  dimension 1: {result.shape[1]} batch size")
+        print(f"  dimension 2: {result.shape[2]} appears to be {result.shape[2]}")
+        print(f"  dimension 3: {result.shape[3]} appears to be {result.shape[3]}")
+        print(f"  This structure means each element is of size: {result.shape[2]}x{result.shape[3]}")
+    
     return result
 
-# 5. Main Training and Evaluation Loop with added debug info
-def main():
-    print("\nDEBUG: Starting main training function")
-    print(f"DEBUG: TensorFlow version: {tf.__version__}")
-    print(f"DEBUG: Available GPU devices: {tf.config.list_physical_devices('GPU')}")
+# Test function that only runs the first task with minimal iterations
+def test_first_task():
+    print("DEBUG-TEST: Running debug test on first task only")
     
     model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
-    print("DEBUG: Created model")
-    
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
-    print("DEBUG: Created optimizer")
     
-    results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting"]}
-    old_params = {}
-    fisher_dict = {}
-    task_performance = []
+    # Generate channel data for the first task only
+    task = TASKS[0]
+    print(f"DEBUG-TEST: Generating channel for task: {task['name']}")
     
-    for task_idx, task in enumerate(TASKS):
-        print(f"\n----------------------------------------------")
-        print(f"DEBUG: Starting Task {task_idx+1}/{len(TASKS)}: {task['name']}")
-        print(f"----------------------------------------------")
-        
-        # Generate channel data
-        h = generate_channel(task, NUM_SLOTS)
-        print(f"DEBUG: Generated channel data for task: {task['name']}")
-        
-        x = h  # Keep complex channel state information
-        print(f"DEBUG: Using channel data as input, shape: {x.shape}, dtype: {x.dtype}")
-        
-        # Train model
-        for epoch in range(10):
-            print(f"\nDEBUG: Starting epoch {epoch+1}/10")
-            
-            epoch_loss = 0
-            batches = 0
-            
-            for t in range(0, NUM_SLOTS, BATCH_SIZE):
-                batches += 1
-                if t % (5 * BATCH_SIZE) == 0:
-                    print(f"DEBUG: Training on batch starting at t={t}")
-                    
-                x_batch = x[t:t+BATCH_SIZE]
-                h_batch = h[t:t+BATCH_SIZE]
-                
-                with tf.GradientTape() as tape:
-                    loss = ewc_loss(model, x_batch, h_batch, 
-                                   fisher_dict if task_idx > 0 else None, 
-                                   old_params, LAMBDA_EWC)
-                    
-                epoch_loss += loss.numpy()
-                
-                grads = tape.gradient(loss, model.trainable_weights)
-                
-                if t == 0 and epoch == 0:
-                    print(f"DEBUG: Number of gradients: {len(grads)}")
-                    print(f"DEBUG: Checking for None gradients: {[g is None for g in grads]}")
-                    
-                optimizer.apply_gradients(zip(grads, model.trainable_weights))
-                
-            avg_epoch_loss = epoch_loss / batches
-            print(f"DEBUG: Epoch {epoch+1} average loss: {avg_epoch_loss:.6f}")
-        
-        # Save parameters and Fisher for EWC
-        print(f"DEBUG: Saving parameters and computing Fisher information")
-        old_params = {w.name: w.numpy() for w in model.trainable_weights}
-        fisher_dict = compute_fisher(model, x)
-        
-        # Evaluation
-        print(f"DEBUG: Evaluating model performance")
-        w = model(x)
-        throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(w * h, axis=1))**2).numpy()
-        latency = 0.01  # Placeholder (replace with real timing)
-        energy = 0.5 * NUM_SLOTS * NUM_ANTENNAS  # Placeholder
-        task_performance.append(throughput)
-        
-        # Compute Forgetting
-        if task_idx > 0:
-            forgetting = np.mean([task_performance[i] - task_performance[-1] for i in range(task_idx)])
-            results["forgetting"].append(forgetting)
-        else:
-            results["forgetting"].append(0.0)
-            
-        results["throughput"].append(throughput)
-        results["latency"].append(latency)
-        results["energy"].append(energy)
-        
-        print(f"Task {task['name']}: Throughput={throughput:.2f}, Forgetting={results['forgetting'][-1]:.2f}")
+    # Use a smaller number of slots for faster testing
+    test_slots = 50
+    h = generate_channel(task, test_slots)
+    x = h  # Use channel data as input
     
-    # 6. Plot Results
-    print("\nDEBUG: Plotting results")
-    for metric in results:
-        plt.plot(results[metric], label=metric)
-    plt.legend()
-    plt.xlabel("Task")
-    plt.ylabel("Metric Value")
-    plt.title("Performance Across Mobility Tasks")
-    plt.savefig("mobility_tasks_results.png")
-    print("DEBUG: Saved plot to mobility_tasks_results.png")
-    plt.show()
+    print(f"DEBUG-TEST: Channel data shape: {h.shape}, dtype: {h.dtype}")
     
-    print("DEBUG: Training complete!")
+    # Try passing the data through the model
+    print("DEBUG-TEST: Testing model with sample data...")
+    
+    # Get a single batch
+    x_batch = x[0:BATCH_SIZE]
+    h_batch = h[0:BATCH_SIZE]
+    
+    print(f"DEBUG-TEST: x_batch shape: {x_batch.shape}, dtype: {x_batch.dtype}")
+    print(f"DEBUG-TEST: h_batch shape: {h_batch.shape}, dtype: {h_batch.dtype}")
+    
+    # Call the model directly
+    print("DEBUG-TEST: Calling model directly...")
+    output = model(x_batch)
+    print(f"DEBUG-TEST: Model output shape: {output.shape}, dtype: {output.dtype}")
+    
+    # Call the loss function
+    print("DEBUG-TEST: Computing loss...")
+    loss = ewc_loss(model, x_batch, h_batch, None, {}, LAMBDA_EWC)
+    print(f"DEBUG-TEST: Loss: {loss}")
+    
+    print("DEBUG-TEST: Test complete!")
 
+# Run the test
 if __name__ == "__main__":
-    print("DEBUG: Script started")
-    main()
+    print("DEBUG: Starting detailed debug test")
+    # Run only the first task with minimal iterations for debugging
+    test_first_task()
