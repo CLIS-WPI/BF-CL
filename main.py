@@ -139,10 +139,10 @@ def generate_channel(task, num_slots, task_idx=0):
     num_time_steps = 5  # Reduced from 10
     
     # Process in smaller chunks
-    chunk_size = 50  # Process 50 slots at a time
+    chunk_size = 25  # Process 50 slots at a time
     for chunk_start in range(0, num_slots, chunk_size):
         chunk_end = min(chunk_start + chunk_size, num_slots)
-        if chunk_start % 200 == 0:
+        if chunk_start % 100 == 0:
             print(f"Generating channel for slots {chunk_start}-{chunk_end}/{num_slots}")
         
         # Clear any previous tensors
@@ -172,12 +172,17 @@ def main():
     print(f"TensorFlow version: {tf.__version__}")
     print(f"Available GPU devices: {tf.config.list_physical_devices('GPU')}")
     
-        # At the start of main()
+    # Configure memory growth
     gpus = tf.config.list_physical_devices('GPU')
     if gpus:
         for gpu in gpus:
             try:
                 tf.config.experimental.set_memory_growth(gpu, True)
+                # Optionally set memory limit
+                tf.config.set_logical_device_configuration(
+                    gpu,
+                    [tf.config.LogicalDeviceConfiguration(memory_limit=40000)]  # Set to 40GB
+                )
             except RuntimeError as e:
                 print(e)
 
