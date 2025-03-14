@@ -137,16 +137,17 @@ def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
     
     return loss
 
-# 4. Channel Generation with SIONNA - FIXED VERSION
-def generate_channel(task, num_slots):
-    # Create scene
+# 4. Channel Generation with SIONNA - FIXED VERSION WITH UNIQUE SCENE OBJECTS
+def generate_channel(task, num_slots, task_idx=0):
+    # Create scene with a unique name for each task to avoid conflicts
     scene = sn.rt.Scene()
+    task_suffix = f"_{task_idx}"  # Add task index to make names unique
 
-    # Define transmitter and receivers
-    tx = sn.rt.Transmitter(name="tx", position=[0, 0, 10])
+    # Define transmitter and receivers with unique names
+    tx = sn.rt.Transmitter(name=f"tx{task_suffix}", position=[0, 0, 10])
     rx_positions = np.random.uniform(-100, 100, (NUM_USERS, 3))
     rx_positions[:, 2] = 1.5  # User height
-    rxs = [sn.rt.Receiver(name=f"rx-{i}", position=rx_positions[i]) for i in range(NUM_USERS)]
+    rxs = [sn.rt.Receiver(name=f"rx-{i}{task_suffix}", position=rx_positions[i]) for i in range(NUM_USERS)]
 
     # Configure antenna arrays with spacing and pattern
     wavelength = 3e8 / FREQ  # Wavelength = c/f
@@ -226,8 +227,8 @@ def main():
         print(f"Training on Task {task_idx+1}/{len(TASKS)}: {task['name']}")
         print(f"----------------------------------------------")
         
-        # Generate channel data
-        h = generate_channel(task, NUM_SLOTS)
+        # Generate channel data - now passing the task_idx to make scene objects unique
+        h = generate_channel(task, NUM_SLOTS, task_idx)
         x = h  # Use channel data as input
         
         # Train model
