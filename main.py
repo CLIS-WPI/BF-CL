@@ -26,14 +26,22 @@ TASKS = [
 class BeamformingModel(Model):
     def __init__(self, num_antennas, num_users):
         super(BeamformingModel, self).__init__()
+        # Separate real and imaginary parts before dense layers
         self.dense1 = layers.Dense(128, activation="relu")
         self.dense2 = layers.Dense(64, activation="relu")
         self.output_layer = layers.Dense(num_antennas * 2)  # Real + Imag
 
     def call(self, inputs):
-        x = self.dense1(inputs)
+        # Split complex input into real and imaginary parts
+        real_part = tf.math.real(inputs)
+        imag_part = tf.math.imag(inputs)
+        # Concatenate real and imaginary parts
+        x = tf.concat([real_part, imag_part], axis=-1)
+        
+        x = self.dense1(x)
         x = self.dense2(x)
         x = self.output_layer(x)
+        
         # Convert to complex vector
         real = x[:, :NUM_ANTENNAS]
         imag = x[:, NUM_ANTENNAS:]
@@ -142,7 +150,7 @@ for task_idx, task in enumerate(TASKS):
     
     # Generate channel data
     h = generate_channel(task, NUM_SLOTS)
-    x = tf.abs(h)  # Input to model (magnitude of CSI)
+    x = h  # Keep complex channel state information
 
     # Train model
     for epoch in range(10):
