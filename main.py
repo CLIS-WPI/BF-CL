@@ -26,27 +26,46 @@ TASKS = [
 class BeamformingModel(Model):
     def __init__(self, num_antennas, num_users):
         super(BeamformingModel, self).__init__()
-        # Separate real and imaginary parts before dense layers
-        self.dense1 = layers.Dense(128, activation="relu")
-        self.dense2 = layers.Dense(64, activation="relu")
-        self.output_layer = layers.Dense(num_antennas * 2)  # Real + Imag
+        # Double the input size to handle real and imaginary parts
+        input_size = num_antennas * 2  # For real and imaginary parts
+        
+        self.dense1 = layers.Dense(128, activation="relu", dtype=tf.float32)
+        self.dense2 = layers.Dense(64, activation="relu", dtype=tf.float32)
+        self.output_layer = layers.Dense(num_antennas * 2, dtype=tf.float32)  # Real + Imag
 
     def call(self, inputs):
-        # Split complex input into real and imaginary parts
-        real_part = tf.math.real(inputs)
-        imag_part = tf.math.imag(inputs)
-        # Concatenate real and imaginary parts
+        # Handle the shape of inputs properly
+        input_shape = tf.shape(inputs)
+        batch_size = input_shape[0]
+        
+        # Reshape and separate real/imaginary parts
+        inputs_reshaped = tf.reshape(inputs, [batch_size, -1])
+        real_part = tf.math.real(inputs_reshaped)
+        imag_part = tf.math.imag(inputs_reshaped)
+        
+        # Ensure proper casting and concatenation
+        real_part = tf.cast(real_part, tf.float32)
+        imag_part = tf.cast(imag_part, tf.float32)
         x = tf.concat([real_part, imag_part], axis=-1)
         
+        # Forward pass through network
         x = self.dense1(x)
         x = self.dense2(x)
         x = self.output_layer(x)
         
-        # Convert to complex vector
-        real = x[:, :NUM_ANTENNAS]
-        imag = x[:, NUM_ANTENNAS:]
-        w = tf.complex(real, imag)
-        w = w / tf.sqrt(tf.reduce_sum(tf.abs(w)**2, axis=1, keepdims=True)) * tf.sqrt(POWER)
+        # Reconstruct complex output
+        half = NUM_ANTENNAS
+        real_output = x[:, :half]
+        imag_output = x[:, half:]
+        
+        # Create complex tensor
+        w = tf.complex(real_output, imag_output)
+        
+        # Normalize with proper complex handling
+        norm = tf.sqrt(tf.reduce_sum(tf.abs(w)**2, axis=1, keepdims=True))
+        power = tf.cast(tf.sqrt(POWER), dtype=tf.complex64)
+        w = tf.cast(w, dtype=tf.complex64) / tf.cast(norm, dtype=tf.complex64) * power
+        
         return w
 
 # 2. Compute Fisher Information for EWC
