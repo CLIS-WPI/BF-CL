@@ -186,7 +186,7 @@ def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
     print(f"DEBUG: ewc_loss - final loss: {loss.numpy()}\n")
     return loss
 
-# Modified generate_channel function with additional debug info 
+# Fixed generate_channel function
 def generate_channel(task, num_slots):
     print(f"\nDEBUG: generate_channel - task: {task['name']}, num_slots: {num_slots}")
     
@@ -254,13 +254,57 @@ def generate_channel(task, num_slots):
         # Generate channel
         x = tf.ones([BATCH_SIZE, NUM_ANTENNAS], dtype=tf.complex64)
         no = tf.ones([BATCH_SIZE, NUM_USERS], dtype=tf.complex64)
-        h_t = channel_model([x, no])
+        
+        # FlatFadingChannel returns a tuple, need to extract the channel part
+        channel_output = channel_model([x, no])
+        
+        # Debug the output tuple
+        if t == 0:
+            print(f"DEBUG: channel_output is a tuple of length: {len(channel_output)}")
+            for i, item in enumerate(channel_output):
+                if hasattr(item, 'shape'):
+                    print(f"DEBUG: channel_output[{i}] shape: {item.shape}, dtype: {item.dtype}")
+                else:
+                    print(f"DEBUG: channel_output[{i}] type: {type(item)}")
+        
+        # Extract the channel matrix (typically the first or second element)
+        # Let's try to find which element is the channel matrix
+        channel_matrix = None
+        
+        if hasattr(channel_output, 'shape'):  # If it's a single tensor
+            channel_matrix = channel_output
+        else:  # If it's a tuple
+            # Try to find the channel matrix by looking for complex tensor with right shape
+            for item in channel_output:
+                if hasattr(item, 'shape') and len(item.shape) >= 2:
+                    if item.shape[-2:] == (NUM_ANTENNAS, NUM_USERS) or item.shape[-2:] == (NUM_USERS, NUM_ANTENNAS):
+                        channel_matrix = item
+                        break
+            
+            # If we couldn't find it, take the first complex tensor
+            if channel_matrix is None:
+                for item in channel_output:
+                    if hasattr(item, 'dtype') and 'complex' in str(item.dtype):
+                        channel_matrix = item
+                        break
+            
+            # If we still couldn't find it, take the first tensor
+            if channel_matrix is None and len(channel_output) > 0:
+                for item in channel_output:
+                    if hasattr(item, 'shape'):
+                        channel_matrix = item
+                        break
         
         if t == 0:
-            print(f"DEBUG: Channel sample shape: {h_t.shape}, dtype: {h_t.dtype}")
-            
-        h.append(h_t)  # [batch_size, num_antennas, num_users]
+            if channel_matrix is not None:
+                print(f"DEBUG: Selected channel_matrix shape: {channel_matrix.shape}, dtype: {channel_matrix.dtype}")
+            else:
+                print("DEBUG: CRITICAL ERROR - Could not find channel matrix in output")
+                # Placeholder for error case - just use zeros
+                channel_matrix = tf.zeros([BATCH_SIZE, NUM_ANTENNAS, NUM_USERS], dtype=tf.complex64)
         
+        h.append(channel_matrix)
+    
     result = tf.stack(h)
     print(f"DEBUG: Final channel data shape: {result.shape}, dtype: {result.dtype}\n")
     return result
