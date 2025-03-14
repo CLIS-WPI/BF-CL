@@ -26,40 +26,38 @@ TASKS = [
 class BeamformingModel(Model):
     def __init__(self, num_antennas, num_users):
         super(BeamformingModel, self).__init__()
-        # Calculate input size considering complex numbers
         self.num_antennas = num_antennas
         self.num_users = num_users
         
-        # Define layers with explicit input shapes
-        self.dense1 = layers.Dense(128, activation="relu")
-        self.dense2 = layers.Dense(64, activation="relu")
-        self.output_layer = layers.Dense(num_antennas * 2)  # For real and imaginary parts
+        # Define separate layers for real and imaginary parts
+        self.dense1_real = layers.Dense(128, activation="relu", dtype=tf.float32)
+        self.dense1_imag = layers.Dense(128, activation="relu", dtype=tf.float32)
+        
+        self.dense2_real = layers.Dense(64, activation="relu", dtype=tf.float32)
+        self.dense2_imag = layers.Dense(64, activation="relu", dtype=tf.float32)
+        
+        self.output_real = layers.Dense(num_antennas, dtype=tf.float32)
+        self.output_imag = layers.Dense(num_antennas, dtype=tf.float32)
 
     def call(self, inputs):
         # Get batch size and reshape inputs
         batch_size = tf.shape(inputs)[0]
-        num_users = tf.shape(inputs)[-1]
         
-        # Reshape inputs to [batch_size, num_antennas * num_users]
-        inputs_flat = tf.reshape(inputs, [batch_size, -1])
+        # Extract real and imaginary parts without casting warnings
+        real_inputs = tf.math.real(inputs)
+        imag_inputs = tf.math.imag(inputs)
         
-        # Convert complex to real representation without casting warnings
-        real_part = tf.dtypes.real(inputs_flat)
-        imag_part = tf.dtypes.imag(inputs_flat)
+        # Process real and imaginary parts separately
+        real_x = self.dense1_real(real_inputs)
+        imag_x = self.dense1_imag(imag_inputs)
         
-        # Stack real and imaginary parts
-        x = tf.concat([real_part, imag_part], axis=-1)
+        real_x = self.dense2_real(real_x)
+        imag_x = self.dense2_imag(imag_x)
         
-        # Neural network layers
-        x = self.dense1(x)
-        x = self.dense2(x)
-        x = self.output_layer(x)
+        real_output = self.output_real(real_x)
+        imag_output = self.output_imag(imag_x)
         
-        # Split output into real and imaginary parts
-        real_output = x[:, :self.num_antennas]
-        imag_output = x[:, self.num_antennas:]
-        
-        # Create complex output
+        # Combine into complex output
         w = tf.complex(real_output, imag_output)
         
         # Normalize beamforming weights
