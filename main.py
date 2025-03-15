@@ -51,17 +51,15 @@ class BeamformingModel(Model):
         print(f"Original shape: {original_shape}")
         
         # Only reshape if input is 8D (during training)
-        # Skip reshaping for 2D inputs (during model saving)
+        reshaped_inputs = inputs
         if input_rank > 2:
-            # For 8D input shape (16, 16, 1, 5, 1, 32, 23, 3)
-            # Reshape to 2D tensor (batch_size, num_antennas)
-            inputs = tf.reshape(inputs, [-1, self.num_antennas])
+            reshaped_inputs = tf.reshape(inputs, [-1, self.num_antennas])
         
-        print(f"Reshaped input shape: {inputs.shape}")
+        print(f"Reshaped input shape: {reshaped_inputs.shape}")
         
         # Process real and imaginary parts
-        real_inputs = tf.cast(tf.math.real(inputs), tf.float32)
-        imag_inputs = tf.cast(tf.math.imag(inputs), tf.float32)
+        real_inputs = tf.cast(tf.math.real(reshaped_inputs), tf.float32)
+        imag_inputs = tf.cast(tf.math.imag(reshaped_inputs), tf.float32)
         
         # Pass through dense layers
         real_x = self.dense1_real(real_inputs)
@@ -74,7 +72,7 @@ class BeamformingModel(Model):
         # Combine real and imaginary parts
         w = tf.complex(real_output, imag_output)
         
-        # Normalize before reshaping back
+        # Normalize
         norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-1, keepdims=True)
         norm = tf.cast(tf.sqrt(norm_squared), dtype=tf.complex64)
         power = tf.complex(tf.sqrt(POWER), 0.0)
@@ -82,7 +80,7 @@ class BeamformingModel(Model):
         
         # Reshape back only if input was 8D
         if input_rank > 2:
-            # Reshape back to original 8D shape
+            # First reshape to intermediate shape
             w = tf.reshape(w, [
                 original_shape[0],  # 16
                 original_shape[1],  # 16
@@ -94,11 +92,10 @@ class BeamformingModel(Model):
                 self.num_antennas   # 32
             ])
             
-            # Transpose to get final shape
+            # Then transpose dimensions
             w = tf.transpose(w, [0, 1, 2, 3, 4, 7, 5, 6])
         
         print(f"Output shape: {w.shape}")
-        
         return w
     
 def compute_fisher(model, data, num_samples=50):  # Reduced samples
