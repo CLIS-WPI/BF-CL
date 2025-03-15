@@ -40,6 +40,7 @@ class BeamformingModel(Model):
         self.output_real = layers.Dense(num_antennas)
         self.output_imag = layers.Dense(num_antennas)
 
+    @tf.function
     def call(self, inputs):
         print(f"\nDebug BeamformingModel call:")
         print(f"Input shape: {inputs.shape}")
@@ -50,13 +51,19 @@ class BeamformingModel(Model):
         input_rank = tf.rank(inputs)
         print(f"Original shape: {original_shape}")
         
-        # For 8D input, reshape to 2D
-        reshaped_inputs = inputs
-        if input_rank > 2:
-            # Calculate the batch dimension correctly by considering all dimensions except num_antennas
-            # For shape (200, 16, 1, 5, 1, 32, 23, 3), num_antennas is at index 5
+        def reshape_8d():
             batch_dim = tf.reduce_prod(original_shape[:5]) * tf.reduce_prod(original_shape[6:])
-            reshaped_inputs = tf.reshape(inputs, [batch_dim, self.num_antennas])
+            return tf.reshape(inputs, [batch_dim, self.num_antennas])
+            
+        def reshape_2d():
+            return inputs
+            
+        # Use tf.cond instead of Python if statement
+        reshaped_inputs = tf.cond(
+            tf.greater(input_rank, 2),
+            reshape_8d,
+            reshape_2d
+        )
         
         print(f"Reshaped input shape: {reshaped_inputs.shape}")
         
@@ -81,10 +88,18 @@ class BeamformingModel(Model):
         power = tf.complex(tf.sqrt(POWER), 0.0)
         w = w / norm * power
         
-        # Reshape back only if input was 8D
-        if input_rank > 2:
-            # Reshape back to original dimensions
-            w = tf.reshape(w, original_shape)
+        # Reshape back using tf.cond
+        def reshape_back():
+            return tf.reshape(w, original_shape)
+            
+        def keep_shape():
+            return w
+            
+        w = tf.cond(
+            tf.greater(input_rank, 2),
+            reshape_back,
+            keep_shape
+        )
         
         print(f"Output shape: {w.shape}")
         return w
