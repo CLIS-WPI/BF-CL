@@ -45,13 +45,14 @@ class BeamformingModel(Model):
         print(f"Input shape: {inputs.shape}")
         print(f"Input total elements: {tf.size(inputs)}")
         
-        # Store original shape
+        # Store original shape and rank
         original_shape = tf.shape(inputs)
+        input_rank = tf.rank(inputs)
         print(f"Original shape: {original_shape}")
         
         # For input shape (16, 16, 1, 5, 1, 32, 23, 3)
         # We need to reshape it to have the antenna dimension (32) as the last dimension
-        if len(inputs.shape) > 2:
+        if input_rank > 2:
             # Combine all dimensions except the antenna dimension (index 5)
             # First, move antenna dimension to the end
             perm = [0, 1, 2, 3, 4, 6, 7, 5]  # Move dim 5 (32) to the end
@@ -85,11 +86,13 @@ class BeamformingModel(Model):
         w = w / norm * power
         
         # If input was multi-dimensional, reshape back to original dimensions
-        if len(original_shape) > 2:
+        if input_rank > 2:
             # Calculate new shape
-            new_shape = tf.concat([original_shape[:5], 
-                                original_shape[6:8], 
-                                [self.num_antennas]], axis=0)
+            new_shape = tf.concat([
+                original_shape[:5],
+                original_shape[6:8],
+                [self.num_antennas]
+            ], axis=0)
             w = tf.reshape(w, new_shape)
             
             # Transpose back to original dimension order
