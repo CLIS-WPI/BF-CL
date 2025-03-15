@@ -53,8 +53,9 @@ class BeamformingModel(Model):
         # For 8D input, reshape to 2D
         reshaped_inputs = inputs
         if input_rank > 2:
-            # Calculate the correct reshape dimension
-            batch_dim = tf.reduce_prod(original_shape[:-1])  # Multiply all dimensions except the last
+            # Calculate the batch dimension correctly by considering all dimensions except num_antennas
+            # For shape (200, 16, 1, 5, 1, 32, 23, 3), num_antennas is at index 5
+            batch_dim = tf.reduce_prod(original_shape[:5]) * tf.reduce_prod(original_shape[6:])
             reshaped_inputs = tf.reshape(inputs, [batch_dim, self.num_antennas])
         
         print(f"Reshaped input shape: {reshaped_inputs.shape}")
