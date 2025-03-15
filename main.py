@@ -50,17 +50,12 @@ class BeamformingModel(Model):
         input_rank = tf.rank(inputs)
         print(f"Original shape: {original_shape}")
         
-        # For input shape (16, 16, 1, 5, 1, 32, 23, 3)
-        # We need to reshape it to have the antenna dimension (32) as the last dimension
+        # Only reshape if input is 8D (during training)
+        # Skip reshaping for 2D inputs (during model saving)
         if input_rank > 2:
-            # Combine all dimensions except the antenna dimension (index 5)
-            # First, move antenna dimension to the end
-            perm = [0, 1, 2, 3, 4, 6, 7, 5]  # Move dim 5 (32) to the end
-            inputs = tf.transpose(inputs, perm)
-            
-            # Now reshape to 2D tensor with last dimension as num_antennas
-            new_shape = [-1, self.num_antennas]
-            inputs = tf.reshape(inputs, new_shape)
+            # For 8D input shape (16, 16, 1, 5, 1, 32, 23, 3)
+            # Reshape to 2D tensor (batch_size, num_antennas)
+            inputs = tf.reshape(inputs, [-1, self.num_antennas])
         
         print(f"Reshaped input shape: {inputs.shape}")
         
@@ -85,19 +80,22 @@ class BeamformingModel(Model):
         power = tf.complex(tf.sqrt(POWER), 0.0)
         w = w / norm * power
         
-        # If input was multi-dimensional, reshape back to original dimensions
+        # Reshape back only if input was 8D
         if input_rank > 2:
-            # Calculate new shape
-            new_shape = tf.concat([
-                original_shape[:5],
-                original_shape[6:8],
-                [self.num_antennas]
-            ], axis=0)
-            w = tf.reshape(w, new_shape)
+            # Reshape back to original 8D shape
+            w = tf.reshape(w, [
+                original_shape[0],  # 16
+                original_shape[1],  # 16
+                original_shape[2],  # 1
+                original_shape[3],  # 5
+                original_shape[4],  # 1
+                original_shape[6],  # 23
+                original_shape[7],  # 3
+                self.num_antennas   # 32
+            ])
             
-            # Transpose back to original dimension order
-            inv_perm = [0, 1, 2, 3, 4, 7, 5, 6]  # Move antenna dim back to position 5
-            w = tf.transpose(w, inv_perm)
+            # Transpose to get final shape
+            w = tf.transpose(w, [0, 1, 2, 3, 4, 7, 5, 6])
         
         print(f"Output shape: {w.shape}")
         
