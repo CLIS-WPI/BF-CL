@@ -41,9 +41,25 @@ class BeamformingModel(Model):
         self.output_imag = layers.Dense(num_antennas)
 
     def call(self, inputs):
+        # Print input shape and total number of elements
+        print(f"\nDebug BeamformingModel call:")
+        print(f"Input shape: {inputs.shape}")
+        print(f"Input total elements: {tf.size(inputs)}")
+        
         # Store original shape and total number of elements
         original_shape = tf.shape(inputs)
+        print(f"Original shape: {original_shape}")
+        
+        # Calculate total elements while preserving the last dimension
         total_elements = tf.reduce_prod(original_shape[:-1])
+        print(f"Calculated total_elements: {total_elements}")
+        print(f"Num antennas: {self.num_antennas}")
+        print(f"Requested reshape: [{total_elements}, {self.num_antennas}]")
+        
+        # Calculate expected total elements
+        expected_elements = total_elements * self.num_antennas
+        print(f"Expected total elements after reshape: {expected_elements}")
+        print(f"Actual input elements: {tf.size(inputs)}")
         
         # Reshape to 2D while preserving the last dimension
         inputs_reshaped = tf.reshape(inputs, [total_elements, self.num_antennas])
@@ -63,8 +79,13 @@ class BeamformingModel(Model):
         # Combine real and imaginary parts
         w = tf.complex(real_output, imag_output)
         
+        # Print shape before final reshape
+        print(f"Shape before final reshape: {w.shape}")
+        
         # Reshape back to original dimensions
         new_shape = tf.concat([original_shape[:-1], [self.num_antennas]], axis=0)
+        print(f"New shape for final reshape: {new_shape}")
+        
         w = tf.reshape(w, new_shape)
         
         # Normalize output
@@ -72,6 +93,8 @@ class BeamformingModel(Model):
         norm = tf.cast(tf.sqrt(norm_squared), dtype=tf.complex64)
         power = tf.complex(tf.sqrt(POWER), 0.0)
         w = w / norm * power
+        
+        print(f"Final output shape: {w.shape}\n")
         
         return w
 
