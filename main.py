@@ -78,12 +78,18 @@ class BeamformingModel(Model):
         # Combine real and imaginary parts
         w = tf.complex(real_output, imag_output)
         
+        # Normalize before reshaping back
+        norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-1, keepdims=True)
+        norm = tf.cast(tf.sqrt(norm_squared), dtype=tf.complex64)
+        power = tf.complex(tf.sqrt(POWER), 0.0)
+        w = w / norm * power
+        
         # If input was multi-dimensional, reshape back to original dimensions
         if len(original_shape) > 2:
             # Calculate new shape
             new_shape = tf.concat([original_shape[:5], 
-                                 original_shape[6:8], 
-                                 [self.num_antennas]], axis=0)
+                                original_shape[6:8], 
+                                [self.num_antennas]], axis=0)
             w = tf.reshape(w, new_shape)
             
             # Transpose back to original dimension order
@@ -91,12 +97,6 @@ class BeamformingModel(Model):
             w = tf.transpose(w, inv_perm)
         
         print(f"Output shape: {w.shape}")
-        
-        # Normalize output
-        norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-2, keepdims=True)  # Changed axis to -2
-        norm = tf.cast(tf.sqrt(norm_squared), dtype=tf.complex64)
-        power = tf.complex(tf.sqrt(POWER), 0.0)
-        w = w / norm * power
         
         return w
     
