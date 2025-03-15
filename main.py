@@ -198,8 +198,7 @@ def main():
     fisher_dict = {}
     
     # Setup distribution strategy
-    strategy = tf.distribute.MirroredStrategy()
-    print(f"\nDistributed Training Setup:")
+    strategy = tf.distribute.OneDeviceStrategy(device="/GPU:0")
     print(f"Number of devices: {strategy.num_replicas_in_sync}")
     
    
