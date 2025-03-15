@@ -41,11 +41,12 @@ class BeamformingModel(Model):
         self.output_imag = layers.Dense(num_antennas)
 
     def call(self, inputs):
-        # Get original input shape
+        # Store original shape and total number of elements
         original_shape = tf.shape(inputs)
+        total_elements = tf.reduce_prod(original_shape[:-1])
         
-        # Flatten all dimensions except the last one (which should be num_antennas)
-        inputs_reshaped = tf.reshape(inputs, [-1, self.num_antennas])
+        # Reshape to 2D while preserving the last dimension
+        inputs_reshaped = tf.reshape(inputs, [total_elements, self.num_antennas])
         
         # Process real and imaginary parts
         real_inputs = tf.cast(tf.math.real(inputs_reshaped), tf.float32)
@@ -62,11 +63,8 @@ class BeamformingModel(Model):
         # Combine real and imaginary parts
         w = tf.complex(real_output, imag_output)
         
-        # Calculate new shape for output
-        # Keep all dimensions except the last one from original input
+        # Reshape back to original dimensions
         new_shape = tf.concat([original_shape[:-1], [self.num_antennas]], axis=0)
-        
-        # Reshape output to match input dimensions
         w = tf.reshape(w, new_shape)
         
         # Normalize output
