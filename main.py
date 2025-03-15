@@ -145,50 +145,25 @@ def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
 
 def generate_channel(task, num_slots, task_idx=0):
     speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], NUM_USERS)
-    avg_speed = np.mean(speeds) * 1000 / 3600
-
-    tx_array = sn.channel.tr38901.PanelArray(
-        num_rows_per_panel=8,
-        num_cols_per_panel=8,
-        polarization="single",
-        polarization_type="V",
-        antenna_pattern="38.901",
-        carrier_frequency=FREQ
-    )
     
-    rx_array = sn.channel.tr38901.PanelArray(
-        num_rows_per_panel=1,
-        num_cols_per_panel=1,
-        polarization="single",
-        polarization_type="V",
-        antenna_pattern="38.901",
-        carrier_frequency=FREQ
-    )
-
     channel_model = sn.channel.tr38901.TDL(
         model="A",
         delay_spread=tf.cast(100e-9, dtype=tf.float32),
         carrier_frequency=tf.cast(FREQ, dtype=tf.float32),
         num_tx_ant=NUM_ANTENNAS,
         num_rx_ant=NUM_USERS,
-        min_speed=tf.cast(speeds.min(), dtype=tf.float32),
-        max_speed=tf.cast(speeds.max(), dtype=tf.float32),
+        min_speed=tf.cast(speeds.min(), dtype=tf.float32),  # Use min_speed instead of ut_velocity
+        max_speed=tf.cast(speeds.max(), dtype=tf.float32),  # Add max_speed parameter
         dtype=tf.complex64
     )
 
-    print(f"Task {task['name']}: Speed range: {speeds.min():.2f} to {speeds.max():.2f} km/h")
-
     h = []
-    start_time = time.time()
-    
-    sampling_frequency = 500  # Reduced from 1000
-    num_time_steps = 3      # Reduced from 5
-    chunk_size = 10         # Reduced from 25
+    sampling_frequency = 500
+    num_time_steps = 3
+    chunk_size = 10
     
     for chunk_start in range(0, num_slots, chunk_size):
         chunk_end = min(chunk_start + chunk_size, num_slots)
-        if chunk_start % 50 == 0:  # Reduced logging frequency
-            print(f"Generating channel: {chunk_start}-{chunk_end}/{num_slots}")
         
         tf.keras.backend.clear_session()
         gc.collect()
@@ -202,9 +177,7 @@ def generate_channel(task, num_slots, task_idx=0):
             h.append(channel_response[0])
             del channel_response
             
-    print(f"Channel generation time: {time.time() - start_time:.2f} seconds")
-    result = tf.stack(h)
-    return result
+    return tf.stack(h)
 
 def train_step(model, x_batch, h_batch, optimizer, fisher_dict, old_params, task_idx):
     with tf.GradientTape() as tape:
