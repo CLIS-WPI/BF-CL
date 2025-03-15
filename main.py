@@ -33,7 +33,6 @@ class BeamformingModel(Model):
         super().__init__()
         self.num_antennas = num_antennas
         self.num_users = num_users
-        # Reduced layer sizes
         self.dense1_real = layers.Dense(64, activation="relu")
         self.dense1_imag = layers.Dense(64, activation="relu")
         self.dense2_real = layers.Dense(32, activation="relu")
@@ -42,19 +41,40 @@ class BeamformingModel(Model):
         self.output_imag = layers.Dense(num_antennas)
 
     def call(self, inputs):
-        real_inputs = tf.cast(tf.math.real(inputs), tf.float32)
-        imag_inputs = tf.cast(tf.math.imag(inputs), tf.float32)
+        # Get original input shape
+        original_shape = tf.shape(inputs)
+        
+        # Flatten all dimensions except the last one (which should be num_antennas)
+        inputs_reshaped = tf.reshape(inputs, [-1, self.num_antennas])
+        
+        # Process real and imaginary parts
+        real_inputs = tf.cast(tf.math.real(inputs_reshaped), tf.float32)
+        imag_inputs = tf.cast(tf.math.imag(inputs_reshaped), tf.float32)
+        
+        # Pass through dense layers
         real_x = self.dense1_real(real_inputs)
         imag_x = self.dense1_imag(imag_inputs)
         real_x = self.dense2_real(real_x)
         imag_x = self.dense2_imag(imag_x)
         real_output = self.output_real(real_x)
         imag_output = self.output_imag(imag_x)
+        
+        # Combine real and imaginary parts
         w = tf.complex(real_output, imag_output)
-        norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=1, keepdims=True)
+        
+        # Calculate new shape for output
+        # Keep all dimensions except the last one from original input
+        new_shape = tf.concat([original_shape[:-1], [self.num_antennas]], axis=0)
+        
+        # Reshape output to match input dimensions
+        w = tf.reshape(w, new_shape)
+        
+        # Normalize output
+        norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-1, keepdims=True)
         norm = tf.cast(tf.sqrt(norm_squared), dtype=tf.complex64)
         power = tf.complex(tf.sqrt(POWER), 0.0)
         w = w / norm * power
+        
         return w
 
 def compute_fisher(model, data, num_samples=50):  # Reduced samples
