@@ -181,39 +181,63 @@ def main():
     print("Starting Beamforming Continual Learning Training")
     print(f"TensorFlow version: {tf.__version__}")
     
+    # Print training configuration
+    print("\nTraining Configuration:")
+    print(f"Number of Antennas: {NUM_ANTENNAS}")
+    print(f"Number of Users: {NUM_USERS}")
+    print(f"Batch Size: {BATCH_SIZE}")
+    print(f"Number of Epochs: {NUM_EPOCHS}")
+    print(f"Number of Slots: {NUM_SLOTS}")
+    print(f"EWC Lambda: {LAMBDA_EWC}")
+    
     # Initialize results dictionary and tracking variables
     results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting"]}
-    task_performance = []  # Initialize task_performance list
-    task_channels = {}    # Initialize task_channels dictionary
-    old_params = {}       # Initialize old_params dictionary
-    fisher_dict = {}      # Initialize fisher_dict dictionary
+    task_performance = []
+    task_channels = {}
+    old_params = {}
+    fisher_dict = {}
     
     # Setup distribution strategy
     strategy = tf.distribute.MirroredStrategy()
+    print(f"\nDistributed Training Setup:")
     print(f"Number of devices: {strategy.num_replicas_in_sync}")
     
     with strategy.scope():
         model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
         optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
         
+        total_start_time = time.time()
         for task_idx, task in enumerate(TASKS):
-            print(f"\nTraining on Task {task_idx+1}/{len(TASKS)}: {task['name']}")
+            print(f"\n{'='*80}")
+            print(f"Training on Task {task_idx+1}/{len(TASKS)}: {task['name']}")
+            print(f"Speed Range: {task['speed_range'][0]}-{task['speed_range'][1]} km/h")
+            print(f"{'='*80}")
             
+            print("\nGenerating channel data...")
             h = generate_channel(task, NUM_SLOTS, task_idx)
             task_channels[task_idx] = h
             x = h
             
-            # Create tf.data.Dataset for distributed training
+            print("\nPreparing dataset...")
             dataset = tf.data.Dataset.from_tensor_slices((x, h))
             dataset = dataset.batch(BATCH_SIZE)
             dist_dataset = strategy.experimental_distribute_dataset(dataset)
+            num_batches = tf.data.experimental.cardinality(dist_dataset).numpy()
+            print(f"Number of batches per epoch: {num_batches}")
             
-            start_time = time.time()
+            task_start_time = time.time()
             for epoch in range(NUM_EPOCHS):
+                print(f"\nEpoch {epoch+1}/{NUM_EPOCHS}")
+                print("-" * 40)
+                epoch_start_time = time.time()
                 epoch_loss = 0
                 batches = 0
                 
+                # Progress bar variables
+                progress_interval = max(1, num_batches // 20)  # Update progress ~20 times per epoch
+                
                 for x_batch, h_batch in dist_dataset:
+                    batch_start_time = time.time()
                     loss = strategy.run(train_step, args=(model, x_batch, h_batch,
                                                         optimizer, fisher_dict,
                                                         old_params, task_idx))
@@ -221,44 +245,71 @@ def main():
                     epoch_loss += loss
                     batches += 1
                     
-                    if batches % 5 == 0:
-                        print(f"Epoch {epoch+1}/{NUM_EPOCHS}, batch {batches}, loss: {loss:.6f}")
+                    # Print progress every few batches
+                    if batches % progress_interval == 0:
+                        progress = (batches / num_batches) * 100
+                        batch_time = time.time() - batch_start_time
+                        print(f"Progress: {progress:3.1f}% [{batches}/{num_batches}] "
+                              f"| Batch Loss: {loss:.6f} | Batch Time: {batch_time:.3f}s")
                 
                 avg_epoch_loss = epoch_loss / batches
-                print(f"Epoch {epoch+1} average loss: {avg_epoch_loss:.6f}")
+                epoch_time = time.time() - epoch_start_time
+                print(f"\nEpoch {epoch+1} Summary:")
+                print(f"Average Loss: {avg_epoch_loss:.6f}")
+                print(f"Epoch Time: {epoch_time:.2f}s")
 
-            training_time = time.time() - start_time
+            # Task completion metrics
+            task_time = time.time() - task_start_time
+            training_time = task_time
             latency = training_time / (NUM_EPOCHS * NUM_SLOTS) * 1000
+            
+            print(f"\nTask {task['name']} Completion Metrics:")
+            print("-" * 40)
             
             w = model(x)
             throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(w * h, axis=1))**2).numpy()
             task_performance.append(throughput)
             
+            # Calculate forgetting
             forgetting = 0.0
             if task_idx > 0:
                 past_performances = []
+                print("\nEvaluating forgetting on previous tasks:")
                 for past_idx in range(task_idx):
                     past_h = task_channels[past_idx]
                     past_w = model(past_h)
                     past_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(past_w * past_h, axis=1))**2).numpy()
                     forgetting_delta = task_performance[past_idx] - past_throughput
                     past_performances.append(forgetting_delta)
+                    print(f"Task {past_idx+1} forgetting: {forgetting_delta:.4f}")
                 forgetting = np.mean(past_performances) if past_performances else 0.0
             
+            # Update EWC parameters
+            print("\nComputing Fisher information...")
             old_params = {w.name: w.numpy() for w in model.trainable_weights}
             fisher_dict = compute_fisher(model, x)
             
             energy = training_time * 100
             
+            # Store results
             results["throughput"].append(throughput)
             results["latency"].append(latency)
             results["energy"].append(energy)
             results["forgetting"].append(forgetting)
             
-            print(f"Task {task['name']}: Throughput={throughput:.2f}, Latency={latency:.2f} ms/slot, "
-                  f"Energy={energy:.2f} W, Forgetting={forgetting:.2f}")
+            print(f"\nTask {task['name']} Final Results:")
+            print("-" * 40)
+            print(f"Throughput: {throughput:.2f}")
+            print(f"Latency: {latency:.2f} ms/slot")
+            print(f"Energy: {energy:.2f} W")
+            print(f"Forgetting: {forgetting:.4f}")
+            print(f"Total Task Time: {task_time:.2f}s")
+    
+    total_training_time = time.time() - total_start_time
+    print(f"\nTotal Training Time: {total_training_time:.2f}s")
     
     # Plot results
+    print("\nGenerating results plot...")
     plt.figure(figsize=(12, 8))
     for metric in results:
         plt.plot(results[metric], label=metric, marker='o')
@@ -272,8 +323,7 @@ def main():
     plt.savefig("mobility_tasks_results_updated.png")
     plt.show()
     
-    print("Training complete!")
-
+    print("\nTraining complete!")
 if __name__ == "__main__":
     tf.get_logger().setLevel('ERROR')
     main()
