@@ -244,26 +244,30 @@ def main():
     strategy = tf.distribute.OneDeviceStrategy(device="/GPU:0")
     print(f"Number of devices: {strategy.num_replicas_in_sync}")
     
+    # Create model and optimizer outside the strategy scope
+    model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
    
-    with strategy.scope():
-        model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+    total_start_time = time.time()
+    
+    # Moving the strategy.scope() to only wrap the training loop
+    for task_idx, task in enumerate(TASKS):
+        print(f"\n{'='*80}")
+        print(f"Training on Task {task_idx+1}/{len(TASKS)}: {task['name']}")
+        print(f"Speed Range: {task['speed_range'][0]}-{task['speed_range'][1]} km/h")
+        print(f"{'='*80}")
         
-        total_start_time = time.time()
-        for task_idx, task in enumerate(TASKS):
-            print(f"\n{'='*80}")
-            print(f"Training on Task {task_idx+1}/{len(TASKS)}: {task['name']}")
-            print(f"Speed Range: {task['speed_range'][0]}-{task['speed_range'][1]} km/h")
-            print(f"{'='*80}")
-            
-            print("\nGenerating channel data...")
-            h = generate_channel(task, NUM_SLOTS, task_idx)
-            task_channels[task_idx] = h
-            x = h
-            
-            print("\nPreparing dataset...")
-            dataset = tf.data.Dataset.from_tensor_slices((x, h))
-            dataset = dataset.batch(BATCH_SIZE)
+        print("\nGenerating channel data...")
+        h = generate_channel(task, NUM_SLOTS, task_idx)
+        task_channels[task_idx] = h
+        x = h
+        
+        print("\nPreparing dataset...")
+        dataset = tf.data.Dataset.from_tensor_slices((x, h))
+        dataset = dataset.batch(BATCH_SIZE)
+        
+        # Training within strategy scope
+        with strategy.scope():
             dist_dataset = strategy.experimental_distribute_dataset(dataset)
             
             # Calculate number of batches without using cardinality
@@ -305,53 +309,53 @@ def main():
                 print(f"\nEpoch {epoch+1} Summary:")
                 print(f"Average Loss: {avg_epoch_loss:.6f}")
                 print(f"Epoch Time: {epoch_time:.2f}s")
-
-            # Task completion metrics
-            task_time = time.time() - task_start_time
-            training_time = task_time
-            latency = training_time / (NUM_EPOCHS * NUM_SLOTS) * 1000
-            
-            print(f"\nTask {task['name']} Completion Metrics:")
-            print("-" * 40)
-            
-            w = model(x)
-            throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(w * h, axis=1))**2).numpy()
-            task_performance.append(throughput)
-            
-            # Calculate forgetting
-            forgetting = 0.0
-            if task_idx > 0:
-                past_performances = []
-                print("\nEvaluating forgetting on previous tasks:")
-                for past_idx in range(task_idx):
-                    past_h = task_channels[past_idx]
-                    past_w = model(past_h)
-                    past_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(past_w * past_h, axis=1))**2).numpy()
-                    forgetting_delta = task_performance[past_idx] - past_throughput
-                    past_performances.append(forgetting_delta)
-                    print(f"Task {past_idx+1} forgetting: {forgetting_delta:.4f}")
-                forgetting = np.mean(past_performances) if past_performances else 0.0
-            
-            # Update EWC parameters
-            print("\nComputing Fisher information...")
-            old_params = {w.name: w.numpy() for w in model.trainable_weights}
-            fisher_dict = compute_fisher(model, x)
-            
-            energy = training_time * 100
-            
-            # Store results
-            results["throughput"].append(throughput)
-            results["latency"].append(latency)
-            results["energy"].append(energy)
-            results["forgetting"].append(forgetting)
-            
-            print(f"\nTask {task['name']} Final Results:")
-            print("-" * 40)
-            print(f"Throughput: {throughput:.2f}")
-            print(f"Latency: {latency:.2f} ms/slot")
-            print(f"Energy: {energy:.2f} W")
-            print(f"Forgetting: {forgetting:.4f}")
-            print(f"Total Task Time: {task_time:.2f}s")
+        
+        # Evaluation and metrics outside the strategy scope
+        task_time = time.time() - task_start_time
+        training_time = task_time
+        latency = training_time / (NUM_EPOCHS * NUM_SLOTS) * 1000
+        
+        print(f"\nTask {task['name']} Completion Metrics:")
+        print("-" * 40)
+        
+        w = model(x)
+        throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(w * h, axis=1))**2).numpy()
+        task_performance.append(throughput)
+        
+        # Calculate forgetting
+        forgetting = 0.0
+        if task_idx > 0:
+            past_performances = []
+            print("\nEvaluating forgetting on previous tasks:")
+            for past_idx in range(task_idx):
+                past_h = task_channels[past_idx]
+                past_w = model(past_h)
+                past_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(past_w * past_h, axis=1))**2).numpy()
+                forgetting_delta = task_performance[past_idx] - past_throughput
+                past_performances.append(forgetting_delta)
+                print(f"Task {past_idx+1} forgetting: {forgetting_delta:.4f}")
+            forgetting = np.mean(past_performances) if past_performances else 0.0
+        
+        # Update EWC parameters
+        print("\nComputing Fisher information...")
+        old_params = {w.name: w.numpy() for w in model.trainable_weights}
+        fisher_dict = compute_fisher(model, x)
+        
+        energy = training_time * 100
+        
+        # Store results
+        results["throughput"].append(throughput)
+        results["latency"].append(latency)
+        results["energy"].append(energy)
+        results["forgetting"].append(forgetting)
+        
+        print(f"\nTask {task['name']} Final Results:")
+        print("-" * 40)
+        print(f"Throughput: {throughput:.2f}")
+        print(f"Latency: {latency:.2f} ms/slot")
+        print(f"Energy: {energy:.2f} W")
+        print(f"Forgetting: {forgetting:.4f}")
+        print(f"Total Task Time: {task_time:.2f}s")
     
     total_training_time = time.time() - total_start_time
     print(f"\nTotal Training Time: {total_training_time:.2f}s")
@@ -372,6 +376,7 @@ def main():
     plt.show()
     
     print("\nTraining complete!")
+
 if __name__ == "__main__":
     tf.get_logger().setLevel('ERROR')
     main()
