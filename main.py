@@ -202,6 +202,7 @@ def main():
     print(f"\nDistributed Training Setup:")
     print(f"Number of devices: {strategy.num_replicas_in_sync}")
     
+   
     with strategy.scope():
         model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
         optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
@@ -222,7 +223,12 @@ def main():
             dataset = tf.data.Dataset.from_tensor_slices((x, h))
             dataset = dataset.batch(BATCH_SIZE)
             dist_dataset = strategy.experimental_distribute_dataset(dataset)
-            num_batches = tf.data.experimental.cardinality(dist_dataset).numpy()
+            
+            # Calculate number of batches without using cardinality
+            num_samples = x.shape[0]
+            num_batches = num_samples // BATCH_SIZE
+            if num_samples % BATCH_SIZE != 0:
+                num_batches += 1
             print(f"Number of batches per epoch: {num_batches}")
             
             task_start_time = time.time()
