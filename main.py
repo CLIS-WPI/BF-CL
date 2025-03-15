@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras import layers, Model
 import time
 import gc
-
+import os
 # Silence casting warnings
 tf.get_logger().setLevel('ERROR')
 
@@ -220,7 +220,11 @@ def main():
     # Create model and optimizer outside the strategy scope
     model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
-   
+    
+    # Create a directory to save models if it doesn't exist
+    save_dir = "saved_models"
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
     total_start_time = time.time()
     
     # Moving the strategy.scope() to only wrap the training loop
@@ -329,6 +333,13 @@ def main():
         print(f"Energy: {energy:.2f} W")
         print(f"Forgetting: {forgetting:.4f}")
         print(f"Total Task Time: {task_time:.2f}s")
+        
+        # Add model saving here
+        save_dir = "saved_models"
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+        model.save(os.path.join(save_dir, f"model_task_{task['name']}"))
+        print(f"\nModel saved for task {task['name']}")
     
     total_training_time = time.time() - total_start_time
     print(f"\nTotal Training Time: {total_training_time:.2f}s")
