@@ -50,21 +50,18 @@ class BeamformingModel(Model):
         original_shape = tf.shape(inputs)
         print(f"Original shape: {original_shape}")
         
-        # Calculate total elements correctly - multiply all dimensions except the last one
-        # For evaluation shape (200, 16, 1, 5, 1, 32, 23, 3), we want 200*16*1*5*1*32*23 = 1104000
-        total_elements = tf.reduce_prod(original_shape[:-1])
-        print(f"Calculated total_elements: {total_elements}")
-        print(f"Num antennas: {self.num_antennas}")
-        print(f"Requested reshape: [{total_elements}, {self.num_antennas}]")
-        
-        # Calculate expected total elements
-        expected_elements = total_elements * self.num_antennas
-        print(f"Expected total elements after reshape: {expected_elements}")
-        print(f"Actual input elements: {tf.size(inputs)}")
-        
-        # For evaluation tensor, reshape to combine all dimensions except last into batch dimension
+        # For evaluation tensor with shape (200, 16, 1, 5, 1, 32, 23, 3)
+        # We need to reshape it to have the last dimension as NUM_ANTENNAS (32)
         if len(inputs.shape) > 2:
-            inputs = tf.reshape(inputs, [-1, original_shape[-1]])
+            # Combine all dimensions except the last into batch dimension
+            # and move the antenna dimension (32) to be the last dimension
+            perm = list(range(len(inputs.shape)))
+            perm.remove(5)  # Remove the antenna dimension (32)
+            perm.append(5)  # Add it at the end
+            inputs = tf.transpose(inputs, perm)
+            
+            # Now reshape to 2D tensor with last dimension as NUM_ANTENNAS
+            inputs = tf.reshape(inputs, [-1, self.num_antennas])
         
         # Process real and imaginary parts
         real_inputs = tf.cast(tf.math.real(inputs), tf.float32)
@@ -81,15 +78,20 @@ class BeamformingModel(Model):
         # Combine real and imaginary parts
         w = tf.complex(real_output, imag_output)
         
-        # Print shape before final reshape
-        print(f"Shape before final reshape: {w.shape}")
-        
         # Reshape back to original dimensions if needed
         if len(original_shape) > 2:
-            new_shape = tf.concat([original_shape[:-1], [self.num_antennas]], axis=0)
+            # Calculate new shape
+            new_shape = tf.concat([original_shape[:5], 
+                                original_shape[6:8], 
+                                [self.num_antennas]], axis=0)
             w = tf.reshape(w, new_shape)
-        
-        print(f"Final output shape: {w.shape}\n")
+            
+            # Transpose back to original dimension order
+            inv_perm = list(range(len(new_shape)))
+            antenna_dim_idx = len(inv_perm) - 1
+            inv_perm.insert(5, antenna_dim_idx)
+            inv_perm.pop()
+            w = tf.transpose(w, inv_perm)
         
         # Normalize output
         norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-1, keepdims=True)
