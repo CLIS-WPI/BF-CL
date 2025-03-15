@@ -41,7 +41,6 @@ class BeamformingModel(Model):
         self.output_imag = layers.Dense(num_antennas)
 
     def call(self, inputs):
-        # Print input shape and total number of elements
         print(f"\nDebug BeamformingModel call:")
         print(f"Input shape: {inputs.shape}")
         print(f"Input total elements: {tf.size(inputs)}")
@@ -50,18 +49,19 @@ class BeamformingModel(Model):
         original_shape = tf.shape(inputs)
         print(f"Original shape: {original_shape}")
         
-        # For evaluation tensor with shape (200, 16, 1, 5, 1, 32, 23, 3)
-        # We need to reshape it to have the last dimension as NUM_ANTENNAS (32)
+        # For input shape (16, 16, 1, 5, 1, 32, 23, 3)
+        # We need to reshape it to have the antenna dimension (32) as the last dimension
         if len(inputs.shape) > 2:
-            # Combine all dimensions except the last into batch dimension
-            # and move the antenna dimension (32) to be the last dimension
-            perm = list(range(len(inputs.shape)))
-            perm.remove(5)  # Remove the antenna dimension (32)
-            perm.append(5)  # Add it at the end
+            # Combine all dimensions except the antenna dimension (index 5)
+            # First, move antenna dimension to the end
+            perm = [0, 1, 2, 3, 4, 6, 7, 5]  # Move dim 5 (32) to the end
             inputs = tf.transpose(inputs, perm)
             
-            # Now reshape to 2D tensor with last dimension as NUM_ANTENNAS
-            inputs = tf.reshape(inputs, [-1, self.num_antennas])
+            # Now reshape to 2D tensor with last dimension as num_antennas
+            new_shape = [-1, self.num_antennas]
+            inputs = tf.reshape(inputs, new_shape)
+        
+        print(f"Reshaped input shape: {inputs.shape}")
         
         # Process real and imaginary parts
         real_inputs = tf.cast(tf.math.real(inputs), tf.float32)
@@ -78,29 +78,28 @@ class BeamformingModel(Model):
         # Combine real and imaginary parts
         w = tf.complex(real_output, imag_output)
         
-        # Reshape back to original dimensions if needed
+        # If input was multi-dimensional, reshape back to original dimensions
         if len(original_shape) > 2:
             # Calculate new shape
             new_shape = tf.concat([original_shape[:5], 
-                                original_shape[6:8], 
-                                [self.num_antennas]], axis=0)
+                                 original_shape[6:8], 
+                                 [self.num_antennas]], axis=0)
             w = tf.reshape(w, new_shape)
             
             # Transpose back to original dimension order
-            inv_perm = list(range(len(new_shape)))
-            antenna_dim_idx = len(inv_perm) - 1
-            inv_perm.insert(5, antenna_dim_idx)
-            inv_perm.pop()
+            inv_perm = [0, 1, 2, 3, 4, 7, 5, 6]  # Move antenna dim back to position 5
             w = tf.transpose(w, inv_perm)
         
+        print(f"Output shape: {w.shape}")
+        
         # Normalize output
-        norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-1, keepdims=True)
+        norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-2, keepdims=True)  # Changed axis to -2
         norm = tf.cast(tf.sqrt(norm_squared), dtype=tf.complex64)
         power = tf.complex(tf.sqrt(POWER), 0.0)
         w = w / norm * power
         
         return w
-
+    
 def compute_fisher(model, data, num_samples=50):  # Reduced samples
     fisher = {w.name: tf.zeros_like(w) for w in model.trainable_weights}
     data_size = tf.shape(data)[0]
