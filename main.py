@@ -16,7 +16,7 @@ FREQ = 28e9
 POWER = 1.0
 NUM_SLOTS = 200
 BATCH_SIZE = 16
-LAMBDA_EWC = 10000.0  # Strong regularization
+LAMBDA_EWC = 10000.0
 NUM_EPOCHS = 5
 CHUNK_SIZE = 50
 
@@ -43,8 +43,8 @@ class BeamformingModel(Model):
     @tf.function
     def call(self, inputs):
         slots, batch_size = tf.shape(inputs)[0], tf.shape(inputs)[1]
-        # Expect inputs: (slots, batch, num_tx, num_rx) = (200, 16, 32, 5)
-        inputs_flat = tf.reshape(inputs, [-1, self.num_antennas])  # (slots*batch*num_users, num_antennas)
+        # inputs: (slots, batch, num_tx, num_rx) = (200, 16, 32, 5)
+        inputs_flat = tf.reshape(inputs, [-1, self.num_antennas * self.num_users])  # (slots*batch, num_tx*num_rx)
         real_inputs = tf.cast(tf.math.real(inputs_flat), tf.float32)
         imag_inputs = tf.cast(tf.math.imag(inputs_flat), tf.float32)
         real_x = self.dense1_real(real_inputs)
@@ -59,6 +59,7 @@ class BeamformingModel(Model):
         power = tf.complex(tf.sqrt(POWER), 0.0)
         w = w / norm * power
         w = tf.reshape(w, [slots, batch_size, self.num_users, self.num_antennas])  # (200, 16, 5, 32)
+        print(f"Model output w shape: {w.shape}")
         return w
 
 def compute_fisher(model, data, num_samples=50):
@@ -78,9 +79,10 @@ def compute_fisher(model, data, num_samples=50):
 
 def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
     w = model(x)
-    print(f"ewc_loss: w shape: {w.shape}, h shape: {h.shape}")
-    product = w * h  # Should be (slots, batch, num_users, num_tx) * (slots, batch, num_tx, num_rx)
-    sum_result = tf.reduce_sum(product, axis=-1)  # Sum over num_tx
+    h_adjusted = tf.transpose(h, [0, 1, 3, 2])  # (batch, slots, num_rx, num_tx) -> (batch, slots, num_tx, num_rx)
+    print(f"ewc_loss: w shape: {w.shape}, h_adjusted shape: {h_adjusted.shape}")
+    product = w * h_adjusted  # (batch, slots, num_users, num_antennas) * (batch, slots, num_users, num_antennas)
+    sum_result = tf.reduce_sum(product, axis=-1)  # Sum over num_antennas
     abs_sum = tf.abs(sum_result)
     signal_power = tf.reduce_mean(abs_sum**2)
     loss = -signal_power
@@ -116,10 +118,10 @@ def generate_channel(task, num_slots, task_idx=0):
         print(f"Class: {sn.channel.RayleighBlockFading}")
         try:
             channel_model = sn.channel.RayleighBlockFading(
-                num_rx=NUM_USERS,      # Number of RX units (users)
-                num_rx_ant=NUM_USERS,  # Antennas per RX (1 per user, total 5)
-                num_tx=NUM_ANTENNAS,   # Number of TX units (BS antennas)
-                num_tx_ant=NUM_ANTENNAS,  # Antennas per TX (total 32)
+                num_rx=NUM_USERS,
+                num_rx_ant=NUM_USERS,
+                num_tx=NUM_ANTENNAS,
+                num_tx_ant=NUM_ANTENNAS,
                 dtype=tf.complex64
             )
             print("RayleighBlockFading initialized successfully!")
@@ -127,7 +129,7 @@ def generate_channel(task, num_slots, task_idx=0):
             print(f"Error during RayleighBlockFading init: {str(e)}")
             raise
         channel_info = "Rayleigh"
-        sampling_frequency = 500  # Fixed for simplicity, no multipath
+        sampling_frequency = 500
 
     print(f"Task {task['name']}: Speed range: {speeds.min():.2f} to {speeds.max():.2f} km/h, "
           f"Delay spread: {task['delay_spread']:.2e} s, Channel: {channel_info}, "
@@ -148,21 +150,16 @@ def generate_channel(task, num_slots, task_idx=0):
             if task["channel"] == "TDL":
                 channel_response = channel_model(batch_size=BATCH_SIZE, num_time_steps=1,
                                                 sampling_frequency=sampling_frequency)
-                h_t = channel_response[0]  # Shape: (batch, tx, rx, time, freq, paths)
-                h_t = tf.reduce_sum(h_t, axis=5)  # Sum over paths
-                h_t = tf.squeeze(h_t, axis=[1, 3, 5])  # Remove singletons
+                h_t = channel_response[0]  # (batch, num_tx, num_rx, time, freq, paths)
+                h_t = tf.reduce_sum(h_t, axis=-1)  # Sum over paths: (batch, num_tx, num_rx, time, freq)
+                h_t = tf.squeeze(h_t, axis=[3, 4])  # Remove time, freq: (batch, num_tx, num_rx)
             else:  # Rayleigh
                 h_t_tuple = channel_model(batch_size=BATCH_SIZE, num_time_steps=1)
-                print(f"Rayleigh h_t_tuple length: {len(h_t_tuple)}, contents: {[x.shape for x in h_t_tuple]}")
-                h_t = h_t_tuple[0]  # Shape: (batch, num_rx, num_rx_ant, num_tx, num_tx_ant, time, freq)
-                print(f"Rayleigh h_t shape: {h_t.shape}, dtype: {h_t.dtype}")
-                # Squeeze time and freq (dims 5, 6)
-                h_t = tf.squeeze(h_t, axis=[5, 6])  # Now: (batch, num_rx, num_rx_ant, num_tx, num_tx_ant)
-                # Sum over num_rx_ant and num_tx_ant (dims 2, 4)
-                h_t = tf.reduce_sum(h_t, axis=4)  # Sum num_tx_ant: (batch, num_rx, num_rx_ant, num_tx)
-                h_t = tf.reduce_sum(h_t, axis=2)  # Sum num_rx_ant: (batch, num_rx, num_tx)
-                h_t = tf.transpose(h_t, [0, 2, 1])  # Shape: (batch, num_tx, num_rx)
-                print(f"Processed Rayleigh h_t shape: {h_t.shape}, dtype: {h_t.dtype}")
+                h_t = h_t_tuple[0]  # (batch, num_rx, num_rx_ant, num_tx, num_tx_ant, 1, num_time_steps)
+                h_t = h_t[..., 0, :]  # Remove path: (batch, num_rx, num_rx_ant, num_tx, num_tx_ant, num_time_steps)
+                h_t = tf.squeeze(h_t, axis=-1)  # Remove time: (batch, num_rx, num_rx_ant, num_tx, num_tx_ant)
+                h_t = tf.reduce_mean(h_t, axis=[2, 4])  # Average over num_rx_ant, num_tx_ant: (batch, num_rx, num_tx)
+                h_t = tf.transpose(h_t, [0, 2, 1])  # (batch, num_tx, num_rx)
             h_chunk.append(h_t)
         h_chunks.append(tf.stack(h_chunk))
     h = tf.concat(h_chunks, axis=0)
@@ -249,7 +246,7 @@ def main():
         task_time = time.time() - task_start_time
         latency = task_time / (NUM_EPOCHS * NUM_SLOTS) * 1000
         w = model(x)
-        throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(w * h, axis=-1))**2).numpy()
+        throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(w * tf.transpose(h, [0, 1, 3, 2]), axis=-1))**2).numpy()
         task_performance.append(throughput)
         
         forgetting = 0.0
@@ -259,7 +256,7 @@ def main():
             for past_idx in range(task_idx):
                 past_h = task_channels[past_idx]
                 past_w = model(past_h)
-                past_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(past_w * past_h, axis=-1))**2).numpy()
+                past_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(past_w * tf.transpose(past_h, [0, 1, 3, 2]), axis=-1))**2).numpy()
                 forgetting_delta = task_performance[past_idx] - past_throughput
                 past_performances.append(forgetting_delta)
                 print(f"Task {TASKS[past_idx]['name']} forgetting: {forgetting_delta:.4f}")
