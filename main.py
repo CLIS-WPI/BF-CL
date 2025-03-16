@@ -16,16 +16,16 @@ FREQ = 28e9
 POWER = 1.0
 NUM_SLOTS = 200
 BATCH_SIZE = 16
-LAMBDA_EWC = 100.0
+LAMBDA_EWC = 10000.0  # Strong regularization
 NUM_EPOCHS = 5
-CHUNK_SIZE = 50  # Process slots in chunks to manage memory
+CHUNK_SIZE = 50
 
 TASKS = [
-    {"name": "Static", "speed_range": [0, 5], "delay_spread": 30e-9},
-    {"name": "Pedestrian", "speed_range": [5, 10], "delay_spread": 50e-9},
-    {"name": "Vehicular", "speed_range": [60, 120], "delay_spread": 100e-9},
-    {"name": "Aerial", "speed_range": [20, 50], "delay_spread": 70e-9},
-    {"name": "Random", "speed_range": [10, 100], "delay_spread": 90e-9},
+    {"name": "Static", "speed_range": [0, 5], "delay_spread": 30e-9, "channel": "TDL", "model": "A"},
+    {"name": "Pedestrian", "speed_range": [5, 10], "delay_spread": 50e-9, "channel": "Rayleigh"},
+    {"name": "Vehicular", "speed_range": [60, 120], "delay_spread": 100e-9, "channel": "TDL", "model": "C"},
+    {"name": "Aerial", "speed_range": [20, 50], "delay_spread": 70e-9, "channel": "TDL", "model": "A"},
+    {"name": "Random", "speed_range": [10, 100], "delay_spread": 90e-9, "channel": "Rayleigh"},
 ]
 
 class BeamformingModel(Model):
@@ -42,29 +42,23 @@ class BeamformingModel(Model):
 
     @tf.function
     def call(self, inputs):
-        print(f"\nDebug BeamformingModel call: Input shape: {inputs.shape}")
         slots, batch_size = tf.shape(inputs)[0], tf.shape(inputs)[1]
-        inputs_flat = tf.reshape(inputs, [-1, self.num_antennas])
-        print(f"Reshaped input shape: {inputs_flat.shape}")
-        
+        # Expect inputs: (slots, batch, num_tx, num_rx) = (200, 16, 32, 5)
+        inputs_flat = tf.reshape(inputs, [-1, self.num_antennas])  # (slots*batch*num_users, num_antennas)
         real_inputs = tf.cast(tf.math.real(inputs_flat), tf.float32)
         imag_inputs = tf.cast(tf.math.imag(inputs_flat), tf.float32)
-        
         real_x = self.dense1_real(real_inputs)
         imag_x = self.dense1_imag(imag_inputs)
         real_x = self.dense2_real(real_x)
         imag_x = self.dense2_imag(imag_x)
         real_output = self.output_real(real_x)
         imag_output = self.output_imag(imag_x)
-        
         w = tf.complex(real_output, imag_output)
         norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-1, keepdims=True)
         norm = tf.cast(tf.sqrt(norm_squared), dtype=tf.complex64)
         power = tf.complex(tf.sqrt(POWER), 0.0)
         w = w / norm * power
-        
-        w = tf.reshape(w, [slots, batch_size, self.num_users, self.num_antennas])
-        print(f"Output shape: {w.shape}")
+        w = tf.reshape(w, [slots, batch_size, self.num_users, self.num_antennas])  # (200, 16, 5, 32)
         return w
 
 def compute_fisher(model, data, num_samples=50):
@@ -84,65 +78,93 @@ def compute_fisher(model, data, num_samples=50):
 
 def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
     w = model(x)
-    print(f"Loss - w shape: {w.shape}, h shape: {h.shape}")
-    product = w * h
-    sum_result = tf.reduce_sum(product, axis=-1)
+    print(f"ewc_loss: w shape: {w.shape}, h shape: {h.shape}")
+    product = w * h  # Should be (slots, batch, num_users, num_tx) * (slots, batch, num_tx, num_rx)
+    sum_result = tf.reduce_sum(product, axis=-1)  # Sum over num_tx
     abs_sum = tf.abs(sum_result)
     signal_power = tf.reduce_mean(abs_sum**2)
     loss = -signal_power
-    
     if fisher:
         ewc_penalty = 0.0
-        for w in model.trainable_weights:
-            w_name = w.name
+        for w_var in model.trainable_weights:
+            w_name = w_var.name
             if w_name in fisher:
-                ewc_penalty += tf.reduce_sum(fisher[w_name] * (w - old_params[w_name])**2)
+                ewc_penalty += tf.reduce_sum(fisher[w_name] * (w_var - old_params[w_name])**2)
         loss += lambda_ewc * ewc_penalty
     return loss
 
 def generate_channel(task, num_slots, task_idx=0):
     speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], NUM_USERS)
-    avg_speed = np.mean(speeds) * 1000 / 3600
+    avg_speed = np.mean(speeds) * 1000 / 3600  # km/h to m/s
+    doppler_freq = avg_speed * FREQ / 3e8
     
-    channel_model = sn.channel.tr38901.TDL(
-        model="A",
-        delay_spread=task["delay_spread"],
-        carrier_frequency=FREQ,
-        num_tx_ant=NUM_ANTENNAS,
-        num_rx_ant=NUM_USERS,
-        dtype=tf.complex64
-    )
+    if task["channel"] == "TDL":
+        channel_model = sn.channel.tr38901.TDL(
+            model=task["model"],
+            delay_spread=task["delay_spread"],
+            carrier_frequency=FREQ,
+            num_tx_ant=NUM_ANTENNAS,
+            num_rx_ant=NUM_USERS,
+            dtype=tf.complex64
+        )
+        channel_info = f"TDL-{task['model']}"
+        sampling_frequency = max(500, int(2 * doppler_freq))
+    else:  # Rayleigh
+        print(f"Initializing RayleighBlockFading with num_rx={NUM_USERS}, num_rx_ant={NUM_USERS}, "
+              f"num_tx={NUM_ANTENNAS}, num_tx_ant={NUM_ANTENNAS}")
+        print("About to call sn.channel.RayleighBlockFading...")
+        print(f"Class: {sn.channel.RayleighBlockFading}")
+        try:
+            channel_model = sn.channel.RayleighBlockFading(
+                num_rx=NUM_USERS,      # Number of RX units (users)
+                num_rx_ant=NUM_USERS,  # Antennas per RX (1 per user, total 5)
+                num_tx=NUM_ANTENNAS,   # Number of TX units (BS antennas)
+                num_tx_ant=NUM_ANTENNAS,  # Antennas per TX (total 32)
+                dtype=tf.complex64
+            )
+            print("RayleighBlockFading initialized successfully!")
+        except Exception as e:
+            print(f"Error during RayleighBlockFading init: {str(e)}")
+            raise
+        channel_info = "Rayleigh"
+        sampling_frequency = 500  # Fixed for simplicity, no multipath
 
     print(f"Task {task['name']}: Speed range: {speeds.min():.2f} to {speeds.max():.2f} km/h, "
-          f"Delay spread: {task['delay_spread']:.2e} s")
+          f"Delay spread: {task['delay_spread']:.2e} s, Channel: {channel_info}, "
+          f"Doppler freq: {doppler_freq:.2f} Hz")
     
     h_chunks = []
     start_time = time.time()
-    sampling_frequency = 500
     
     for chunk_start in range(0, num_slots, CHUNK_SIZE):
         chunk_end = min(chunk_start + CHUNK_SIZE, num_slots)
         print(f"Processing chunk {chunk_start}-{chunk_end}/{num_slots}")
         h_chunk = []
-        
         for t in range(chunk_start, chunk_end):
             if t % 50 == 0 or t == chunk_start:
                 print(f"Generating channel slot {t}/{num_slots}")
             tf.keras.backend.clear_session()
             gc.collect()
-            
-            channel_response = channel_model(batch_size=BATCH_SIZE, num_time_steps=1,
-                                            sampling_frequency=sampling_frequency)
-            h_t = channel_response[0]
-            print(f"Raw channel_response[0] shape: {h_t.shape}, dtype: {h_t.dtype}")
-            h_t = tf.reduce_sum(h_t, axis=5)  # Sum over num_paths
-            h_t = tf.squeeze(h_t, axis=[1, 3, 5])  # Remove singletons
-            print(f"After processing: {h_t.shape}, dtype: {h_t.dtype}")
+            if task["channel"] == "TDL":
+                channel_response = channel_model(batch_size=BATCH_SIZE, num_time_steps=1,
+                                                sampling_frequency=sampling_frequency)
+                h_t = channel_response[0]  # Shape: (batch, tx, rx, time, freq, paths)
+                h_t = tf.reduce_sum(h_t, axis=5)  # Sum over paths
+                h_t = tf.squeeze(h_t, axis=[1, 3, 5])  # Remove singletons
+            else:  # Rayleigh
+                h_t_tuple = channel_model(batch_size=BATCH_SIZE, num_time_steps=1)
+                print(f"Rayleigh h_t_tuple length: {len(h_t_tuple)}, contents: {[x.shape for x in h_t_tuple]}")
+                h_t = h_t_tuple[0]  # Shape: (batch, num_rx, num_rx_ant, num_tx, num_tx_ant, time, freq)
+                print(f"Rayleigh h_t shape: {h_t.shape}, dtype: {h_t.dtype}")
+                # Squeeze time and freq (dims 5, 6)
+                h_t = tf.squeeze(h_t, axis=[5, 6])  # Now: (batch, num_rx, num_rx_ant, num_tx, num_tx_ant)
+                # Sum over num_rx_ant and num_tx_ant (dims 2, 4)
+                h_t = tf.reduce_sum(h_t, axis=4)  # Sum num_tx_ant: (batch, num_rx, num_rx_ant, num_tx)
+                h_t = tf.reduce_sum(h_t, axis=2)  # Sum num_rx_ant: (batch, num_rx, num_tx)
+                h_t = tf.transpose(h_t, [0, 2, 1])  # Shape: (batch, num_tx, num_rx)
+                print(f"Processed Rayleigh h_t shape: {h_t.shape}, dtype: {h_t.dtype}")
             h_chunk.append(h_t)
-        
         h_chunks.append(tf.stack(h_chunk))
-        print(f"Chunk shape: {h_chunks[-1].shape}")
-    
     h = tf.concat(h_chunks, axis=0)
     print(f"Channel generation time: {time.time() - start_time:.2f} s")
     print(f"Final channel shape: {h.shape}, dtype: {h.dtype}")
@@ -161,7 +183,6 @@ def main():
     print(f"TensorFlow version: {tf.__version__}")
     print(f"Available GPU devices: {tf.config.list_physical_devices('GPU')}")
     print(f"SIONNA version: {sn.__version__}")
-    
     print("\nTraining Configuration:")
     print(f"Number of Antennas: {NUM_ANTENNAS}")
     print(f"Number of Users: {NUM_USERS}")
@@ -178,10 +199,8 @@ def main():
     
     strategy = tf.distribute.OneDeviceStrategy(device="/GPU:0")
     print(f"Number of devices: {strategy.num_replicas_in_sync}")
-    
     model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
-    
     save_dir = "saved_models"
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -195,7 +214,6 @@ def main():
         h = generate_channel(task, NUM_SLOTS, task_idx)
         task_channels[task_idx] = h
         x = h
-        
         dataset = tf.data.Dataset.from_tensor_slices((x, h)).batch(BATCH_SIZE)
         
         with strategy.scope():
@@ -212,7 +230,6 @@ def main():
                 epoch_loss = 0
                 batches = 0
                 progress_interval = max(1, num_batches // 20)
-                
                 for x_batch, h_batch in dist_dataset:
                     batch_start_time = time.time()
                     loss = strategy.run(train_step, args=(model, x_batch, h_batch, optimizer,
@@ -220,20 +237,17 @@ def main():
                     loss = strategy.reduce(tf.distribute.ReduceOp.MEAN, loss, axis=None)
                     epoch_loss += loss
                     batches += 1
-                    
                     if batches % progress_interval == 0:
                         progress = (batches / num_batches) * 100
                         batch_time = time.time() - batch_start_time
                         print(f"Progress: {progress:3.1f}% [{batches}/{num_batches}] "
                               f"| Batch Loss: {loss:.6f} | Batch Time: {batch_time:.3f}s")
-                
                 avg_epoch_loss = epoch_loss / batches
                 epoch_time = time.time() - epoch_start_time
                 print(f"Epoch {epoch+1} Summary: Avg Loss: {avg_epoch_loss:.6f}, Time: {epoch_time:.2f}s")
         
         task_time = time.time() - task_start_time
         latency = task_time / (NUM_EPOCHS * NUM_SLOTS) * 1000
-        
         w = model(x)
         throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(w * h, axis=-1))**2).numpy()
         task_performance.append(throughput)
@@ -256,7 +270,6 @@ def main():
         fisher_dict = compute_fisher(model, x)
         
         energy = task_time * 100
-        
         results["throughput"].append(throughput)
         results["latency"].append(latency)
         results["energy"].append(energy)
@@ -269,13 +282,11 @@ def main():
         print(f"Energy: {energy:.2f} W")
         print(f"Forgetting: {forgetting:.4f}")
         print(f"Total Task Time: {task_time:.2f}s")
-        
         model.save(os.path.join(save_dir, f"model_task_{task['name']}"))
         print(f"Model saved for task {task['name']}")
     
     total_training_time = time.time() - total_start_time
     print(f"\nTotal Training Time: {total_training_time:.2f}s")
-    
     print("\nGenerating results plot...")
     plt.figure(figsize=(12, 8))
     for metric in results:
@@ -287,9 +298,8 @@ def main():
     plt.grid(True)
     plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45)
     plt.tight_layout()
-    plt.savefig("mobility_tasks_results_updated.png")
+    plt.savefig("mobility_tasks_results_final.png")
     plt.show()
-    
     print("\nTraining complete!")
 
 if __name__ == "__main__":
