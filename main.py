@@ -37,27 +37,28 @@ class BeamformingModel(Model):
         self.dense1_imag = layers.Dense(64, activation="relu")
         self.dense2_real = layers.Dense(32, activation="relu")
         self.dense2_imag = layers.Dense(32, activation="relu")
-        self.output_real = layers.Dense(num_antennas)
-        self.output_imag = layers.Dense(num_antennas)
+        self.output_real = layers.Dense(num_antennas * num_users)  # Output for all users
+        self.output_imag = layers.Dense(num_antennas * num_users)
 
     @tf.function
     def call(self, inputs):
-        slots, batch_size = tf.shape(inputs)[0], tf.shape(inputs)[1]
-        inputs_flat = tf.reshape(inputs, [-1, self.num_antennas * self.num_users])
+        batch_size, slots_per_batch = tf.shape(inputs)[0], tf.shape(inputs)[1]
+        # inputs: (batch, slots_per_batch, num_tx, num_rx) = (16, 16, 32, 5)
+        inputs_flat = tf.reshape(inputs, [batch_size * slots_per_batch, self.num_antennas * self.num_users])  # (256, 160)
         real_inputs = tf.cast(tf.math.real(inputs_flat), tf.float32)
         imag_inputs = tf.cast(tf.math.imag(inputs_flat), tf.float32)
         real_x = self.dense1_real(real_inputs)
         imag_x = self.dense1_imag(imag_inputs)
         real_x = self.dense2_real(real_x)
         imag_x = self.dense2_imag(imag_x)
-        real_output = self.output_real(real_x)
+        real_output = self.output_real(real_x)  # (256, 160)
         imag_output = self.output_imag(imag_x)
         w = tf.complex(real_output, imag_output)
+        w = tf.reshape(w, [batch_size, slots_per_batch, self.num_users, self.num_antennas])  # (16, 16, 5, 32)
         norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-1, keepdims=True)
         norm = tf.cast(tf.sqrt(norm_squared), dtype=tf.complex64)
         power = tf.complex(tf.sqrt(POWER), 0.0)
         w = w / norm * power
-        w = tf.reshape(w, [slots, batch_size, self.num_users, self.num_antennas])
         print(f"Model output w shape: {w.shape}")
         return w
 
@@ -78,7 +79,7 @@ def compute_fisher(model, data, num_samples=50):
 
 def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
     w = model(x)
-    h_adjusted = tf.transpose(h, [0, 1, 3, 2])
+    h_adjusted = tf.transpose(h, [0, 1, 3, 2])  # (16, 16, 5, 32)
     print(f"ewc_loss: w shape: {w.shape}, h_adjusted shape: {h_adjusted.shape}")
     product = w * h_adjusted
     sum_result = tf.reduce_sum(product, axis=-1)
@@ -96,7 +97,7 @@ def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
 
 def generate_channel(task, num_slots, task_idx=0):
     speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], NUM_USERS)
-    avg_speed = np.mean(speeds) * 1000 / 3600  # km/h to m/s
+    avg_speed = np.mean(speeds) * 1000 / 3600
     doppler_freq = avg_speed * FREQ / 3e8
     
     if task["channel"] == "TDL":
@@ -104,31 +105,22 @@ def generate_channel(task, num_slots, task_idx=0):
             model=task["model"],
             delay_spread=task["delay_spread"],
             carrier_frequency=FREQ,
-            num_tx=NUM_ANTENNAS,  # Total Tx antennas
-            num_tx_ant=1,         # Antennas per Tx unit
-            num_rx=NUM_USERS,     # Total Rx users
-            num_rx_ant=1,         # Antennas per Rx
+            num_tx_ant=NUM_ANTENNAS,
+            num_rx_ant=NUM_USERS,
             dtype=tf.complex64
         )
         channel_info = f"TDL-{task['model']}"
         sampling_frequency = max(500, int(2 * doppler_freq))
-    else:  # Rayleigh
+    else:
         print(f"Initializing RayleighBlockFading with num_rx={NUM_USERS}, num_rx_ant={NUM_USERS}, "
               f"num_tx={NUM_ANTENNAS}, num_tx_ant={NUM_ANTENNAS}")
-        print("About to call sn.channel.RayleighBlockFading...")
-        print(f"Class: {sn.channel.RayleighBlockFading}")
-        try:
-            channel_model = sn.channel.RayleighBlockFading(
-                num_rx=NUM_USERS,
-                num_rx_ant=NUM_USERS,
-                num_tx=NUM_ANTENNAS,
-                num_tx_ant=NUM_ANTENNAS,
-                dtype=tf.complex64
-            )
-            print("RayleighBlockFading initialized successfully!")
-        except Exception as e:
-            print(f"Error during RayleighBlockFading init: {str(e)}")
-            raise
+        channel_model = sn.channel.RayleighBlockFading(
+            num_rx=NUM_USERS,
+            num_rx_ant=NUM_USERS,
+            num_tx=NUM_ANTENNAS,
+            num_tx_ant=NUM_ANTENNAS,
+            dtype=tf.complex64
+        )
         channel_info = "Rayleigh"
         sampling_frequency = 500
 
@@ -151,19 +143,22 @@ def generate_channel(task, num_slots, task_idx=0):
             if task["channel"] == "TDL":
                 channel_response = channel_model(batch_size=BATCH_SIZE, num_time_steps=1,
                                                 sampling_frequency=sampling_frequency)
-                h_t = channel_response[0]  # (batch, num_tx, num_rx, time, freq, paths)
+                h_t = channel_response[0]
                 print(f"TDL raw h_t shape: {h_t.shape}")
-                h_t = tf.reduce_sum(h_t, axis=-1)  # Sum over paths
+                h_t = tf.reduce_sum(h_t, axis=5)
                 print(f"TDL after sum h_t shape: {h_t.shape}")
-                h_t = tf.squeeze(h_t, axis=3)  # Remove time
+                h_t = tf.squeeze(h_t, axis=[3, 5])
                 print(f"TDL after squeeze h_t shape: {h_t.shape}")
-            else:  # Rayleigh
+                h_t = tf.squeeze(h_t, axis=1)
+                h_t = tf.transpose(h_t, [0, 2, 1])
+                print(f"TDL final h_t shape: {h_t.shape}")
+            else:
                 h_t_tuple = channel_model(batch_size=BATCH_SIZE, num_time_steps=1)
                 h_t = h_t_tuple[0]
-                h_t = h_t[..., 0, :]  # Remove path
-                h_t = tf.squeeze(h_t, axis=-1)  # Remove time
-                h_t = tf.reduce_mean(h_t, axis=[2, 4])  # Average over num_rx_ant, num_tx_ant
-                h_t = tf.transpose(h_t, [0, 2, 1])  # (batch, num_tx, num_rx)
+                h_t = h_t[..., 0, :]
+                h_t = tf.squeeze(h_t, axis=-1)
+                h_t = tf.reduce_mean(h_t, axis=[2, 4])
+                h_t = tf.transpose(h_t, [0, 2, 1])
             h_chunk.append(h_t)
         h_chunks.append(tf.stack(h_chunk))
     h = tf.concat(h_chunks, axis=0)
