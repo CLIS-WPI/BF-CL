@@ -205,6 +205,7 @@ def main():
         latency = task_time / (NUM_EPOCHS * NUM_SLOTS) * 1000
         w = model(x)
         throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(w * tf.transpose(h, [0, 1, 3, 2]), axis=-1))**2).numpy()
+        capacity = np.log2(1 + throughput)  # Convert to capacity (bits/s/Hz)
         task_performance.append(throughput)
         
         forgetting = 0.0
@@ -222,14 +223,14 @@ def main():
         fisher_dict = compute_fisher(model, x)
         
         energy = GPU_POWER_DRAW * task_time  # Joules
-        results["throughput"].append(throughput)
+        results["throughput"].append(capacity)  # Store capacity instead of raw throughput
         results["latency"].append(latency)
         results["energy"].append(energy)
         results["forgetting"].append(forgetting)
         
         with open(results_file, 'a') as f:
             f.write(f"Task {task['name']}:\n")
-            f.write(f"  Throughput: {throughput:.4f}\n")
+            f.write(f"  Capacity: {capacity:.4f} bits/s/Hz\n")
             f.write(f"  Latency: {latency:.2f} ms/slot\n")
             f.write(f"  Energy: {energy:.2f} J\n")
             f.write(f"  Forgetting: {forgetting:.4f}\n")
@@ -242,7 +243,7 @@ def main():
     with open(results_file, 'a') as f:
         f.write("Summary:\n")
         f.write(f"  Total Training Time: {total_training_time:.2f}s\n")
-        f.write(f"  Avg Throughput: {np.mean(results['throughput']):.4f}\n")
+        f.write(f"  Avg Capacity: {np.mean(results['throughput']):.4f} bits/s/Hz\n")
         f.write(f"  Avg Latency: {np.mean(results['latency']):.2f} ms/slot\n")
         f.write(f"  Avg Energy: {np.mean(results['energy']):.2f} J\n")
         f.write(f"  Avg Forgetting: {np.mean(results['forgetting']):.4f}\n")

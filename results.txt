@@ -2,44 +2,44 @@ Beamforming Continual Learning Results
 Tasks: 5, Epochs: 5, Slots: 200, GPU Power: 400W
 ==================================================
 Task Static:
-  Throughput: 1.6197
-  Latency: 2.83 ms/slot
-  Energy: 1130.78 J
+  Capacity: 1.3975 bits/s/Hz
+  Latency: 2.81 ms/slot
+  Energy: 1125.50 J
   Forgetting: 0.0000
-  Total Task Time: 2.83s
+  Total Task Time: 2.81s
 --------------------------------------------------
 Task Pedestrian:
-  Throughput: 0.0064
+  Capacity: 0.0092 bits/s/Hz
   Latency: 1.40 ms/slot
-  Energy: 558.10 J
-  Forgetting: -0.0887
+  Energy: 558.15 J
+  Forgetting: -0.0919
   Total Task Time: 1.40s
 --------------------------------------------------
 Task Vehicular:
-  Throughput: 2.1429
-  Latency: 1.38 ms/slot
-  Energy: 550.16 J
-  Forgetting: -0.0836
-  Total Task Time: 1.38s
+  Capacity: 1.7485 bits/s/Hz
+  Latency: 1.40 ms/slot
+  Energy: 560.05 J
+  Forgetting: -0.1796
+  Total Task Time: 1.40s
 --------------------------------------------------
 Task Aerial:
-  Throughput: 3.8332
+  Capacity: 2.4602 bits/s/Hz
   Latency: 1.38 ms/slot
-  Energy: 550.57 J
-  Forgetting: -1.0368
+  Energy: 552.93 J
+  Forgetting: -1.3783
   Total Task Time: 1.38s
 --------------------------------------------------
 Task Random:
-  Throughput: 0.0232
-  Latency: 1.38 ms/slot
-  Energy: 553.31 J
-  Forgetting: -0.8991
-  Total Task Time: 1.38s
+  Capacity: 0.0422 bits/s/Hz
+  Latency: 1.40 ms/slot
+  Energy: 558.19 J
+  Forgetting: -1.1069
+  Total Task Time: 1.40s
 --------------------------------------------------
 Summary:
-  Total Training Time: 151.94s
-  Avg Throughput: 1.5251
-  Avg Latency: 1.67 ms/slot
-  Avg Energy: 668.58 J
-  Avg Forgetting: -0.4216
+  Total Training Time: 150.31s
+  Avg Capacity: 1.1315 bits/s/Hz
+  Avg Latency: 1.68 ms/slot
+  Avg Energy: 670.96 J
+  Avg Forgetting: -0.5513
 ==================================================
