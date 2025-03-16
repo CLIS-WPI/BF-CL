@@ -43,8 +43,7 @@ class BeamformingModel(Model):
     @tf.function
     def call(self, inputs):
         slots, batch_size = tf.shape(inputs)[0], tf.shape(inputs)[1]
-        # inputs: (slots, batch, num_tx, num_rx) = (200, 16, 32, 5)
-        inputs_flat = tf.reshape(inputs, [-1, self.num_antennas * self.num_users])  # (slots*batch, num_tx*num_rx)
+        inputs_flat = tf.reshape(inputs, [-1, self.num_antennas * self.num_users])
         real_inputs = tf.cast(tf.math.real(inputs_flat), tf.float32)
         imag_inputs = tf.cast(tf.math.imag(inputs_flat), tf.float32)
         real_x = self.dense1_real(real_inputs)
@@ -58,7 +57,7 @@ class BeamformingModel(Model):
         norm = tf.cast(tf.sqrt(norm_squared), dtype=tf.complex64)
         power = tf.complex(tf.sqrt(POWER), 0.0)
         w = w / norm * power
-        w = tf.reshape(w, [slots, batch_size, self.num_users, self.num_antennas])  # (200, 16, 5, 32)
+        w = tf.reshape(w, [slots, batch_size, self.num_users, self.num_antennas])
         print(f"Model output w shape: {w.shape}")
         return w
 
@@ -79,10 +78,10 @@ def compute_fisher(model, data, num_samples=50):
 
 def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
     w = model(x)
-    h_adjusted = tf.transpose(h, [0, 1, 3, 2])  # (batch, slots, num_rx, num_tx) -> (batch, slots, num_tx, num_rx)
+    h_adjusted = tf.transpose(h, [0, 1, 3, 2])
     print(f"ewc_loss: w shape: {w.shape}, h_adjusted shape: {h_adjusted.shape}")
-    product = w * h_adjusted  # (batch, slots, num_users, num_antennas) * (batch, slots, num_users, num_antennas)
-    sum_result = tf.reduce_sum(product, axis=-1)  # Sum over num_antennas
+    product = w * h_adjusted
+    sum_result = tf.reduce_sum(product, axis=-1)
     abs_sum = tf.abs(sum_result)
     signal_power = tf.reduce_mean(abs_sum**2)
     loss = -signal_power
@@ -105,8 +104,10 @@ def generate_channel(task, num_slots, task_idx=0):
             model=task["model"],
             delay_spread=task["delay_spread"],
             carrier_frequency=FREQ,
-            num_tx_ant=NUM_ANTENNAS,
-            num_rx_ant=NUM_USERS,
+            num_tx=NUM_ANTENNAS,  # Total Tx antennas
+            num_tx_ant=1,         # Antennas per Tx unit
+            num_rx=NUM_USERS,     # Total Rx users
+            num_rx_ant=1,         # Antennas per Rx
             dtype=tf.complex64
         )
         channel_info = f"TDL-{task['model']}"
@@ -151,14 +152,17 @@ def generate_channel(task, num_slots, task_idx=0):
                 channel_response = channel_model(batch_size=BATCH_SIZE, num_time_steps=1,
                                                 sampling_frequency=sampling_frequency)
                 h_t = channel_response[0]  # (batch, num_tx, num_rx, time, freq, paths)
-                h_t = tf.reduce_sum(h_t, axis=-1)  # Sum over paths: (batch, num_tx, num_rx, time, freq)
-                h_t = tf.squeeze(h_t, axis=[3, 4])  # Remove time, freq: (batch, num_tx, num_rx)
+                print(f"TDL raw h_t shape: {h_t.shape}")
+                h_t = tf.reduce_sum(h_t, axis=-1)  # Sum over paths
+                print(f"TDL after sum h_t shape: {h_t.shape}")
+                h_t = tf.squeeze(h_t, axis=3)  # Remove time
+                print(f"TDL after squeeze h_t shape: {h_t.shape}")
             else:  # Rayleigh
                 h_t_tuple = channel_model(batch_size=BATCH_SIZE, num_time_steps=1)
-                h_t = h_t_tuple[0]  # (batch, num_rx, num_rx_ant, num_tx, num_tx_ant, 1, num_time_steps)
-                h_t = h_t[..., 0, :]  # Remove path: (batch, num_rx, num_rx_ant, num_tx, num_tx_ant, num_time_steps)
-                h_t = tf.squeeze(h_t, axis=-1)  # Remove time: (batch, num_rx, num_rx_ant, num_tx, num_tx_ant)
-                h_t = tf.reduce_mean(h_t, axis=[2, 4])  # Average over num_rx_ant, num_tx_ant: (batch, num_rx, num_tx)
+                h_t = h_t_tuple[0]
+                h_t = h_t[..., 0, :]  # Remove path
+                h_t = tf.squeeze(h_t, axis=-1)  # Remove time
+                h_t = tf.reduce_mean(h_t, axis=[2, 4])  # Average over num_rx_ant, num_tx_ant
                 h_t = tf.transpose(h_t, [0, 2, 1])  # (batch, num_tx, num_rx)
             h_chunk.append(h_t)
         h_chunks.append(tf.stack(h_chunk))
