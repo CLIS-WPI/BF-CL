@@ -19,7 +19,8 @@ BATCH_SIZE = 16
 LAMBDA_EWC = 10000.0
 NUM_EPOCHS = 5
 CHUNK_SIZE = 50
-GPU_POWER_DRAW = 400  # Watts, average for H100 under training load
+GPU_POWER_DRAW = 400
+NOISE_POWER = 0.1
 
 TASKS = [
     {"name": "Static", "speed_range": [0, 5], "delay_spread": 30e-9, "channel": "TDL", "model": "A"},
@@ -173,7 +174,7 @@ def main():
     total_start_time = time.time()
     with open(results_file, 'w') as f:
         f.write("Beamforming Continual Learning Results\n")
-        f.write(f"Tasks: {len(TASKS)}, Epochs: {NUM_EPOCHS}, Slots: {NUM_SLOTS}, GPU Power: {GPU_POWER_DRAW}W\n")
+        f.write(f"Tasks: {len(TASKS)}, Epochs: {NUM_EPOCHS}, Slots: {NUM_SLOTS}, GPU Power: {GPU_POWER_DRAW}W, Noise Power: {NOISE_POWER}\n")
         f.write("="*50 + "\n")
     
     for task_idx, task in enumerate(TASKS):
@@ -205,7 +206,7 @@ def main():
         latency = task_time / (NUM_EPOCHS * NUM_SLOTS) * 1000
         w = model(x)
         throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(w * tf.transpose(h, [0, 1, 3, 2]), axis=-1))**2).numpy()
-        capacity = np.log2(1 + throughput)  # Convert to capacity (bits/s/Hz)
+        capacity = np.log2(1 + throughput / NOISE_POWER)
         task_performance.append(throughput)
         
         forgetting = 0.0
@@ -222,8 +223,8 @@ def main():
         old_params = {w.name: w.numpy() for w in model.trainable_weights}
         fisher_dict = compute_fisher(model, x)
         
-        energy = GPU_POWER_DRAW * task_time  # Joules
-        results["throughput"].append(capacity)  # Store capacity instead of raw throughput
+        energy = GPU_POWER_DRAW * task_time
+        results["throughput"].append(capacity)
         results["latency"].append(latency)
         results["energy"].append(energy)
         results["forgetting"].append(forgetting)
