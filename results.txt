@@ -1,0 +1,45 @@
+Beamforming Continual Learning Results
+Tasks: 5, Epochs: 5, Slots: 200, GPU Power: 400W
+==================================================
+Task Static:
+  Throughput: 1.6197
+  Latency: 2.83 ms/slot
+  Energy: 1130.78 J
+  Forgetting: 0.0000
+  Total Task Time: 2.83s
+--------------------------------------------------
+Task Pedestrian:
+  Throughput: 0.0064
+  Latency: 1.40 ms/slot
+  Energy: 558.10 J
+  Forgetting: -0.0887
+  Total Task Time: 1.40s
+--------------------------------------------------
+Task Vehicular:
+  Throughput: 2.1429
+  Latency: 1.38 ms/slot
+  Energy: 550.16 J
+  Forgetting: -0.0836
+  Total Task Time: 1.38s
+--------------------------------------------------
+Task Aerial:
+  Throughput: 3.8332
+  Latency: 1.38 ms/slot
+  Energy: 550.57 J
+  Forgetting: -1.0368
+  Total Task Time: 1.38s
+--------------------------------------------------
+Task Random:
+  Throughput: 0.0232
+  Latency: 1.38 ms/slot
+  Energy: 553.31 J
+  Forgetting: -0.8991
+  Total Task Time: 1.38s
+--------------------------------------------------
+Summary:
+  Total Training Time: 151.94s
+  Avg Throughput: 1.5251
+  Avg Latency: 1.67 ms/slot
+  Avg Energy: 668.58 J
+  Avg Forgetting: -0.4216
+==================================================
