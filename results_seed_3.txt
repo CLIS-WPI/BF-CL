@@ -1,0 +1,50 @@
+Beamforming Continual Learning Results
+Tasks: 5, Epochs: 5, Slots: 200, GPU Power: 400W, Noise Power: 0.1
+==================================================
+Task Static:
+  Capacity: 4.0912 bits/s/Hz
+  Latency: 2.03 ms/slot
+  Energy: 810.79 J
+  Forgetting: 0.0000
+  Losses: [-2.4141745567321777, -3.4396960735321045, -4.514640808105469, -5.656030654907227, -6.662135601043701]
+  Total Task Time: 2.03s
+--------------------------------------------------
+Task Aerial:
+  Capacity: 4.0614 bits/s/Hz
+  Latency: 2.21 ms/slot
+  Energy: 885.44 J
+  Forgetting: -0.1607
+  Losses: [-4.286032199859619, -5.332038879394531, -6.012563705444336, -6.17791748046875, -6.842392921447754]
+  Total Task Time: 2.21s
+--------------------------------------------------
+Task Vehicular:
+  Capacity: 4.3204 bits/s/Hz
+  Latency: 2.19 ms/slot
+  Energy: 877.99 J
+  Forgetting: -0.3906
+  Losses: [-5.4462995529174805, -5.859564781188965, -6.38649845123291, -6.496792316436768, -6.9060893058776855]
+  Total Task Time: 2.19s
+--------------------------------------------------
+Task Pedestrian:
+  Capacity: 0.0884 bits/s/Hz
+  Latency: 2.21 ms/slot
+  Energy: 882.59 J
+  Forgetting: -0.3028
+  Losses: [-5.142984867095947, -5.698842525482178, -5.337550163269043, -5.736145496368408, -6.100428104400635]
+  Total Task Time: 2.21s
+--------------------------------------------------
+Task Random:
+  Capacity: 0.0885 bits/s/Hz
+  Latency: 2.22 ms/slot
+  Energy: 887.79 J
+  Forgetting: -0.2344
+  Losses: [-6.2002997398376465, -6.220195293426514, -6.117336750030518, -6.3777995109558105, -6.497994422912598]
+  Total Task Time: 2.22s
+--------------------------------------------------
+Summary:
+  Total Training Time: 159.41s
+  Avg Capacity: 2.5300 bits/s/Hz
+  Avg Latency: 2.17 ms/slot
+  Avg Energy: 868.92 J
+  Avg Forgetting: -0.2177
+==================================================

@@ -16,12 +16,13 @@ FREQ = 28e9
 POWER = 1.0
 NUM_SLOTS = 200
 BATCH_SIZE = 16
-LAMBDA_EWC = 100.0  # کاهش به 100
+LAMBDA_EWC = 100.0
 NUM_EPOCHS = 5
 CHUNK_SIZE = 50
 GPU_POWER_DRAW = 400
 NOISE_POWER = 0.1
-REPLAY_BUFFER_SIZE = 50  # اندازه Replay Buffer
+REPLAY_BUFFER_SIZE = 50
+NUM_RUNS = 5  # تعداد دفعات اجرا برای تحلیل آماری
 
 TASKS = [
     {"name": "Static", "speed_range": [0, 5], "delay_spread": 30e-9, "channel": "TDL", "model": "A"},
@@ -164,13 +165,17 @@ def train_step(model, x_batch, h_batch, optimizer, fisher_dict, old_params, task
     optimizer.apply_gradients(zip(grads, model.trainable_weights))
     return loss
 
-def main():
+def main(seed):
+    tf.random.set_seed(seed)
+    np.random.seed(seed)
+    
     results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting"]}
     task_performance = []
     task_channels = {}
     old_params = {}
     fisher_dict = {}
-    replay_buffer = [[], []]  # لیست برای x و h
+    replay_buffer = [[], []]
+    task_losses = {task["name"]: [] for task in TASKS}  # برای ذخیره Loss
     
     strategy = tf.distribute.OneDeviceStrategy(device="/GPU:0")
     model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
@@ -178,7 +183,7 @@ def main():
     save_dir = "saved_models"
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
-    results_file = "results.txt"
+    results_file = f"results_seed_{seed}.txt"
     
     total_start_time = time.time()
     with open(results_file, 'w') as f:
@@ -193,7 +198,6 @@ def main():
         x = h
         dataset = tf.data.Dataset.from_tensor_slices((x, h)).batch(BATCH_SIZE)
         
-        # اضافه کردن داده‌ها به Replay Buffer
         if task_idx == 0:
             replay_buffer[0] = x[:min(BATCH_SIZE, REPLAY_BUFFER_SIZE)].numpy()
             replay_buffer[1] = h[:min(BATCH_SIZE, REPLAY_BUFFER_SIZE)].numpy()
@@ -208,7 +212,6 @@ def main():
                 replay_buffer[0][idx:idx+1] = x[:1].numpy()
                 replay_buffer[1][idx:idx+1] = h[:1].numpy()
         
-        # اطمینان از نوع داده
         replay_buffer[0] = np.array(replay_buffer[0], dtype=np.complex64)
         replay_buffer[1] = np.array(replay_buffer[1], dtype=np.complex64)
         
@@ -228,6 +231,7 @@ def main():
                     epoch_loss += loss
                     batches += 1
                 avg_epoch_loss = epoch_loss / batches
+                task_losses[task['name']].append(avg_epoch_loss.numpy())
                 print(f"Epoch {epoch+1}/{NUM_EPOCHS} for {task['name']}: Avg Loss = {avg_epoch_loss:.6f}")
             
         task_time = time.time() - task_start_time
@@ -263,9 +267,10 @@ def main():
             f.write(f"  Latency: {latency:.2f} ms/slot\n")
             f.write(f"  Energy: {energy:.2f} J\n")
             f.write(f"  Forgetting: {forgetting:.4f}\n")
+            f.write(f"  Losses: {[float(loss) for loss in task_losses[task['name']]]}\n")
             f.write(f"  Total Task Time: {task_time:.2f}s\n")
             f.write("-"*50 + "\n")
-        model.save(os.path.join(save_dir, f"model_task_{task['name']}"))
+        model.save(os.path.join(save_dir, f"model_task_{task['name']}_seed_{seed}"))
         print(f"Task {task['name']} completed")
     
     total_training_time = time.time() - total_start_time
@@ -289,10 +294,52 @@ def main():
     plt.yscale('log')
     plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45)
     plt.tight_layout()
-    plt.savefig("mobility_tasks_results_final.png")
+    plt.savefig(f"mobility_tasks_results_seed_{seed}.png")
     plt.close()
     print(f"Training completed in {total_training_time:.2f}s")
+    
+    return results
 
 if __name__ == "__main__":
     tf.get_logger().setLevel('ERROR')
-    main()
+    all_results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting"]}
+    
+    for run in range(NUM_RUNS):
+        print(f"Run {run+1}/{NUM_RUNS}")
+        results = main(seed=run)
+        for metric in all_results:
+            all_results[metric].append(results[metric])
+    
+    # محاسبه میانگین و انحراف معیار
+    summary_file = "results_summary.txt"
+    with open(summary_file, 'w') as f:
+        f.write("Final Summary Across Runs\n")
+        f.write("="*50 + "\n")
+        for metric in all_results:
+            metric_values = np.array(all_results[metric])  # (NUM_RUNS, num_tasks)
+            mean_values = np.mean(metric_values, axis=0)
+            std_values = np.std(metric_values, axis=0)
+            f.write(f"{metric.capitalize()} (Mean ± Std):\n")
+            for task_idx, task in enumerate(TASKS):
+                f.write(f"  {task['name']}: {mean_values[task_idx]:.4f} ± {std_values[task_idx]:.4f}\n")
+            f.write(f"  Overall Avg: {np.mean(mean_values):.4f} ± {np.mean(std_values):.4f}\n")
+            f.write("-"*50 + "\n")
+    
+    # گراف میانگین با خطای استاندارد
+    plt.figure(figsize=(12, 8))
+    for metric in all_results:
+        metric_values = np.array(all_results[metric])
+        mean_values = np.mean(metric_values, axis=0)
+        std_values = np.std(metric_values, axis=0)
+        plt.errorbar(range(len(TASKS)), mean_values, yerr=std_values, label=metric, marker='o', capsize=5)
+    plt.legend()
+    plt.xlabel("Task")
+    plt.ylabel("Metric Value")
+    plt.title("Performance Across Mobility Tasks (Mean ± Std)")
+    plt.grid(True)
+    plt.yscale('log')
+    plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45)
+    plt.tight_layout()
+    plt.savefig("mobility_tasks_results_mean_std.png")
+    plt.close()
+    print("Final summary and plot generated.")
