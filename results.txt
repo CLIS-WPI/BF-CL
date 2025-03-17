@@ -2,44 +2,44 @@ Beamforming Continual Learning Results
 Tasks: 5, Epochs: 5, Slots: 200, GPU Power: 400W, Noise Power: 0.1
 ==================================================
 Task Static:
-  Capacity: 4.0949 bits/s/Hz
-  Latency: 2.90 ms/slot
-  Energy: 1161.00 J
+  Capacity: 4.0924 bits/s/Hz
+  Latency: 3.13 ms/slot
+  Energy: 1250.50 J
   Forgetting: 0.0000
-  Total Task Time: 2.90s
---------------------------------------------------
-Task Pedestrian:
-  Capacity: 0.0887 bits/s/Hz
-  Latency: 1.43 ms/slot
-  Energy: 570.10 J
-  Forgetting: -0.0867
-  Total Task Time: 1.43s
---------------------------------------------------
-Task Vehicular:
-  Capacity: 4.3957 bits/s/Hz
-  Latency: 1.40 ms/slot
-  Energy: 561.31 J
-  Forgetting: -0.0306
-  Total Task Time: 1.40s
+  Total Task Time: 3.13s
 --------------------------------------------------
 Task Aerial:
-  Capacity: 5.2341 bits/s/Hz
-  Latency: 1.39 ms/slot
-  Energy: 557.14 J
-  Forgetting: -0.9546
-  Total Task Time: 1.39s
+  Capacity: 4.1046 bits/s/Hz
+  Latency: 2.10 ms/slot
+  Energy: 841.76 J
+  Forgetting: -0.1989
+  Total Task Time: 2.10s
+--------------------------------------------------
+Task Vehicular:
+  Capacity: 4.4857 bits/s/Hz
+  Latency: 2.12 ms/slot
+  Energy: 846.62 J
+  Forgetting: -0.5815
+  Total Task Time: 2.12s
+--------------------------------------------------
+Task Pedestrian:
+  Capacity: 0.0897 bits/s/Hz
+  Latency: 2.12 ms/slot
+  Energy: 849.26 J
+  Forgetting: -0.4622
+  Total Task Time: 2.12s
 --------------------------------------------------
 Task Random:
-  Capacity: 0.2653 bits/s/Hz
-  Latency: 1.40 ms/slot
-  Energy: 560.78 J
-  Forgetting: -0.8913
-  Total Task Time: 1.40s
+  Capacity: 0.0894 bits/s/Hz
+  Latency: 2.13 ms/slot
+  Energy: 853.20 J
+  Forgetting: -0.3727
+  Total Task Time: 2.13s
 --------------------------------------------------
 Summary:
-  Total Training Time: 154.02s
-  Avg Capacity: 2.8157 bits/s/Hz
-  Avg Latency: 1.71 ms/slot
-  Avg Energy: 682.07 J
-  Avg Forgetting: -0.3926
+  Total Training Time: 156.59s
+  Avg Capacity: 2.5724 bits/s/Hz
+  Avg Latency: 2.32 ms/slot
+  Avg Energy: 928.27 J
+  Avg Forgetting: -0.3231
 ==================================================

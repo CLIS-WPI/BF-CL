@@ -16,17 +16,18 @@ FREQ = 28e9
 POWER = 1.0
 NUM_SLOTS = 200
 BATCH_SIZE = 16
-LAMBDA_EWC = 10000.0
+LAMBDA_EWC = 100.0  # کاهش به 100
 NUM_EPOCHS = 5
 CHUNK_SIZE = 50
 GPU_POWER_DRAW = 400
 NOISE_POWER = 0.1
+REPLAY_BUFFER_SIZE = 50  # اندازه Replay Buffer
 
 TASKS = [
     {"name": "Static", "speed_range": [0, 5], "delay_spread": 30e-9, "channel": "TDL", "model": "A"},
-    {"name": "Pedestrian", "speed_range": [5, 10], "delay_spread": 50e-9, "channel": "Rayleigh"},
-    {"name": "Vehicular", "speed_range": [60, 120], "delay_spread": 100e-9, "channel": "TDL", "model": "C"},
     {"name": "Aerial", "speed_range": [20, 50], "delay_spread": 70e-9, "channel": "TDL", "model": "A"},
+    {"name": "Vehicular", "speed_range": [60, 120], "delay_spread": 100e-9, "channel": "TDL", "model": "C"},
+    {"name": "Pedestrian", "speed_range": [5, 10], "delay_spread": 50e-9, "channel": "Rayleigh"},
     {"name": "Random", "speed_range": [10, 100], "delay_spread": 90e-9, "channel": "Rayleigh"},
 ]
 
@@ -78,8 +79,8 @@ def compute_fisher(model, data, num_samples=50):
     return fisher
 
 def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
-    w = model(x)
-    h_adjusted = tf.transpose(h, [0, 1, 3, 2])
+    w = tf.cast(model(x), tf.complex64)
+    h_adjusted = tf.cast(tf.transpose(h, [0, 1, 3, 2]), tf.complex64)
     product = w * h_adjusted
     sum_result = tf.reduce_sum(product, axis=-1)
     abs_sum = tf.abs(sum_result)
@@ -138,9 +139,9 @@ def generate_channel(task, num_slots, task_idx=0):
             else:
                 h_t_tuple = channel_model(batch_size=BATCH_SIZE, num_time_steps=1)
                 h_t = h_t_tuple[0]
-                h_t = h_t[..., 0, :]
-                h_t = tf.squeeze(h_t, axis=-1)
-                h_t = tf.reduce_mean(h_t, axis=[2, 4])
+                h_t = h_t[..., 0, :]  # حذف time step
+                h_t = tf.squeeze(h_t, axis=-1)  # حذف محور اضافی
+                h_t = tf.reduce_mean(h_t, axis=[2, 4])  # میانگین‌گیری روی محورهای اضافی
                 h_t = tf.transpose(h_t, [0, 2, 1])
             h_chunk.append(h_t)
         h_chunks.append(tf.stack(h_chunk))
@@ -148,10 +149,17 @@ def generate_channel(task, num_slots, task_idx=0):
     print(f"Channel for {task['name']} generated in {time.time() - start_time:.2f}s")
     return h
 
-def train_step(model, x_batch, h_batch, optimizer, fisher_dict, old_params, task_idx):
+def train_step(model, x_batch, h_batch, optimizer, fisher_dict, old_params, task_idx, replay_buffer=None):
     with tf.GradientTape() as tape:
         loss = ewc_loss(model, x_batch, h_batch, fisher_dict if task_idx > 0 else None,
                        old_params, LAMBDA_EWC)
+        if replay_buffer and len(replay_buffer[0]) > 0:
+            replay_idx = tf.random.uniform(shape=[min(BATCH_SIZE, len(replay_buffer[0]))], minval=0, maxval=len(replay_buffer[0]), dtype=tf.int32)
+            replay_x = tf.cast(tf.gather(replay_buffer[0], replay_idx), tf.complex64)
+            replay_h = tf.cast(tf.gather(replay_buffer[1], replay_idx), tf.complex64)
+            replay_loss = ewc_loss(model, replay_x, replay_h, fisher_dict if task_idx > 0 else None,
+                                   old_params, LAMBDA_EWC)
+            loss += replay_loss
     grads = tape.gradient(loss, model.trainable_weights)
     optimizer.apply_gradients(zip(grads, model.trainable_weights))
     return loss
@@ -162,6 +170,7 @@ def main():
     task_channels = {}
     old_params = {}
     fisher_dict = {}
+    replay_buffer = [[], []]  # لیست برای x و h
     
     strategy = tf.distribute.OneDeviceStrategy(device="/GPU:0")
     model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
@@ -184,6 +193,25 @@ def main():
         x = h
         dataset = tf.data.Dataset.from_tensor_slices((x, h)).batch(BATCH_SIZE)
         
+        # اضافه کردن داده‌ها به Replay Buffer
+        if task_idx == 0:
+            replay_buffer[0] = x[:min(BATCH_SIZE, REPLAY_BUFFER_SIZE)].numpy()
+            replay_buffer[1] = h[:min(BATCH_SIZE, REPLAY_BUFFER_SIZE)].numpy()
+        else:
+            if len(replay_buffer[0]) < REPLAY_BUFFER_SIZE:
+                new_x = x[:min(BATCH_SIZE, REPLAY_BUFFER_SIZE - len(replay_buffer[0]))].numpy()
+                new_h = h[:min(BATCH_SIZE, REPLAY_BUFFER_SIZE - len(replay_buffer[1]))].numpy()
+                replay_buffer[0] = np.concatenate([replay_buffer[0], new_x], axis=0) if replay_buffer[0].size else new_x
+                replay_buffer[1] = np.concatenate([replay_buffer[1], new_h], axis=0) if replay_buffer[1].size else new_h
+            else:
+                idx = task_idx % REPLAY_BUFFER_SIZE
+                replay_buffer[0][idx:idx+1] = x[:1].numpy()
+                replay_buffer[1][idx:idx+1] = h[:1].numpy()
+        
+        # اطمینان از نوع داده
+        replay_buffer[0] = np.array(replay_buffer[0], dtype=np.complex64)
+        replay_buffer[1] = np.array(replay_buffer[1], dtype=np.complex64)
+        
         with strategy.scope():
             dist_dataset = strategy.experimental_distribute_dataset(dataset)
             num_batches = (x.shape[0] + BATCH_SIZE - 1) // BATCH_SIZE
@@ -195,7 +223,7 @@ def main():
                 batches = 0
                 for x_batch, h_batch in dist_dataset:
                     loss = strategy.run(train_step, args=(model, x_batch, h_batch, optimizer,
-                                                        fisher_dict, old_params, task_idx))
+                                                        fisher_dict, old_params, task_idx, replay_buffer))
                     loss = strategy.reduce(tf.distribute.ReduceOp.MEAN, loss, axis=None)
                     epoch_loss += loss
                     batches += 1
@@ -258,6 +286,7 @@ def main():
     plt.ylabel("Metric Value")
     plt.title("Performance Across Mobility Tasks")
     plt.grid(True)
+    plt.yscale('log')
     plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45)
     plt.tight_layout()
     plt.savefig("mobility_tasks_results_final.png")

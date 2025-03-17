@@ -1,0 +1,56 @@
+Most Impactful Improvements Based on Your Current Code
+Given your existing implementation, the most feasible and impactful improvements to apply are:
+
+1. Improve Capacity in Rayleigh Fading Scenarios (Pedestrian, Random)
+✅ Hybrid TDL + Rayleigh Model:
+
+Modify the generate_channel() function to combine TDL and Rayleigh fading for Pedestrian and Random tasks.
+Example: Instead of using only Rayleigh, mix a low-complexity TDL model with Rayleigh fading for better generalization.
+✅ Adaptive Noise Power:
+
+Instead of fixing NOISE_POWER = 0.1, dynamically adjust it based on task difficulty.
+Higher noise for complex channels (e.g., Random) and lower noise for structured channels.
+2. Optimize EWC Hyperparameters Dynamically
+✅ Adaptive Lambda (λ) Per Task Complexity:
+
+Instead of a fixed LAMBDA_EWC = 10000, adjust it based on:
+High λ for Static, Vehicular, Aerial (to retain previous knowledge).
+Lower λ for Pedestrian, Random (to allow more flexible learning).
+Modify ewc_loss() to adjust λ dynamically based on the task.
+✅ Gradient-Based Fisher Information Scaling:
+
+Modify compute_fisher() to scale Fisher Information based on gradient magnitude, improving task retention.
+3. Reduce Computational Overhead and Improve Energy Efficiency
+✅ Quantization-Aware Training (QAT):
+
+Convert model weights to FP16 precision to reduce GPU memory overhead.
+Modify model layers to dtype=tf.float16.
+✅ Neural Network Pruning:
+
+Remove unnecessary neurons after training with tf.keras.Model.prune().
+Test if removing the second hidden layer reduces complexity while maintaining performance.
+✅ Batch Size Optimization:
+
+Dynamically adjust batch size based on GPU memory usage and channel conditions.
+Example: Larger batch sizes for stable tasks (Static, Vehicular) and smaller batch sizes for Rayleigh fading tasks.
+4. Compare Against Baselines for Validation
+✅ Add a Non-Continual Learning Baseline:
+
+Train a separate model for each task and compare it with EWC to show the benefits of continual learning.
+Store results for both models and compare forgetting, latency, and capacity.
+✅ Include Traditional Beamforming (MMSE or Zero-Forcing):
+
+Modify the loss function (ewc_loss()) to compare against:
+MMSE beamforming weights as a baseline.
+Zero-Forcing (ZF) beamforming for high-SNR tasks.
+5. Visual Improvements for Better Interpretability
+✅ Capacity & Forgetting Heatmap:
+
+Instead of only plotting task performance, visualize forgetting over time using a heatmap.
+✅ Visualize Beamforming Vectors per Task:
+
+Save beam pattern visualizations before and after training for each task.
+Compare how EWC affects beam direction changes.
+Next Steps
+🚀 I recommend implementing Hybrid TDL + Rayleigh, Adaptive λ, and QAT (FP16 precision) first.
+Would you like me to modify your code to include these changes? 🚀
