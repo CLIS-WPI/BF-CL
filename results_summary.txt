@@ -1,39 +1,39 @@
 Final Summary Across Runs
 ==================================================
 Throughput (Mean ± Std):
-  Static: 4.0798 ± 0.0147
-  Aerial: 4.0440 ± 0.0531
-  Vehicular: 4.2106 ± 0.1823
-  Pedestrian: 4.6131 ± 0.3307
-  Random: 5.1144 ± 0.4127
-  Overall Avg: 4.4124 ± 0.1987
+  Static: 4.0842 ± 0.0095
+  Aerial: 4.0332 ± 0.0257
+  Vehicular: 4.2486 ± 0.0776
+  Pedestrian: 4.7092 ± 0.1864
+  Random: 5.2643 ± 0.2451
+  Overall Avg: 4.4679 ± 0.1089
 --------------------------------------------------
 Latency (Mean ± Std):
-  Static: 2.0484 ± 0.2484
-  Aerial: 2.1882 ± 0.0052
-  Vehicular: 2.1923 ± 0.0062
-  Pedestrian: 2.1925 ± 0.0080
-  Random: 2.1938 ± 0.0096
-  Overall Avg: 2.1630 ± 0.0555
+  Static: 2.0487 ± 0.2371
+  Aerial: 2.1760 ± 0.0067
+  Vehicular: 2.1815 ± 0.0098
+  Pedestrian: 2.1691 ± 0.0093
+  Random: 2.1773 ± 0.0104
+  Overall Avg: 2.1505 ± 0.0547
 --------------------------------------------------
 Energy (Mean ± Std):
-  Static: 819.3413 ± 99.3630
-  Aerial: 875.2603 ± 2.0877
-  Vehicular: 876.9110 ± 2.4641
-  Pedestrian: 876.9839 ± 3.2072
-  Random: 877.5033 ± 3.8524
-  Overall Avg: 865.1999 ± 22.1949
+  Static: 819.4725 ± 94.8478
+  Aerial: 870.4011 ± 2.6814
+  Vehicular: 872.5804 ± 3.9230
+  Pedestrian: 867.6490 ± 3.7057
+  Random: 870.9056 ± 4.1552
+  Overall Avg: 860.2017 ± 21.8626
 --------------------------------------------------
 Forgetting (Mean ± Std):
   Static: 0.0000 ± 0.0000
-  Aerial: -0.1282 ± 0.0380
-  Vehicular: -0.2906 ± 0.1712
-  Pedestrian: -0.7406 ± 0.4406
-  Random: -1.5440 ± 0.7674
-  Overall Avg: -0.5407 ± 0.2834
+  Aerial: -0.1313 ± 0.0156
+  Vehicular: -0.3211 ± 0.0813
+  Pedestrian: -0.8296 ± 0.2429
+  Random: -1.7533 ± 0.5027
+  Overall Avg: -0.6071 ± 0.1685
 --------------------------------------------------
 CL Metrics (Mean):
-  Forgetting: -1.5440
-  FWT: 0.3473
-  BWT: 0.8811
+  Forgetting: -1.7533
+  FWT: 0.3850
+  BWT: 0.9375
 --------------------------------------------------
