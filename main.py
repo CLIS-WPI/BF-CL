@@ -16,13 +16,13 @@ FREQ = 28e9
 POWER = 1.0
 NUM_SLOTS = 200
 BATCH_SIZE = 16
-LAMBDA_EWC = 100.0
+LAMBDA_EWC = 1000.0
 NUM_EPOCHS = 5
 CHUNK_SIZE = 50
 GPU_POWER_DRAW = 400
 NOISE_POWER = 0.1
-REPLAY_BUFFER_SIZE = 50
-NUM_RUNS = 5  # تعداد دفعات اجرا برای تحلیل آماری
+REPLAY_BUFFER_SIZE = 100
+NUM_RUNS = 5
 
 TASKS = [
     {"name": "Static", "speed_range": [0, 5], "delay_spread": 30e-9, "channel": "TDL", "model": "A"},
@@ -96,6 +96,24 @@ def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
         loss += lambda_ewc * ewc_penalty
     return loss
 
+def debug_channel_properties(task_name, h_sample):
+    """Print statistics of generated channel matrices"""
+    # Convert to numpy for analysis
+    h_sample_np = h_sample.numpy() if isinstance(h_sample, tf.Tensor) else h_sample
+    print(f"Debug for {task_name} channel:")
+    print(f"Shape: {h_sample_np.shape}")
+    print(f"Mean magnitude: {np.mean(np.abs(h_sample_np))}")
+    print(f"Std magnitude: {np.std(np.abs(h_sample_np))}")
+    print(f"Min/Max magnitude: {np.min(np.abs(h_sample_np))}, {np.max(np.abs(h_sample_np))}")
+    # Calculate condition number for the first few matrices
+    condition_numbers = []
+    for i in range(min(5, h_sample_np.shape[0])):
+        h_mat = h_sample_np[i, 0]  # Take the first slot
+        if h_mat.shape[0] == h_mat.shape[1]:  # Ensure square matrix for condition number
+            condition_numbers.append(np.linalg.cond(h_mat))
+    print(f"Condition number: {np.mean(condition_numbers) if condition_numbers else 'N/A'}")
+    print("-" * 30)
+
 def generate_channel(task, num_slots, task_idx=0):
     speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], NUM_USERS)
     avg_speed = np.mean(speeds) * 1000 / 3600
@@ -144,10 +162,19 @@ def generate_channel(task, num_slots, task_idx=0):
                 h_t = tf.squeeze(h_t, axis=-1)  # حذف محور اضافی
                 h_t = tf.reduce_mean(h_t, axis=[2, 4])  # میانگین‌گیری روی محورهای اضافی
                 h_t = tf.transpose(h_t, [0, 2, 1])
+                # نرمال‌سازی مقادیر Rayleigh
+                h_t_magnitude = tf.abs(h_t)
+                target_mean_magnitude = 0.89  # میانگین TDL
+                current_mean_magnitude = tf.reduce_mean(h_t_magnitude)
+                scaling_factor = target_mean_magnitude / (current_mean_magnitude + 1e-10)  # برای جلوگیری از تقسیم بر صفر
+                # تبدیل scaling_factor به complex64
+                scaling_factor = tf.cast(scaling_factor, tf.complex64)
+                h_t = h_t * scaling_factor
             h_chunk.append(h_t)
         h_chunks.append(tf.stack(h_chunk))
     h = tf.concat(h_chunks, axis=0)
     print(f"Channel for {task['name']} generated in {time.time() - start_time:.2f}s")
+    debug_channel_properties(task["name"], h[:5])
     return h
 
 def train_step(model, x_batch, h_batch, optimizer, fisher_dict, old_params, task_idx, replay_buffer=None):
@@ -175,7 +202,7 @@ def main(seed):
     old_params = {}
     fisher_dict = {}
     replay_buffer = [[], []]
-    task_losses = {task["name"]: [] for task in TASKS}  # برای ذخیره Loss
+    task_losses = {task["name"]: [] for task in TASKS}
     
     strategy = tf.distribute.OneDeviceStrategy(device="/GPU:0")
     model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
@@ -316,7 +343,7 @@ if __name__ == "__main__":
         f.write("Final Summary Across Runs\n")
         f.write("="*50 + "\n")
         for metric in all_results:
-            metric_values = np.array(all_results[metric])  # (NUM_RUNS, num_tasks)
+            metric_values = np.array(all_results[metric])
             mean_values = np.mean(metric_values, axis=0)
             std_values = np.std(metric_values, axis=0)
             f.write(f"{metric.capitalize()} (Mean ± Std):\n")
@@ -325,21 +352,41 @@ if __name__ == "__main__":
             f.write(f"  Overall Avg: {np.mean(mean_values):.4f} ± {np.mean(std_values):.4f}\n")
             f.write("-"*50 + "\n")
     
-    # گراف میانگین با خطای استاندارد
-    plt.figure(figsize=(12, 8))
-    for metric in all_results:
+    # گراف اول: Throughput، Latency، Energy
+    plt.figure(figsize=(12, 6))
+    for metric in ["throughput", "latency", "energy"]:
         metric_values = np.array(all_results[metric])
         mean_values = np.mean(metric_values, axis=0)
         std_values = np.std(metric_values, axis=0)
-        plt.errorbar(range(len(TASKS)), mean_values, yerr=std_values, label=metric, marker='o', capsize=5)
-    plt.legend()
+        plt.errorbar(range(len(TASKS)), mean_values, yerr=std_values, label=metric.capitalize(), marker='o', capsize=5)
+
     plt.xlabel("Task")
     plt.ylabel("Metric Value")
-    plt.title("Performance Across Mobility Tasks (Mean ± Std)")
+    plt.title("Performance Across Mobility Tasks (Mean ± Std) - Throughput, Latency, Energy")
     plt.grid(True)
-    plt.yscale('log')
+    plt.yscale('log')  # مقیاس لگاریتمی برای معیارهای بزرگ
     plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45)
+    plt.legend()
     plt.tight_layout()
-    plt.savefig("mobility_tasks_results_mean_std.png")
+    plt.savefig("performance_metrics_1.png")
     plt.close()
-    print("Final summary and plot generated.")
+
+    # گراف دوم: Forgetting
+    plt.figure(figsize=(12, 6))
+    forgetting_values = np.array(all_results["forgetting"])
+    mean_forgetting = np.mean(forgetting_values, axis=0)
+    std_forgetting = np.std(forgetting_values, axis=0)
+    plt.errorbar(range(len(TASKS)), mean_forgetting, yerr=std_forgetting, label="Forgetting", marker='o', capsize=5, color='red')
+
+    plt.xlabel("Task")
+    plt.ylabel("Forgetting Value")
+    plt.title("Performance Across Mobility Tasks (Mean ± Std) - Forgetting")
+    plt.grid(True)
+    plt.ylim(-2.5, 0)  # محدوده مناسب برای Forgetting
+    plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig("performance_metrics_2.png")
+    plt.close()
+
+    print("Final summary and plots generated.")
