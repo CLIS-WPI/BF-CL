@@ -17,12 +17,12 @@ FREQ = 28e9
 POWER = 1.0
 NUM_SLOTS = 200
 BATCH_SIZE = 16
-LAMBDA_EWC = 1000.0
+LAMBDA_EWC = 1500.0 #1000
 NUM_EPOCHS = 5
 CHUNK_SIZE = 50
 GPU_POWER_DRAW = 400
 NOISE_POWER = 0.1
-REPLAY_BUFFER_SIZE = 100
+REPLAY_BUFFER_SIZE = 200 #100
 NUM_RUNS = 5
 
 TASKS = [
@@ -44,6 +44,8 @@ class BeamformingModel(Model):
         self.dense2_imag = layers.Dense(32, activation="relu")
         self.output_real = layers.Dense(num_antennas * num_users)
         self.output_imag = layers.Dense(num_antennas * num_users)
+        self.dense1_real = layers.Dense(64, activation="relu", kernel_regularizer=tf.keras.regularizers.L2(0.001)) #Milad
+        self.dense1_imag = layers.Dense(64, activation="relu", kernel_regularizer=tf.keras.regularizers.L2(0.001)) #Milad
 
     @tf.function
     def call(self, inputs):

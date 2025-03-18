@@ -2,56 +2,56 @@ Beamforming Continual Learning Results
 Tasks: 5, Epochs: 5, Slots: 200, GPU Power: 400W, Noise Power: 0.1
 ==================================================
 Task Static:
-  Capacity: 4.0502 bits/s/Hz
-  Latency: 1.98 ms/slot
-  Energy: 792.18 J
+  Capacity: 4.0737 bits/s/Hz
+  Latency: 1.92 ms/slot
+  Energy: 768.89 J
   Forgetting: 0.0000
   FWT: 0.0000
-  Losses: [-2.4406468868255615, -3.4059131145477295, -4.370455741882324, -5.420474529266357, -6.476166248321533]
-  Total Task Time: 1.98s
+  Losses: [-2.3968417644500732, -3.4497463703155518, -4.552092552185059, -5.671060562133789, -6.796505451202393]
+  Total Task Time: 1.92s
 --------------------------------------------------
 Task Aerial:
-  Capacity: 4.0739 bits/s/Hz
-  Latency: 2.22 ms/slot
-  Energy: 886.56 J
-  Forgetting: -0.1653
-  FWT: 0.0242
-  Losses: [-4.528838157653809, -5.016465187072754, -5.530148983001709, -6.094790935516357, -6.835236549377441]
-  Total Task Time: 2.22s
+  Capacity: 3.9804 bits/s/Hz
+  Latency: 2.18 ms/slot
+  Energy: 872.27 J
+  Forgetting: -0.0884
+  FWT: 0.0061
+  Losses: [-4.701354503631592, -5.091372013092041, -5.5105414390563965, -6.043426990509033, -6.830086708068848]
+  Total Task Time: 2.18s
 --------------------------------------------------
 Task Vehicular:
-  Capacity: 4.3772 bits/s/Hz
-  Latency: 2.22 ms/slot
-  Energy: 886.18 J
-  Forgetting: -0.4742
-  FWT: 0.1020
-  Losses: [-5.453761100769043, -5.705817699432373, -6.393355369567871, -6.394715309143066, -7.182858467102051]
-  Total Task Time: 2.22s
+  Capacity: 3.9671 bits/s/Hz
+  Latency: 2.19 ms/slot
+  Energy: 877.05 J
+  Forgetting: -0.0962
+  FWT: 0.0011
+  Losses: [-5.419067859649658, -5.560694217681885, -6.147507190704346, -6.135078430175781, -6.745418071746826]
+  Total Task Time: 2.19s
 --------------------------------------------------
 Task Pedestrian:
-  Capacity: 5.0000 bits/s/Hz
-  Latency: 2.22 ms/slot
-  Energy: 889.96 J
-  Forgetting: -1.2731
-  FWT: 0.5513
-  Losses: [-6.201303958892822, -6.496497631072998, -7.229537010192871, -7.8339409828186035, -8.361527442932129]
-  Total Task Time: 2.22s
+  Capacity: 4.1698 bits/s/Hz
+  Latency: 2.19 ms/slot
+  Energy: 877.87 J
+  Forgetting: -0.2291
+  FWT: 0.0671
+  Losses: [-5.432916641235352, -5.476118087768555, -6.01435661315918, -6.330195426940918, -6.6252665519714355]
+  Total Task Time: 2.19s
 --------------------------------------------------
 Task Random:
-  Capacity: 5.6129 bits/s/Hz
-  Latency: 2.22 ms/slot
-  Energy: 888.57 J
-  Forgetting: -2.5122
-  FWT: 1.6484
-  Losses: [-7.79219388961792, -8.479024887084961, -9.361334800720215, -9.940279006958008, -10.687442779541016]
-  Total Task Time: 2.22s
+  Capacity: 4.5089 bits/s/Hz
+  Latency: 2.19 ms/slot
+  Energy: 877.36 J
+  Forgetting: -0.5613
+  FWT: 0.3011
+  Losses: [-5.60947847366333, -5.842334270477295, -6.336090564727783, -6.550544738769531, -7.065485954284668]
+  Total Task Time: 2.19s
 --------------------------------------------------
 Summary:
-  Total Training Time: 161.97s
-  Avg Capacity: 4.6228 bits/s/Hz
-  Avg Latency: 2.17 ms/slot
-  Avg Energy: 868.69 J
-  Avg Forgetting: -0.8850
-  Avg FWT: 0.5815
-  Avg BWT: 3.3923
+  Total Training Time: 160.38s
+  Avg Capacity: 4.1400 bits/s/Hz
+  Avg Latency: 2.14 ms/slot
+  Avg Energy: 854.69 J
+  Avg Forgetting: -0.1950
+  Avg FWT: 0.0938
+  Avg BWT: 1.0913
 ==================================================
