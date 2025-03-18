@@ -7,23 +7,38 @@ import time
 import gc
 import os
 
+# Set TensorFlow logging level to ERROR to suppress warnings
 tf.get_logger().setLevel('ERROR')
 
 # Initial Settings
+# Define the number of antennas at the transmitter
 NUM_ANTENNAS = 32
+# Define the number of users
 NUM_USERS = 5
+# Carrier frequency in Hz
 FREQ = 28e9
+# Transmit power in watts
 POWER = 1.0
+# Number of time slots for channel generation
 NUM_SLOTS = 200
+# Batch size for training
 BATCH_SIZE = 16
+# Elastic Weight Consolidation (EWC) regularization parameter
 LAMBDA_EWC = 1000.0
+# Number of training epochs per task
 NUM_EPOCHS = 5
+# Chunk size for channel generation
 CHUNK_SIZE = 50
+# Power consumption of GPU in watts
 GPU_POWER_DRAW = 400
+# Noise power level
 NOISE_POWER = 0.1
+# Size of the replay buffer for experience replay
 REPLAY_BUFFER_SIZE = 100
+# Number of independent runs for averaging results
 NUM_RUNS = 5
 
+# List of tasks with their parameters
 TASKS = [
     {"name": "Static", "speed_range": [0, 5], "delay_spread": 30e-9, "channel": "TDL", "model": "A"},
     {"name": "Aerial", "speed_range": [20, 50], "delay_spread": 70e-9, "channel": "TDL", "model": "A"},
@@ -32,41 +47,58 @@ TASKS = [
     {"name": "Random", "speed_range": [10, 100], "delay_spread": 90e-9, "channel": "Rayleigh"},
 ]
 
+# Define the BeamformingModel class for neural network-based beamforming
 class BeamformingModel(Model):
     def __init__(self, num_antennas, num_users):
         super().__init__()
         self.num_antennas = num_antennas
         self.num_users = num_users
+        # First dense layer for real part
         self.dense1_real = layers.Dense(64, activation="relu")
+        # First dense layer for imaginary part
         self.dense1_imag = layers.Dense(64, activation="relu")
+        # Second dense layer for real part
         self.dense2_real = layers.Dense(32, activation="relu")
+        # Second dense layer for imaginary part
         self.dense2_imag = layers.Dense(32, activation="relu")
+        # Output layer for real part
         self.output_real = layers.Dense(num_antennas * num_users)
+        # Output layer for imaginary part
         self.output_imag = layers.Dense(num_antennas * num_users)
 
-    @tf.function
+    @tf.function  # Compile function for performance
     def call(self, inputs):
+        # Get batch size and number of slots per batch
         batch_size, slots_per_batch = tf.shape(inputs)[0], tf.shape(inputs)[1]
+        # Flatten the input for dense layers
         inputs_flat = tf.reshape(inputs, [batch_size * slots_per_batch, self.num_antennas * self.num_users])
+        # Separate real and imaginary parts
         real_inputs = tf.cast(tf.math.real(inputs_flat), tf.float32)
         imag_inputs = tf.cast(tf.math.imag(inputs_flat), tf.float32)
+        # Forward pass through dense layers
         real_x = self.dense1_real(real_inputs)
         imag_x = self.dense1_imag(imag_inputs)
         real_x = self.dense2_real(real_x)
         imag_x = self.dense2_imag(imag_x)
         real_output = self.output_real(real_x)
         imag_output = self.output_imag(imag_x)
+        # Combine real and imaginary parts into complex weights
         w = tf.complex(real_output, imag_output)
+        # Reshape weights to match batch, slots, users, and antennas
         w = tf.reshape(w, [batch_size, slots_per_batch, self.num_users, self.num_antennas])
+        # Normalize weights to enforce power constraint
         norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-1, keepdims=True)
         norm = tf.cast(tf.sqrt(norm_squared), dtype=tf.complex64)
         power = tf.complex(tf.sqrt(POWER), 0.0)
         w = w / norm * power
         return w
 
+# Compute Fisher Information Matrix for EWC
 def compute_fisher(model, data, num_samples=50):
+    # Initialize Fisher dictionary with zeros
     fisher = {w.name: tf.zeros_like(w) for w in model.trainable_weights}
     data_size = tf.shape(data)[0]
+    # Compute Fisher information using random samples
     for _ in range(num_samples):
         idx = tf.random.uniform(shape=[BATCH_SIZE], minval=0, maxval=data_size, dtype=tf.int32)
         x_batch = tf.gather(data, idx)
@@ -79,14 +111,19 @@ def compute_fisher(model, data, num_samples=50):
                 fisher[w.name] += g**2 / num_samples
     return fisher
 
+# Define EWC loss function
 def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
+    # Compute beamforming weights
     w = tf.cast(model(x), tf.complex64)
+    # Adjust channel matrix for multiplication
     h_adjusted = tf.cast(tf.transpose(h, [0, 1, 3, 2]), tf.complex64)
+    # Compute signal power
     product = w * h_adjusted
     sum_result = tf.reduce_sum(product, axis=-1)
     abs_sum = tf.abs(sum_result)
     signal_power = tf.reduce_mean(abs_sum**2)
     loss = -signal_power
+    # Add EWC penalty if fisher information is provided
     if fisher:
         ewc_penalty = 0.0
         for w_var in model.trainable_weights:
@@ -96,6 +133,7 @@ def ewc_loss(model, x, h, fisher, old_params, lambda_ewc):
         loss += lambda_ewc * ewc_penalty
     return loss
 
+# Debug function to print channel properties
 def debug_channel_properties(task_name, h_sample):
     """Print statistics of generated channel matrices"""
     # Convert to numpy for analysis
@@ -114,11 +152,14 @@ def debug_channel_properties(task_name, h_sample):
     print(f"Condition number: {np.mean(condition_numbers) if condition_numbers else 'N/A'}")
     print("-" * 30)
 
+# Generate channel matrix for a given task
 def generate_channel(task, num_slots, task_idx=0):
+    # Generate random speeds for users
     speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], NUM_USERS)
-    avg_speed = np.mean(speeds) * 1000 / 3600
-    doppler_freq = avg_speed * FREQ / 3e8
+    avg_speed = np.mean(speeds) * 1000 / 3600  # Convert to m/s
+    doppler_freq = avg_speed * FREQ / 3e8  # Calculate Doppler frequency
     
+    # Select appropriate channel model based on task
     if task["channel"] == "TDL":
         channel_model = sn.channel.tr38901.TDL(
             model=task["model"],
@@ -141,6 +182,7 @@ def generate_channel(task, num_slots, task_idx=0):
     start_time = time.time()
     print(f"Generating channel for {task['name']}...")
     
+    # Generate channel in chunks to manage memory
     for chunk_start in range(0, num_slots, CHUNK_SIZE):
         chunk_end = min(chunk_start + CHUNK_SIZE, num_slots)
         h_chunk = []
@@ -158,16 +200,15 @@ def generate_channel(task, num_slots, task_idx=0):
             else:
                 h_t_tuple = channel_model(batch_size=BATCH_SIZE, num_time_steps=1)
                 h_t = h_t_tuple[0]
-                h_t = h_t[..., 0, :]  # حذف time step
-                h_t = tf.squeeze(h_t, axis=-1)  # حذف محور اضافی
-                h_t = tf.reduce_mean(h_t, axis=[2, 4])  # میانگین‌گیری روی محورهای اضافی
+                h_t = h_t[..., 0, :]  # Remove time step
+                h_t = tf.squeeze(h_t, axis=-1)  # Remove extra axis
+                h_t = tf.reduce_mean(h_t, axis=[2, 4])  # Average over extra axes
                 h_t = tf.transpose(h_t, [0, 2, 1])
-                # نرمال‌سازی مقادیر Rayleigh
+                # Normalize Rayleigh channel magnitudes
                 h_t_magnitude = tf.abs(h_t)
-                target_mean_magnitude = 0.89  # میانگین TDL
+                target_mean_magnitude = 0.89  # Target mean magnitude (TDL average)
                 current_mean_magnitude = tf.reduce_mean(h_t_magnitude)
-                scaling_factor = target_mean_magnitude / (current_mean_magnitude + 1e-10)  # برای جلوگیری از تقسیم بر صفر
-                # تبدیل scaling_factor به complex64
+                scaling_factor = target_mean_magnitude / (current_mean_magnitude + 1e-10)  # Avoid division by zero
                 scaling_factor = tf.cast(scaling_factor, tf.complex64)
                 h_t = h_t * scaling_factor
             h_chunk.append(h_t)
@@ -177,10 +218,13 @@ def generate_channel(task, num_slots, task_idx=0):
     debug_channel_properties(task["name"], h[:5])
     return h
 
+# Training step for a single batch
 def train_step(model, x_batch, h_batch, optimizer, fisher_dict, old_params, task_idx, replay_buffer=None):
     with tf.GradientTape() as tape:
+        # Compute loss with EWC regularization
         loss = ewc_loss(model, x_batch, h_batch, fisher_dict if task_idx > 0 else None,
                        old_params, LAMBDA_EWC)
+        # Add replay buffer loss if available
         if replay_buffer and len(replay_buffer[0]) > 0:
             replay_idx = tf.random.uniform(shape=[min(BATCH_SIZE, len(replay_buffer[0]))], minval=0, maxval=len(replay_buffer[0]), dtype=tf.int32)
             replay_x = tf.cast(tf.gather(replay_buffer[0], replay_idx), tf.complex64)
@@ -192,21 +236,33 @@ def train_step(model, x_batch, h_batch, optimizer, fisher_dict, old_params, task
     optimizer.apply_gradients(zip(grads, model.trainable_weights))
     return loss
 
+# Main function to run the continual learning experiment
 def main(seed):
+    # Set random seeds for reproducibility
     tf.random.set_seed(seed)
     np.random.seed(seed)
     
+    # Initialize dictionaries to store results
     results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting"]}
-    task_performance = []
-    task_channels = {}
-    old_params = {}
-    fisher_dict = {}
-    replay_buffer = [[], []]
-    task_losses = {task["name"]: [] for task in TASKS}
+    task_performance = []  # Store final performance of each task
+    task_initial_performance = []  # Store initial performance before training
+    task_final_performance = []  # Store final performance after all tasks
+    task_channels = {}  # Store channel matrices for each task
+    old_params = {}  # Store old model parameters for EWC
+    fisher_dict = {}  # Store Fisher information for EWC
+    replay_buffer = [[], []]  # Buffer for experience replay
+    task_losses = {task["name"]: [] for task in TASKS}  # Store loss per task
+    fwt_values = []  # Store FWT for each task
     
+    # Use single GPU strategy
     strategy = tf.distribute.OneDeviceStrategy(device="/GPU:0")
-    model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
-    optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+    with strategy.scope():
+        # Initialize model and optimizer within strategy scope
+        model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
+        dummy_input = tf.zeros((BATCH_SIZE, 1, NUM_ANTENNAS, NUM_USERS), dtype=tf.complex64)
+        model(dummy_input)
+        optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+    
     save_dir = "saved_models"
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -218,12 +274,26 @@ def main(seed):
         f.write(f"Tasks: {len(TASKS)}, Epochs: {NUM_EPOCHS}, Slots: {NUM_SLOTS}, GPU Power: {GPU_POWER_DRAW}W, Noise Power: {NOISE_POWER}\n")
         f.write("="*50 + "\n")
     
+    # Create and build random model for FWT baseline
+    random_model = BeamformingModel(NUM_ANTENNAS, NUM_USERS)
+    random_model(dummy_input)
+    random_model.set_weights([tf.random.normal(w.shape) for w in model.get_weights()])
+    
     for task_idx, task in enumerate(TASKS):
         print(f"Starting Task {task['name']} ({task_idx+1}/{len(TASKS)})")
         h = generate_channel(task, NUM_SLOTS, task_idx)
         task_channels[task_idx] = h
         x = h
         dataset = tf.data.Dataset.from_tensor_slices((x, h)).batch(BATCH_SIZE)
+        
+        # Compute initial performance for FWT
+        initial_w = model(x)
+        initial_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(initial_w * tf.transpose(h, [0, 1, 3, 2]), axis=-1))**2).numpy()
+        random_w = random_model(x)
+        random_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(random_w * tf.transpose(h, [0, 1, 3, 2]), axis=-1))**2).numpy()
+        fwt = (initial_throughput - random_throughput) / (random_throughput + 1e-10) if task_idx > 0 else 0.0
+        fwt_values.append(fwt)
+        task_initial_performance.append(initial_throughput)
         
         if task_idx == 0:
             replay_buffer[0] = x[:min(BATCH_SIZE, REPLAY_BUFFER_SIZE)].numpy()
@@ -258,7 +328,7 @@ def main(seed):
                     epoch_loss += loss
                     batches += 1
                 avg_epoch_loss = epoch_loss / batches
-                task_losses[task['name']].append(avg_epoch_loss.numpy())
+                task_losses[task["name"]].append(avg_epoch_loss.numpy())
                 print(f"Epoch {epoch+1}/{NUM_EPOCHS} for {task['name']}: Avg Loss = {avg_epoch_loss:.6f}")
             
         task_time = time.time() - task_start_time
@@ -294,12 +364,24 @@ def main(seed):
             f.write(f"  Latency: {latency:.2f} ms/slot\n")
             f.write(f"  Energy: {energy:.2f} J\n")
             f.write(f"  Forgetting: {forgetting:.4f}\n")
+            f.write(f"  FWT: {fwt:.4f}\n")
             f.write(f"  Losses: {[float(loss) for loss in task_losses[task['name']]]}\n")
             f.write(f"  Total Task Time: {task_time:.2f}s\n")
             f.write("-"*50 + "\n")
         model.save(os.path.join(save_dir, f"model_task_{task['name']}_seed_{seed}"))
         print(f"Task {task['name']} completed")
     
+    # Compute Backward Transfer (BWT) after all tasks
+    bwt = 0.0
+    if len(task_performance) > 1:
+        final_performances = []
+        for past_idx in range(len(TASKS)-1):
+            past_h = task_channels[past_idx]
+            past_w = model(past_h)
+            past_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(past_w * tf.transpose(past_h, [0, 1, 3, 2]), axis=-1))**2).numpy()
+            final_performances.append(past_throughput - task_initial_performance[past_idx])
+        bwt = np.mean(final_performances) if final_performances else 0.0
+
     total_training_time = time.time() - total_start_time
     with open(results_file, 'a') as f:
         f.write("Summary:\n")
@@ -308,36 +390,32 @@ def main(seed):
         f.write(f"  Avg Latency: {np.mean(results['latency']):.2f} ms/slot\n")
         f.write(f"  Avg Energy: {np.mean(results['energy']):.2f} J\n")
         f.write(f"  Avg Forgetting: {np.mean(results['forgetting']):.4f}\n")
+        f.write(f"  Avg FWT: {np.mean(fwt_values[1:]):.4f}\n")  # Average FWT for tasks after the first
+        f.write(f"  Avg BWT: {bwt:.4f}\n")
         f.write("="*50 + "\n")
     
-    plt.figure(figsize=(12, 8))
-    for metric in results:
-        plt.plot(results[metric], label=metric, marker='o')
-    plt.legend()
-    plt.xlabel("Task")
-    plt.ylabel("Metric Value")
-    plt.title("Performance Across Mobility Tasks")
-    plt.grid(True)
-    plt.yscale('log')
-    plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45)
-    plt.tight_layout()
-    plt.savefig(f"mobility_tasks_results_seed_{seed}.png")
-    plt.close()
-    print(f"Training completed in {total_training_time:.2f}s")
-    
-    return results
+    return results, task_initial_performance, task_performance, fwt_values
 
 if __name__ == "__main__":
+    # Set TensorFlow logging level to ERROR
     tf.get_logger().setLevel('ERROR')
+    # Initialize dictionary to store results across all runs
     all_results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting"]}
+    all_initial_performances = []  # Store initial performances across all runs
+    all_task_performances = []     # Store final performances across all runs
+    all_fwt_values = []            # Store FWT values across all runs
     
+    # Run the experiment multiple times for statistical analysis
     for run in range(NUM_RUNS):
         print(f"Run {run+1}/{NUM_RUNS}")
-        results = main(seed=run)
+        results, initial_performance, task_performance, fwt_values = main(seed=run)
         for metric in all_results:
             all_results[metric].append(results[metric])
+        all_initial_performances.append(initial_performance)
+        all_task_performances.append(task_performance)
+        all_fwt_values.append(fwt_values)
     
-    # محاسبه میانگین و انحراف معیار
+    # Calculate mean and standard deviation across runs
     summary_file = "results_summary.txt"
     with open(summary_file, 'w') as f:
         f.write("Final Summary Across Runs\n")
@@ -351,8 +429,16 @@ if __name__ == "__main__":
                 f.write(f"  {task['name']}: {mean_values[task_idx]:.4f} ± {std_values[task_idx]:.4f}\n")
             f.write(f"  Overall Avg: {np.mean(mean_values):.4f} ± {np.mean(std_values):.4f}\n")
             f.write("-"*50 + "\n")
+        # Summary for CL metrics
+        mean_fwt = np.mean(np.array(all_fwt_values), axis=0)
+        mean_bwt = np.mean([r for r in np.mean(np.array(all_task_performances), axis=0) - np.mean(np.array(all_initial_performances), axis=0) if r is not None])
+        f.write("CL Metrics (Mean):\n")
+        f.write(f"  Forgetting: {np.mean(np.array(all_results['forgetting']), axis=0)[-1]:.4f}\n")
+        f.write(f"  FWT: {np.mean(mean_fwt[1:]):.4f}\n")  # Average FWT for tasks after the first
+        f.write(f"  BWT: {mean_bwt:.4f}\n")
+        f.write("-"*50 + "\n")
     
-    # گراف اول: Throughput، Latency، Energy
+    # Graph 1: Throughput, Latency, Energy
     plt.figure(figsize=(12, 6))
     for metric in ["throughput", "latency", "energy"]:
         metric_values = np.array(all_results[metric])
@@ -364,14 +450,14 @@ if __name__ == "__main__":
     plt.ylabel("Metric Value")
     plt.title("Performance Across Mobility Tasks (Mean ± Std) - Throughput, Latency, Energy")
     plt.grid(True)
-    plt.yscale('log')  # مقیاس لگاریتمی برای معیارهای بزرگ
+    plt.yscale('log')  # Logarithmic scale for better visualization
     plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45)
     plt.legend()
     plt.tight_layout()
     plt.savefig("performance_metrics_1.png")
     plt.close()
 
-    # گراف دوم: Forgetting
+    # Graph 2: Forgetting
     plt.figure(figsize=(12, 6))
     forgetting_values = np.array(all_results["forgetting"])
     mean_forgetting = np.mean(forgetting_values, axis=0)
@@ -382,11 +468,30 @@ if __name__ == "__main__":
     plt.ylabel("Forgetting Value")
     plt.title("Performance Across Mobility Tasks (Mean ± Std) - Forgetting")
     plt.grid(True)
-    plt.ylim(-2.5, 0)  # محدوده مناسب برای Forgetting
+    plt.ylim(-2.5, 0)  # Suitable range for forgetting values
     plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45)
     plt.legend()
     plt.tight_layout()
     plt.savefig("performance_metrics_2.png")
     plt.close()
 
-    print("Final summary and plots generated.")
+    # Graph 3: Continual Learning Metrics (Forgetting, FWT, BWT)
+    plt.figure(figsize=(12, 6))
+    cl_metrics = {
+        "Forgetting": np.mean(np.array(all_results["forgetting"]), axis=0)[-1],  # مقدار آخر
+        "FWT": np.mean(np.array(all_fwt_values), axis=0)[-1],  # مقدار آخر
+        "BWT": np.mean([r for r in np.mean(np.array(all_task_performances), axis=0) - np.mean(np.array(all_initial_performances), axis=0) if r is not None])
+    }
+    metrics_values = list(cl_metrics.values())
+    plt.bar(range(len(cl_metrics)), metrics_values, color=['red', 'blue', 'green'])
+    plt.ylim(-3, 2)
+    for i, v in enumerate(metrics_values):
+        plt.text(i, v + 0.1, str(round(v, 2)), ha='center')
+    plt.xlabel("Metric")
+    plt.ylabel("Value")
+    plt.title("Continual Learning Metrics (Mean Across Runs)")
+    plt.xticks(range(len(cl_metrics)), list(cl_metrics.keys()), rotation=45)
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("cl_metrics.png")
+    plt.close()
