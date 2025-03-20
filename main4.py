@@ -6,6 +6,7 @@ from tensorflow.keras import layers, Model
 import time
 import gc
 import os
+
 # Suppress TensorFlow warnings
 tf.get_logger().setLevel('ERROR')
 
@@ -15,11 +16,11 @@ NUM_USERS = 5
 FREQ = 28e9
 POWER = 1.0
 NUM_SLOTS = 200
-BATCH_SIZE = 18
-LAMBDA_SI = 50.0  # کاهش از 100.0 به 50.0
+BATCH_SIZE = 32
+LAMBDA_SI = 65.0  # Consider increasing to 200 or 500 if forgetting is too negative
 NUM_EPOCHS = 4
 CHUNK_SIZE = 50
-GPU_POWER_DRAW = 400
+GPU_POWER_DRAW = 400  # Placeholder; consider real measurement with pynvml
 NOISE_POWER = 0.1
 REPLAY_BUFFER_SIZE = 200
 NUM_RUNS = 10
@@ -39,10 +40,10 @@ class BeamformingModelWithSI(Model):
         super().__init__()
         self.num_antennas = num_antennas
         self.num_users = num_users
-        self.dense1_real = layers.Dense(128, activation="relu", kernel_regularizer=tf.keras.regularizers.L2(0.001))  # افزایش از 64 به 128
-        self.dense1_imag = layers.Dense(128, activation="relu", kernel_regularizer=tf.keras.regularizers.L2(0.001))  # افزایش از 64 به 128
-        self.dense2_real = layers.Dense(64, activation="relu")  # افزایش از 32 به 64
-        self.dense2_imag = layers.Dense(64, activation="relu")  # افزایش از 32 به 64
+        self.dense1_real = layers.Dense(128, activation="relu", kernel_regularizer=tf.keras.regularizers.L2(0.001))
+        self.dense1_imag = layers.Dense(128, activation="relu", kernel_regularizer=tf.keras.regularizers.L2(0.001))
+        self.dense2_real = layers.Dense(64, activation="relu")
+        self.dense2_imag = layers.Dense(64, activation="relu")
         self.output_real = layers.Dense(num_antennas * num_users)
         self.output_imag = layers.Dense(num_antennas * num_users)
         self.omega = {}
@@ -72,14 +73,13 @@ class BeamformingModelWithSI(Model):
         real_output = self.output_real(real_x)
         imag_output = self.output_imag(imag_x)
 
-        # تبدیل real_output و imag_output به float32 قبل از استفاده در tf.complex
         real_output = tf.cast(real_output, tf.float32)
         imag_output = tf.cast(imag_output, tf.float32)
 
         w = tf.complex(real_output, imag_output)
         w = tf.reshape(w, [batch_size, slots_per_batch, self.num_users, self.num_antennas])
         norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-1, keepdims=True)
-        norm = tf.cast(tf.sqrt(norm_squared + 1e-10), dtype=tf.complex64)  # Add epsilon to prevent division by zero
+        norm = tf.cast(tf.sqrt(norm_squared + 1e-10), dtype=tf.complex64)
         power = tf.complex(tf.sqrt(POWER), 0.0)
         w = w / norm * power
         return w
@@ -116,11 +116,17 @@ class VAE(Model):
         super().__init__()
         self.encoder = tf.keras.Sequential([
             layers.Flatten(),
+            layers.Dense(256, activation="relu"),
+            layers.BatchNormalization(),
             layers.Dense(128, activation="relu"),
-            layers.Dense(64)  # Latent space dimension
+            layers.BatchNormalization(),
+            layers.Dense(64)
         ])
         self.decoder = tf.keras.Sequential([
             layers.Dense(128, activation="relu"),
+            layers.BatchNormalization(),
+            layers.Dense(256, activation="relu"),
+            layers.BatchNormalization(),
             layers.Dense(input_dim, activation="linear"),
             layers.Reshape([NUM_ANTENNAS, NUM_USERS])
         ])
@@ -129,8 +135,8 @@ class VAE(Model):
         z = self.encoder(inputs)
         return self.decoder(z)
 
-    def train_vae(self, data, epochs=10):
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.002)
+    def train_vae(self, data, epochs=30):
+        optimizer = tf.keras.optimizers.Adam(learning_rate=0.0015)
         for epoch in range(epochs):
             with tf.GradientTape() as tape:
                 reconstructed = self(data)
@@ -139,12 +145,10 @@ class VAE(Model):
             optimizer.apply_gradients(zip(grads, self.trainable_weights))
             print(f"VAE Epoch {epoch+1}/{epochs}, Loss: {loss.numpy():.4f}")
 
-# SI Loss Function
+# SI Loss Function (Fixed)
 def si_loss(model, x, h, lambda_si=2000.0):
     w = tf.cast(model(x), tf.complex64)
-    w_real = tf.math.real(w)
-    w_imag = tf.math.imag(w)
-    if tf.reduce_any(tf.math.is_nan(w_real)) or tf.reduce_any(tf.math.is_nan(w_imag)):
+    if tf.reduce_any(tf.math.is_nan(tf.math.real(w))) or tf.reduce_any(tf.math.is_nan(tf.math.imag(w))):
         print("Warning: NaN detected in w")
     
     rank = tf.rank(h)
@@ -152,42 +156,15 @@ def si_loss(model, x, h, lambda_si=2000.0):
         h = tf.expand_dims(h, axis=1)
     
     h_adjusted = tf.cast(tf.transpose(h, [0, 1, 3, 2]), tf.complex64)
-    h_real = tf.math.real(h_adjusted)
-    h_imag = tf.math.imag(h_adjusted)
-    if tf.reduce_any(tf.math.is_nan(h_real)) or tf.reduce_any(tf.math.is_nan(h_imag)):
-        print("Warning: NaN detected in h_adjusted")
-    
     product = w * h_adjusted
-    product_real = tf.math.real(product)
-    product_imag = tf.math.imag(product)
-    if tf.reduce_any(tf.math.is_nan(product_real)) or tf.reduce_any(tf.math.is_nan(product_imag)):
-        print("Warning: NaN detected in product")
-    
     sum_result = tf.reduce_sum(product, axis=-1)
-    sum_result_real = tf.math.real(sum_result)
-    sum_result_imag = tf.math.imag(sum_result)
-    if tf.reduce_any(tf.math.is_nan(sum_result_real)) or tf.reduce_any(tf.math.is_nan(sum_result_imag)):
-        print("Warning: NaN detected in sum_result")
-    
-    abs_sum = tf.abs(sum_result)
-    if tf.reduce_any(tf.math.is_nan(abs_sum)):
-        print("Warning: NaN detected in abs_sum")
-    
-    signal_power = tf.reduce_mean(abs_sum**2)
-    if tf.reduce_any(tf.math.is_nan(signal_power)):
-        print("Warning: NaN detected in signal_power")
-    
+    signal_power = tf.reduce_mean(tf.abs(sum_result)**2)
     loss = -signal_power
     si_penalty = model.si_loss(lambda_si)
-    si_penalty_value = si_penalty.numpy() if isinstance(si_penalty, tf.Tensor) else si_penalty
+    # Safely handle si_penalty whether it's a tensor or float
+    si_penalty_value = si_penalty.numpy() if hasattr(si_penalty, 'numpy') else float(si_penalty)
     print(f"SI Penalty: {si_penalty_value:.6f}")
-    if tf.reduce_any(tf.math.is_nan(si_penalty)):
-        print("Warning: NaN detected in si_penalty")
-    
     loss += si_penalty
-    if tf.reduce_any(tf.math.is_nan(loss)):
-        print("Warning: NaN detected in loss")
-    
     return loss
 
 # Debug Channel Properties
@@ -195,22 +172,16 @@ def debug_channel_properties(task_name, h_sample):
     h_sample_np = h_sample.numpy() if isinstance(h_sample, tf.Tensor) else h_sample
     print(f"Debug for {task_name} channel:")
     print(f"Shape: {h_sample_np.shape}")
-    print(f"Mean magnitude: {np.mean(np.abs(h_sample_np))}")
-    print(f"Std magnitude: {np.std(np.abs(h_sample_np))}")
-    print(f"Min/Max magnitude: {np.min(np.abs(h_sample_np))}, {np.max(np.abs(h_sample_np))}")
-    condition_numbers = []
-    for i in range(min(5, h_sample_np.shape[0])):
-        h_mat = h_sample_np[i, 0]
-        if h_mat.shape[0] == h_mat.shape[1]:
-            condition_numbers.append(np.linalg.cond(h_mat))
-    print(f"Condition number: {np.mean(condition_numbers) if condition_numbers else 'N/A'}")
+    print(f"Mean magnitude: {np.mean(np.abs(h_sample_np)):.4f}")
+    print(f"Std magnitude: {np.std(np.abs(h_sample_np)):.4f}")
+    print(f"Min/Max magnitude: {np.min(np.abs(h_sample_np)):.4f}, {np.max(np.abs(h_sample_np)):.4f}")
     print("-" * 30)
 
 # Generate Channel Data
 def generate_channel(task, num_slots, task_idx=0):
     speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], NUM_USERS)
-    avg_speed = np.mean(speeds) * 1000 / 3600  # Convert km/h to m/s
-    doppler_freq = avg_speed * FREQ / 3e8  # Doppler frequency in Hz
+    avg_speed = np.mean(speeds) * 1000 / 3600  # km/h to m/s
+    doppler_freq = avg_speed * FREQ / 3e8  # Hz
     
     if task["channel"] == "TDL":
         channel_model = sn.channel.tr38901.TDL(
@@ -268,10 +239,7 @@ def generate_channel(task, num_slots, task_idx=0):
             
             expected_shape = (BATCH_SIZE, NUM_ANTENNAS, NUM_USERS)
             if h_t.shape != expected_shape:
-                raise ValueError(
-                    f"Unexpected shape for h_t in task {task['name']}: "
-                    f"got {h_t.shape}, expected {expected_shape}"
-                )
+                raise ValueError(f"Unexpected shape for h_t in task {task['name']}: got {h_t.shape}, expected {expected_shape}")
             
             h_chunk.append(h_t)
         
@@ -333,10 +301,6 @@ def main(seed):
         f.write(f"Tasks: {len(TASKS)}, Epochs: {NUM_EPOCHS}, Slots: {NUM_SLOTS}, GPU Power: {GPU_POWER_DRAW}W, Noise Power: {NOISE_POWER}\n")
         f.write("="*50 + "\n")
     
-    random_model = BeamformingModelWithSI(NUM_ANTENNAS, NUM_USERS)
-    random_model(dummy_input)
-    random_model.set_weights([tf.random.normal(w.shape) for w in model.get_weights()])
-    
     for task_idx, task in enumerate(TASKS):
         print(f"Starting Task {task['name']} ({task_idx+1}/{len(TASKS)})")
         h = generate_channel(task, NUM_SLOTS, task_idx)
@@ -346,14 +310,14 @@ def main(seed):
         
         vae = VAE(NUM_ANTENNAS * NUM_USERS)
         vae_input = tf.reshape(tf.cast(x, tf.float32), [-1, NUM_ANTENNAS, NUM_USERS])
-        vae.train_vae(vae_input, epochs=30)
+        vae.train_vae(vae_input, epochs=28)
         vae_models[task_idx] = vae
         
         if task_idx > 0:
             replay_x, replay_h = [], []
             for past_idx in range(task_idx):
                 past_h = task_channels[past_idx]
-                indices = np.random.choice(past_h.shape[0], size=24, replace=False)  # کاهش از 32 به 24
+                indices = np.random.choice(past_h.shape[0], size=80, replace=False)
                 sampled_h = tf.gather(past_h, indices)
                 replay_x.append(sampled_h)
                 replay_h.append(sampled_h)
@@ -363,11 +327,21 @@ def main(seed):
         replay_buffer[0] = np.array(replay_buffer[0], dtype=np.complex64)
         replay_buffer[1] = np.array(replay_buffer[1], dtype=np.complex64)
         
+        with strategy.scope():
+            if task_idx == 0:
+                optimizer = tf.keras.optimizers.Adam(learning_rate=0.002)
+            else:
+                optimizer = tf.keras.optimizers.Adam(learning_rate=0.0015)
+        
         initial_w = model(x)
         initial_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(initial_w * tf.transpose(h, [0, 1, 3, 2]), axis=-1))**2).numpy()
-        random_w = random_model(x)
-        random_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(random_w * tf.transpose(h, [0, 1, 3, 2]), axis=-1))**2).numpy()
-        fwt = (initial_throughput - random_throughput) / (random_throughput + 1e-10) if task_idx > 0 else 0.0
+        if task_idx > 0:
+            past_h = task_channels[task_idx - 1]
+            past_w = model(past_h)
+            past_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(past_w * tf.transpose(past_h, [0, 1, 3, 2]), axis=-1))**2).numpy()
+            fwt = (initial_throughput - past_throughput) / (past_throughput + 1e-10)
+        else:
+            fwt = 0.0
         fwt_values.append(fwt)
         task_initial_performance.append(initial_throughput)
         
@@ -404,7 +378,7 @@ def main(seed):
                 past_h = task_channels[past_idx]
                 past_w = model(past_h)
                 past_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(past_w * tf.transpose(past_h, [0, 1, 3, 2]), axis=-1))**2).numpy()
-                forgetting_delta = task_performance[past_idx] - past_throughput
+                forgetting_delta = task_initial_performance[past_idx] - past_throughput
                 past_performances.append(forgetting_delta)
             forgetting = np.mean(past_performances) if past_performances else 0.0
         
@@ -441,7 +415,7 @@ def main(seed):
             past_h = task_channels[past_idx]
             past_w = model(past_h)
             past_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(past_w * tf.transpose(past_h, [0, 1, 3, 2]), axis=-1))**2).numpy()
-            final_performances.append(past_throughput - task_initial_performance[past_idx])
+            final_performances.append(task_initial_performance[past_idx] - past_throughput)
         bwt = np.mean(final_performances) if final_performances else 0.0
 
     total_training_time = time.time() - total_start_time
@@ -511,7 +485,7 @@ if __name__ == "__main__":
         plt.yscale('log')
         plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45, fontsize=8)
         plt.legend(fontsize=8)
-        plt.subplots_adjust(bottom=0.35, top=0.85)
+        plt.subplots_adjust(bottom=0.35, top=0.85)  # Fixed syntax
         plt.tight_layout()
         plt.savefig("performance_metrics_1.png")
         plt.close()
@@ -529,7 +503,7 @@ if __name__ == "__main__":
         plt.ylim(-2.5, 0)
         plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45, fontsize=8)
         plt.legend(fontsize=8)
-        plt.subplots_adjust(bottom=0.35, top=0.85)
+        plt.subplots_adjust(bottom=0.35, top=0.85)  # Fixed syntax
         plt.tight_layout()
         plt.savefig("performance_metrics_2.png")
         plt.close()
@@ -539,7 +513,7 @@ if __name__ == "__main__":
         cl_metrics = {
             "Forgetting": np.mean(np.array(all_results["forgetting"]), axis=0)[-1],
             "FWT": np.mean(np.array(all_fwt_values), axis=0)[1:].mean(),
-            "BWT": np.mean([r for r in np.mean(np.array(all_task_performances), axis=0) - np.mean(np.array(all_initial_performances), axis=0) if r is not None])
+            "BWT": mean_bwt
         }
         metrics_values = list(cl_metrics.values())
         plt.bar(range(len(cl_metrics)), metrics_values, color=['red', 'blue', 'green'])
@@ -554,7 +528,7 @@ if __name__ == "__main__":
         plt.text(0.5, -2.7, "Continual Learning Metrics: Forgetting (red) shows accuracy loss on previous tasks, "
             "FWT (blue) indicates forward transfer to new tasks, and BWT (green) reflects backward transfer to previous tasks.",
             ha='center', transform=plt.gca().get_xaxis_transform(), fontsize=8)
-        plt.subplots_adjust(bottom=0.35, top=0.85)
+        plt.subplots_adjust(bottom=0.35, top=0.85)  # Fixed syntax
         plt.tight_layout()
         plt.savefig("cl_metrics.png")
         plt.close()
