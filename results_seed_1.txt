@@ -1,38 +1,76 @@
 Task Static:
-  throughput: 0.0527
-  latency: 7.7541
-  energy: 2481.3245
+  throughput: 0.0350
+  latency: 7.3917
+  energy: 2365.3350
   forgetting: 0.0000
   fwt: 0.0000
-  spectral_efficiency: 0.2259
-  interference: 0.2107
+  spectral_efficiency: 0.1965
+  interference: 0.1401
 --------------------------------------------------
 Task Pedestrian:
-  throughput: 0.0303
-  latency: 6.7840
-  energy: 2170.8641
-  forgetting: -0.0200
-  fwt: -0.3926
-  spectral_efficiency: 0.1831
+  throughput: 0.0322
+  latency: 1.0543
+  energy: 337.3668
+  forgetting: -0.0028
+  fwt: -0.0606
+  spectral_efficiency: 0.1938
   interference: 0.1237
 --------------------------------------------------
 Task Vehicular:
-  throughput: 0.0330
-  latency: 6.7871
-  energy: 2171.8660
-  forgetting: -0.0088
-  fwt: 0.0650
-  spectral_efficiency: 0.1919
-  interference: 0.1320
+  throughput: 0.0308
+  latency: 1.0759
+  energy: 344.2819
+  forgetting: -0.0009
+  fwt: -0.0311
+  spectral_efficiency: 0.1865
+  interference: 0.1232
 --------------------------------------------------
 Task Aerial:
-  throughput: 0.0324
-  latency: 6.8282
-  energy: 2185.0112
-  forgetting: -0.0051
-  fwt: -0.0190
-  spectral_efficiency: 0.1904
-  interference: 0.1296
+  throughput: 0.0305
+  latency: 1.0585
+  energy: 338.7319
+  forgetting: -0.0006
+  fwt: -0.0117
+  spectral_efficiency: 0.1856
+  interference: 0.1218
 --------------------------------------------------
-BWT: -0.0051
-Total Time: 28.98s
+BWT: -0.0006
+Total Time: 14.98s
+Task Static:
+  throughput: 0.0332
+  latency: 12.2750
+  energy: 3928.0053
+  forgetting: 0.0000
+  fwt: 0.0000
+  spectral_efficiency: 0.1924
+  interference: 0.1329
+--------------------------------------------------
+Task Pedestrian:
+  throughput: 0.0321
+  latency: 1.5828
+  energy: 506.5090
+  forgetting: 0.0003
+  fwt: -0.0344
+  spectral_efficiency: 0.1951
+  interference: 0.1218
+--------------------------------------------------
+Task Vehicular:
+  throughput: 0.0315
+  latency: 1.5986
+  energy: 511.5605
+  forgetting: 0.0005
+  fwt: 0.0230
+  spectral_efficiency: 0.1883
+  interference: 0.1261
+--------------------------------------------------
+Task Aerial:
+  throughput: 0.0332
+  latency: 1.5917
+  energy: 509.3350
+  forgetting: 0.0005
+  fwt: 0.0618
+  spectral_efficiency: 0.1924
+  interference: 0.1328
+--------------------------------------------------
+BWT: 0.0005
+Total Time: 20.33s
