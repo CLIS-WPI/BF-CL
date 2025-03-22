@@ -17,7 +17,7 @@ FREQ = 28e9
 POWER = 1.0
 NUM_SLOTS = 200
 BATCH_SIZE = 32
-LAMBDA_SI = 65.0  # Consider increasing to 200 or 500 if forgetting is too negative
+LAMBDA_SI = 15.0  # Consider increasing to 200 or 500 if forgetting is too negative
 NUM_EPOCHS = 4
 CHUNK_SIZE = 50
 GPU_POWER_DRAW = 400  # Placeholder; consider real measurement with pynvml
@@ -91,13 +91,13 @@ class BeamformingModelWithSI(Model):
             if g is not None:
                 self.omega[w.name] += tf.reduce_mean(g**2)
 
-    def si_loss(self, lambda_si=2000.0):
+    def si_loss(self):
         penalty = 0.0
         for w in self.trainable_weights:
             if w.name in self.old_params:
                 delta = w - self.old_params[w.name]
                 penalty += tf.reduce_sum(self.omega[w.name] * delta**2)
-        return lambda_si * penalty
+        return LAMBDA_SI * penalty 
 
     def save_task_params(self, task_idx):
         self.task_params[task_idx] = {w.name: w.numpy() for w in self.trainable_weights}
@@ -116,16 +116,17 @@ class VAE(Model):
         super().__init__()
         self.encoder = tf.keras.Sequential([
             layers.Flatten(),
-            layers.Dense(256, activation="relu"),
+            layers.Dense(128, activation="relu"),  # Reduced from 256 to 128
             layers.BatchNormalization(),
-            layers.Dense(128, activation="relu"),
+            layers.Dense(64, activation="relu"),   # Reduced from 128 to 64
             layers.BatchNormalization(),
-            layers.Dense(64)
+            layers.Dense(32)  # Reduced from 64 to 32
         ])
+        
         self.decoder = tf.keras.Sequential([
-            layers.Dense(128, activation="relu"),
+            layers.Dense(64, activation="relu"),   # Reduced from 128 to 64
             layers.BatchNormalization(),
-            layers.Dense(256, activation="relu"),
+            layers.Dense(128, activation="relu"),  # Reduced from 256 to 128
             layers.BatchNormalization(),
             layers.Dense(input_dim, activation="linear"),
             layers.Reshape([NUM_ANTENNAS, NUM_USERS])
@@ -145,8 +146,7 @@ class VAE(Model):
             optimizer.apply_gradients(zip(grads, self.trainable_weights))
             print(f"VAE Epoch {epoch+1}/{epochs}, Loss: {loss.numpy():.4f}")
 
-# SI Loss Function (Fixed)
-def si_loss(model, x, h, lambda_si=2000.0):
+def si_loss(model, x, h):
     w = tf.cast(model(x), tf.complex64)
     if tf.reduce_any(tf.math.is_nan(tf.math.real(w))) or tf.reduce_any(tf.math.is_nan(tf.math.imag(w))):
         print("Warning: NaN detected in w")
@@ -160,8 +160,7 @@ def si_loss(model, x, h, lambda_si=2000.0):
     sum_result = tf.reduce_sum(product, axis=-1)
     signal_power = tf.reduce_mean(tf.abs(sum_result)**2)
     loss = -signal_power
-    si_penalty = model.si_loss(lambda_si)
-    # Safely handle si_penalty whether it's a tensor or float
+    si_penalty = model.si_loss()
     si_penalty_value = si_penalty.numpy() if hasattr(si_penalty, 'numpy') else float(si_penalty)
     print(f"SI Penalty: {si_penalty_value:.6f}")
     loss += si_penalty
@@ -254,14 +253,14 @@ def generate_channel(task, num_slots, task_idx=0):
     return h
 
 # Training Step with SI and Generative Replay
-def train_step(model, x_batch, h_batch, optimizer, task_idx, replay_buffer=None, lambda_si=2000.0):
+def train_step(model, x_batch, h_batch, optimizer, task_idx, replay_buffer=None):
     with tf.GradientTape() as tape:
-        loss = si_loss(model, x_batch, h_batch, lambda_si)
+        loss = si_loss(model, x_batch, h_batch)
         if replay_buffer and len(replay_buffer[0]) > 0:
             replay_idx = tf.random.uniform(shape=[min(BATCH_SIZE, len(replay_buffer[0]))], minval=0, maxval=len(replay_buffer[0]), dtype=tf.int32)
             replay_x = tf.cast(tf.gather(replay_buffer[0], replay_idx), tf.complex64)
             replay_h = tf.cast(tf.gather(replay_buffer[1], replay_idx), tf.complex64)
-            replay_loss = si_loss(model, replay_x, replay_h, lambda_si)
+            replay_loss = si_loss(model, replay_x, replay_h)
             loss += replay_loss
     grads = tape.gradient(loss, model.trainable_weights)
     grads = [tf.clip_by_value(g, -1.0, 1.0) if g is not None else g for g in grads]
@@ -288,7 +287,6 @@ def main(seed):
         model = BeamformingModelWithSI(NUM_ANTENNAS, NUM_USERS)
         dummy_input = tf.zeros((BATCH_SIZE, 1, NUM_ANTENNAS, NUM_USERS), dtype=tf.complex64)
         model(dummy_input)
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
     
     save_dir = "saved_models"
     if not os.path.exists(save_dir):
@@ -328,20 +326,39 @@ def main(seed):
         replay_buffer[1] = np.array(replay_buffer[1], dtype=np.complex64)
         
         with strategy.scope():
-            if task_idx == 0:
-                optimizer = tf.keras.optimizers.Adam(learning_rate=0.002)
-            else:
-                optimizer = tf.keras.optimizers.Adam(learning_rate=0.0015)
+            optimizer = tf.keras.optimizers.Adam(
+                learning_rate=tf.keras.optimizers.schedules.ExponentialDecay(
+                    initial_learning_rate=0.002 if task_idx == 0 else 0.005,
+                    decay_steps=1000,
+                    decay_rate=0.96,
+                    staircase=True
+                )
+            )
         
+        # محاسبه خروجی مدل با ورودی خام
+        # محاسبه خروجی مدل با ورودی خام
         initial_w = model(x)
-        initial_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(initial_w * tf.transpose(h, [0, 1, 3, 2]), axis=-1))**2).numpy()
+        h_real = tf.math.real(h)
+        h_imag = tf.math.imag(h)
+        h_real_normalized = (h_real - tf.reduce_mean(h_real)) / (tf.math.reduce_std(h_real) + 1e-10)
+        h_imag_normalized = (h_imag - tf.reduce_mean(h_imag)) / (tf.math.reduce_std(h_imag) + 1e-10)
+        h_normalized = tf.complex(h_real_normalized, h_imag_normalized)
+        initial_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(initial_w * tf.transpose(h_normalized, [0, 1, 3, 2]), axis=-1))**2).numpy()
+
         if task_idx > 0:
             past_h = task_channels[task_idx - 1]
-            past_w = model(past_h)
-            past_throughput = tf.reduce_mean(tf.abs(tf.reduce_sum(past_w * tf.transpose(past_h, [0, 1, 3, 2]), axis=-1))**2).numpy()
-            fwt = (initial_throughput - past_throughput) / (past_throughput + 1e-10)
+            past_w_before = model(past_h)
+            past_h_real = tf.math.real(past_h)
+            past_h_imag = tf.math.imag(past_h)
+            past_h_real_normalized = (past_h_real - tf.reduce_mean(past_h_real)) / (tf.math.reduce_std(past_h_real) + 1e-10)
+            past_h_imag_normalized = (past_h_imag - tf.reduce_mean(past_h_imag)) / (tf.math.reduce_std(past_h_imag) + 1e-10)
+            past_h_normalized = tf.complex(past_h_real_normalized, past_h_imag_normalized)
+            past_throughput_before = tf.reduce_mean(tf.abs(tf.reduce_sum(past_w_before * tf.transpose(past_h_normalized, [0, 1, 3, 2]), axis=-1))**2).numpy()
+            fwt = (initial_throughput - past_throughput_before) / (past_throughput_before + 1e-10)
+            print(f"Task {task['name']} (idx {task_idx}): initial_throughput = {initial_throughput:.4f}, past_throughput_before = {past_throughput_before:.4f}, FWT = {fwt:.4f}***Milad****")
         else:
             fwt = 0.0
+
         fwt_values.append(fwt)
         task_initial_performance.append(initial_throughput)
         
@@ -355,8 +372,7 @@ def main(seed):
                 epoch_loss = 0
                 batches = 0
                 for x_batch, h_batch in dist_dataset:
-                    loss = strategy.run(train_step, args=(model, x_batch, h_batch, optimizer,
-                                                        task_idx, replay_buffer, LAMBDA_SI))
+                    loss = strategy.run(train_step, args=(model, x_batch, h_batch, optimizer, task_idx, replay_buffer))
                     loss = strategy.reduce(tf.distribute.ReduceOp.MEAN, loss, axis=None)
                     epoch_loss += loss
                     batches += 1
@@ -385,12 +401,31 @@ def main(seed):
         model.old_params = {w.name: w.numpy() for w in model.trainable_weights}
         model.save_task_params(task_idx)
         
+        # ================== افزودن بخش جدید ==================
+        # محاسبه خطا و انتخاب نمونه‌های پرخطا برای بازپخش
+        predictions = model(x)
+        # تغییر شکل x برای مطابقت با خروجی مدل
+        x_transposed = tf.transpose(x, [0, 1, 3, 2])
+        error = tf.abs(predictions - x_transposed)
+        error_flatten = tf.reshape(error, [-1])
+        top_indices = tf.argsort(error_flatten, direction='DESCENDING')[:REPLAY_BUFFER_SIZE // 10]  # 10٪ پرخطا (~20)
+        random_indices = tf.random.shuffle(tf.range(tf.shape(x)[0]))[:REPLAY_BUFFER_SIZE // 10]    # 10٪ تصادفی (~20)
+        current_indices = tf.random.shuffle(tf.range(tf.shape(x)[0]))[:8 * REPLAY_BUFFER_SIZE // 10]  # 80٪ تسک فعلی (~160)
+        combined_indices = tf.concat([top_indices, random_indices], axis=0)
+        replay_samples_x = tf.gather(x, combined_indices)
+        replay_samples_h = tf.gather(h, combined_indices)
+        current_x = tf.gather(x, current_indices)
+        current_h = tf.gather(h, current_indices)
+        replay_buffer[0] = np.concatenate([replay_samples_x.numpy(), current_x.numpy()], axis=0)
+        replay_buffer[1] = np.concatenate([replay_samples_h.numpy(), current_h.numpy()], axis=0)
+        # =====================================================
+        
         energy = GPU_POWER_DRAW * task_time
         results["throughput"].append(capacity)
         results["latency"].append(latency)
         results["energy"].append(energy)
         results["forgetting"].append(forgetting)
-
+        
         with open(results_file, 'a') as f:
             f.write(f"Task {task['name']}:\n")
             f.write(f"  Capacity: {capacity:.4f} bits/s/Hz\n")
@@ -485,7 +520,7 @@ if __name__ == "__main__":
         plt.yscale('log')
         plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45, fontsize=8)
         plt.legend(fontsize=8)
-        plt.subplots_adjust(bottom=0.35, top=0.85)  # Fixed syntax
+        plt.subplots_adjust(bottom=0.35, top=0.85)
         plt.tight_layout()
         plt.savefig("performance_metrics_1.png")
         plt.close()
@@ -503,7 +538,7 @@ if __name__ == "__main__":
         plt.ylim(-2.5, 0)
         plt.xticks(range(len(TASKS)), [task["name"] for task in TASKS], rotation=45, fontsize=8)
         plt.legend(fontsize=8)
-        plt.subplots_adjust(bottom=0.35, top=0.85)  # Fixed syntax
+        plt.subplots_adjust(bottom=0.35, top=0.85)
         plt.tight_layout()
         plt.savefig("performance_metrics_2.png")
         plt.close()
@@ -526,9 +561,9 @@ if __name__ == "__main__":
         plt.xticks(range(len(cl_metrics)), list(cl_metrics.keys()), rotation=45, fontsize=8)
         plt.grid(True)
         plt.text(0.5, -2.7, "Continual Learning Metrics: Forgetting (red) shows accuracy loss on previous tasks, "
-            "FWT (blue) indicates forward transfer to new tasks, and BWT (green) reflects backward transfer to previous tasks.",
-            ha='center', transform=plt.gca().get_xaxis_transform(), fontsize=8)
-        plt.subplots_adjust(bottom=0.35, top=0.85)  # Fixed syntax
+                 "FWT (blue) indicates forward transfer to new tasks, and BWT (green) reflects backward transfer to previous tasks.",
+                 ha='center', transform=plt.gca().get_xaxis_transform(), fontsize=8)
+        plt.subplots_adjust(bottom=0.35, top=0.85)
         plt.tight_layout()
         plt.savefig("cl_metrics.png")
         plt.close()

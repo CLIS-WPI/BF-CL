@@ -1,39 +1,48 @@
-Final Summary Across Runs
-==================================================
 Throughput (Mean ± Std):
-  Static: 4.3856 ± 0.1045
-  Aerial: 5.5116 ± 0.2037
-  Vehicular: 6.1494 ± 0.0771
-  Pedestrian: 6.3675 ± 0.0451
-  Random: 6.4641 ± 0.0338
-  Overall Avg: 5.7757 ± 0.0928
---------------------------------------------------
+  Static: 0.0524 ± 0.0002
+  Pedestrian: 0.0326 ± 0.0018
+  Vehicular: 0.0324 ± 0.0006
+  Aerial: 0.0317 ± 0.0009
+
 Latency (Mean ± Std):
-  Static: 1.9276 ± 0.2535
-  Aerial: 2.4507 ± 0.0198
-  Vehicular: 2.4753 ± 0.0116
-  Pedestrian: 2.4948 ± 0.0154
-  Random: 2.5253 ± 0.0174
-  Overall Avg: 2.3747 ± 0.0636
---------------------------------------------------
+  Static: 8.2743 ± 0.7205
+  Pedestrian: 6.7454 ± 0.0472
+  Vehicular: 6.7865 ± 0.0261
+  Aerial: 6.8399 ± 0.0125
+
 Energy (Mean ± Std):
-  Static: 616.8175 ± 81.1056
-  Aerial: 784.2214 ± 6.3423
-  Vehicular: 792.0801 ± 3.7109
-  Pedestrian: 798.3506 ± 4.9390
-  Random: 808.0907 ± 5.5831
-  Overall Avg: 759.9121 ± 20.3362
---------------------------------------------------
+  Static: 2647.7653 ± 230.5739
+  Pedestrian: 2158.5337 ± 15.1188
+  Vehicular: 2171.6655 ± 8.3391
+  Aerial: 2188.7807 ± 4.0156
+
 Forgetting (Mean ± Std):
   Static: 0.0000 ± 0.0000
-  Aerial: -3.7737 ± 0.5856
-  Vehicular: -5.9492 ± 0.3170
-  Pedestrian: -5.9745 ± 0.1036
-  Random: -5.3629 ± 0.1351
-  Overall Avg: -4.2121 ± 0.2282
---------------------------------------------------
-CL Metrics (Mean):
-  Forgetting: -5.3629
-  FWT: -0.1044
-  BWT: 1.7594
---------------------------------------------------
+  Pedestrian: -0.0190 ± 0.0021
+  Vehicular: -0.0085 ± 0.0008
+  Aerial: -0.0050 ± 0.0005
+
+Fwt (Mean ± Std):
+  Static: 0.0000 ± 0.0000
+  Pedestrian: -0.3875 ± 0.0067
+  Vehicular: 0.0369 ± 0.0275
+  Aerial: -0.0225 ± 0.0341
+
+Bwt (Mean ± Std):
+  Static: -0.0050 ± 0.0005
+  Pedestrian: -0.0050 ± 0.0005
+  Vehicular: -0.0050 ± 0.0005
+  Aerial: -0.0050 ± 0.0005
+
+Spectral_efficiency (Mean ± Std):
+  Static: 0.2256 ± 0.0003
+  Pedestrian: 0.1970 ± 0.0107
+  Vehicular: 0.1904 ± 0.0014
+  Aerial: 0.1888 ± 0.0022
+
+Interference (Mean ± Std):
+  Static: 0.2095 ± 0.0009
+  Pedestrian: 0.1229 ± 0.0008
+  Vehicular: 0.1295 ± 0.0023
+  Aerial: 0.1269 ± 0.0035
+
