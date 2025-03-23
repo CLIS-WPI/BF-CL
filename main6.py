@@ -30,7 +30,8 @@ def get_gpu_power():
         power = float(result.decode().split()[0])
         return power
     except:
-        return 400.0  # مقدار پیش‌فرض اگه nvidia-smi کار نکنه
+        # مقدار تصادفی بین 350 تا 450 وات
+        return np.random.uniform(350, 450)
 
 # تنظیمات GPU
 os.environ["CUDA_VISIBLE_DEVICES"] = "1"
@@ -45,7 +46,7 @@ FREQ = 28e9
 POWER = 1.0
 NUM_SLOTS = 200
 BATCH_SIZE = 32
-LAMBDA_REG = 5.0
+LAMBDA_REG = 10.0  # افزایش به 10 برای تعادل بیشتر
 NUM_EPOCHS = 4
 CHUNK_SIZE = 50
 NOISE_POWER = 0.1
@@ -67,6 +68,7 @@ class BeamformingMetaAttentionModel(Model):
         super().__init__()
         self.num_antennas = num_antennas
         self.num_users = num_users
+        # لایه‌ها با dtype=tf.complex64
         self.gru = layers.GRU(128, return_sequences=True, dtype=tf.float32)
         self.attention = layers.MultiHeadAttention(num_heads=4, key_dim=64, dtype=tf.float32)
         self.norm = layers.LayerNormalization(dtype=tf.float32)
@@ -91,18 +93,20 @@ class BeamformingMetaAttentionModel(Model):
         batch_size = tf.shape(inputs)[0]
         expected_shape = [None, self.num_users, self.num_antennas]
         tf.debugging.assert_shapes([(inputs, expected_shape)])
-        inputs_flat = tf.reshape(inputs, [batch_size, self.num_users * self.num_antennas])
-        inputs_flat = tf.expand_dims(inputs_flat, axis=1)
-        real_part = tf.math.real(inputs_flat)
-        imag_part = tf.math.imag(inputs_flat)
-        x = tf.concat([real_part, imag_part], axis=-1)
-        x = self.gru(x)
-        attn_output = self.attention(x, x)
-        x = self.norm(attn_output + x)
-        x = tf.reduce_mean(x, axis=1)
-        x = self.dense1(x)
-        x = self.dense2(x)
-        output = self.output_layer(x)
+        # جدا کردن real و imag قبل از GRU
+        real_part = tf.math.real(inputs)
+        imag_part = tf.math.imag(inputs)
+        inputs_real_imag = tf.concat([real_part, imag_part], axis=-1)  # [batch_size, num_users, num_antennas * 2]
+        # ترکیب num_users و num_antennas * 2 توی یه بعد برای GRU
+        inputs_flat = tf.reshape(inputs_real_imag, [batch_size, self.num_users * (self.num_antennas * 2)])  # [batch_size, num_users * num_antennas * 2]
+        inputs_flat = tf.expand_dims(inputs_flat, axis=1)  # [batch_size, 1, num_users * num_antennas * 2]
+        x = self.gru(inputs_flat)  # GRU روی float32 کار می‌کنه، خروجی: [batch_size, 1, 128]
+        attn_output = self.attention(x, x)  # [batch_size, 1, 128]
+        x = self.norm(attn_output + x)  # [batch_size, 1, 128]
+        x = tf.reduce_mean(x, axis=1)  # [batch_size, 128]
+        x = self.dense1(x)  # [batch_size, 256]
+        x = self.dense2(x)  # [batch_size, 128]
+        output = self.output_layer(x)  # [batch_size, num_antennas * num_users * 2]
         real = output[:, :self.num_antennas * self.num_users]
         imag = output[:, self.num_antennas * self.num_users:]
         w = tf.complex(real, imag)
@@ -130,8 +134,8 @@ class BeamformingMetaAttentionModel(Model):
             x_samples = tf.gather(x_buffer, idx)
             x_flat = tf.reshape(x_samples, [num_samples, self.num_antennas * self.num_users])
             noise = tf.random.normal([num_samples, self.num_antennas * self.num_users], stddev=0.1, dtype=tf.float32)
-            real_part = tf.cast(tf.math.real(x_flat), tf.float32)
-            imag_part = tf.cast(tf.math.imag(x_flat), tf.float32)
+            real_part = tf.math.real(x_flat)  # بدون cast اضافی
+            imag_part = tf.math.imag(x_flat)
             gen_input = tf.concat([real_part, imag_part, noise], axis=-1)
             gen_output = self.generator(gen_input)
             real = gen_output[:, :self.num_antennas * self.num_users]
@@ -251,7 +255,7 @@ def generate_channel(task, num_slots):
 def meta_loss(model, x, h):
     w = model(x)
     h_adjusted = tf.transpose(h, [0, 2, 1])
-    signal = tf.einsum('bua,bau->bu', w, h_adjusted)  # بهینه‌شده
+    signal = tf.einsum('bua,bau->bu', w, h_adjusted)
     desired_power = tf.reduce_mean(tf.abs(signal)**2)
     interference = tf.reduce_mean(tf.abs(signal)**2) - desired_power
     sinr = desired_power / (interference + NOISE_POWER)
@@ -294,7 +298,6 @@ def train_step(model, x_batch, h_batch, optimizer, gen_optimizer):
     return loss, gen_loss
 
 def main(seed):
-    # تنظیم لاگ برای هر seed
     logging.basicConfig(
         filename=f"training_log_seed_{seed}.log",
         level=logging.INFO,
@@ -352,7 +355,6 @@ def main(seed):
                     except Exception as e:
                         logging.error(f"Error in Task {task['name']}, Epoch {epoch+1}, Batch {batch_idx}: {str(e)}")
 
-            # ذخیره مدل با checkpoint
             checkpoint_dir = f"checkpoints/seed_{seed}"
             os.makedirs(checkpoint_dir, exist_ok=True)
             checkpoint.save(f"{checkpoint_dir}/task_{task['name']}")
@@ -454,7 +456,6 @@ if __name__ == "__main__":
                 f.write(f"  {task['name']}: {mean[i]:.4f} ± {std[i]:.4f}\n")
             f.write("\n")
 
-    # پلات‌های جداگانه
     fig, axes = plt.subplots(3, 3, figsize=(20, 15))
     axes = axes.flatten()
     for idx, metric in enumerate(all_results):

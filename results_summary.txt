@@ -1,54 +1,54 @@
 Throughput (Mean ± Std):
-  Static: 0.1085 ± 0.0029
-  Pedestrian: 0.1775 ± 0.0053
-  Vehicular: 0.1254 ± 0.0069
-  Aerial: 0.1278 ± 0.0044
+  Static: 0.1118 ± 0.0035
+  Pedestrian: 0.1796 ± 0.0055
+  Vehicular: 0.1237 ± 0.0055
+  Aerial: 0.1295 ± 0.0007
 
 Latency (Mean ± Std):
-  Static: 13.2604 ± 0.8947
-  Pedestrian: 1.7308 ± 0.0196
-  Vehicular: 1.7467 ± 0.0039
-  Aerial: 1.7378 ± 0.0142
+  Static: 13.2184 ± 0.8266
+  Pedestrian: 1.7773 ± 0.0303
+  Vehicular: 1.7981 ± 0.0515
+  Aerial: 1.7932 ± 0.0202
 
 Energy (Mean ± Std):
-  Static: 970.7624 ± 62.7344
-  Pedestrian: 126.9393 ± 1.6157
-  Vehicular: 128.1811 ± 0.2618
-  Aerial: 127.5970 ± 0.9187
+  Static: 967.4983 ± 58.5151
+  Pedestrian: 130.3143 ± 2.4769
+  Vehicular: 131.8728 ± 3.7239
+  Aerial: 131.5729 ± 1.2547
 
 Forgetting (Mean ± Std):
   Static: 0.0000 ± 0.0000
-  Pedestrian: 0.0335 ± 0.0045
-  Vehicular: 0.0157 ± 0.0015
-  Aerial: 0.0158 ± 0.0026
+  Pedestrian: 0.0368 ± 0.0073
+  Vehicular: 0.0168 ± 0.0028
+  Aerial: 0.0152 ± 0.0019
 
 Fwt (Mean ± Std):
   Static: 0.0000 ± 0.0000
-  Pedestrian: 0.3258 ± 0.0249
-  Vehicular: -0.0036 ± 0.0268
-  Aerial: 0.1714 ± 0.0933
+  Pedestrian: 0.3343 ± 0.0517
+  Vehicular: -0.0118 ± 0.0325
+  Aerial: 0.2026 ± 0.0558
 
 Bwt (Mean ± Std):
-  Static: 0.0158 ± 0.0026
-  Pedestrian: 0.0158 ± 0.0026
-  Vehicular: 0.0158 ± 0.0026
-  Aerial: 0.0158 ± 0.0026
+  Static: 0.0152 ± 0.0019
+  Pedestrian: 0.0152 ± 0.0019
+  Vehicular: 0.0152 ± 0.0019
+  Aerial: 0.0152 ± 0.0019
 
 Spectral_efficiency (Mean ± Std):
-  Static: 0.2668 ± 0.0012
-  Pedestrian: 0.3306 ± 0.0088
-  Vehicular: 0.2730 ± 0.0023
-  Aerial: 0.2739 ± 0.0015
+  Static: 0.2682 ± 0.0014
+  Pedestrian: 0.3351 ± 0.0149
+  Vehicular: 0.2725 ± 0.0018
+  Aerial: 0.2745 ± 0.0002
 
 Interference (Mean ± Std):
-  Static: 0.4341 ± 0.0115
-  Pedestrian: 0.5893 ± 0.0084
-  Vehicular: 0.5015 ± 0.0276
-  Aerial: 0.5111 ± 0.0178
+  Static: 0.4470 ± 0.0139
+  Pedestrian: 0.5874 ± 0.0141
+  Vehicular: 0.4948 ± 0.0218
+  Aerial: 0.5179 ± 0.0026
 
 Convergence_time (Mean ± Std):
-  Static: 2.6521 ± 0.1789
-  Pedestrian: 0.3462 ± 0.0039
-  Vehicular: 0.3493 ± 0.0008
-  Aerial: 0.3476 ± 0.0028
+  Static: 2.6437 ± 0.1653
+  Pedestrian: 0.3555 ± 0.0061
+  Vehicular: 0.3596 ± 0.0103
+  Aerial: 0.3586 ± 0.0040
 
