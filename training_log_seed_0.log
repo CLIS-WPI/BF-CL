@@ -1,0 +1,173 @@
+2025-03-23 14:37:23,703 - INFO - Starting run with seed 0
+2025-03-23 14:37:26,004 - INFO - Task Static (1/4)
+2025-03-23 14:37:26,005 - INFO - Task Static: Doppler Freq = 73.51 Hz
+2025-03-23 14:37:27,600 - INFO - Task Static: Final channel shape = (200, 5, 32)
+2025-03-23 14:37:28,779 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:37:29,091 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:37:29,543 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:37:38,802 - INFO - Epoch 1/4 - Loss: -2.4003, Gen Loss: -2.6013
+2025-03-23 14:37:39,130 - INFO - Epoch 2/4 - Loss: -3.1080, Gen Loss: -3.0328
+2025-03-23 14:37:39,454 - INFO - Epoch 3/4 - Loss: -3.8075, Gen Loss: -3.5195
+2025-03-23 14:37:39,773 - INFO - Epoch 4/4 - Loss: -3.7000, Gen Loss: -3.7464
+2025-03-23 14:37:40,934 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
+2025-03-23 14:37:40,934 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
+2025-03-23 14:37:40,975 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
+2025-03-23 14:37:40,975 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
+2025-03-23 14:37:41,725 - INFO - Assets written to: models/seed_0/task_Static/assets
+2025-03-23 14:37:41,744 - INFO - Model saved as folder at models/seed_0/task_Static
+2025-03-23 14:37:41,991 - INFO - Task Pedestrian (2/4)
+2025-03-23 14:37:41,991 - INFO - Task Pedestrian: Doppler Freq = 215.76 Hz
+2025-03-23 14:37:42,398 - INFO - Task Pedestrian: Final channel shape = (200, 5, 32)
+2025-03-23 14:37:42,725 - INFO - Epoch 1/4 - Loss: -3.6325, Gen Loss: -3.6146
+2025-03-23 14:37:43,047 - INFO - Epoch 2/4 - Loss: -3.5286, Gen Loss: -3.4398
+2025-03-23 14:37:43,371 - INFO - Epoch 3/4 - Loss: -3.5505, Gen Loss: -3.5695
+2025-03-23 14:37:43,705 - INFO - Epoch 4/4 - Loss: -3.8666, Gen Loss: -3.7381
+2025-03-23 14:37:44,241 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
+2025-03-23 14:37:44,241 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
+2025-03-23 14:37:44,264 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
+2025-03-23 14:37:44,265 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
+2025-03-23 14:37:44,975 - INFO - Assets written to: models/seed_0/task_Pedestrian/assets
+2025-03-23 14:37:44,995 - INFO - Model saved as folder at models/seed_0/task_Pedestrian
+2025-03-23 14:37:45,243 - INFO - Task Vehicular (3/4)
+2025-03-23 14:37:45,244 - INFO - Task Vehicular: Doppler Freq = 2453.20 Hz
+2025-03-23 14:37:46,896 - INFO - Task Vehicular: Final channel shape = (200, 5, 32)
+2025-03-23 14:37:47,259 - INFO - Epoch 1/4 - Loss: -3.7026, Gen Loss: -3.7083
+2025-03-23 14:37:47,592 - INFO - Epoch 2/4 - Loss: -3.5883, Gen Loss: -3.6922
+2025-03-23 14:37:47,930 - INFO - Epoch 3/4 - Loss: -3.7569, Gen Loss: -3.4721
+2025-03-23 14:37:48,265 - INFO - Epoch 4/4 - Loss: -3.8851, Gen Loss: -3.5938
+2025-03-23 14:37:48,815 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
+2025-03-23 14:37:48,815 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
+2025-03-23 14:37:48,839 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
+2025-03-23 14:37:48,839 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
+2025-03-23 14:37:49,556 - INFO - Assets written to: models/seed_0/task_Vehicular/assets
+2025-03-23 14:37:49,578 - INFO - Model saved as folder at models/seed_0/task_Vehicular
+2025-03-23 14:37:49,836 - INFO - Task Aerial (4/4)
+2025-03-23 14:37:49,836 - INFO - Task Aerial: Doppler Freq = 921.12 Hz
+2025-03-23 14:37:51,441 - INFO - Task Aerial: Final channel shape = (200, 5, 32)
+2025-03-23 14:37:51,781 - INFO - Epoch 1/4 - Loss: -3.4129, Gen Loss: -3.6095
+2025-03-23 14:37:52,114 - INFO - Epoch 2/4 - Loss: -3.7467, Gen Loss: -3.7699
+2025-03-23 14:37:52,455 - INFO - Epoch 3/4 - Loss: -3.7602, Gen Loss: -3.5082
+2025-03-23 14:37:52,791 - INFO - Epoch 4/4 - Loss: -3.9710, Gen Loss: -3.6250
+2025-03-23 14:37:53,337 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
+2025-03-23 14:37:53,337 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
+2025-03-23 14:37:53,361 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
+2025-03-23 14:37:53,361 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
+2025-03-23 14:37:54,073 - INFO - Assets written to: models/seed_0/task_Aerial/assets
+2025-03-23 14:37:54,093 - INFO - Model saved as folder at models/seed_0/task_Aerial
+2025-03-23 14:37:54,360 - INFO - Run completed in 28.36s
+2025-03-23 14:37:54,362 - INFO - Run 2/3
+2025-03-23 14:37:54,362 - INFO - Starting run with seed 1
+2025-03-23 14:37:54,971 - INFO - Task Static (1/4)
+2025-03-23 14:37:54,972 - INFO - Task Static: Doppler Freq = 41.13 Hz
+2025-03-23 14:37:56,566 - INFO - Task Static: Final channel shape = (200, 5, 32)
+2025-03-23 14:37:56,988 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:37:57,305 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:37:57,754 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:38:05,960 - INFO - Epoch 1/4 - Loss: -2.5747, Gen Loss: -2.4365
+2025-03-23 14:38:06,297 - INFO - Epoch 2/4 - Loss: -3.1765, Gen Loss: -3.2245
+2025-03-23 14:38:06,627 - INFO - Epoch 3/4 - Loss: -3.7576, Gen Loss: -3.2494
+2025-03-23 14:38:06,967 - INFO - Epoch 4/4 - Loss: -3.3279, Gen Loss: -3.2048
+2025-03-23 14:38:07,911 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
+2025-03-23 14:38:07,912 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
+2025-03-23 14:38:07,936 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
+2025-03-23 14:38:07,936 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
+2025-03-23 14:38:08,689 - INFO - Assets written to: models/seed_1/task_Static/assets
+2025-03-23 14:38:08,709 - INFO - Model saved as folder at models/seed_1/task_Static
+2025-03-23 14:38:09,038 - INFO - Task Pedestrian (2/4)
+2025-03-23 14:38:09,038 - INFO - Task Pedestrian: Doppler Freq = 170.07 Hz
+2025-03-23 14:38:09,440 - INFO - Task Pedestrian: Final channel shape = (200, 5, 32)
+2025-03-23 14:38:09,779 - INFO - Epoch 1/4 - Loss: -3.3359, Gen Loss: -3.5467
+2025-03-23 14:38:10,115 - INFO - Epoch 2/4 - Loss: -3.6355, Gen Loss: -3.7133
+2025-03-23 14:38:10,452 - INFO - Epoch 3/4 - Loss: -3.5331, Gen Loss: -3.6365
+2025-03-23 14:38:10,789 - INFO - Epoch 4/4 - Loss: -3.4970, Gen Loss: -3.4774
+2025-03-23 14:38:11,335 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
+2025-03-23 14:38:11,335 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
+2025-03-23 14:38:11,358 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
+2025-03-23 14:38:11,359 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
+2025-03-23 14:38:12,076 - INFO - Assets written to: models/seed_1/task_Pedestrian/assets
+2025-03-23 14:38:12,097 - INFO - Model saved as folder at models/seed_1/task_Pedestrian
+2025-03-23 14:38:12,403 - INFO - Task Vehicular (3/4)
+2025-03-23 14:38:12,403 - INFO - Task Vehicular: Doppler Freq = 2244.47 Hz
+2025-03-23 14:38:14,035 - INFO - Task Vehicular: Final channel shape = (200, 5, 32)
+2025-03-23 14:38:14,372 - INFO - Epoch 1/4 - Loss: -3.5434, Gen Loss: -3.8303
+2025-03-23 14:38:14,707 - INFO - Epoch 2/4 - Loss: -3.7366, Gen Loss: -3.9350
+2025-03-23 14:38:15,057 - INFO - Epoch 3/4 - Loss: -3.7796, Gen Loss: -3.9883
+2025-03-23 14:38:15,407 - INFO - Epoch 4/4 - Loss: -3.6070, Gen Loss: -3.7245
+2025-03-23 14:38:15,969 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
+2025-03-23 14:38:15,969 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
+2025-03-23 14:38:15,993 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
+2025-03-23 14:38:15,993 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
+2025-03-23 14:38:16,721 - INFO - Assets written to: models/seed_1/task_Vehicular/assets
+2025-03-23 14:38:16,742 - INFO - Model saved as folder at models/seed_1/task_Vehicular
+2025-03-23 14:38:17,063 - INFO - Task Aerial (4/4)
+2025-03-23 14:38:17,063 - INFO - Task Aerial: Doppler Freq = 827.29 Hz
+2025-03-23 14:38:18,657 - INFO - Task Aerial: Final channel shape = (200, 5, 32)
+2025-03-23 14:38:18,998 - INFO - Epoch 1/4 - Loss: -3.7147, Gen Loss: -3.8358
+2025-03-23 14:38:19,332 - INFO - Epoch 2/4 - Loss: -3.5682, Gen Loss: -3.7466
+2025-03-23 14:38:19,675 - INFO - Epoch 3/4 - Loss: -3.6934, Gen Loss: -3.7502
+2025-03-23 14:38:20,014 - INFO - Epoch 4/4 - Loss: -3.9735, Gen Loss: -4.0333
+2025-03-23 14:38:20,562 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
+2025-03-23 14:38:20,562 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
+2025-03-23 14:38:20,586 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
+2025-03-23 14:38:20,586 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
+2025-03-23 14:38:21,307 - INFO - Assets written to: models/seed_1/task_Aerial/assets
+2025-03-23 14:38:21,327 - INFO - Model saved as folder at models/seed_1/task_Aerial
+2025-03-23 14:38:21,656 - INFO - Run completed in 26.68s
+2025-03-23 14:38:21,658 - INFO - Run 3/3
+2025-03-23 14:38:21,658 - INFO - Starting run with seed 2
+2025-03-23 14:38:22,269 - INFO - Task Static (1/4)
+2025-03-23 14:38:22,269 - INFO - Task Static: Doppler Freq = 48.41 Hz
+2025-03-23 14:38:23,930 - INFO - Task Static: Final channel shape = (200, 5, 32)
+2025-03-23 14:38:24,387 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:38:24,708 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:38:25,160 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:38:33,261 - INFO - Epoch 1/4 - Loss: -2.1638, Gen Loss: -1.8404
+2025-03-23 14:38:33,594 - INFO - Epoch 2/4 - Loss: -3.0436, Gen Loss: -2.8340
+2025-03-23 14:38:33,934 - INFO - Epoch 3/4 - Loss: -3.1346, Gen Loss: -3.3733
+2025-03-23 14:38:34,269 - INFO - Epoch 4/4 - Loss: -3.6221, Gen Loss: -3.6175
+2025-03-23 14:38:35,612 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
+2025-03-23 14:38:35,612 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
+2025-03-23 14:38:35,637 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
+2025-03-23 14:38:35,637 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
+2025-03-23 14:38:36,397 - INFO - Assets written to: models/seed_2/task_Static/assets
+2025-03-23 14:38:36,418 - INFO - Model saved as folder at models/seed_2/task_Static
+2025-03-23 14:38:36,788 - INFO - Task Pedestrian (2/4)
+2025-03-23 14:38:36,796 - INFO - Task Pedestrian: Doppler Freq = 174.24 Hz
+2025-03-23 14:38:37,197 - INFO - Task Pedestrian: Final channel shape = (200, 5, 32)
+2025-03-23 14:38:37,539 - INFO - Epoch 1/4 - Loss: -3.4118, Gen Loss: -3.6149
+2025-03-23 14:38:37,875 - INFO - Epoch 2/4 - Loss: -3.5692, Gen Loss: -3.6994
+2025-03-23 14:38:38,220 - INFO - Epoch 3/4 - Loss: -3.7751, Gen Loss: -3.8019
+2025-03-23 14:38:38,557 - INFO - Epoch 4/4 - Loss: -3.5755, Gen Loss: -3.7250
+2025-03-23 14:38:39,110 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
+2025-03-23 14:38:39,111 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
+2025-03-23 14:38:39,134 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
+2025-03-23 14:38:39,134 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
+2025-03-23 14:38:39,861 - INFO - Assets written to: models/seed_2/task_Pedestrian/assets
+2025-03-23 14:38:39,881 - INFO - Model saved as folder at models/seed_2/task_Pedestrian
+2025-03-23 14:38:40,254 - INFO - Task Vehicular (3/4)
+2025-03-23 14:38:40,254 - INFO - Task Vehicular: Doppler Freq = 2172.45 Hz
+2025-03-23 14:38:41,851 - INFO - Task Vehicular: Final channel shape = (200, 5, 32)
+2025-03-23 14:38:42,191 - INFO - Epoch 1/4 - Loss: -3.5362, Gen Loss: -3.5447
+2025-03-23 14:38:42,528 - INFO - Epoch 2/4 - Loss: -3.6625, Gen Loss: -3.6936
+2025-03-23 14:38:42,863 - INFO - Epoch 3/4 - Loss: -3.8699, Gen Loss: -3.4897
+2025-03-23 14:38:43,198 - INFO - Epoch 4/4 - Loss: -3.7385, Gen Loss: -3.7345
+2025-03-23 14:38:43,752 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
+2025-03-23 14:38:43,752 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
+2025-03-23 14:38:43,776 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
+2025-03-23 14:38:43,776 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
+2025-03-23 14:38:44,502 - INFO - Assets written to: models/seed_2/task_Vehicular/assets
+2025-03-23 14:38:44,523 - INFO - Model saved as folder at models/seed_2/task_Vehicular
+2025-03-23 14:38:44,899 - INFO - Task Aerial (4/4)
+2025-03-23 14:38:44,899 - INFO - Task Aerial: Doppler Freq = 994.48 Hz
+2025-03-23 14:38:46,537 - INFO - Task Aerial: Final channel shape = (200, 5, 32)
+2025-03-23 14:38:46,873 - INFO - Epoch 1/4 - Loss: -3.7912, Gen Loss: -3.8580
+2025-03-23 14:38:47,212 - INFO - Epoch 2/4 - Loss: -3.6771, Gen Loss: -3.3361
+2025-03-23 14:38:47,554 - INFO - Epoch 3/4 - Loss: -3.7472, Gen Loss: -3.3371
+2025-03-23 14:38:47,895 - INFO - Epoch 4/4 - Loss: -3.7999, Gen Loss: -3.3760
+2025-03-23 14:38:48,442 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
+2025-03-23 14:38:48,442 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
+2025-03-23 14:38:48,466 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
+2025-03-23 14:38:48,466 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
+2025-03-23 14:38:49,196 - INFO - Assets written to: models/seed_2/task_Aerial/assets
+2025-03-23 14:38:49,217 - INFO - Model saved as folder at models/seed_2/task_Aerial
+2025-03-23 14:38:49,610 - INFO - Run completed in 27.34s
