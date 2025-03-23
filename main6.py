@@ -10,7 +10,7 @@ import logging
 import sys
 import subprocess
 
-# تابع کمکی برای هدایت print به لاگ
+# Helper class to redirect print statements to logging
 class LoggerWriter:
     def __init__(self, logger, level):
         self.logger = logger
@@ -23,30 +23,41 @@ class LoggerWriter:
     def flush(self):
         pass
 
-# تابع برای گرفتن توان GPU از nvidia-smi
+# Function to preprocess complex inputs into real and imaginary parts
+def preprocess_input(x):
+    real_part = tf.math.real(x)
+    imag_part = tf.math.imag(x)
+    return tf.concat([real_part, imag_part], axis=-1)
+
+# Function to get GPU power from nvidia-smi
 def get_gpu_power():
     try:
-        result = subprocess.check_output(["nvidia-smi", "--query-gpu=power.draw", "--format=csv,noheader"])
-        power = float(result.decode().split()[0])
-        return power
-    except:
-        # مقدار تصادفی بین 350 تا 450 وات
+        result = subprocess.check_output(
+            ["nvidia-smi", "--query-gpu=power.draw", "--format=csv,noheader,nounits"],
+            timeout=1
+        )
+        powers = result.decode().strip().split('\n')
+        total_power = sum(float(power) for power in powers if power)
+        logging.info(f"GPU Power: {total_power} W")
+        return total_power
+    except Exception as e:
+        logging.warning(f"Failed to get GPU power: {str(e)}. Using random value.")
         return np.random.uniform(350, 450)
 
-# تنظیمات GPU
+# GPU configuration
 os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 print(f"CUDA_VISIBLE_DEVICES set to: {os.environ['CUDA_VISIBLE_DEVICES']}")
 physical_devices = tf.config.list_physical_devices('GPU')
 print(f"Available GPUs: {physical_devices}")
 
-# تنظیمات اولیه
+# Initial settings
 NUM_ANTENNAS = 32
 NUM_USERS = 5
 FREQ = 28e9
 POWER = 1.0
 NUM_SLOTS = 200
 BATCH_SIZE = 32
-LAMBDA_REG = 10.0  # افزایش به 10 برای تعادل بیشتر
+LAMBDA_REG = 10.0
 NUM_EPOCHS = 4
 CHUNK_SIZE = 50
 NOISE_POWER = 0.1
@@ -54,7 +65,7 @@ REPLAY_BUFFER_SIZE = 200
 NUM_RUNS = 3
 INNER_STEPS = 3
 
-# تعریف تسک‌ها
+# Define tasks
 TASKS = [
     {"name": "Static", "speed_range": [0, 5], "delay_spread": 30e-9, "channel": "TDL", "model": "A"},
     {"name": "Pedestrian", "speed_range": [5, 10], "delay_spread": 50e-9, "channel": "Rayleigh"},
@@ -62,13 +73,12 @@ TASKS = [
     {"name": "Aerial", "speed_range": [20, 50], "delay_spread": 70e-9, "channel": "TDL", "model": "A"},
 ]
 
-# مدل
+# Model definition
 class BeamformingMetaAttentionModel(Model):
     def __init__(self, num_antennas, num_users):
         super().__init__()
         self.num_antennas = num_antennas
         self.num_users = num_users
-        # لایه‌ها با dtype=tf.complex64
         self.gru = layers.GRU(128, return_sequences=True, dtype=tf.float32)
         self.attention = layers.MultiHeadAttention(num_heads=4, key_dim=64, dtype=tf.float32)
         self.norm = layers.LayerNormalization(dtype=tf.float32)
@@ -91,16 +101,16 @@ class BeamformingMetaAttentionModel(Model):
     @tf.function(reduce_retracing=True)
     def call(self, inputs):
         batch_size = tf.shape(inputs)[0]
-        expected_shape = [None, self.num_users, self.num_antennas]
+        # Expect preprocessed input: [batch_size, num_users, num_antennas * 2]
+        expected_shape = [None, self.num_users, self.num_antennas * 2]
         tf.debugging.assert_shapes([(inputs, expected_shape)])
-        # جدا کردن real و imag قبل از GRU
-        real_part = tf.math.real(inputs)
-        imag_part = tf.math.imag(inputs)
-        inputs_real_imag = tf.concat([real_part, imag_part], axis=-1)  # [batch_size, num_users, num_antennas * 2]
-        # ترکیب num_users و num_antennas * 2 توی یه بعد برای GRU
+        logging.debug(f"Input dtype: {inputs.dtype}")
+        
+        # Input is already float32 with real and imag concatenated, no need to split again
+        inputs_real_imag = inputs  # Shape: [batch_size, num_users, num_antennas * 2]
         inputs_flat = tf.reshape(inputs_real_imag, [batch_size, self.num_users * (self.num_antennas * 2)])  # [batch_size, num_users * num_antennas * 2]
         inputs_flat = tf.expand_dims(inputs_flat, axis=1)  # [batch_size, 1, num_users * num_antennas * 2]
-        x = self.gru(inputs_flat)  # GRU روی float32 کار می‌کنه، خروجی: [batch_size, 1, 128]
+        x = self.gru(inputs_flat)  # [batch_size, 1, 128]
         attn_output = self.attention(x, x)  # [batch_size, 1, 128]
         x = self.norm(attn_output + x)  # [batch_size, 1, 128]
         x = tf.reduce_mean(x, axis=1)  # [batch_size, 128]
@@ -134,7 +144,7 @@ class BeamformingMetaAttentionModel(Model):
             x_samples = tf.gather(x_buffer, idx)
             x_flat = tf.reshape(x_samples, [num_samples, self.num_antennas * self.num_users])
             noise = tf.random.normal([num_samples, self.num_antennas * self.num_users], stddev=0.1, dtype=tf.float32)
-            real_part = tf.math.real(x_flat)  # بدون cast اضافی
+            real_part = tf.math.real(x_flat)
             imag_part = tf.math.imag(x_flat)
             gen_input = tf.concat([real_part, imag_part, noise], axis=-1)
             gen_output = self.generator(gen_input)
@@ -168,7 +178,8 @@ class BeamformingMetaAttentionModel(Model):
 
     @tf.function(reduce_retracing=True)
     def _compute_gen_loss(self, x_batch, h_replay):
-        w = self(x_batch)
+        x_batch_processed = preprocess_input(x_batch)
+        w = self(x_batch_processed)
         h_adjusted = tf.transpose(h_replay, [0, 2, 1])
         signal_matrix = tf.matmul(w, h_adjusted)
         desired_signal = tf.linalg.diag_part(signal_matrix)
@@ -209,10 +220,10 @@ class BeamformingMetaAttentionModel(Model):
                 penalty += tf.reduce_sum(tf.cast(delta, tf.float32)**2)
         return LAMBDA_REG * penalty
 
-# تولید کانال
+# Channel generation function
 def generate_channel(task, num_slots):
     speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], NUM_USERS)
-    avg_speed = np.mean(speeds) * 1000 / 3600  # m/s
+    avg_speed = np.mean(speeds) * 1000 / 3600  # Convert to m/s
     doppler_freq = avg_speed * FREQ / 3e8
     logging.info(f"Task {task['name']}: Doppler Freq = {doppler_freq:.2f} Hz")
 
@@ -250,10 +261,11 @@ def generate_channel(task, num_slots):
     logging.info(f"Task {task['name']}: Final channel shape = {h.shape}")
     return h
 
-# تابع Loss
+# Loss function
 @tf.function(reduce_retracing=True)
 def meta_loss(model, x, h):
-    w = model(x)
+    x_processed = preprocess_input(x)
+    w = model(x_processed)
     h_adjusted = tf.transpose(h, [0, 2, 1])
     signal = tf.einsum('bua,bau->bu', w, h_adjusted)
     desired_power = tf.reduce_mean(tf.abs(signal)**2)
@@ -261,12 +273,13 @@ def meta_loss(model, x, h):
     sinr = desired_power / (interference + NOISE_POWER)
     return -tf.math.log(1.0 + sinr) + model.regularization_loss()
 
-# تابع آموزش
+# Training step function
 @tf.function(reduce_retracing=True)
 def train_step(model, x_batch, h_batch, optimizer, gen_optimizer):
     batch_size = tf.shape(x_batch)[0]
+    x_batch_processed = preprocess_input(x_batch)
     with tf.GradientTape() as tape:
-        w = model(x_batch)
+        w = model(x_batch_processed)
         h_adjusted = tf.transpose(h_batch, [0, 2, 1])
         signal_matrix = tf.matmul(w, h_adjusted)
         desired_signal = tf.linalg.diag_part(signal_matrix)
@@ -282,7 +295,8 @@ def train_step(model, x_batch, h_batch, optimizer, gen_optimizer):
         for _ in range(INNER_STEPS):
             x_replay, h_replay = model.generate_replay(batch_size // 2)
             if not tf.reduce_all(tf.equal(x_replay, 0.0)):
-                w_replay = model(x_replay)
+                x_replay_processed = preprocess_input(x_replay)
+                w_replay = model(x_replay_processed)
                 h_replay_adjusted = tf.transpose(h_replay, [0, 2, 1])
                 signal_matrix_replay = tf.matmul(w_replay, h_replay_adjusted)
                 desired_signal_replay = tf.linalg.diag_part(signal_matrix_replay)
@@ -300,7 +314,7 @@ def train_step(model, x_batch, h_batch, optimizer, gen_optimizer):
 def main(seed):
     logging.basicConfig(
         filename=f"training_log_seed_{seed}.log",
-        level=logging.INFO,
+        level=logging.DEBUG,
         format="%(asctime)s - %(levelname)s - %(message)s",
         filemode="w"
     )
@@ -316,10 +330,12 @@ def main(seed):
     gen_optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
     checkpoint = tf.train.Checkpoint(model=model, optimizer=optimizer)
 
+    # Initialize model with dummy data
     real_part = tf.random.normal([BATCH_SIZE, NUM_USERS, NUM_ANTENNAS], dtype=tf.float32)
     imag_part = tf.random.normal([BATCH_SIZE, NUM_USERS, NUM_ANTENNAS], dtype=tf.float32)
     dummy_x = tf.complex(real_part, imag_part)
-    _ = model(dummy_x)
+    logging.debug(f"Calling model with dummy_x dtype: {dummy_x.dtype}")
+    _ = model(preprocess_input(dummy_x))  # Preprocess dummy_x
     optimizer.build(model.trainable_variables)
     gen_optimizer.build(model.generator.trainable_variables)
 
@@ -336,10 +352,12 @@ def main(seed):
             h = generate_channel(task, NUM_SLOTS)
             task_channels[task_idx] = h
             x = h
+            x_processed = preprocess_input(x)
             dataset = tf.data.Dataset.from_tensor_slices((x, h)).batch(BATCH_SIZE)
 
-            _ = model(x[:1])
-            initial_w = model(x)
+            logging.debug(f"Calling model with x_processed[:1] dtype: {x_processed[:1].dtype}")
+            _ = model(x_processed[:1])
+            initial_w = model(x_processed)
             h_transposed = tf.transpose(h, [0, 2, 1])
             signal = tf.matmul(initial_w, h_transposed)
             initial_signal = tf.reduce_mean(tf.abs(signal)**2).numpy()
@@ -361,11 +379,11 @@ def main(seed):
             logging.info(f"Checkpoint saved at {checkpoint_dir}/task_{task['name']}")
 
             task_time = time.time() - task_start_time
-            latency = task_time / (NUM_EPOCHS * NUM_SLOTS) * 1000
-            convergence_time = task_time / NUM_EPOCHS
+            latency = task_time / (NUM_EPOCHS * NUM_SLOTS) * 1000  # in ms
+            convergence_time = task_time / NUM_EPOCHS  # in seconds
             gpu_power = get_gpu_power()
-            energy = gpu_power * task_time
-            w = model(x)
+            energy = gpu_power * task_time  # in Joules
+            w = model(x_processed)
             h_adjusted = tf.transpose(h, [0, 2, 1])
             signal_matrix = tf.matmul(w, h_adjusted)
             desired_signal = tf.linalg.diag_part(signal_matrix)
@@ -382,7 +400,8 @@ def main(seed):
                 past_deltas = []
                 for past_idx in range(task_idx):
                     past_h = task_channels[past_idx]
-                    past_w = model(past_h)
+                    past_h_processed = preprocess_input(past_h)
+                    past_w = model(past_h_processed)
                     past_signal = tf.reduce_mean(tf.abs(tf.matmul(past_w, tf.transpose(past_h, [0, 2, 1])))**2).numpy()
                     past_deltas.append(task_initial_performance[past_idx] - past_signal)
                 forgetting = np.mean(past_deltas) if past_deltas else 0.0
@@ -390,7 +409,8 @@ def main(seed):
             fwt = 0.0
             if task_idx > 0:
                 past_h = task_channels[task_idx - 1]
-                past_w = model(past_h)
+                past_h_processed = preprocess_input(past_h)
+                past_w = model(past_h_processed)
                 past_signal = tf.reduce_mean(tf.abs(tf.matmul(past_w, tf.transpose(past_h, [0, 2, 1])))**2).numpy()
                 fwt = (initial_signal - past_signal) / (past_signal + 1e-10)
 
@@ -414,7 +434,8 @@ def main(seed):
         final_deltas = []
         for past_idx in range(len(TASKS) - 1):
             past_h = task_channels[past_idx]
-            past_w = model(past_h)
+            past_h_processed = preprocess_input(past_h)
+            past_w = model(past_h_processed)
             past_signal = tf.reduce_mean(tf.abs(tf.matmul(past_w, tf.transpose(past_h, [0, 2, 1])))**2).numpy()
             final_deltas.append(task_initial_performance[past_idx] - past_signal)
         bwt = np.mean(final_deltas) if final_deltas else 0.0
