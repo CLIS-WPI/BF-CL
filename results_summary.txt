@@ -1,48 +1,54 @@
 Throughput (Mean ± Std):
-  Static: 0.1062 ± 0.0074
-  Pedestrian: 0.1752 ± 0.0038
-  Vehicular: 0.1280 ± 0.0046
-  Aerial: 0.1315 ± 0.0073
+  Static: 0.1085 ± 0.0029
+  Pedestrian: 0.1775 ± 0.0053
+  Vehicular: 0.1254 ± 0.0069
+  Aerial: 0.1278 ± 0.0044
 
 Latency (Mean ± Std):
-  Static: 15.6447 ± 0.7947
-  Pedestrian: 3.2970 ± 0.0453
-  Vehicular: 3.3468 ± 0.0189
-  Aerial: 3.3238 ± 0.0141
+  Static: 13.2604 ± 0.8947
+  Pedestrian: 1.7308 ± 0.0196
+  Vehicular: 1.7467 ± 0.0039
+  Aerial: 1.7378 ± 0.0142
 
 Energy (Mean ± Std):
-  Static: 5006.2977 ± 254.3025
-  Pedestrian: 1055.0348 ± 14.5050
-  Vehicular: 1070.9616 ± 6.0492
-  Aerial: 1063.6151 ± 4.5222
+  Static: 970.7624 ± 62.7344
+  Pedestrian: 126.9393 ± 1.6157
+  Vehicular: 128.1811 ± 0.2618
+  Aerial: 127.5970 ± 0.9187
 
 Forgetting (Mean ± Std):
   Static: 0.0000 ± 0.0000
-  Pedestrian: 0.0362 ± 0.0012
-  Vehicular: 0.0179 ± 0.0006
-  Aerial: 0.0192 ± 0.0017
+  Pedestrian: 0.0335 ± 0.0045
+  Vehicular: 0.0157 ± 0.0015
+  Aerial: 0.0158 ± 0.0026
 
 Fwt (Mean ± Std):
   Static: 0.0000 ± 0.0000
-  Pedestrian: 0.3231 ± 0.0364
-  Vehicular: 0.0320 ± 0.0194
-  Aerial: 0.2058 ± 0.0253
+  Pedestrian: 0.3258 ± 0.0249
+  Vehicular: -0.0036 ± 0.0268
+  Aerial: 0.1714 ± 0.0933
 
 Bwt (Mean ± Std):
-  Static: 0.0192 ± 0.0017
-  Pedestrian: 0.0192 ± 0.0017
-  Vehicular: 0.0192 ± 0.0017
-  Aerial: 0.0192 ± 0.0017
+  Static: 0.0158 ± 0.0026
+  Pedestrian: 0.0158 ± 0.0026
+  Vehicular: 0.0158 ± 0.0026
+  Aerial: 0.0158 ± 0.0026
 
 Spectral_efficiency (Mean ± Std):
-  Static: 0.2657 ± 0.0032
-  Pedestrian: 0.3257 ± 0.0109
-  Vehicular: 0.2740 ± 0.0015
-  Aerial: 0.2750 ± 0.0023
+  Static: 0.2668 ± 0.0012
+  Pedestrian: 0.3306 ± 0.0088
+  Vehicular: 0.2730 ± 0.0023
+  Aerial: 0.2739 ± 0.0015
 
 Interference (Mean ± Std):
-  Static: 0.4249 ± 0.0297
-  Pedestrian: 0.5923 ± 0.0104
-  Vehicular: 0.5121 ± 0.0186
-  Aerial: 0.5262 ± 0.0292
+  Static: 0.4341 ± 0.0115
+  Pedestrian: 0.5893 ± 0.0084
+  Vehicular: 0.5015 ± 0.0276
+  Aerial: 0.5111 ± 0.0178
+
+Convergence_time (Mean ± Std):
+  Static: 2.6521 ± 0.1789
+  Pedestrian: 0.3462 ± 0.0039
+  Vehicular: 0.3493 ± 0.0008
+  Aerial: 0.3476 ± 0.0028
 

@@ -8,6 +8,7 @@ import gc
 import os
 import logging
 import sys
+import subprocess
 
 # تابع کمکی برای هدایت print به لاگ
 class LoggerWriter:
@@ -21,6 +22,15 @@ class LoggerWriter:
 
     def flush(self):
         pass
+
+# تابع برای گرفتن توان GPU از nvidia-smi
+def get_gpu_power():
+    try:
+        result = subprocess.check_output(["nvidia-smi", "--query-gpu=power.draw", "--format=csv,noheader"])
+        power = float(result.decode().split()[0])
+        return power
+    except:
+        return 400.0  # مقدار پیش‌فرض اگه nvidia-smi کار نکنه
 
 # تنظیمات GPU
 os.environ["CUDA_VISIBLE_DEVICES"] = "1"
@@ -38,7 +48,6 @@ BATCH_SIZE = 32
 LAMBDA_REG = 5.0
 NUM_EPOCHS = 4
 CHUNK_SIZE = 50
-GPU_POWER_DRAW = 400
 NOISE_POWER = 0.1
 REPLAY_BUFFER_SIZE = 200
 NUM_RUNS = 3
@@ -242,15 +251,11 @@ def generate_channel(task, num_slots):
 def meta_loss(model, x, h):
     w = model(x)
     h_adjusted = tf.transpose(h, [0, 2, 1])
-    signal_matrix = tf.matmul(w, h_adjusted)
-    desired_signal = tf.linalg.diag_part(signal_matrix)
-    desired_power = tf.reduce_mean(tf.abs(desired_signal)**2)
-    mask = 1.0 - tf.eye(NUM_USERS, batch_shape=[tf.shape(signal_matrix)[0]])
-    interference = tf.reduce_sum(tf.abs(signal_matrix)**2 * mask, axis=-1)
-    interference_power = tf.reduce_mean(interference)
-    sinr = desired_power / (interference_power + NOISE_POWER)
-    loss = -tf.math.log(1.0 + sinr) + model.regularization_loss()
-    return loss
+    signal = tf.einsum('bua,bau->bu', w, h_adjusted)  # بهینه‌شده
+    desired_power = tf.reduce_mean(tf.abs(signal)**2)
+    interference = tf.reduce_mean(tf.abs(signal)**2) - desired_power
+    sinr = desired_power / (interference + NOISE_POWER)
+    return -tf.math.log(1.0 + sinr) + model.regularization_loss()
 
 # تابع آموزش
 @tf.function(reduce_retracing=True)
@@ -306,6 +311,7 @@ def main(seed):
     model = BeamformingMetaAttentionModel(NUM_ANTENNAS, NUM_USERS)
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.002)
     gen_optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+    checkpoint = tf.train.Checkpoint(model=model, optimizer=optimizer)
 
     real_part = tf.random.normal([BATCH_SIZE, NUM_USERS, NUM_ANTENNAS], dtype=tf.float32)
     imag_part = tf.random.normal([BATCH_SIZE, NUM_USERS, NUM_ANTENNAS], dtype=tf.float32)
@@ -314,7 +320,7 @@ def main(seed):
     optimizer.build(model.trainable_variables)
     gen_optimizer.build(model.generator.trainable_variables)
 
-    results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting", "fwt", "bwt", "spectral_efficiency", "interference"]}
+    results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting", "fwt", "bwt", "spectral_efficiency", "interference", "convergence_time"]}
     task_performance = []
     task_initial_performance = []
     task_channels = {}
@@ -338,19 +344,25 @@ def main(seed):
 
             task_start_time = time.time()
             for epoch in range(NUM_EPOCHS):
-                for x_batch, h_batch in dataset:
-                    loss, gen_loss = train_step(model, x_batch, h_batch, optimizer, gen_optimizer)
-                    model.update_memory(x_batch, h_batch)
-                print(f"Epoch {epoch+1}/{NUM_EPOCHS} - Loss: {loss:.4f}, Gen Loss: {gen_loss:.4f}")
+                for batch_idx, (x_batch, h_batch) in enumerate(dataset):
+                    try:
+                        loss, gen_loss = train_step(model, x_batch, h_batch, optimizer, gen_optimizer)
+                        model.update_memory(x_batch, h_batch)
+                        print(f"Epoch {epoch+1}/{NUM_EPOCHS} - Batch {batch_idx} - Loss: {loss:.4f}, Gen Loss: {gen_loss:.4f}")
+                    except Exception as e:
+                        logging.error(f"Error in Task {task['name']}, Epoch {epoch+1}, Batch {batch_idx}: {str(e)}")
 
-            model_save_dir = f"models/seed_{seed}"
-            os.makedirs(model_save_dir, exist_ok=True)
-            model_save_path = os.path.join(model_save_dir, f"task_{task['name']}")
-            tf.saved_model.save(model, model_save_path)
-            logging.info(f"Model saved as folder at {model_save_path}")
+            # ذخیره مدل با checkpoint
+            checkpoint_dir = f"checkpoints/seed_{seed}"
+            os.makedirs(checkpoint_dir, exist_ok=True)
+            checkpoint.save(f"{checkpoint_dir}/task_{task['name']}")
+            logging.info(f"Checkpoint saved at {checkpoint_dir}/task_{task['name']}")
 
             task_time = time.time() - task_start_time
             latency = task_time / (NUM_EPOCHS * NUM_SLOTS) * 1000
+            convergence_time = task_time / NUM_EPOCHS
+            gpu_power = get_gpu_power()
+            energy = gpu_power * task_time
             w = model(x)
             h_adjusted = tf.transpose(h, [0, 2, 1])
             signal_matrix = tf.matmul(w, h_adjusted)
@@ -361,7 +373,6 @@ def main(seed):
             sinr = desired_power / (interference + NOISE_POWER)
             spectral_efficiency = np.log2(1 + sinr)
             throughput = desired_power
-            energy = GPU_POWER_DRAW * task_time
             task_performance.append(throughput)
 
             forgetting = 0.0
@@ -389,6 +400,7 @@ def main(seed):
             results["fwt"].append(fwt)
             results["spectral_efficiency"].append(spectral_efficiency)
             results["interference"].append(interference)
+            results["convergence_time"].append(convergence_time)
 
             gc.collect()
         except Exception as e:
@@ -421,7 +433,7 @@ def main(seed):
     return results
 
 if __name__ == "__main__":
-    all_results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting", "fwt", "bwt", "spectral_efficiency", "interference"]}
+    all_results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting", "fwt", "bwt", "spectral_efficiency", "interference", "convergence_time"]}
     
     for run in range(NUM_RUNS):
         print(f"Run {run+1}/{NUM_RUNS}")
@@ -442,14 +454,19 @@ if __name__ == "__main__":
                 f.write(f"  {task['name']}: {mean[i]:.4f} ± {std[i]:.4f}\n")
             f.write("\n")
 
-    plt.figure(figsize=(12, 8))
-    for metric in all_results:
+    # پلات‌های جداگانه
+    fig, axes = plt.subplots(3, 3, figsize=(20, 15))
+    axes = axes.flatten()
+    for idx, metric in enumerate(all_results):
+        ax = axes[idx]
         values = np.array(all_results[metric])
         mean = np.mean(values, axis=0)
         std = np.std(values, axis=0)
-        plt.errorbar(range(len(TASKS)), mean, yerr=std, label=metric.capitalize(), marker="o")
-    plt.legend()
-    plt.xticks(range(len(TASKS)), [t["name"] for t in TASKS], rotation=45)
-    plt.title("Performance Metrics Across Tasks")
-    plt.savefig("performance_metrics.png")
+        ax.errorbar(range(len(TASKS)), mean, yerr=std, label=metric.capitalize(), marker="o")
+        ax.set_title(metric.capitalize())
+        ax.set_xticks(range(len(TASKS)))
+        ax.set_xticklabels([t["name"] for t in TASKS], rotation=45)
+        ax.legend()
+    plt.tight_layout()
+    plt.savefig("detailed_metrics.png")
     plt.close()

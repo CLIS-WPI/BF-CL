@@ -1,173 +1,401 @@
-2025-03-23 14:37:23,703 - INFO - Starting run with seed 0
-2025-03-23 14:37:26,004 - INFO - Task Static (1/4)
-2025-03-23 14:37:26,005 - INFO - Task Static: Doppler Freq = 73.51 Hz
-2025-03-23 14:37:27,600 - INFO - Task Static: Final channel shape = (200, 5, 32)
-2025-03-23 14:37:28,779 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
-2025-03-23 14:37:29,091 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
-2025-03-23 14:37:29,543 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
-2025-03-23 14:37:38,802 - INFO - Epoch 1/4 - Loss: -2.4003, Gen Loss: -2.6013
-2025-03-23 14:37:39,130 - INFO - Epoch 2/4 - Loss: -3.1080, Gen Loss: -3.0328
-2025-03-23 14:37:39,454 - INFO - Epoch 3/4 - Loss: -3.8075, Gen Loss: -3.5195
-2025-03-23 14:37:39,773 - INFO - Epoch 4/4 - Loss: -3.7000, Gen Loss: -3.7464
-2025-03-23 14:37:40,934 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
-2025-03-23 14:37:40,934 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
-2025-03-23 14:37:40,975 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
-2025-03-23 14:37:40,975 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
-2025-03-23 14:37:41,725 - INFO - Assets written to: models/seed_0/task_Static/assets
-2025-03-23 14:37:41,744 - INFO - Model saved as folder at models/seed_0/task_Static
-2025-03-23 14:37:41,991 - INFO - Task Pedestrian (2/4)
-2025-03-23 14:37:41,991 - INFO - Task Pedestrian: Doppler Freq = 215.76 Hz
-2025-03-23 14:37:42,398 - INFO - Task Pedestrian: Final channel shape = (200, 5, 32)
-2025-03-23 14:37:42,725 - INFO - Epoch 1/4 - Loss: -3.6325, Gen Loss: -3.6146
-2025-03-23 14:37:43,047 - INFO - Epoch 2/4 - Loss: -3.5286, Gen Loss: -3.4398
-2025-03-23 14:37:43,371 - INFO - Epoch 3/4 - Loss: -3.5505, Gen Loss: -3.5695
-2025-03-23 14:37:43,705 - INFO - Epoch 4/4 - Loss: -3.8666, Gen Loss: -3.7381
-2025-03-23 14:37:44,241 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
-2025-03-23 14:37:44,241 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
-2025-03-23 14:37:44,264 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
-2025-03-23 14:37:44,265 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
-2025-03-23 14:37:44,975 - INFO - Assets written to: models/seed_0/task_Pedestrian/assets
-2025-03-23 14:37:44,995 - INFO - Model saved as folder at models/seed_0/task_Pedestrian
-2025-03-23 14:37:45,243 - INFO - Task Vehicular (3/4)
-2025-03-23 14:37:45,244 - INFO - Task Vehicular: Doppler Freq = 2453.20 Hz
-2025-03-23 14:37:46,896 - INFO - Task Vehicular: Final channel shape = (200, 5, 32)
-2025-03-23 14:37:47,259 - INFO - Epoch 1/4 - Loss: -3.7026, Gen Loss: -3.7083
-2025-03-23 14:37:47,592 - INFO - Epoch 2/4 - Loss: -3.5883, Gen Loss: -3.6922
-2025-03-23 14:37:47,930 - INFO - Epoch 3/4 - Loss: -3.7569, Gen Loss: -3.4721
-2025-03-23 14:37:48,265 - INFO - Epoch 4/4 - Loss: -3.8851, Gen Loss: -3.5938
-2025-03-23 14:37:48,815 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
-2025-03-23 14:37:48,815 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
-2025-03-23 14:37:48,839 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
-2025-03-23 14:37:48,839 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
-2025-03-23 14:37:49,556 - INFO - Assets written to: models/seed_0/task_Vehicular/assets
-2025-03-23 14:37:49,578 - INFO - Model saved as folder at models/seed_0/task_Vehicular
-2025-03-23 14:37:49,836 - INFO - Task Aerial (4/4)
-2025-03-23 14:37:49,836 - INFO - Task Aerial: Doppler Freq = 921.12 Hz
-2025-03-23 14:37:51,441 - INFO - Task Aerial: Final channel shape = (200, 5, 32)
-2025-03-23 14:37:51,781 - INFO - Epoch 1/4 - Loss: -3.4129, Gen Loss: -3.6095
-2025-03-23 14:37:52,114 - INFO - Epoch 2/4 - Loss: -3.7467, Gen Loss: -3.7699
-2025-03-23 14:37:52,455 - INFO - Epoch 3/4 - Loss: -3.7602, Gen Loss: -3.5082
-2025-03-23 14:37:52,791 - INFO - Epoch 4/4 - Loss: -3.9710, Gen Loss: -3.6250
-2025-03-23 14:37:53,337 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
-2025-03-23 14:37:53,337 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
-2025-03-23 14:37:53,361 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x7880149f03a0>), {}).
-2025-03-23 14:37:53,361 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ffcf5e560>), {}).
-2025-03-23 14:37:54,073 - INFO - Assets written to: models/seed_0/task_Aerial/assets
-2025-03-23 14:37:54,093 - INFO - Model saved as folder at models/seed_0/task_Aerial
-2025-03-23 14:37:54,360 - INFO - Run completed in 28.36s
-2025-03-23 14:37:54,362 - INFO - Run 2/3
-2025-03-23 14:37:54,362 - INFO - Starting run with seed 1
-2025-03-23 14:37:54,971 - INFO - Task Static (1/4)
-2025-03-23 14:37:54,972 - INFO - Task Static: Doppler Freq = 41.13 Hz
-2025-03-23 14:37:56,566 - INFO - Task Static: Final channel shape = (200, 5, 32)
-2025-03-23 14:37:56,988 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
-2025-03-23 14:37:57,305 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
-2025-03-23 14:37:57,754 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
-2025-03-23 14:38:05,960 - INFO - Epoch 1/4 - Loss: -2.5747, Gen Loss: -2.4365
-2025-03-23 14:38:06,297 - INFO - Epoch 2/4 - Loss: -3.1765, Gen Loss: -3.2245
-2025-03-23 14:38:06,627 - INFO - Epoch 3/4 - Loss: -3.7576, Gen Loss: -3.2494
-2025-03-23 14:38:06,967 - INFO - Epoch 4/4 - Loss: -3.3279, Gen Loss: -3.2048
-2025-03-23 14:38:07,911 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
-2025-03-23 14:38:07,912 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
-2025-03-23 14:38:07,936 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
-2025-03-23 14:38:07,936 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
-2025-03-23 14:38:08,689 - INFO - Assets written to: models/seed_1/task_Static/assets
-2025-03-23 14:38:08,709 - INFO - Model saved as folder at models/seed_1/task_Static
-2025-03-23 14:38:09,038 - INFO - Task Pedestrian (2/4)
-2025-03-23 14:38:09,038 - INFO - Task Pedestrian: Doppler Freq = 170.07 Hz
-2025-03-23 14:38:09,440 - INFO - Task Pedestrian: Final channel shape = (200, 5, 32)
-2025-03-23 14:38:09,779 - INFO - Epoch 1/4 - Loss: -3.3359, Gen Loss: -3.5467
-2025-03-23 14:38:10,115 - INFO - Epoch 2/4 - Loss: -3.6355, Gen Loss: -3.7133
-2025-03-23 14:38:10,452 - INFO - Epoch 3/4 - Loss: -3.5331, Gen Loss: -3.6365
-2025-03-23 14:38:10,789 - INFO - Epoch 4/4 - Loss: -3.4970, Gen Loss: -3.4774
-2025-03-23 14:38:11,335 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
-2025-03-23 14:38:11,335 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
-2025-03-23 14:38:11,358 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
-2025-03-23 14:38:11,359 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
-2025-03-23 14:38:12,076 - INFO - Assets written to: models/seed_1/task_Pedestrian/assets
-2025-03-23 14:38:12,097 - INFO - Model saved as folder at models/seed_1/task_Pedestrian
-2025-03-23 14:38:12,403 - INFO - Task Vehicular (3/4)
-2025-03-23 14:38:12,403 - INFO - Task Vehicular: Doppler Freq = 2244.47 Hz
-2025-03-23 14:38:14,035 - INFO - Task Vehicular: Final channel shape = (200, 5, 32)
-2025-03-23 14:38:14,372 - INFO - Epoch 1/4 - Loss: -3.5434, Gen Loss: -3.8303
-2025-03-23 14:38:14,707 - INFO - Epoch 2/4 - Loss: -3.7366, Gen Loss: -3.9350
-2025-03-23 14:38:15,057 - INFO - Epoch 3/4 - Loss: -3.7796, Gen Loss: -3.9883
-2025-03-23 14:38:15,407 - INFO - Epoch 4/4 - Loss: -3.6070, Gen Loss: -3.7245
-2025-03-23 14:38:15,969 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
-2025-03-23 14:38:15,969 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
-2025-03-23 14:38:15,993 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
-2025-03-23 14:38:15,993 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
-2025-03-23 14:38:16,721 - INFO - Assets written to: models/seed_1/task_Vehicular/assets
-2025-03-23 14:38:16,742 - INFO - Model saved as folder at models/seed_1/task_Vehicular
-2025-03-23 14:38:17,063 - INFO - Task Aerial (4/4)
-2025-03-23 14:38:17,063 - INFO - Task Aerial: Doppler Freq = 827.29 Hz
-2025-03-23 14:38:18,657 - INFO - Task Aerial: Final channel shape = (200, 5, 32)
-2025-03-23 14:38:18,998 - INFO - Epoch 1/4 - Loss: -3.7147, Gen Loss: -3.8358
-2025-03-23 14:38:19,332 - INFO - Epoch 2/4 - Loss: -3.5682, Gen Loss: -3.7466
-2025-03-23 14:38:19,675 - INFO - Epoch 3/4 - Loss: -3.6934, Gen Loss: -3.7502
-2025-03-23 14:38:20,014 - INFO - Epoch 4/4 - Loss: -3.9735, Gen Loss: -4.0333
-2025-03-23 14:38:20,562 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
-2025-03-23 14:38:20,562 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
-2025-03-23 14:38:20,586 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787dddb185e0>), {}).
-2025-03-23 14:38:20,586 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787ddc19d450>), {}).
-2025-03-23 14:38:21,307 - INFO - Assets written to: models/seed_1/task_Aerial/assets
-2025-03-23 14:38:21,327 - INFO - Model saved as folder at models/seed_1/task_Aerial
-2025-03-23 14:38:21,656 - INFO - Run completed in 26.68s
-2025-03-23 14:38:21,658 - INFO - Run 3/3
-2025-03-23 14:38:21,658 - INFO - Starting run with seed 2
-2025-03-23 14:38:22,269 - INFO - Task Static (1/4)
-2025-03-23 14:38:22,269 - INFO - Task Static: Doppler Freq = 48.41 Hz
-2025-03-23 14:38:23,930 - INFO - Task Static: Final channel shape = (200, 5, 32)
-2025-03-23 14:38:24,387 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
-2025-03-23 14:38:24,708 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
-2025-03-23 14:38:25,160 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
-2025-03-23 14:38:33,261 - INFO - Epoch 1/4 - Loss: -2.1638, Gen Loss: -1.8404
-2025-03-23 14:38:33,594 - INFO - Epoch 2/4 - Loss: -3.0436, Gen Loss: -2.8340
-2025-03-23 14:38:33,934 - INFO - Epoch 3/4 - Loss: -3.1346, Gen Loss: -3.3733
-2025-03-23 14:38:34,269 - INFO - Epoch 4/4 - Loss: -3.6221, Gen Loss: -3.6175
-2025-03-23 14:38:35,612 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
-2025-03-23 14:38:35,612 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
-2025-03-23 14:38:35,637 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
-2025-03-23 14:38:35,637 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
-2025-03-23 14:38:36,397 - INFO - Assets written to: models/seed_2/task_Static/assets
-2025-03-23 14:38:36,418 - INFO - Model saved as folder at models/seed_2/task_Static
-2025-03-23 14:38:36,788 - INFO - Task Pedestrian (2/4)
-2025-03-23 14:38:36,796 - INFO - Task Pedestrian: Doppler Freq = 174.24 Hz
-2025-03-23 14:38:37,197 - INFO - Task Pedestrian: Final channel shape = (200, 5, 32)
-2025-03-23 14:38:37,539 - INFO - Epoch 1/4 - Loss: -3.4118, Gen Loss: -3.6149
-2025-03-23 14:38:37,875 - INFO - Epoch 2/4 - Loss: -3.5692, Gen Loss: -3.6994
-2025-03-23 14:38:38,220 - INFO - Epoch 3/4 - Loss: -3.7751, Gen Loss: -3.8019
-2025-03-23 14:38:38,557 - INFO - Epoch 4/4 - Loss: -3.5755, Gen Loss: -3.7250
-2025-03-23 14:38:39,110 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
-2025-03-23 14:38:39,111 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
-2025-03-23 14:38:39,134 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
-2025-03-23 14:38:39,134 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
-2025-03-23 14:38:39,861 - INFO - Assets written to: models/seed_2/task_Pedestrian/assets
-2025-03-23 14:38:39,881 - INFO - Model saved as folder at models/seed_2/task_Pedestrian
-2025-03-23 14:38:40,254 - INFO - Task Vehicular (3/4)
-2025-03-23 14:38:40,254 - INFO - Task Vehicular: Doppler Freq = 2172.45 Hz
-2025-03-23 14:38:41,851 - INFO - Task Vehicular: Final channel shape = (200, 5, 32)
-2025-03-23 14:38:42,191 - INFO - Epoch 1/4 - Loss: -3.5362, Gen Loss: -3.5447
-2025-03-23 14:38:42,528 - INFO - Epoch 2/4 - Loss: -3.6625, Gen Loss: -3.6936
-2025-03-23 14:38:42,863 - INFO - Epoch 3/4 - Loss: -3.8699, Gen Loss: -3.4897
-2025-03-23 14:38:43,198 - INFO - Epoch 4/4 - Loss: -3.7385, Gen Loss: -3.7345
-2025-03-23 14:38:43,752 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
-2025-03-23 14:38:43,752 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
-2025-03-23 14:38:43,776 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
-2025-03-23 14:38:43,776 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
-2025-03-23 14:38:44,502 - INFO - Assets written to: models/seed_2/task_Vehicular/assets
-2025-03-23 14:38:44,523 - INFO - Model saved as folder at models/seed_2/task_Vehicular
-2025-03-23 14:38:44,899 - INFO - Task Aerial (4/4)
-2025-03-23 14:38:44,899 - INFO - Task Aerial: Doppler Freq = 994.48 Hz
-2025-03-23 14:38:46,537 - INFO - Task Aerial: Final channel shape = (200, 5, 32)
-2025-03-23 14:38:46,873 - INFO - Epoch 1/4 - Loss: -3.7912, Gen Loss: -3.8580
-2025-03-23 14:38:47,212 - INFO - Epoch 2/4 - Loss: -3.6771, Gen Loss: -3.3361
-2025-03-23 14:38:47,554 - INFO - Epoch 3/4 - Loss: -3.7472, Gen Loss: -3.3371
-2025-03-23 14:38:47,895 - INFO - Epoch 4/4 - Loss: -3.7999, Gen Loss: -3.3760
-2025-03-23 14:38:48,442 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
-2025-03-23 14:38:48,442 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
-2025-03-23 14:38:48,466 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(32, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d9c14cd00>), {}).
-2025-03-23 14:38:48,466 - INFO - Unsupported signature for serialization: ((TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='x_batch'), TensorSpec(shape=(None, 5, 32), dtype=tf.complex64, name='h_batch'), <tensorflow.python.framework.func_graph.UnknownArgument object at 0x787d841ddb70>), {}).
-2025-03-23 14:38:49,196 - INFO - Assets written to: models/seed_2/task_Aerial/assets
-2025-03-23 14:38:49,217 - INFO - Model saved as folder at models/seed_2/task_Aerial
-2025-03-23 14:38:49,610 - INFO - Run completed in 27.34s
+2025-03-23 14:48:45,277 - INFO - Starting run with seed 0
+2025-03-23 14:48:47,554 - INFO - Task Static (1/4)
+2025-03-23 14:48:47,555 - INFO - Task Static: Doppler Freq = 73.51 Hz
+2025-03-23 14:48:49,161 - INFO - Task Static: Final channel shape = (200, 5, 32)
+2025-03-23 14:48:50,322 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:48:50,630 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:48:51,075 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:48:56,599 - INFO - Epoch 1/4 - Batch 0 - Loss: 0.0977, Gen Loss: 0.0000
+2025-03-23 14:48:56,914 - INFO - Epoch 1/4 - Batch 1 - Loss: 0.1125, Gen Loss: -0.4335
+2025-03-23 14:48:56,960 - INFO - Epoch 1/4 - Batch 2 - Loss: -0.6044, Gen Loss: -0.7258
+2025-03-23 14:48:57,006 - INFO - Epoch 1/4 - Batch 3 - Loss: -0.9524, Gen Loss: -1.2287
+2025-03-23 14:48:57,052 - INFO - Epoch 1/4 - Batch 4 - Loss: -1.1394, Gen Loss: -1.3107
+2025-03-23 14:48:57,098 - INFO - Epoch 1/4 - Batch 5 - Loss: -2.2238, Gen Loss: -2.0270
+2025-03-23 14:49:00,367 - INFO - Epoch 1/4 - Batch 6 - Loss: -2.5208, Gen Loss: -1.7313
+2025-03-23 14:49:00,417 - INFO - Epoch 2/4 - Batch 0 - Loss: -2.4225, Gen Loss: -2.3752
+2025-03-23 14:49:00,464 - INFO - Epoch 2/4 - Batch 1 - Loss: -2.8128, Gen Loss: -2.5186
+2025-03-23 14:49:00,511 - INFO - Epoch 2/4 - Batch 2 - Loss: -3.0335, Gen Loss: -2.5799
+2025-03-23 14:49:00,557 - INFO - Epoch 2/4 - Batch 3 - Loss: -3.0507, Gen Loss: -2.9300
+2025-03-23 14:49:00,603 - INFO - Epoch 2/4 - Batch 4 - Loss: -3.1154, Gen Loss: -2.8241
+2025-03-23 14:49:00,650 - INFO - Epoch 2/4 - Batch 5 - Loss: -3.2907, Gen Loss: -3.1125
+2025-03-23 14:49:00,697 - INFO - Epoch 2/4 - Batch 6 - Loss: -2.3281, Gen Loss: -2.5797
+2025-03-23 14:49:00,748 - INFO - Epoch 3/4 - Batch 0 - Loss: -3.1730, Gen Loss: -3.1594
+2025-03-23 14:49:00,794 - INFO - Epoch 3/4 - Batch 1 - Loss: -3.2958, Gen Loss: -3.1151
+2025-03-23 14:49:00,842 - INFO - Epoch 3/4 - Batch 2 - Loss: -3.4405, Gen Loss: -3.3193
+2025-03-23 14:49:00,888 - INFO - Epoch 3/4 - Batch 3 - Loss: -3.3996, Gen Loss: -3.3462
+2025-03-23 14:49:00,936 - INFO - Epoch 3/4 - Batch 4 - Loss: -3.4310, Gen Loss: -3.1829
+2025-03-23 14:49:00,982 - INFO - Epoch 3/4 - Batch 5 - Loss: -3.4026, Gen Loss: -2.8879
+2025-03-23 14:49:01,026 - INFO - Epoch 3/4 - Batch 6 - Loss: -3.7059, Gen Loss: -3.3933
+2025-03-23 14:49:01,081 - INFO - Epoch 4/4 - Batch 0 - Loss: -3.2589, Gen Loss: -3.1858
+2025-03-23 14:49:01,128 - INFO - Epoch 4/4 - Batch 1 - Loss: -3.4386, Gen Loss: -2.9249
+2025-03-23 14:49:01,173 - INFO - Epoch 4/4 - Batch 2 - Loss: -3.4237, Gen Loss: -3.3768
+2025-03-23 14:49:01,219 - INFO - Epoch 4/4 - Batch 3 - Loss: -3.5949, Gen Loss: -3.6374
+2025-03-23 14:49:01,266 - INFO - Epoch 4/4 - Batch 4 - Loss: -3.6178, Gen Loss: -3.0832
+2025-03-23 14:49:01,312 - INFO - Epoch 4/4 - Batch 5 - Loss: -3.6143, Gen Loss: -3.2516
+2025-03-23 14:49:01,357 - INFO - Epoch 4/4 - Batch 6 - Loss: -3.0250, Gen Loss: -3.3654
+2025-03-23 14:49:01,491 - INFO - Checkpoint saved at checkpoints/seed_0/task_Static
+2025-03-23 14:49:01,731 - INFO - Task Pedestrian (2/4)
+2025-03-23 14:49:01,732 - INFO - Task Pedestrian: Doppler Freq = 215.76 Hz
+2025-03-23 14:49:02,127 - INFO - Task Pedestrian: Final channel shape = (200, 5, 32)
+2025-03-23 14:49:02,177 - INFO - Epoch 1/4 - Batch 0 - Loss: -3.5395, Gen Loss: -3.6107
+2025-03-23 14:49:02,216 - INFO - Epoch 1/4 - Batch 1 - Loss: -3.4707, Gen Loss: -3.4428
+2025-03-23 14:49:02,261 - INFO - Epoch 1/4 - Batch 2 - Loss: -3.5537, Gen Loss: -3.5278
+2025-03-23 14:49:02,306 - INFO - Epoch 1/4 - Batch 3 - Loss: -3.5073, Gen Loss: -3.3600
+2025-03-23 14:49:02,354 - INFO - Epoch 1/4 - Batch 4 - Loss: -3.5321, Gen Loss: -3.4265
+2025-03-23 14:49:02,400 - INFO - Epoch 1/4 - Batch 5 - Loss: -3.6048, Gen Loss: -3.6024
+2025-03-23 14:49:02,446 - INFO - Epoch 1/4 - Batch 6 - Loss: -3.6992, Gen Loss: -3.6728
+2025-03-23 14:49:02,497 - INFO - Epoch 2/4 - Batch 0 - Loss: -3.6416, Gen Loss: -3.6679
+2025-03-23 14:49:02,541 - INFO - Epoch 2/4 - Batch 1 - Loss: -3.5251, Gen Loss: -3.6103
+2025-03-23 14:49:02,586 - INFO - Epoch 2/4 - Batch 2 - Loss: -3.6590, Gen Loss: -3.6882
+2025-03-23 14:49:02,632 - INFO - Epoch 2/4 - Batch 3 - Loss: -3.5954, Gen Loss: -3.6540
+2025-03-23 14:49:02,679 - INFO - Epoch 2/4 - Batch 4 - Loss: -3.5742, Gen Loss: -3.6365
+2025-03-23 14:49:02,727 - INFO - Epoch 2/4 - Batch 5 - Loss: -3.6547, Gen Loss: -3.6809
+2025-03-23 14:49:02,772 - INFO - Epoch 2/4 - Batch 6 - Loss: -3.5344, Gen Loss: -3.6958
+2025-03-23 14:49:02,825 - INFO - Epoch 3/4 - Batch 0 - Loss: -3.6940, Gen Loss: -3.7040
+2025-03-23 14:49:02,871 - INFO - Epoch 3/4 - Batch 1 - Loss: -3.5729, Gen Loss: -3.4974
+2025-03-23 14:49:02,918 - INFO - Epoch 3/4 - Batch 2 - Loss: -3.7128, Gen Loss: -3.7789
+2025-03-23 14:49:02,966 - INFO - Epoch 3/4 - Batch 3 - Loss: -3.6038, Gen Loss: -3.5611
+2025-03-23 14:49:03,013 - INFO - Epoch 3/4 - Batch 4 - Loss: -3.5420, Gen Loss: -3.5249
+2025-03-23 14:49:03,059 - INFO - Epoch 3/4 - Batch 5 - Loss: -3.5981, Gen Loss: -3.6335
+2025-03-23 14:49:03,106 - INFO - Epoch 3/4 - Batch 6 - Loss: -3.6314, Gen Loss: -3.7118
+2025-03-23 14:49:03,161 - INFO - Epoch 4/4 - Batch 0 - Loss: -3.6766, Gen Loss: -3.7051
+2025-03-23 14:49:03,208 - INFO - Epoch 4/4 - Batch 1 - Loss: -3.7015, Gen Loss: -3.6319
+2025-03-23 14:49:03,255 - INFO - Epoch 4/4 - Batch 2 - Loss: -3.6741, Gen Loss: -3.6989
+2025-03-23 14:49:03,302 - INFO - Epoch 4/4 - Batch 3 - Loss: -3.6765, Gen Loss: -3.6363
+2025-03-23 14:49:03,348 - INFO - Epoch 4/4 - Batch 4 - Loss: -3.6060, Gen Loss: -3.6863
+2025-03-23 14:49:03,394 - INFO - Epoch 4/4 - Batch 5 - Loss: -3.7103, Gen Loss: -3.7867
+2025-03-23 14:49:03,440 - INFO - Epoch 4/4 - Batch 6 - Loss: -3.8561, Gen Loss: -3.7263
+2025-03-23 14:49:03,518 - INFO - Checkpoint saved at checkpoints/seed_0/task_Pedestrian
+2025-03-23 14:49:03,752 - INFO - Task Vehicular (3/4)
+2025-03-23 14:49:03,753 - INFO - Task Vehicular: Doppler Freq = 2453.20 Hz
+2025-03-23 14:49:05,370 - INFO - Task Vehicular: Final channel shape = (200, 5, 32)
+2025-03-23 14:49:05,416 - INFO - Epoch 1/4 - Batch 0 - Loss: -3.6234, Gen Loss: -3.6824
+2025-03-23 14:49:05,458 - INFO - Epoch 1/4 - Batch 1 - Loss: -3.7387, Gen Loss: -3.7511
+2025-03-23 14:49:05,513 - INFO - Epoch 1/4 - Batch 2 - Loss: -3.6073, Gen Loss: -3.7438
+2025-03-23 14:49:05,559 - INFO - Epoch 1/4 - Batch 3 - Loss: -3.6773, Gen Loss: -3.7933
+2025-03-23 14:49:05,610 - INFO - Epoch 1/4 - Batch 4 - Loss: -3.7080, Gen Loss: -3.6873
+2025-03-23 14:49:05,655 - INFO - Epoch 1/4 - Batch 5 - Loss: -3.6631, Gen Loss: -3.3021
+2025-03-23 14:49:05,702 - INFO - Epoch 1/4 - Batch 6 - Loss: -3.6087, Gen Loss: -3.6795
+2025-03-23 14:49:05,759 - INFO - Epoch 2/4 - Batch 0 - Loss: -3.6040, Gen Loss: -3.5874
+2025-03-23 14:49:05,805 - INFO - Epoch 2/4 - Batch 1 - Loss: -3.7426, Gen Loss: -3.7507
+2025-03-23 14:49:05,859 - INFO - Epoch 2/4 - Batch 2 - Loss: -3.6342, Gen Loss: -3.7751
+2025-03-23 14:49:05,904 - INFO - Epoch 2/4 - Batch 3 - Loss: -3.7127, Gen Loss: -3.7992
+2025-03-23 14:49:05,951 - INFO - Epoch 2/4 - Batch 4 - Loss: -3.7450, Gen Loss: -3.6720
+2025-03-23 14:49:05,998 - INFO - Epoch 2/4 - Batch 5 - Loss: -3.6972, Gen Loss: -3.6791
+2025-03-23 14:49:06,041 - INFO - Epoch 2/4 - Batch 6 - Loss: -3.7187, Gen Loss: -3.8294
+2025-03-23 14:49:06,094 - INFO - Epoch 3/4 - Batch 0 - Loss: -3.6891, Gen Loss: -3.7439
+2025-03-23 14:49:06,140 - INFO - Epoch 3/4 - Batch 1 - Loss: -3.6731, Gen Loss: -3.7413
+2025-03-23 14:49:06,186 - INFO - Epoch 3/4 - Batch 2 - Loss: -3.7205, Gen Loss: -3.8502
+2025-03-23 14:49:06,234 - INFO - Epoch 3/4 - Batch 3 - Loss: -3.6616, Gen Loss: -3.7687
+2025-03-23 14:49:06,282 - INFO - Epoch 3/4 - Batch 4 - Loss: -3.7186, Gen Loss: -3.7274
+2025-03-23 14:49:06,330 - INFO - Epoch 3/4 - Batch 5 - Loss: -3.7471, Gen Loss: -3.6314
+2025-03-23 14:49:06,374 - INFO - Epoch 3/4 - Batch 6 - Loss: -3.6778, Gen Loss: -3.7420
+2025-03-23 14:49:06,427 - INFO - Epoch 4/4 - Batch 0 - Loss: -3.6834, Gen Loss: -3.5327
+2025-03-23 14:49:06,473 - INFO - Epoch 4/4 - Batch 1 - Loss: -3.7445, Gen Loss: -3.7088
+2025-03-23 14:49:06,520 - INFO - Epoch 4/4 - Batch 2 - Loss: -3.6319, Gen Loss: -3.7456
+2025-03-23 14:49:06,567 - INFO - Epoch 4/4 - Batch 3 - Loss: -3.6924, Gen Loss: -3.7926
+2025-03-23 14:49:06,613 - INFO - Epoch 4/4 - Batch 4 - Loss: -3.7748, Gen Loss: -3.6816
+2025-03-23 14:49:06,660 - INFO - Epoch 4/4 - Batch 5 - Loss: -3.7322, Gen Loss: -3.7055
+2025-03-23 14:49:06,705 - INFO - Epoch 4/4 - Batch 6 - Loss: -3.6564, Gen Loss: -3.6948
+2025-03-23 14:49:06,779 - INFO - Checkpoint saved at checkpoints/seed_0/task_Vehicular
+2025-03-23 14:49:07,022 - INFO - Task Aerial (4/4)
+2025-03-23 14:49:07,022 - INFO - Task Aerial: Doppler Freq = 921.12 Hz
+2025-03-23 14:49:08,617 - INFO - Task Aerial: Final channel shape = (200, 5, 32)
+2025-03-23 14:49:08,667 - INFO - Epoch 1/4 - Batch 0 - Loss: -3.7022, Gen Loss: -3.7566
+2025-03-23 14:49:08,711 - INFO - Epoch 1/4 - Batch 1 - Loss: -3.6951, Gen Loss: -3.7543
+2025-03-23 14:49:08,757 - INFO - Epoch 1/4 - Batch 2 - Loss: -3.6394, Gen Loss: -3.7360
+2025-03-23 14:49:08,802 - INFO - Epoch 1/4 - Batch 3 - Loss: -3.6579, Gen Loss: -3.7055
+2025-03-23 14:49:08,855 - INFO - Epoch 1/4 - Batch 4 - Loss: -3.6589, Gen Loss: -3.6822
+2025-03-23 14:49:08,901 - INFO - Epoch 1/4 - Batch 5 - Loss: -3.7449, Gen Loss: -3.6918
+2025-03-23 14:49:08,948 - INFO - Epoch 1/4 - Batch 6 - Loss: -3.8454, Gen Loss: -3.9583
+2025-03-23 14:49:09,010 - INFO - Epoch 2/4 - Batch 0 - Loss: -3.7365, Gen Loss: -3.8171
+2025-03-23 14:49:09,058 - INFO - Epoch 2/4 - Batch 1 - Loss: -3.7393, Gen Loss: -3.5786
+2025-03-23 14:49:09,113 - INFO - Epoch 2/4 - Batch 2 - Loss: -3.7400, Gen Loss: -3.8022
+2025-03-23 14:49:09,160 - INFO - Epoch 2/4 - Batch 3 - Loss: -3.7720, Gen Loss: -3.8244
+2025-03-23 14:49:09,206 - INFO - Epoch 2/4 - Batch 4 - Loss: -3.7656, Gen Loss: -3.6574
+2025-03-23 14:49:09,252 - INFO - Epoch 2/4 - Batch 5 - Loss: -3.7751, Gen Loss: -3.8276
+2025-03-23 14:49:09,297 - INFO - Epoch 2/4 - Batch 6 - Loss: -3.8891, Gen Loss: -3.9743
+2025-03-23 14:49:09,348 - INFO - Epoch 3/4 - Batch 0 - Loss: -3.7685, Gen Loss: -3.8068
+2025-03-23 14:49:09,393 - INFO - Epoch 3/4 - Batch 1 - Loss: -3.7093, Gen Loss: -3.7926
+2025-03-23 14:49:09,441 - INFO - Epoch 3/4 - Batch 2 - Loss: -3.7560, Gen Loss: -3.8397
+2025-03-23 14:49:09,488 - INFO - Epoch 3/4 - Batch 3 - Loss: -3.7722, Gen Loss: -3.6953
+2025-03-23 14:49:09,537 - INFO - Epoch 3/4 - Batch 4 - Loss: -3.7387, Gen Loss: -3.7076
+2025-03-23 14:49:09,583 - INFO - Epoch 3/4 - Batch 5 - Loss: -3.8061, Gen Loss: -3.7563
+2025-03-23 14:49:09,630 - INFO - Epoch 3/4 - Batch 6 - Loss: -3.7895, Gen Loss: -3.8341
+2025-03-23 14:49:09,684 - INFO - Epoch 4/4 - Batch 0 - Loss: -3.7775, Gen Loss: -3.8269
+2025-03-23 14:49:09,730 - INFO - Epoch 4/4 - Batch 1 - Loss: -3.7591, Gen Loss: -3.6963
+2025-03-23 14:49:09,774 - INFO - Epoch 4/4 - Batch 2 - Loss: -3.7386, Gen Loss: -3.8043
+2025-03-23 14:49:09,819 - INFO - Epoch 4/4 - Batch 3 - Loss: -3.8069, Gen Loss: -3.8190
+2025-03-23 14:49:09,864 - INFO - Epoch 4/4 - Batch 4 - Loss: -3.7691, Gen Loss: -3.7729
+2025-03-23 14:49:09,911 - INFO - Epoch 4/4 - Batch 5 - Loss: -3.8175, Gen Loss: -3.7333
+2025-03-23 14:49:09,955 - INFO - Epoch 4/4 - Batch 6 - Loss: -3.7577, Gen Loss: -3.7847
+2025-03-23 14:49:10,029 - INFO - Checkpoint saved at checkpoints/seed_0/task_Aerial
+2025-03-23 14:49:10,284 - INFO - Run completed in 22.73s
+2025-03-23 14:49:10,293 - INFO - Run 2/3
+2025-03-23 14:49:10,293 - INFO - Starting run with seed 1
+2025-03-23 14:49:10,861 - INFO - Task Static (1/4)
+2025-03-23 14:49:10,861 - INFO - Task Static: Doppler Freq = 41.13 Hz
+2025-03-23 14:49:12,496 - INFO - Task Static: Final channel shape = (200, 5, 32)
+2025-03-23 14:49:12,938 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:49:13,251 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:49:13,697 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:49:17,935 - INFO - Epoch 1/4 - Batch 0 - Loss: 0.1117, Gen Loss: 0.0000
+2025-03-23 14:49:18,218 - INFO - Epoch 1/4 - Batch 1 - Loss: 0.1060, Gen Loss: -0.4784
+2025-03-23 14:49:18,265 - INFO - Epoch 1/4 - Batch 2 - Loss: -0.5241, Gen Loss: -0.8440
+2025-03-23 14:49:18,313 - INFO - Epoch 1/4 - Batch 3 - Loss: -0.9874, Gen Loss: -1.0129
+2025-03-23 14:49:18,358 - INFO - Epoch 1/4 - Batch 4 - Loss: -1.4794, Gen Loss: -1.5088
+2025-03-23 14:49:18,405 - INFO - Epoch 1/4 - Batch 5 - Loss: -1.5012, Gen Loss: -1.5285
+2025-03-23 14:49:21,921 - INFO - Epoch 1/4 - Batch 6 - Loss: -2.6159, Gen Loss: -2.5949
+2025-03-23 14:49:21,976 - INFO - Epoch 2/4 - Batch 0 - Loss: -2.5609, Gen Loss: -1.9816
+2025-03-23 14:49:22,018 - INFO - Epoch 2/4 - Batch 1 - Loss: -2.3252, Gen Loss: -2.2636
+2025-03-23 14:49:22,066 - INFO - Epoch 2/4 - Batch 2 - Loss: -2.8247, Gen Loss: -2.6523
+2025-03-23 14:49:22,112 - INFO - Epoch 2/4 - Batch 3 - Loss: -2.3449, Gen Loss: -2.2954
+2025-03-23 14:49:22,158 - INFO - Epoch 2/4 - Batch 4 - Loss: -2.8187, Gen Loss: -2.7311
+2025-03-23 14:49:22,202 - INFO - Epoch 2/4 - Batch 5 - Loss: -3.1559, Gen Loss: -2.8600
+2025-03-23 14:49:22,250 - INFO - Epoch 2/4 - Batch 6 - Loss: -3.3946, Gen Loss: -3.4849
+2025-03-23 14:49:22,303 - INFO - Epoch 3/4 - Batch 0 - Loss: -3.3526, Gen Loss: -2.8814
+2025-03-23 14:49:22,349 - INFO - Epoch 3/4 - Batch 1 - Loss: -3.2103, Gen Loss: -3.0304
+2025-03-23 14:49:22,397 - INFO - Epoch 3/4 - Batch 2 - Loss: -3.3443, Gen Loss: -3.1522
+2025-03-23 14:49:22,443 - INFO - Epoch 3/4 - Batch 3 - Loss: -3.4595, Gen Loss: -3.3270
+2025-03-23 14:49:22,490 - INFO - Epoch 3/4 - Batch 4 - Loss: -3.5048, Gen Loss: -3.4680
+2025-03-23 14:49:22,534 - INFO - Epoch 3/4 - Batch 5 - Loss: -3.5029, Gen Loss: -3.0744
+2025-03-23 14:49:22,580 - INFO - Epoch 3/4 - Batch 6 - Loss: -3.6122, Gen Loss: -3.6037
+2025-03-23 14:49:22,634 - INFO - Epoch 4/4 - Batch 0 - Loss: -3.5412, Gen Loss: -2.9457
+2025-03-23 14:49:22,679 - INFO - Epoch 4/4 - Batch 1 - Loss: -3.5602, Gen Loss: -3.3158
+2025-03-23 14:49:22,726 - INFO - Epoch 4/4 - Batch 2 - Loss: -3.6268, Gen Loss: -3.2969
+2025-03-23 14:49:22,771 - INFO - Epoch 4/4 - Batch 3 - Loss: -3.6372, Gen Loss: -3.5586
+2025-03-23 14:49:22,814 - INFO - Epoch 4/4 - Batch 4 - Loss: -3.5290, Gen Loss: -3.0916
+2025-03-23 14:49:22,861 - INFO - Epoch 4/4 - Batch 5 - Loss: -3.7066, Gen Loss: -3.1673
+2025-03-23 14:49:22,906 - INFO - Epoch 4/4 - Batch 6 - Loss: -3.5256, Gen Loss: -3.5910
+2025-03-23 14:49:23,027 - INFO - Checkpoint saved at checkpoints/seed_1/task_Static
+2025-03-23 14:49:23,318 - INFO - Task Pedestrian (2/4)
+2025-03-23 14:49:23,318 - INFO - Task Pedestrian: Doppler Freq = 170.07 Hz
+2025-03-23 14:49:23,712 - INFO - Task Pedestrian: Final channel shape = (200, 5, 32)
+2025-03-23 14:49:23,762 - INFO - Epoch 1/4 - Batch 0 - Loss: -3.5571, Gen Loss: -3.6549
+2025-03-23 14:49:23,803 - INFO - Epoch 1/4 - Batch 1 - Loss: -3.5882, Gen Loss: -3.6389
+2025-03-23 14:49:23,848 - INFO - Epoch 1/4 - Batch 2 - Loss: -3.6530, Gen Loss: -3.6543
+2025-03-23 14:49:23,892 - INFO - Epoch 1/4 - Batch 3 - Loss: -3.6357, Gen Loss: -3.5120
+2025-03-23 14:49:23,937 - INFO - Epoch 1/4 - Batch 4 - Loss: -3.5700, Gen Loss: -3.6558
+2025-03-23 14:49:23,983 - INFO - Epoch 1/4 - Batch 5 - Loss: -3.5947, Gen Loss: -3.6762
+2025-03-23 14:49:24,031 - INFO - Epoch 1/4 - Batch 6 - Loss: -3.5925, Gen Loss: -3.5735
+2025-03-23 14:49:24,083 - INFO - Epoch 2/4 - Batch 0 - Loss: -3.5522, Gen Loss: -3.6204
+2025-03-23 14:49:24,130 - INFO - Epoch 2/4 - Batch 1 - Loss: -3.6307, Gen Loss: -3.6634
+2025-03-23 14:49:24,176 - INFO - Epoch 2/4 - Batch 2 - Loss: -3.6795, Gen Loss: -3.7166
+2025-03-23 14:49:24,223 - INFO - Epoch 2/4 - Batch 3 - Loss: -3.6547, Gen Loss: -3.6762
+2025-03-23 14:49:24,269 - INFO - Epoch 2/4 - Batch 4 - Loss: -3.6675, Gen Loss: -3.7473
+2025-03-23 14:49:24,315 - INFO - Epoch 2/4 - Batch 5 - Loss: -3.5994, Gen Loss: -3.6445
+2025-03-23 14:49:24,360 - INFO - Epoch 2/4 - Batch 6 - Loss: -3.6231, Gen Loss: -3.6592
+2025-03-23 14:49:24,408 - INFO - Epoch 3/4 - Batch 0 - Loss: -3.4283, Gen Loss: -3.5825
+2025-03-23 14:49:24,452 - INFO - Epoch 3/4 - Batch 1 - Loss: -3.6656, Gen Loss: -3.5889
+2025-03-23 14:49:24,496 - INFO - Epoch 3/4 - Batch 2 - Loss: -3.6162, Gen Loss: -3.6634
+2025-03-23 14:49:24,542 - INFO - Epoch 3/4 - Batch 3 - Loss: -3.6801, Gen Loss: -3.6186
+2025-03-23 14:49:24,588 - INFO - Epoch 3/4 - Batch 4 - Loss: -3.6173, Gen Loss: -3.7049
+2025-03-23 14:49:24,634 - INFO - Epoch 3/4 - Batch 5 - Loss: -3.5864, Gen Loss: -3.6853
+2025-03-23 14:49:24,681 - INFO - Epoch 3/4 - Batch 6 - Loss: -3.4808, Gen Loss: -3.4783
+2025-03-23 14:49:24,731 - INFO - Epoch 4/4 - Batch 0 - Loss: -3.6479, Gen Loss: -3.7506
+2025-03-23 14:49:24,777 - INFO - Epoch 4/4 - Batch 1 - Loss: -3.6843, Gen Loss: -3.6953
+2025-03-23 14:49:24,824 - INFO - Epoch 4/4 - Batch 2 - Loss: -3.6841, Gen Loss: -3.6744
+2025-03-23 14:49:24,870 - INFO - Epoch 4/4 - Batch 3 - Loss: -3.8176, Gen Loss: -3.7528
+2025-03-23 14:49:24,916 - INFO - Epoch 4/4 - Batch 4 - Loss: -3.6251, Gen Loss: -3.7025
+2025-03-23 14:49:24,960 - INFO - Epoch 4/4 - Batch 5 - Loss: -3.7141, Gen Loss: -3.7536
+2025-03-23 14:49:25,006 - INFO - Epoch 4/4 - Batch 6 - Loss: -3.8521, Gen Loss: -3.7697
+2025-03-23 14:49:25,088 - INFO - Checkpoint saved at checkpoints/seed_1/task_Pedestrian
+2025-03-23 14:49:25,392 - INFO - Task Vehicular (3/4)
+2025-03-23 14:49:25,392 - INFO - Task Vehicular: Doppler Freq = 2244.47 Hz
+2025-03-23 14:49:27,027 - INFO - Task Vehicular: Final channel shape = (200, 5, 32)
+2025-03-23 14:49:27,078 - INFO - Epoch 1/4 - Batch 0 - Loss: -3.6627, Gen Loss: -3.4357
+2025-03-23 14:49:27,121 - INFO - Epoch 1/4 - Batch 1 - Loss: -3.7031, Gen Loss: -3.5799
+2025-03-23 14:49:27,165 - INFO - Epoch 1/4 - Batch 2 - Loss: -3.6333, Gen Loss: -3.5353
+2025-03-23 14:49:27,210 - INFO - Epoch 1/4 - Batch 3 - Loss: -3.6986, Gen Loss: -3.6139
+2025-03-23 14:49:27,257 - INFO - Epoch 1/4 - Batch 4 - Loss: -3.5974, Gen Loss: -3.5867
+2025-03-23 14:49:27,302 - INFO - Epoch 1/4 - Batch 5 - Loss: -3.5917, Gen Loss: -3.7090
+2025-03-23 14:49:27,349 - INFO - Epoch 1/4 - Batch 6 - Loss: -3.5998, Gen Loss: -3.1574
+2025-03-23 14:49:27,401 - INFO - Epoch 2/4 - Batch 0 - Loss: -3.6917, Gen Loss: -3.6379
+2025-03-23 14:49:27,446 - INFO - Epoch 2/4 - Batch 1 - Loss: -3.6705, Gen Loss: -3.5563
+2025-03-23 14:49:27,491 - INFO - Epoch 2/4 - Batch 2 - Loss: -3.7614, Gen Loss: -3.7077
+2025-03-23 14:49:27,538 - INFO - Epoch 2/4 - Batch 3 - Loss: -3.6749, Gen Loss: -3.7298
+2025-03-23 14:49:27,584 - INFO - Epoch 2/4 - Batch 4 - Loss: -3.6580, Gen Loss: -3.6944
+2025-03-23 14:49:27,630 - INFO - Epoch 2/4 - Batch 5 - Loss: -3.6446, Gen Loss: -3.4476
+2025-03-23 14:49:27,675 - INFO - Epoch 2/4 - Batch 6 - Loss: -3.6531, Gen Loss: -3.3396
+2025-03-23 14:49:27,725 - INFO - Epoch 3/4 - Batch 0 - Loss: -3.7095, Gen Loss: -3.3402
+2025-03-23 14:49:27,769 - INFO - Epoch 3/4 - Batch 1 - Loss: -3.8326, Gen Loss: -3.5568
+2025-03-23 14:49:27,815 - INFO - Epoch 3/4 - Batch 2 - Loss: -3.7581, Gen Loss: -3.6227
+2025-03-23 14:49:27,861 - INFO - Epoch 3/4 - Batch 3 - Loss: -3.7129, Gen Loss: -3.6565
+2025-03-23 14:49:27,906 - INFO - Epoch 3/4 - Batch 4 - Loss: -3.5858, Gen Loss: -3.4956
+2025-03-23 14:49:27,950 - INFO - Epoch 3/4 - Batch 5 - Loss: -3.6510, Gen Loss: -3.4803
+2025-03-23 14:49:27,997 - INFO - Epoch 3/4 - Batch 6 - Loss: -3.7105, Gen Loss: -2.6568
+2025-03-23 14:49:28,052 - INFO - Epoch 4/4 - Batch 0 - Loss: -3.7399, Gen Loss: -3.6823
+2025-03-23 14:49:28,098 - INFO - Epoch 4/4 - Batch 1 - Loss: -3.8075, Gen Loss: -3.6367
+2025-03-23 14:49:28,144 - INFO - Epoch 4/4 - Batch 2 - Loss: -3.8474, Gen Loss: -3.7861
+2025-03-23 14:49:28,189 - INFO - Epoch 4/4 - Batch 3 - Loss: -3.8457, Gen Loss: -3.8276
+2025-03-23 14:49:28,235 - INFO - Epoch 4/4 - Batch 4 - Loss: -3.6880, Gen Loss: -3.3409
+2025-03-23 14:49:28,281 - INFO - Epoch 4/4 - Batch 5 - Loss: -3.7416, Gen Loss: -3.7078
+2025-03-23 14:49:28,327 - INFO - Epoch 4/4 - Batch 6 - Loss: -3.7947, Gen Loss: -2.6742
+2025-03-23 14:49:28,429 - INFO - Checkpoint saved at checkpoints/seed_1/task_Vehicular
+2025-03-23 14:49:28,730 - INFO - Task Aerial (4/4)
+2025-03-23 14:49:28,731 - INFO - Task Aerial: Doppler Freq = 827.29 Hz
+2025-03-23 14:49:30,321 - INFO - Task Aerial: Final channel shape = (200, 5, 32)
+2025-03-23 14:49:30,373 - INFO - Epoch 1/4 - Batch 0 - Loss: -3.6187, Gen Loss: -3.5339
+2025-03-23 14:49:30,415 - INFO - Epoch 1/4 - Batch 1 - Loss: -3.6874, Gen Loss: -3.4846
+2025-03-23 14:49:30,458 - INFO - Epoch 1/4 - Batch 2 - Loss: -3.6413, Gen Loss: -3.6555
+2025-03-23 14:49:30,506 - INFO - Epoch 1/4 - Batch 3 - Loss: -3.6731, Gen Loss: -3.7847
+2025-03-23 14:49:30,550 - INFO - Epoch 1/4 - Batch 4 - Loss: -3.6301, Gen Loss: -3.4107
+2025-03-23 14:49:30,596 - INFO - Epoch 1/4 - Batch 5 - Loss: -3.7168, Gen Loss: -3.6661
+2025-03-23 14:49:30,644 - INFO - Epoch 1/4 - Batch 6 - Loss: -3.5182, Gen Loss: -3.6325
+2025-03-23 14:49:30,695 - INFO - Epoch 2/4 - Batch 0 - Loss: -3.7145, Gen Loss: -3.7686
+2025-03-23 14:49:30,741 - INFO - Epoch 2/4 - Batch 1 - Loss: -3.7207, Gen Loss: -3.7366
+2025-03-23 14:49:30,788 - INFO - Epoch 2/4 - Batch 2 - Loss: -3.6627, Gen Loss: -3.3806
+2025-03-23 14:49:30,836 - INFO - Epoch 2/4 - Batch 3 - Loss: -3.6878, Gen Loss: -3.7504
+2025-03-23 14:49:30,883 - INFO - Epoch 2/4 - Batch 4 - Loss: -3.4794, Gen Loss: -3.3381
+2025-03-23 14:49:30,931 - INFO - Epoch 2/4 - Batch 5 - Loss: -3.7378, Gen Loss: -3.6265
+2025-03-23 14:49:30,977 - INFO - Epoch 2/4 - Batch 6 - Loss: -3.7396, Gen Loss: -3.6767
+2025-03-23 14:49:31,028 - INFO - Epoch 3/4 - Batch 0 - Loss: -3.7542, Gen Loss: -3.7430
+2025-03-23 14:49:31,071 - INFO - Epoch 3/4 - Batch 1 - Loss: -3.7246, Gen Loss: -3.7280
+2025-03-23 14:49:31,118 - INFO - Epoch 3/4 - Batch 2 - Loss: -3.7479, Gen Loss: -3.4003
+2025-03-23 14:49:31,163 - INFO - Epoch 3/4 - Batch 3 - Loss: -3.7297, Gen Loss: -3.8060
+2025-03-23 14:49:31,209 - INFO - Epoch 3/4 - Batch 4 - Loss: -3.7136, Gen Loss: -3.6943
+2025-03-23 14:49:31,257 - INFO - Epoch 3/4 - Batch 5 - Loss: -3.7315, Gen Loss: -3.7990
+2025-03-23 14:49:31,303 - INFO - Epoch 3/4 - Batch 6 - Loss: -3.7187, Gen Loss: -3.6856
+2025-03-23 14:49:31,357 - INFO - Epoch 4/4 - Batch 0 - Loss: -3.7555, Gen Loss: -3.6643
+2025-03-23 14:49:31,402 - INFO - Epoch 4/4 - Batch 1 - Loss: -3.8016, Gen Loss: -3.8527
+2025-03-23 14:49:31,446 - INFO - Epoch 4/4 - Batch 2 - Loss: -3.7142, Gen Loss: -3.6755
+2025-03-23 14:49:31,493 - INFO - Epoch 4/4 - Batch 3 - Loss: -3.7075, Gen Loss: -3.6948
+2025-03-23 14:49:31,540 - INFO - Epoch 4/4 - Batch 4 - Loss: -3.7098, Gen Loss: -3.4333
+2025-03-23 14:49:31,588 - INFO - Epoch 4/4 - Batch 5 - Loss: -3.7633, Gen Loss: -3.7183
+2025-03-23 14:49:31,632 - INFO - Epoch 4/4 - Batch 6 - Loss: -3.8890, Gen Loss: -3.2341
+2025-03-23 14:49:31,705 - INFO - Checkpoint saved at checkpoints/seed_1/task_Aerial
+2025-03-23 14:49:32,018 - INFO - Run completed in 21.16s
+2025-03-23 14:49:32,019 - INFO - Run 3/3
+2025-03-23 14:49:32,019 - INFO - Starting run with seed 2
+2025-03-23 14:49:32,596 - INFO - Task Static (1/4)
+2025-03-23 14:49:32,597 - INFO - Task Static: Doppler Freq = 48.41 Hz
+2025-03-23 14:49:34,203 - INFO - Task Static: Final channel shape = (200, 5, 32)
+2025-03-23 14:49:34,648 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:49:34,964 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:49:35,408 - WARNING - You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+2025-03-23 14:49:39,530 - INFO - Epoch 1/4 - Batch 0 - Loss: 0.1421, Gen Loss: 0.0000
+2025-03-23 14:49:39,802 - INFO - Epoch 1/4 - Batch 1 - Loss: 0.1334, Gen Loss: -0.4751
+2025-03-23 14:49:39,851 - INFO - Epoch 1/4 - Batch 2 - Loss: -0.2665, Gen Loss: -0.5820
+2025-03-23 14:49:39,899 - INFO - Epoch 1/4 - Batch 3 - Loss: -0.5715, Gen Loss: -1.0862
+2025-03-23 14:49:39,945 - INFO - Epoch 1/4 - Batch 4 - Loss: -1.3460, Gen Loss: -1.3164
+2025-03-23 14:49:39,992 - INFO - Epoch 1/4 - Batch 5 - Loss: -1.8474, Gen Loss: -1.4727
+2025-03-23 14:49:43,270 - INFO - Epoch 1/4 - Batch 6 - Loss: -2.4101, Gen Loss: -2.5680
+2025-03-23 14:49:43,319 - INFO - Epoch 2/4 - Batch 0 - Loss: -2.0786, Gen Loss: -1.8553
+2025-03-23 14:49:43,367 - INFO - Epoch 2/4 - Batch 1 - Loss: -2.1893, Gen Loss: -2.2084
+2025-03-23 14:49:43,412 - INFO - Epoch 2/4 - Batch 2 - Loss: -2.6976, Gen Loss: -2.1766
+2025-03-23 14:49:43,459 - INFO - Epoch 2/4 - Batch 3 - Loss: -3.0656, Gen Loss: -2.9207
+2025-03-23 14:49:43,505 - INFO - Epoch 2/4 - Batch 4 - Loss: -3.1604, Gen Loss: -2.4666
+2025-03-23 14:49:43,551 - INFO - Epoch 2/4 - Batch 5 - Loss: -3.0697, Gen Loss: -2.6996
+2025-03-23 14:49:43,599 - INFO - Epoch 2/4 - Batch 6 - Loss: -3.0705, Gen Loss: -3.0293
+2025-03-23 14:49:43,653 - INFO - Epoch 3/4 - Batch 0 - Loss: -3.2430, Gen Loss: -2.9589
+2025-03-23 14:49:43,697 - INFO - Epoch 3/4 - Batch 1 - Loss: -3.3263, Gen Loss: -2.9666
+2025-03-23 14:49:43,742 - INFO - Epoch 3/4 - Batch 2 - Loss: -3.3689, Gen Loss: -2.8557
+2025-03-23 14:49:43,788 - INFO - Epoch 3/4 - Batch 3 - Loss: -3.3880, Gen Loss: -3.2695
+2025-03-23 14:49:43,836 - INFO - Epoch 3/4 - Batch 4 - Loss: -3.3992, Gen Loss: -3.1537
+2025-03-23 14:49:43,884 - INFO - Epoch 3/4 - Batch 5 - Loss: -3.3942, Gen Loss: -3.2962
+2025-03-23 14:49:43,931 - INFO - Epoch 3/4 - Batch 6 - Loss: -3.3210, Gen Loss: -3.3174
+2025-03-23 14:49:43,984 - INFO - Epoch 4/4 - Batch 0 - Loss: -3.4373, Gen Loss: -3.3300
+2025-03-23 14:49:44,030 - INFO - Epoch 4/4 - Batch 1 - Loss: -3.5228, Gen Loss: -3.2443
+2025-03-23 14:49:44,075 - INFO - Epoch 4/4 - Batch 2 - Loss: -3.4583, Gen Loss: -3.1499
+2025-03-23 14:49:44,121 - INFO - Epoch 4/4 - Batch 3 - Loss: -3.3792, Gen Loss: -3.4850
+2025-03-23 14:49:44,167 - INFO - Epoch 4/4 - Batch 4 - Loss: -3.4962, Gen Loss: -3.4034
+2025-03-23 14:49:44,214 - INFO - Epoch 4/4 - Batch 5 - Loss: -3.5613, Gen Loss: -3.5176
+2025-03-23 14:49:44,261 - INFO - Epoch 4/4 - Batch 6 - Loss: -3.6822, Gen Loss: -3.5481
+2025-03-23 14:49:44,391 - INFO - Checkpoint saved at checkpoints/seed_2/task_Static
+2025-03-23 14:49:44,743 - INFO - Task Pedestrian (2/4)
+2025-03-23 14:49:44,745 - INFO - Task Pedestrian: Doppler Freq = 174.24 Hz
+2025-03-23 14:49:45,146 - INFO - Task Pedestrian: Final channel shape = (200, 5, 32)
+2025-03-23 14:49:45,199 - INFO - Epoch 1/4 - Batch 0 - Loss: -3.2878, Gen Loss: -3.4467
+2025-03-23 14:49:45,241 - INFO - Epoch 1/4 - Batch 1 - Loss: -3.4856, Gen Loss: -3.5748
+2025-03-23 14:49:45,288 - INFO - Epoch 1/4 - Batch 2 - Loss: -3.5288, Gen Loss: -3.5758
+2025-03-23 14:49:45,334 - INFO - Epoch 1/4 - Batch 3 - Loss: -3.4262, Gen Loss: -3.5156
+2025-03-23 14:49:45,382 - INFO - Epoch 1/4 - Batch 4 - Loss: -3.5418, Gen Loss: -3.6341
+2025-03-23 14:49:45,428 - INFO - Epoch 1/4 - Batch 5 - Loss: -3.4815, Gen Loss: -3.6011
+2025-03-23 14:49:45,474 - INFO - Epoch 1/4 - Batch 6 - Loss: -3.4547, Gen Loss: -3.5459
+2025-03-23 14:49:45,526 - INFO - Epoch 2/4 - Batch 0 - Loss: -3.6141, Gen Loss: -3.7200
+2025-03-23 14:49:45,571 - INFO - Epoch 2/4 - Batch 1 - Loss: -3.4804, Gen Loss: -3.5985
+2025-03-23 14:49:45,619 - INFO - Epoch 2/4 - Batch 2 - Loss: -3.6307, Gen Loss: -3.6346
+2025-03-23 14:49:45,666 - INFO - Epoch 2/4 - Batch 3 - Loss: -3.5377, Gen Loss: -3.5758
+2025-03-23 14:49:45,713 - INFO - Epoch 2/4 - Batch 4 - Loss: -3.6035, Gen Loss: -3.6846
+2025-03-23 14:49:45,759 - INFO - Epoch 2/4 - Batch 5 - Loss: -3.5936, Gen Loss: -3.6433
+2025-03-23 14:49:45,803 - INFO - Epoch 2/4 - Batch 6 - Loss: -3.6845, Gen Loss: -3.7398
+2025-03-23 14:49:45,853 - INFO - Epoch 3/4 - Batch 0 - Loss: -3.6179, Gen Loss: -3.7258
+2025-03-23 14:49:45,898 - INFO - Epoch 3/4 - Batch 1 - Loss: -3.5791, Gen Loss: -3.6948
+2025-03-23 14:49:45,948 - INFO - Epoch 3/4 - Batch 2 - Loss: -3.6952, Gen Loss: -3.7506
+2025-03-23 14:49:45,994 - INFO - Epoch 3/4 - Batch 3 - Loss: -3.6467, Gen Loss: -3.7353
+2025-03-23 14:49:46,040 - INFO - Epoch 3/4 - Batch 4 - Loss: -3.6644, Gen Loss: -3.7105
+2025-03-23 14:49:46,086 - INFO - Epoch 3/4 - Batch 5 - Loss: -3.5727, Gen Loss: -3.6702
+2025-03-23 14:49:46,131 - INFO - Epoch 3/4 - Batch 6 - Loss: -3.6605, Gen Loss: -3.7165
+2025-03-23 14:49:46,183 - INFO - Epoch 4/4 - Batch 0 - Loss: -3.6903, Gen Loss: -3.7905
+2025-03-23 14:49:46,228 - INFO - Epoch 4/4 - Batch 1 - Loss: -3.6740, Gen Loss: -3.7610
+2025-03-23 14:49:46,275 - INFO - Epoch 4/4 - Batch 2 - Loss: -3.6979, Gen Loss: -3.7473
+2025-03-23 14:49:46,320 - INFO - Epoch 4/4 - Batch 3 - Loss: -3.7149, Gen Loss: -3.7780
+2025-03-23 14:49:46,365 - INFO - Epoch 4/4 - Batch 4 - Loss: -3.6672, Gen Loss: -3.6948
+2025-03-23 14:49:46,412 - INFO - Epoch 4/4 - Batch 5 - Loss: -3.5834, Gen Loss: -3.6727
+2025-03-23 14:49:46,460 - INFO - Epoch 4/4 - Batch 6 - Loss: -3.6073, Gen Loss: -3.6915
+2025-03-23 14:49:46,560 - INFO - Checkpoint saved at checkpoints/seed_2/task_Pedestrian
+2025-03-23 14:49:46,909 - INFO - Task Vehicular (3/4)
+2025-03-23 14:49:46,909 - INFO - Task Vehicular: Doppler Freq = 2172.45 Hz
+2025-03-23 14:49:48,527 - INFO - Task Vehicular: Final channel shape = (200, 5, 32)
+2025-03-23 14:49:48,581 - INFO - Epoch 1/4 - Batch 0 - Loss: -3.6452, Gen Loss: -3.2525
+2025-03-23 14:49:48,624 - INFO - Epoch 1/4 - Batch 1 - Loss: -3.6575, Gen Loss: -3.6030
+2025-03-23 14:49:48,671 - INFO - Epoch 1/4 - Batch 2 - Loss: -3.6243, Gen Loss: -3.6653
+2025-03-23 14:49:48,717 - INFO - Epoch 1/4 - Batch 3 - Loss: -3.6398, Gen Loss: -3.7516
+2025-03-23 14:49:48,762 - INFO - Epoch 1/4 - Batch 4 - Loss: -3.6424, Gen Loss: -3.7505
+2025-03-23 14:49:48,810 - INFO - Epoch 1/4 - Batch 5 - Loss: -3.7431, Gen Loss: -3.6897
+2025-03-23 14:49:48,857 - INFO - Epoch 1/4 - Batch 6 - Loss: -3.6629, Gen Loss: -3.7815
+2025-03-23 14:49:48,911 - INFO - Epoch 2/4 - Batch 0 - Loss: -3.6753, Gen Loss: -3.6692
+2025-03-23 14:49:48,959 - INFO - Epoch 2/4 - Batch 1 - Loss: -3.5004, Gen Loss: -3.4050
+2025-03-23 14:49:49,005 - INFO - Epoch 2/4 - Batch 2 - Loss: -3.6931, Gen Loss: -3.6230
+2025-03-23 14:49:49,050 - INFO - Epoch 2/4 - Batch 3 - Loss: -3.6283, Gen Loss: -3.7416
+2025-03-23 14:49:49,095 - INFO - Epoch 2/4 - Batch 4 - Loss: -3.6055, Gen Loss: -3.5415
+2025-03-23 14:49:49,141 - INFO - Epoch 2/4 - Batch 5 - Loss: -3.6785, Gen Loss: -3.5096
+2025-03-23 14:49:49,188 - INFO - Epoch 2/4 - Batch 6 - Loss: -3.7487, Gen Loss: -3.8028
+2025-03-23 14:49:49,243 - INFO - Epoch 3/4 - Batch 0 - Loss: -3.7364, Gen Loss: -3.7939
+2025-03-23 14:49:49,288 - INFO - Epoch 3/4 - Batch 1 - Loss: -3.6992, Gen Loss: -3.7658
+2025-03-23 14:49:49,334 - INFO - Epoch 3/4 - Batch 2 - Loss: -3.6984, Gen Loss: -3.7348
+2025-03-23 14:49:49,380 - INFO - Epoch 3/4 - Batch 3 - Loss: -3.7110, Gen Loss: -3.7960
+2025-03-23 14:49:49,426 - INFO - Epoch 3/4 - Batch 4 - Loss: -3.7213, Gen Loss: -3.7541
+2025-03-23 14:49:49,472 - INFO - Epoch 3/4 - Batch 5 - Loss: -3.7855, Gen Loss: -3.6240
+2025-03-23 14:49:49,520 - INFO - Epoch 3/4 - Batch 6 - Loss: -3.7606, Gen Loss: -3.7990
+2025-03-23 14:49:49,577 - INFO - Epoch 4/4 - Batch 0 - Loss: -3.7035, Gen Loss: -3.7313
+2025-03-23 14:49:49,625 - INFO - Epoch 4/4 - Batch 1 - Loss: -3.7315, Gen Loss: -3.6798
+2025-03-23 14:49:49,671 - INFO - Epoch 4/4 - Batch 2 - Loss: -3.7426, Gen Loss: -3.7432
+2025-03-23 14:49:49,717 - INFO - Epoch 4/4 - Batch 3 - Loss: -3.7245, Gen Loss: -3.8256
+2025-03-23 14:49:49,763 - INFO - Epoch 4/4 - Batch 4 - Loss: -3.7437, Gen Loss: -3.7970
+2025-03-23 14:49:49,810 - INFO - Epoch 4/4 - Batch 5 - Loss: -3.8226, Gen Loss: -3.7457
+2025-03-23 14:49:49,858 - INFO - Epoch 4/4 - Batch 6 - Loss: -3.5092, Gen Loss: -3.6478
+2025-03-23 14:49:49,933 - INFO - Checkpoint saved at checkpoints/seed_2/task_Vehicular
+2025-03-23 14:49:50,293 - INFO - Task Aerial (4/4)
+2025-03-23 14:49:50,293 - INFO - Task Aerial: Doppler Freq = 994.48 Hz
+2025-03-23 14:49:51,937 - INFO - Task Aerial: Final channel shape = (200, 5, 32)
+2025-03-23 14:49:51,989 - INFO - Epoch 1/4 - Batch 0 - Loss: -3.6835, Gen Loss: -3.7990
+2025-03-23 14:49:52,031 - INFO - Epoch 1/4 - Batch 1 - Loss: -3.7325, Gen Loss: -3.5824
+2025-03-23 14:49:52,077 - INFO - Epoch 1/4 - Batch 2 - Loss: -3.7173, Gen Loss: -3.6849
+2025-03-23 14:49:52,122 - INFO - Epoch 1/4 - Batch 3 - Loss: -3.7467, Gen Loss: -3.8032
+2025-03-23 14:49:52,169 - INFO - Epoch 1/4 - Batch 4 - Loss: -3.6907, Gen Loss: -3.5531
+2025-03-23 14:49:52,218 - INFO - Epoch 1/4 - Batch 5 - Loss: -3.7222, Gen Loss: -3.7820
+2025-03-23 14:49:52,265 - INFO - Epoch 1/4 - Batch 6 - Loss: -3.7369, Gen Loss: -3.8322
+2025-03-23 14:49:52,317 - INFO - Epoch 2/4 - Batch 0 - Loss: -3.6826, Gen Loss: -3.5720
+2025-03-23 14:49:52,363 - INFO - Epoch 2/4 - Batch 1 - Loss: -3.7603, Gen Loss: -3.5672
+2025-03-23 14:49:52,409 - INFO - Epoch 2/4 - Batch 2 - Loss: -3.7323, Gen Loss: -3.7776
+2025-03-23 14:49:52,454 - INFO - Epoch 2/4 - Batch 3 - Loss: -3.7787, Gen Loss: -3.8530
+2025-03-23 14:49:52,503 - INFO - Epoch 2/4 - Batch 4 - Loss: -3.7378, Gen Loss: -3.7499
+2025-03-23 14:49:52,549 - INFO - Epoch 2/4 - Batch 5 - Loss: -3.8033, Gen Loss: -3.7190
+2025-03-23 14:49:52,596 - INFO - Epoch 2/4 - Batch 6 - Loss: -3.6216, Gen Loss: -3.7400
+2025-03-23 14:49:52,652 - INFO - Epoch 3/4 - Batch 0 - Loss: -3.7245, Gen Loss: -3.7513
+2025-03-23 14:49:52,699 - INFO - Epoch 3/4 - Batch 1 - Loss: -3.7698, Gen Loss: -3.6336
+2025-03-23 14:49:52,745 - INFO - Epoch 3/4 - Batch 2 - Loss: -3.8242, Gen Loss: -3.7658
+2025-03-23 14:49:52,793 - INFO - Epoch 3/4 - Batch 3 - Loss: -3.8089, Gen Loss: -3.8687
+2025-03-23 14:49:52,840 - INFO - Epoch 3/4 - Batch 4 - Loss: -3.8155, Gen Loss: -3.5363
+2025-03-23 14:49:52,887 - INFO - Epoch 3/4 - Batch 5 - Loss: -3.8186, Gen Loss: -3.7774
+2025-03-23 14:49:52,931 - INFO - Epoch 3/4 - Batch 6 - Loss: -3.7242, Gen Loss: -3.8002
+2025-03-23 14:49:52,985 - INFO - Epoch 4/4 - Batch 0 - Loss: -3.7387, Gen Loss: -3.7046
+2025-03-23 14:49:53,031 - INFO - Epoch 4/4 - Batch 1 - Loss: -3.8165, Gen Loss: -3.5173
+2025-03-23 14:49:53,079 - INFO - Epoch 4/4 - Batch 2 - Loss: -3.7866, Gen Loss: -3.6275
+2025-03-23 14:49:53,124 - INFO - Epoch 4/4 - Batch 3 - Loss: -3.8087, Gen Loss: -3.8587
+2025-03-23 14:49:53,169 - INFO - Epoch 4/4 - Batch 4 - Loss: -3.8129, Gen Loss: -3.2047
+2025-03-23 14:49:53,217 - INFO - Epoch 4/4 - Batch 5 - Loss: -3.8435, Gen Loss: -3.7823
+2025-03-23 14:49:53,264 - INFO - Epoch 4/4 - Batch 6 - Loss: -3.6938, Gen Loss: -3.7344
+2025-03-23 14:49:53,338 - INFO - Checkpoint saved at checkpoints/seed_2/task_Aerial
+2025-03-23 14:49:53,702 - INFO - Run completed in 21.11s
