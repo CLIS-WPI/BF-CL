@@ -1,42 +1,42 @@
 Task Static:
-  throughput: 0.3204
-  latency: 18.1341
-  energy: 2693.2720
+  throughput: 0.3203
+  latency: 18.1137
+  energy: 2688.6593
   forgetting: 0.0000
   fwt: 0.0000
-  spectral_efficiency: 0.3204
-  interference: 0.1831
-  convergence_time: 3.6268
+  spectral_efficiency: 0.3203
+  interference: 0.1740
+  convergence_time: 3.6227
 --------------------------------------------------
 Task Pedestrian:
-  throughput: 0.4411
-  latency: 8.7682
-  energy: 2612.7889
-  forgetting: 0.0260
-  fwt: -0.2715
-  spectral_efficiency: 0.4411
-  interference: 0.1436
-  convergence_time: 1.7536
+  throughput: 0.3825
+  latency: 8.8307
+  energy: 2624.4930
+  forgetting: 0.0285
+  fwt: -0.1984
+  spectral_efficiency: 0.3825
+  interference: 0.1489
+  convergence_time: 1.7661
 --------------------------------------------------
 Task Vehicular:
-  throughput: 0.3198
-  latency: 7.2450
-  energy: 2698.7581
-  forgetting: 0.0101
-  fwt: -0.0259
-  spectral_efficiency: 0.3198
-  interference: 0.1378
-  convergence_time: 1.4490
+  throughput: 0.3200
+  latency: 7.2714
+  energy: 2702.4708
+  forgetting: 0.0103
+  fwt: -0.0178
+  spectral_efficiency: 0.3200
+  interference: 0.1452
+  convergence_time: 1.4543
 --------------------------------------------------
 Task Aerial:
-  throughput: 0.3198
-  latency: 7.2454
-  energy: 2696.0115
-  forgetting: 0.0085
-  fwt: 0.2292
-  spectral_efficiency: 0.3198
-  interference: 0.1379
-  convergence_time: 1.4491
+  throughput: 0.3199
+  latency: 7.2650
+  energy: 2698.9379
+  forgetting: 0.0075
+  fwt: 0.0991
+  spectral_efficiency: 0.3199
+  interference: 0.1390
+  convergence_time: 1.4530
 --------------------------------------------------
-BWT: 0.0085
-Total Time: 73.38s
+BWT: 0.0075
+Total Time: 73.65s

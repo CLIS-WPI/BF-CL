@@ -1,54 +1,54 @@
 Throughput (Mean ± Std):
   Static: 0.3203 ± 0.0001
-  Pedestrian: 0.4676 ± 0.0212
-  Vehicular: 0.3194 ± 0.0004
-  Aerial: 0.3193 ± 0.0003
+  Pedestrian: 0.4590 ± 0.0367
+  Vehicular: 0.3195 ± 0.0003
+  Aerial: 0.3193 ± 0.0004
 
 Latency (Mean ± Std):
-  Static: 18.0854 ± 0.3748
-  Pedestrian: 8.9101 ± 0.1104
-  Vehicular: 7.3003 ± 0.0607
-  Aerial: 7.2956 ± 0.1152
+  Static: 18.1751 ± 0.3905
+  Pedestrian: 9.0081 ± 0.1419
+  Vehicular: 7.3231 ± 0.0792
+  Aerial: 7.3109 ± 0.1108
 
 Energy (Mean ± Std):
-  Static: 2682.4322 ± 61.7272
-  Pedestrian: 2646.1256 ± 39.0457
-  Vehicular: 2712.8422 ± 28.3736
-  Aerial: 2711.7921 ± 50.4318
+  Static: 2695.7276 ± 64.0240
+  Pedestrian: 2674.1216 ± 48.1129
+  Vehicular: 2718.2926 ± 33.5735
+  Aerial: 2714.8063 ± 45.8292
 
 Forgetting (Mean ± Std):
   Static: 0.0000 ± 0.0000
-  Pedestrian: 0.0215 ± 0.0028
-  Vehicular: 0.0065 ± 0.0024
-  Aerial: 0.0058 ± 0.0021
+  Pedestrian: 0.0258 ± 0.0073
+  Vehicular: 0.0091 ± 0.0053
+  Aerial: 0.0076 ± 0.0044
 
 Fwt (Mean ± Std):
   Static: 0.0000 ± 0.0000
-  Pedestrian: -0.3106 ± 0.0364
-  Vehicular: -0.0016 ± 0.0304
-  Aerial: 0.2454 ± 0.0596
+  Pedestrian: -0.2348 ± 0.0821
+  Vehicular: -0.0071 ± 0.0320
+  Aerial: 0.2314 ± 0.1132
 
 Bwt (Mean ± Std):
-  Static: 0.0058 ± 0.0021
-  Pedestrian: 0.0058 ± 0.0021
-  Vehicular: 0.0058 ± 0.0021
-  Aerial: 0.0058 ± 0.0021
+  Static: 0.0076 ± 0.0044
+  Pedestrian: 0.0076 ± 0.0044
+  Vehicular: 0.0076 ± 0.0044
+  Aerial: 0.0076 ± 0.0044
 
 Spectral_efficiency (Mean ± Std):
   Static: 0.3203 ± 0.0001
-  Pedestrian: 0.4676 ± 0.0212
-  Vehicular: 0.3194 ± 0.0004
-  Aerial: 0.3193 ± 0.0003
+  Pedestrian: 0.4590 ± 0.0367
+  Vehicular: 0.3195 ± 0.0003
+  Aerial: 0.3193 ± 0.0004
 
 Interference (Mean ± Std):
-  Static: 0.1764 ± 0.0068
-  Pedestrian: 0.1384 ± 0.0041
-  Vehicular: 0.1150 ± 0.0161
-  Aerial: 0.1119 ± 0.0138
+  Static: 0.1780 ± 0.0066
+  Pedestrian: 0.1413 ± 0.0037
+  Vehicular: 0.1184 ± 0.0146
+  Aerial: 0.1101 ± 0.0170
 
 Convergence_time (Mean ± Std):
-  Static: 3.6171 ± 0.0750
-  Pedestrian: 1.7820 ± 0.0221
-  Vehicular: 1.4601 ± 0.0121
-  Aerial: 1.4591 ± 0.0230
+  Static: 3.6350 ± 0.0781
+  Pedestrian: 1.8016 ± 0.0284
+  Vehicular: 1.4646 ± 0.0158
+  Aerial: 1.4622 ± 0.0222
 

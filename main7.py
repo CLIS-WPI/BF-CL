@@ -96,7 +96,7 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         self.output_layer = layers.Dense(num_antennas * num_users * 2)
 
         # Replay buffer
-        self.buffer_sizes = [REPLAY_BUFFER_SIZE_DEFAULT] * len(TASKS)
+        self.buffer_sizes = [2000 if i in [0, 2, 3] else REPLAY_BUFFER_SIZE_DEFAULT for i in range(len(TASKS))]
         self.buffer_x = [tf.zeros([size, num_users, num_antennas], dtype=tf.complex64) for size in self.buffer_sizes]
         self.buffer_h = [tf.zeros([size, num_users, num_antennas], dtype=tf.complex64) for size in self.buffer_sizes]
         self.buffer_count = [0] * len(TASKS)
@@ -268,7 +268,7 @@ def train_step(model, x_batch, h_batch, optimizer, task_idx):
     grads = tape.gradient(loss, model.trainable_variables)
     optimizer.apply_gradients(zip([g for g in grads if g is not None], 
                                   [v for g, v in zip(grads, model.trainable_variables) if g is not None]))
-    return loss
+    return loss  # برگردوندن Loss برای استفاده تو Scheduler
 
 # Main function
 def main(seed):
@@ -286,6 +286,12 @@ def main(seed):
     
     model = BeamformingMetaAttentionModel(NUM_ANTENNAS, NUM_USERS)
     optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=0.002)
+    initial_lr = {'Static': 0.005, 'Pedestrian': 0.003, 'Vehicular': 0.003, 'Aerial': 0.003}
+    lr_schedule = {task_idx: initial_lr[task['name']] for task_idx, task in enumerate(TASKS)}
+    min_lr = 1e-5
+    patience = 2
+    lr_factor = 0.5
+    epoch_losses = {task_idx: [] for task_idx in range(len(TASKS))}
 
     # Warm-up کامل برای همه تسک‌ها
     logging.info(f"Initial trainable variables: {len(model.trainable_variables)}")
@@ -320,7 +326,8 @@ def main(seed):
         batch_size = BATCH_SIZE_STATIC if task_idx == 0 else BATCH_SIZE_DEFAULT
         num_epochs = NUM_EPOCHS_STATIC if task_idx == 0 else 10 if task_idx in [2, 3] else NUM_EPOCHS_DEFAULT
         
-        optimizer.learning_rate.assign(0.005 if task_idx == 0 else 0.003 if task_idx == 1 else 0.002)
+        current_lr = lr_schedule[task_idx]
+        optimizer.learning_rate.assign(current_lr)
         
         if task_idx == 0 and aerial_weights is not None:
             model.load_weights(aerial_weights)
@@ -343,11 +350,35 @@ def main(seed):
         task_initial_performance.append(initial_signal)
 
         task_start_time = time.time()
+        patience_counter = 0
+        best_loss = float('inf')
+        
         for epoch in range(num_epochs):
+            epoch_loss = 0.0
+            num_batches = 0
             for batch_idx, (x_batch, h_batch) in enumerate(dataset):
                 loss = train_step(model, x_batch, h_batch, optimizer, task_idx)
                 model.update_memory(x_batch, h_batch, task_idx)
+                epoch_loss += loss.numpy()
+                num_batches += 1
                 print(f"Epoch {epoch+1}/{num_epochs} - Batch {batch_idx} - Loss: {loss:.4f}")
+            
+            avg_loss = epoch_loss / num_batches
+            epoch_losses[task_idx].append(avg_loss)
+            
+            if avg_loss < best_loss:
+                best_loss = avg_loss
+                patience_counter = 0
+            else:
+                patience_counter += 1
+            
+            if patience_counter >= patience and current_lr > min_lr:
+                current_lr *= lr_factor
+                optimizer.learning_rate.assign(current_lr)
+                patience_counter = 0
+                logging.info(f"Reduced LR for task {task['name']} to {current_lr:.6f}")
+            
+            logging.info(f"Epoch {epoch+1}/{num_epochs} - Avg Loss: {avg_loss:.4f}")
 
         if task_idx == 1:
             pedestrian_weights = f"checkpoints/seed_{seed}/pedestrian_weights"
