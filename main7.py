@@ -10,6 +10,7 @@ import logging
 import sys
 import subprocess
 tf.get_logger().setLevel('ERROR')
+
 # Logger setup
 class LoggerWriter:
     def __init__(self, logger, level):
@@ -28,7 +29,7 @@ def preprocess_input(x):
     if not tf.is_tensor(x) or x.dtype not in [tf.complex64, tf.complex128]:
         logging.warning(f"Input type {type(x)} or dtype {x.dtype} is not complex, converting to complex64")
         x = tf.cast(x, tf.complex64)
-    return x  # Keep as complex64
+    return x
 
 # GPU power utility
 def get_gpu_power():
@@ -57,15 +58,14 @@ NUM_USERS = 5
 FREQ = 28e9
 POWER = 1.0
 NUM_SLOTS = 200
-BATCH_SIZE_DEFAULT = 32
-BATCH_SIZE_STATIC = 16
-LAMBDA_REG = 10.0
-NUM_EPOCHS_DEFAULT = 4
-NUM_EPOCHS_STATIC = 2
+BATCH_SIZE_DEFAULT = 128
+BATCH_SIZE_STATIC = 64
+LAMBDA_REG = 10
+NUM_EPOCHS_DEFAULT = 8
+NUM_EPOCHS_STATIC = 4
 CHUNK_SIZE = 50
 NOISE_POWER = 1e-3
-REPLAY_BUFFER_SIZE_DEFAULT = 200
-REPLAY_BUFFER_SIZE_PEDESTRIAN = 400
+REPLAY_BUFFER_SIZE_DEFAULT = 1000
 NUM_RUNS = 3
 INNER_STEPS = 5
 
@@ -86,6 +86,7 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         # Layers
         self.input_conv = layers.Conv1D(64, 1, activation='relu', dtype=tf.float32, input_shape=(num_users, num_antennas * 2))
         self.shared_transformer = layers.MultiHeadAttention(num_heads=4, key_dim=64)
+        self.static_transformer = layers.MultiHeadAttention(num_heads=8, key_dim=64)
         self.attention = layers.MultiHeadAttention(num_heads=4, key_dim=64)
         self.gru_static = layers.GRU(128, return_sequences=True)
         self.gru_default = layers.GRU(128, return_sequences=True)
@@ -96,7 +97,6 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
 
         # Replay buffer
         self.buffer_sizes = [REPLAY_BUFFER_SIZE_DEFAULT] * len(TASKS)
-        self.buffer_sizes[1] = REPLAY_BUFFER_SIZE_PEDESTRIAN
         self.buffer_x = [tf.zeros([size, num_users, num_antennas], dtype=tf.complex64) for size in self.buffer_sizes]
         self.buffer_h = [tf.zeros([size, num_users, num_antennas], dtype=tf.complex64) for size in self.buffer_sizes]
         self.buffer_count = [0] * len(TASKS)
@@ -108,14 +108,15 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
 
     def call(self, inputs, task_idx=0, training=False):
         batch_size = tf.shape(inputs)[0]
-        # Explicitly convert complex64 to float32 for Conv1D
-        with tf.device('/cpu:0'):  # Avoid GPU casting issues
+        with tf.device('/cpu:0'):
             real = tf.math.real(inputs)
             imag = tf.math.imag(inputs)
-            x = tf.concat([real, imag], axis=-1)  # [batch_size, num_users, num_antennas * 2]
+            x = tf.concat([real, imag], axis=-1)
         x = self.input_conv(x)
         
         x = self.shared_transformer(x, x)
+        if task_idx == 0:
+            x = self.static_transformer(x, x)
         x = self.gru_static(x) if task_idx == 0 else self.gru_default(x)
         
         attn_output = self.attention(x, x)
@@ -231,6 +232,7 @@ def generate_channel(task, num_slots, batch_size):
     return h
 
 # Training step
+@tf.function(experimental_relax_shapes=True)
 def train_step(model, x_batch, h_batch, optimizer, task_idx):
     with tf.GradientTape() as tape:
         w = model(x_batch, task_idx, training=True)
@@ -248,7 +250,7 @@ def train_step(model, x_batch, h_batch, optimizer, task_idx):
         loss = -tf.math.log(1.0 + sinr) + 0.5 * interference_power
         
         replay_loss = tf.constant(0.0, dtype=tf.float32)
-        num_samples = tf.where(task_idx == 1, batch_size, batch_size // 2)
+        num_samples = batch_size // 4
         for _ in range(INNER_STEPS):
             x_replay, h_replay = model.generate_replay(num_samples, task_idx)
             if not tf.reduce_all(tf.equal(x_replay, 0.0)):
@@ -283,18 +285,25 @@ def main(seed):
     np.random.seed(seed)
     
     model = BeamformingMetaAttentionModel(NUM_ANTENNAS, NUM_USERS)
-    
-    # Use legacy optimizers
-    optimizer_static = tf.keras.optimizers.legacy.Adam(learning_rate=0.005)
-    optimizer_default = tf.keras.optimizers.legacy.Adam(learning_rate=0.002)
+    optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=0.002)
 
-    # Simple warm-up to initialize model
-    real_part = tf.random.normal([BATCH_SIZE_DEFAULT, NUM_USERS, NUM_ANTENNAS], dtype=tf.float32)
-    imag_part = tf.random.normal([BATCH_SIZE_DEFAULT, NUM_USERS, NUM_ANTENNAS], dtype=tf.float32)
-    dummy_x = tf.complex(real_part, imag_part)
-    dummy_x_processed = preprocess_input(dummy_x)
+    # Warm-up کامل برای همه تسک‌ها
+    logging.info(f"Initial trainable variables: {len(model.trainable_variables)}")
     for task_idx in range(len(TASKS)):
-        _ = model(dummy_x_processed, task_idx=task_idx, training=True)
+        batch_size = BATCH_SIZE_STATIC if task_idx == 0 else BATCH_SIZE_DEFAULT
+        real_part = tf.random.normal([batch_size, NUM_USERS, NUM_ANTENNAS], dtype=tf.float32)
+        imag_part = tf.random.normal([batch_size, NUM_USERS, NUM_ANTENNAS], dtype=tf.float32)
+        dummy_x = tf.complex(real_part, imag_part)
+        dummy_h = dummy_x
+        dummy_x_processed = preprocess_input(dummy_x)
+        optimizer.learning_rate.assign(0.005 if task_idx == 0 else 0.002)
+        with tf.GradientTape() as tape:
+            w = model(dummy_x_processed, task_idx=task_idx, training=True)
+            loss = tf.reduce_mean(tf.abs(w)**2)  # یه Loss ساده برای Warm-up
+        grads = tape.gradient(loss, model.trainable_variables)
+        optimizer.apply_gradients(zip([g for g in grads if g is not None], 
+                                      [v for g, v in zip(grads, model.trainable_variables) if g is not None]))
+        logging.info(f"Warm-up completed for task {task_idx}, trainable variables: {len(model.trainable_variables)}")
 
     checkpoint = tf.train.Checkpoint(model=model)
     results = {metric: [] for metric in ["throughput", "latency", "energy", "forgetting", "fwt", "bwt", "spectral_efficiency", "interference", "convergence_time"]}
@@ -302,6 +311,7 @@ def main(seed):
     task_initial_performance = []
     task_channels = {}
     pedestrian_weights = None
+    aerial_weights = None
 
     total_start_time = time.time()
     
@@ -309,9 +319,13 @@ def main(seed):
         print(f"Task {task['name']} ({task_idx+1}/{len(TASKS)})")
         batch_size = BATCH_SIZE_STATIC if task_idx == 0 else BATCH_SIZE_DEFAULT
         num_epochs = NUM_EPOCHS_STATIC if task_idx == 0 else NUM_EPOCHS_DEFAULT
-        optimizer = optimizer_static if task_idx == 0 else optimizer_default
         
-        if task_idx in [0, 2] and pedestrian_weights is not None:
+        optimizer.learning_rate.assign(0.01 if task_idx == 0 else 0.005)
+        
+        if task_idx == 0 and aerial_weights is not None:
+            model.load_weights(aerial_weights)
+            logging.info(f"Loaded weights from Aerial for {task['name']}")
+        elif task_idx == 2 and pedestrian_weights is not None:
             model.load_weights(pedestrian_weights)
             logging.info(f"Loaded weights from Pedestrian for {task['name']}")
 
@@ -340,6 +354,11 @@ def main(seed):
             os.makedirs(os.path.dirname(pedestrian_weights), exist_ok=True)
             model.save_weights(pedestrian_weights)
             logging.info(f"Saved Pedestrian weights at {pedestrian_weights}")
+        elif task_idx == 3:
+            aerial_weights = f"checkpoints/seed_{seed}/aerial_weights"
+            os.makedirs(os.path.dirname(aerial_weights), exist_ok=True)
+            model.save_weights(aerial_weights)
+            logging.info(f"Saved Aerial weights at {aerial_weights}")
 
         checkpoint_dir = f"checkpoints/seed_{seed}"
         os.makedirs(checkpoint_dir, exist_ok=True)
@@ -392,6 +411,7 @@ def main(seed):
         results["interference"].append(interference)
         results["convergence_time"].append(convergence_time)
 
+        logging.info(f"After {task['name']}, trainable variables: {len(model.trainable_variables)}")
         gc.collect()
 
     bwt = 0.0
