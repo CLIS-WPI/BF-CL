@@ -1,0 +1,54 @@
+Throughput (Mean ± Std):
+  Static: 0.3203 ± 0.0001
+  Pedestrian: 0.4676 ± 0.0212
+  Vehicular: 0.3194 ± 0.0004
+  Aerial: 0.3193 ± 0.0003
+
+Latency (Mean ± Std):
+  Static: 18.0854 ± 0.3748
+  Pedestrian: 8.9101 ± 0.1104
+  Vehicular: 7.3003 ± 0.0607
+  Aerial: 7.2956 ± 0.1152
+
+Energy (Mean ± Std):
+  Static: 2682.4322 ± 61.7272
+  Pedestrian: 2646.1256 ± 39.0457
+  Vehicular: 2712.8422 ± 28.3736
+  Aerial: 2711.7921 ± 50.4318
+
+Forgetting (Mean ± Std):
+  Static: 0.0000 ± 0.0000
+  Pedestrian: 0.0215 ± 0.0028
+  Vehicular: 0.0065 ± 0.0024
+  Aerial: 0.0058 ± 0.0021
+
+Fwt (Mean ± Std):
+  Static: 0.0000 ± 0.0000
+  Pedestrian: -0.3106 ± 0.0364
+  Vehicular: -0.0016 ± 0.0304
+  Aerial: 0.2454 ± 0.0596
+
+Bwt (Mean ± Std):
+  Static: 0.0058 ± 0.0021
+  Pedestrian: 0.0058 ± 0.0021
+  Vehicular: 0.0058 ± 0.0021
+  Aerial: 0.0058 ± 0.0021
+
+Spectral_efficiency (Mean ± Std):
+  Static: 0.3203 ± 0.0001
+  Pedestrian: 0.4676 ± 0.0212
+  Vehicular: 0.3194 ± 0.0004
+  Aerial: 0.3193 ± 0.0003
+
+Interference (Mean ± Std):
+  Static: 0.1764 ± 0.0068
+  Pedestrian: 0.1384 ± 0.0041
+  Vehicular: 0.1150 ± 0.0161
+  Aerial: 0.1119 ± 0.0138
+
+Convergence_time (Mean ± Std):
+  Static: 3.6171 ± 0.0750
+  Pedestrian: 1.7820 ± 0.0221
+  Vehicular: 1.4601 ± 0.0121
+  Aerial: 1.4591 ± 0.0230
+

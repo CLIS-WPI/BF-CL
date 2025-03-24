@@ -66,7 +66,7 @@ NUM_EPOCHS_STATIC = 4
 CHUNK_SIZE = 50
 NOISE_POWER = 1e-3
 REPLAY_BUFFER_SIZE_DEFAULT = 1000
-NUM_RUNS = 3
+NUM_RUNS = 10
 INNER_STEPS = 5
 
 TASKS = [
@@ -296,7 +296,7 @@ def main(seed):
         dummy_x = tf.complex(real_part, imag_part)
         dummy_h = dummy_x
         dummy_x_processed = preprocess_input(dummy_x)
-        optimizer.learning_rate.assign(0.005 if task_idx == 0 else 0.002)
+        optimizer.learning_rate.assign(0.005 if task_idx == 0 else 0.003)
         with tf.GradientTape() as tape:
             w = model(dummy_x_processed, task_idx=task_idx, training=True)
             loss = tf.reduce_mean(tf.abs(w)**2)  # یه Loss ساده برای Warm-up
@@ -318,9 +318,9 @@ def main(seed):
     for task_idx, task in enumerate(TASKS):
         print(f"Task {task['name']} ({task_idx+1}/{len(TASKS)})")
         batch_size = BATCH_SIZE_STATIC if task_idx == 0 else BATCH_SIZE_DEFAULT
-        num_epochs = NUM_EPOCHS_STATIC if task_idx == 0 else NUM_EPOCHS_DEFAULT
+        num_epochs = NUM_EPOCHS_STATIC if task_idx == 0 else 10 if task_idx in [2, 3] else NUM_EPOCHS_DEFAULT
         
-        optimizer.learning_rate.assign(0.01 if task_idx == 0 else 0.005)
+        optimizer.learning_rate.assign(0.005 if task_idx == 0 else 0.003 if task_idx == 1 else 0.002)
         
         if task_idx == 0 and aerial_weights is not None:
             model.load_weights(aerial_weights)
@@ -378,7 +378,7 @@ def main(seed):
         interference = tf.reduce_mean(tf.reduce_sum(tf.abs(signal_matrix)**2 * mask, axis=-1)).numpy()
         sinr = desired_power / (interference + NOISE_POWER)
         spectral_efficiency = np.log2(1 + sinr)
-        throughput = desired_power
+        throughput = np.log2(1 + sinr)
         task_performance.append(throughput)
 
         forgetting = 0.0
