@@ -1,3 +1,10 @@
+"""
+This code implements the BeamformingMetaAttentionModel for realistic 6G scenarios with dynamic traffic profiles,
+task-specific heads, gating, and continual learning (Replay + Fisher Regularization). The scenario assumes:
+  - Single-Cell with 64 antennas
+  - Up to 2000 daily users (max 500 concurrent)
+  - Realistic traffic fluctuations and channel models (TDL-A, TDL-C, Rayleigh)
+"""
 import numpy as np
 import tensorflow as tf
 import sionna as sn
@@ -21,14 +28,14 @@ class LoggerWriter:
 
 # Constants
 NUM_ANTENNAS = 64
-MAX_USERS = 20
+MAX_USERS = 200
 TOTAL_USERS = 2000
 FREQ = 28e9
 POWER = 1.0
 NUM_SLOTS = 10
-BATCH_SIZE = 8
+BATCH_SIZE = 16
 LAMBDA_REG = 10
-NUM_EPOCHS = 10
+NUM_EPOCHS = 20
 NOISE_POWER = 1e-3
 REPLAY_BUFFER_SIZE = 2000
 
@@ -88,40 +95,45 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         real = tf.math.real(inputs)
         imag = tf.math.imag(inputs)
         x = tf.concat([real, imag], axis=-1)
-        # ✅ Reshape to [B, U, F]
-        x = tf.reshape(x, [tf.shape(x)[0], tf.shape(x)[1], -1])
+        x = tf.reshape(x, [batch_size, num_users, -1])  # [B, U, F]
 
         x = self.input_conv(x)                            # [B, U, F]
         x = self.shared_transformer(x, x)                 # [B, U, F]
 
+        head_outputs = []
+        for head_name in ["Static", "Pedestrian", "Vehicular", "Aerial"]:
+            h = self.heads[head_name](x)  # [B, U, H]
+            head_outputs.append(h)
+        head_outputs = tf.stack(head_outputs, axis=-1)     # [B, U, H, 4]
+
         if channel_stats is not None and "task_idx" not in channel_stats:
+            # Gating Network case
             gating_input = tf.concat([
                 channel_stats["delay_spread"],
                 channel_stats["doppler"],
                 channel_stats["snr"]
-            ], axis=-1)                                   # [B, 3]
+            ], axis=-1)                                     # [B, 3]
             weights = self.gating_dense1(gating_input)
-            weights = self.gating_dense2(weights)         # [B, 4]
-
-            head_outputs = []
-            for i, head_name in enumerate(["Static", "Pedestrian", "Vehicular", "Aerial"]):
-                h = self.heads[head_name](x)              # [B, U, H]
-                head_outputs.append(h * weights[:, i:i+1, tf.newaxis])
-            x = tf.reduce_sum(head_outputs, axis=0)       # [B, U, H]
+            weights = self.gating_dense2(weights)           # [B, 4]
+            weights = tf.reshape(weights, [batch_size, 1, 1, 4])  # [B, 1, 1, 4]
+            x = tf.reduce_sum(head_outputs * weights, axis=-1)   # [B, U, H]
         else:
+            # Task index selection case
             task_idx = channel_stats.get("task_idx", 0) if channel_stats else 0
-            head_name = list(self.heads.keys())[task_idx]
-            x = self.heads[head_name](x)
+            one_hot = tf.one_hot(task_idx, depth=4)               # [4]
+            one_hot = tf.reshape(one_hot, [1, 1, 1, 4])            # [1, 1, 1, 4]
+            one_hot = tf.tile(one_hot, [batch_size, num_users, tf.shape(head_outputs)[2], 1])  # [B, U, H, 4]
+            x = tf.reduce_sum(head_outputs * one_hot, axis=-1)    # [B, U, H]
 
-        x = self.norm(x)                                  # [B, U, H]
+        x = self.norm(x)
         x = self.dense1(x)
         x = self.dense2(x)
 
-        out = self.output_layer(x)                        # [B, U, A*2]
+        out = self.output_layer(x)                                 # [B, U, A*2]
         out = tf.reshape(out, [batch_size, num_users, self.num_antennas, 2])
         real = out[..., 0]
         imag = out[..., 1]
-        w = tf.complex(real, imag)                        # [B, U, A]
+        w = tf.complex(real, imag)                                 # [B, U, A]
 
         # Normalize per-user
         norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-1, keepdims=True)
@@ -134,9 +146,16 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
     def update_memory(self, x, h, loss):
         if loss > 0.5 and self.buffer_count < REPLAY_BUFFER_SIZE:
             idx = self.buffer_count
-            self.buffer_x = tf.tensor_scatter_nd_update(self.buffer_x, [[idx]], [x[0]])
-            self.buffer_h = tf.tensor_scatter_nd_update(self.buffer_h, [[idx]], [h[0]])
+            current_users = tf.shape(x)[1]
+            pad_users = MAX_USERS - current_users
+
+            x0_padded = tf.pad(x[0], paddings=[[0, pad_users], [0, 0]])  # [MAX_USERS, NUM_ANTENNAS]
+            h0_padded = tf.pad(h[0], paddings=[[0, pad_users], [0, 0]])  # [MAX_USERS, NUM_ANTENNAS]
+
+            self.buffer_x = tf.tensor_scatter_nd_update(self.buffer_x, [[idx]], [x0_padded])
+            self.buffer_h = tf.tensor_scatter_nd_update(self.buffer_h, [[idx]], [h0_padded])
             self.buffer_count += 1
+
 
     def regularization_loss(self):
         reg_loss = 0.0
