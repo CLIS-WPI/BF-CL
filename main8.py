@@ -138,7 +138,8 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         # Normalize per-user
         norm_squared = tf.reduce_sum(tf.abs(w)**2, axis=-1, keepdims=True)
         norm_factor = tf.cast(tf.sqrt(norm_squared + 1e-10), tf.complex64)
-        scale_factor = tf.cast(tf.sqrt(POWER * tf.cast(num_users, tf.float32)), tf.complex64)
+        scale_factor = tf.cast(tf.sqrt(POWER), tf.complex64)
+
         w = w / norm_factor * scale_factor
 
         return w
@@ -191,12 +192,11 @@ def generate_channel(task, num_slots, batch_size, num_users):
                 dtype=tf.complex64
             )
             h_t, _ = tdl(batch_size=batch_size, num_time_steps=num_slots, sampling_frequency=sampling_freq)
-            tf.print("Raw TDL shape for user", user_idx, ":", h_t.shape)  # [B, 1, 1, A, P, T]
-            h_t = tf.reduce_mean(h_t, axis=-1)  # میانگین روی زمان: [B, 1, 1, A, P]
-            h_t = tf.reduce_mean(h_t, axis=-1)  # میانگین روی مسیرها: [B, 1, 1, A]
-            h_t = tf.squeeze(h_t)  # حذف همه بُعدهای اضافی: [B, A]
+            h_t = tf.reduce_mean(h_t, axis=-1)  # over time
+            h_t = tf.reduce_mean(h_t, axis=-1)  # over taps
+            h_t = tf.squeeze(h_t)               # [B, A]
             user_channels.append(h_t)
-        h = tf.stack(user_channels, axis=1)  # [B, U, A]
+        h = tf.stack(user_channels, axis=1)      # [B, U, A]
         tf.print("✅ Final TDL shape [B,U,A]:", h.shape)
 
     elif task["channel"] == "Rayleigh":
@@ -209,8 +209,7 @@ def generate_channel(task, num_slots, batch_size, num_users):
             dtype=tf.complex64
         )
         h, _ = channel_model(batch_size=batch_size, num_time_steps=1)
-        tf.print("Raw Rayleigh shape:", h.shape)  # [B, U, 1, 1, A, 1]
-        h = tf.squeeze(h)  # حذف همه بُعدهای اضافی: [B, U, A]
+        h = tf.squeeze(h)  # [B, U, A]
         tf.print("✅ Final Rayleigh shape [B,U,A]:", h.shape)
 
     else:  # Mixed
@@ -232,11 +231,11 @@ def generate_channel(task, num_slots, batch_size, num_users):
                     dtype=tf.complex64
                 )
                 h_t, _ = tdl(batch_size=batch_size, num_time_steps=num_slots, sampling_frequency=sampling_freq)
-                h_t = tf.reduce_mean(h_t, axis=-1)  # میانگین روی زمان: [B, 1, 1, A, P]
-                h_t = tf.reduce_mean(h_t, axis=-1)  # میانگین روی مسیرها: [B, 1, 1, A]
-                h_t = tf.squeeze(h_t)  # حذف همه بُعدهای اضافی: [B, A]
+                h_t = tf.reduce_mean(h_t, axis=-1)
+                h_t = tf.reduce_mean(h_t, axis=-1)
+                h_t = tf.squeeze(h_t)
                 user_channels.append(h_t)
-            h = tf.stack(user_channels, axis=1)  # [B, U, A]
+            h = tf.stack(user_channels, axis=1)
             tf.print("✅ Final Mixed-TDL shape [B,U,A]:", h.shape)
         else:
             tf.print("→ Random Rayleigh model")
@@ -248,11 +247,22 @@ def generate_channel(task, num_slots, batch_size, num_users):
                 dtype=tf.complex64
             )
             h, _ = channel_model(batch_size=batch_size, num_time_steps=1)
-            tf.print("Raw Mixed-Rayleigh shape:", h.shape)
-            h = tf.squeeze(h)  # حذف همه بُعدهای اضافی: [B, U, A]
+            h = tf.squeeze(h)
             tf.print("✅ Final Mixed-Rayleigh shape [B,U,A]:", h.shape)
 
-    return h  # Shape: [batch_size, num_users, NUM_ANTENNAS]
+    # ✅ Normalize all channels to make task difficulty comparable
+    h_norm = tf.reduce_mean(tf.abs(h))
+    h = h / tf.cast(h_norm + 1e-6, tf.complex64)
+
+    logging.info(f"[{task['name']}] 📏 Normalized |h| mean: {tf.reduce_mean(tf.abs(h)).numpy():.5f}")
+    logging.info(f"[{task['name']}] 📊 Mean(|h|): {tf.reduce_mean(tf.abs(h)).numpy():.5f}")
+    logging.info(f"[{task['name']}] 📊 Std(|h|): {tf.math.reduce_std(tf.abs(h)).numpy():.5f}")
+    logging.info(f"[{task['name']}] 📐 Shape: {h.shape}")
+    logging.info(f"[{task['name']}] 📏 Normalized |h| mean: {tf.reduce_mean(tf.abs(h)).numpy():.5f}")
+
+    return h
+
+
 
 
 def simulate_daily_traffic():
@@ -286,14 +296,13 @@ def simulate_daily_traffic():
     
     return user_counts, total_time
 
+
 @tf.function
 def train_step(model, x_batch, h_batch, optimizer, channel_stats):
     with tf.GradientTape() as tape:
-        w = model(x_batch, channel_stats, training=True)  # [B, U, A]
-        
-        # Ensure h_batch is [B, U, A]
-        h_transposed = tf.transpose(h_batch, [0, 2, 1])  # [B, A, U]
-        signal_matrix = tf.matmul(w, h_transposed)       # [B, U, U]
+        w = model(x_batch, channel_stats, training=True)
+        h_transposed = tf.transpose(h_batch, [0, 2, 1])
+        signal_matrix = tf.matmul(w, h_transposed)
 
         desired_signal = tf.linalg.diag_part(signal_matrix)
         desired_power = tf.reduce_mean(tf.abs(desired_signal) ** 2)
@@ -305,14 +314,16 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats):
         interference = tf.reduce_mean(tf.reduce_sum(tf.abs(signal_matrix) ** 2 * mask, axis=-1))
 
         snr = desired_power / (interference + NOISE_POWER)
+
         sinr_db = 10 * tf.math.log(snr) / tf.math.log(10.0)
         alpha = tf.where(sinr_db < 15.0, 0.7 + 0.1 * (15.0 - sinr_db), 0.7)
         loss = -alpha * tf.math.log(1.0 + snr) + 0.5 * interference + model.regularization_loss()
-    
+
     grads = tape.gradient(loss, model.trainable_variables)
     optimizer.apply_gradients(zip([g for g in grads if g is not None],
-                                 [v for g, v in zip(grads, model.trainable_variables) if g is not None]))
+                                   [v for g, v in zip(grads, model.trainable_variables) if g is not None]))
     return loss, snr
+
 
 
 def main(seed):
@@ -358,9 +369,25 @@ def main(seed):
                     "task_idx": task_idx
                 }
                 
-                for x_batch, h_batch in dataset:
+                for i, (x_batch, h_batch) in enumerate(dataset):
                     loss, sinr = train_step(model, x_batch, h_batch, optimizer, channel_stats)
                     model.update_memory(x_batch, h_batch, loss)
+
+                    # فقط برای دو batch اول لاگ بگیر
+                    if i < 2:
+                        with tf.device('/CPU:0'):
+                            mean_w = tf.reduce_mean(tf.abs(model(x_batch, channel_stats)))
+                            logging.info(f"[TRAIN] mean|w|: {mean_w.numpy():.5f}")
+                            logging.info(f"[TRAIN] loss: {loss.numpy():.5f}, sinr: {sinr.numpy():.5f}")
+
+
+
+    # ✅ Logging model behavior externally
+    with tf.device('/CPU:0'):
+        mean_w = tf.reduce_mean(tf.abs(model(x_batch, channel_stats)))
+        logging.info(f"[TRAIN] mean|w|: {mean_w.numpy():.5f}")
+        logging.info(f"[TRAIN] loss: {loss.numpy():.5f}, sinr: {sinr.numpy():.5f}")
+
         
         # Mixed inference
         mixed_task = TASKS[-1]
@@ -389,11 +416,11 @@ def main(seed):
         results["bwt"].append(0.0)
 
     with open(f"results_seed_{seed}.txt", "w") as f:
-        for i, period in enumerate(DAILY_PERIODS):
-            f.write(f"{period}:\n")
+        for i, period in enumerate(results["throughput"]):  # به‌جای DAILY_PERIODS از طول واقعی استفاده کن
+            f.write(f"{DAILY_PERIODS[i]}:\n")
             for metric in results:
                 f.write(f"  {metric}: {results[metric][i]:.4f}\n")
-    
+
     logging.info(f"Simulation completed for seed {seed}")
 
 if __name__ == "__main__":
