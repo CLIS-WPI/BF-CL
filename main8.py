@@ -187,9 +187,10 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         out = self.dense1(out)
         out = self.dense2(out)
         out = self.output_layer(out)
-        out = tf.reshape(out, [B, U, self.num_antennas])  # [B, U, A]
-
+        out = tf.math.l2_normalize(out, axis=-1) * tf.cast(tf.sqrt(tf.cast(self.num_antennas, tf.float32)), tf.float32)
+        out = tf.reshape(out, [B, U, self.num_antennas])
         return out
+
 
     #def update_memory(self, x, h, loss):
        # if loss > 0.5 and self.buffer_count < REPLAY_BUFFER_SIZE:
@@ -368,67 +369,71 @@ def simulate_daily_traffic():
 
 def train_step(model, x_batch, h_batch, optimizer, channel_stats):
     with tf.GradientTape() as tape:
-        B = tf.shape(h_batch)[0]  # چون model فقط x_batch رو می‌بینه
-
+        B = tf.shape(h_batch)[0]
         U = tf.shape(h_batch)[1]
         A = tf.shape(h_batch)[2]
 
         w = model(
-        x_batch,
-        doppler=channel_stats["doppler"][:, 0],
-        delay_spread=channel_stats["delay_spread"][:, 0],
-        task_name=channel_stats["task_name"],
-        training=True
+            x_batch,
+            doppler=channel_stats["doppler"][:, 0],
+            delay_spread=channel_stats["delay_spread"][:, 0],
+            task_name=channel_stats["task_name"],
+            training=True
         )
 
-        scale = tf.cast(tf.sqrt(tf.cast(NUM_ANTENNAS, tf.float32)), tf.complex64)
-        w = tf.cast(tf.math.l2_normalize(w, axis=-1), tf.complex64) * scale
+        # ✅ Normalize w
+        w = tf.math.l2_normalize(w, axis=-1) * tf.cast(tf.sqrt(tf.cast(NUM_ANTENNAS, tf.float32)), tf.float32)
+        w = tf.cast(w, tf.complex64)
 
-        w = tf.cast(w, dtype=tf.complex64)  # ✅ ابتدا cast کن
+        # ✅ Select 5 users randomly
+        num_active = 5
+        selected_users = tf.random.shuffle(tf.range(U))[:num_active]  # [5]
+        mask = tf.reduce_sum(tf.one_hot(selected_users, U), axis=0)  # [U]
+        mask = tf.reshape(mask, [1, U, 1])
+        mask = tf.cast(mask, tf.complex64)
+        w = w * mask  # [B, U, A]
 
-        tf.print("[CHECKPOINT-TrainStep] raw |w| mean:", tf.reduce_mean(tf.abs(w)))
-
-        # انتخاب یک یوزر فعال به صورت تصادفی برای هر batch
-        selected_user = tf.random.uniform([], minval=0, maxval=U, dtype=tf.int32)
-        mask = tf.reshape(tf.one_hot(selected_user, depth=U), [1, U, 1])
-        mask = tf.cast(mask, dtype=tf.complex64)  # ✅ اینم cast کن به complex64
-
-        w = w * mask  # حالا هر دو complex64 هستن، ارور نمی‌ده
-
-
-        # Signal and interference
+        # Channel processing
         h_hermitian = tf.transpose(tf.math.conj(h_batch), [0, 2, 1])  # [B, A, U]
         signal_matrix = tf.matmul(w, h_hermitian)                     # [B, U, U]
         desired_signal = tf.linalg.diag_part(signal_matrix)          # [B, U]
-        desired_power = tf.abs(desired_signal[0, selected_user]) ** 2
+        desired_signal_selected = tf.gather(desired_signal, selected_users, axis=1)
+        desired_power = tf.reduce_sum(tf.abs(desired_signal_selected) ** 2, axis=1)  # [B]
 
-        interference_matrix = tf.abs(signal_matrix[0]) ** 2
-        mask_interf = 1.0 - tf.eye(U, dtype=tf.float32)[selected_user]
-        interference = tf.reduce_sum(interference_matrix[selected_user] * mask_interf)
+        # Interference
+        interference_matrix = tf.abs(signal_matrix) ** 2  # [B, U, U]
 
-        snr = desired_power / (interference + NOISE_POWER)
+        # Build interference mask: [U, U]
+        eye_u = tf.eye(U, dtype=tf.float32)
+        selected_eye_rows = tf.gather(eye_u, selected_users)  # [5, U]
+        user_mask = tf.reduce_sum(selected_eye_rows, axis=0)  # [U]
+        interference_mask = 1.0 - user_mask                   # [U]
+        interference_mask = tf.reshape(interference_mask, [1, 1, U])  # [1, 1, U]
+
+        selected_rows = tf.gather(interference_matrix, selected_users, axis=1)  # [B, 5, U]
+        interference = tf.reduce_sum(selected_rows * interference_mask, axis=[1, 2])  # [B]
+
+        snr = desired_power / (interference + NOISE_POWER)  # [B]
         sinr_db = 10.0 * tf.math.log(snr + 1e-8) / tf.math.log(10.0)
+
         alpha = tf.where(sinr_db < 15.0, 0.7 + 0.1 * (15.0 - sinr_db), 0.7)
         task_weight = model.task_weights.get(channel_stats["task_name"], 1.0)
         reg_loss = model.regularization_loss(task_name=channel_stats["task_name"])
-        loss = task_weight * (-alpha * tf.math.log(1.0 + snr) + 0.5 * interference) + reg_loss
-        tf.print("[STAGE-4] task_weight=", task_weight, "lambda_task=", model.task_reg_lambda[channel_stats["task_name"]])
-
+        loss = tf.reduce_mean(task_weight * (-alpha * tf.math.log(1.0 + snr) + 0.5 * interference)) + reg_loss
 
     grads = tape.gradient(loss, model.trainable_variables)
     optimizer.apply_gradients(zip([g for g in grads if g is not None],
                                    [v for g, v in zip(grads, model.trainable_variables) if g is not None]))
-    # لاگ دقیق برای تحلیل
-    tf.print("[CHECKPOINT-TrainStep] selected_user:", selected_user)
+
+    # Logging
+    tf.print("[CHECKPOINT-TrainStep] selected_users:", selected_users)
     tf.print("[CHECKPOINT-TrainStep] mean|w|:", tf.reduce_mean(tf.abs(w)))
-    tf.print("[CHECKPOINT-TrainStep] desired_power:", desired_power)
-    tf.print("[CHECKPOINT-TrainStep] interference:", interference)
-    tf.print("[CHECKPOINT-TrainStep] snr:", snr)
-    tf.print("[CHECKPOINT-TrainStep] sinr_db:", sinr_db)
+    tf.print("[CHECKPOINT-TrainStep] mean sinr_db:", tf.reduce_mean(sinr_db))
     tf.print("[CHECKPOINT-TrainStep] loss:", loss)
     tf.print()
 
-    return loss, snr, tf.reduce_mean(tf.abs(w)), tf.reduce_mean(tf.abs(h_batch)), snr, sinr_db, loss
+    return loss, tf.reduce_mean(snr), tf.reduce_mean(tf.abs(w)), tf.reduce_mean(tf.abs(h_batch)), tf.reduce_mean(snr), tf.reduce_mean(sinr_db), loss
+
 
 def main(seed):
     # Set main log file
@@ -453,8 +458,6 @@ def main(seed):
     # ✅ حالا Optimizer رو بساز
     
     optimizer = Adam(learning_rate=0.001)
-
-
 
     checkpoint_logger.info(f"[CHECKPOINT-Main] 🚀 Start simulation | Seed={seed}")
     user_counts, total_time = simulate_daily_traffic()
@@ -510,62 +513,56 @@ def main(seed):
                             checkpoint_logger.info(f"[CHECKPOINT-Main] [Epoch {epoch+1} | Task={task['name']}] mean|h|: {mean_h.numpy():.5f}")
                             checkpoint_logger.info(f"[CHECKPOINT-Main] [Epoch {epoch+1} | Task={task['name']}] loss: {loss_val.numpy():.5f}, snr: {snr_val.numpy():.5f}, sinr_db: {sinr_db_val.numpy():.2f}")
 
-    # ✅ Final check before inference
+    # ✅ Final inference with averaging
     with tf.device('/CPU:0'):
-        mean_w = tf.reduce_mean(tf.abs(model(
-        x_batch,
-        doppler=channel_stats["doppler"][:, 0],
-        delay_spread=channel_stats["delay_spread"][:, 0],
-        task_name=channel_stats["task_name"]
-         )))
-
-        logging.info(f"[TRAIN] mean|w|: {mean_w.numpy():.5f}")
-        logging.info(f"[TRAIN] loss: {loss.numpy():.5f}, sinr: {sinr.numpy():.5f}")
         checkpoint_logger.info(f"[CHECKPOINT-Main] ✅ Training completed. Proceeding to inference...")
 
-        # Mixed inference
-        mixed_task = TASKS[-1]
-        h_mixed = generate_channel(mixed_task, NUM_SLOTS, BATCH_SIZE, num_users)
-        channel_stats_mixed = {
-            "delay_spread": tf.random.uniform([BATCH_SIZE, 1], 30e-9, 100e-9),
-            "doppler": tf.random.uniform([BATCH_SIZE, 1], 30, 600),
-            "snr": tf.ones([BATCH_SIZE, 1]) * 15.0
-        }
-        w = model(
-        h_mixed,
-        doppler=channel_stats_mixed["doppler"][:, 0],
-        delay_spread=channel_stats_mixed["delay_spread"][:, 0],
-        task_name="Mixed"
-        )
+        sinr_values = []
+        for _ in range(10):  # Repeat inference 10 times for robustness
+            h_mixed = generate_channel(TASKS[-1], NUM_SLOTS, BATCH_SIZE, num_users)
+            channel_stats_mixed = {
+                "delay_spread": tf.random.uniform([BATCH_SIZE, 1], 30e-9, 100e-9),
+                "doppler": tf.random.uniform([BATCH_SIZE, 1], 30, 600),
+                "snr": tf.ones([BATCH_SIZE, 1]) * 15.0
+            }
 
-        w = tf.cast(w, dtype=tf.complex64) #Fix type mismatch for matmul
+            w = model(
+                h_mixed,
+                doppler=channel_stats_mixed["doppler"][:, 0],
+                delay_spread=channel_stats_mixed["delay_spread"][:, 0],
+                task_name="Mixed"
+            )
+            w = tf.cast(w, dtype=tf.complex64)
 
-        signal_matrix = tf.matmul(w, tf.transpose(h_mixed, [0, 2, 1]))
-        desired_power = tf.reduce_mean(tf.abs(tf.linalg.diag_part(signal_matrix))**2)
-        interference = tf.reduce_mean(tf.reduce_sum(tf.abs(signal_matrix)**2 * (1.0 - tf.eye(num_users)), axis=-1))
-        sinr = desired_power / (interference + NOISE_POWER)
+            signal_matrix = tf.matmul(w, tf.transpose(h_mixed, [0, 2, 1]))  # [B, U, U]
+            desired_power = tf.reduce_mean(tf.abs(tf.linalg.diag_part(signal_matrix))**2)
+            interference = tf.reduce_mean(tf.reduce_sum(tf.abs(signal_matrix)**2 * (1.0 - tf.eye(num_users)), axis=-1))
+            sinr = desired_power / (interference + NOISE_POWER)
+            sinr_values.append(10 * np.log10(sinr.numpy()))  # SINR in dB
 
+        avg_sinr_db = np.mean(sinr_values)
         latency = 8.5 + np.random.uniform(-1.5, 2.2)
         energy = 45 * (num_users / MAX_USERS)
-        throughput = np.log2(1 + sinr.numpy())
+        throughput = np.log2(1 + 10**(avg_sinr_db / 10))
 
-        checkpoint_logger.info(f"[CHECKPOINT-Main] 📡 Inference (Mixed): throughput={throughput:.4f}, latency={latency:.2f}ms, sinr={10*np.log10(sinr.numpy()):.2f}dB")
+        checkpoint_logger.info(f"[CHECKPOINT-Main] 📡 Inference (Mixed): throughput={throughput:.4f}, latency={latency:.2f}ms, sinr={avg_sinr_db:.2f}dB")
 
         results["throughput"].append(throughput)
         results["latency"].append(latency)
-        results["sinr"].append(10 * np.log10(sinr.numpy()))
+        results["sinr"].append(avg_sinr_db)
         results["energy"].append(energy)
         results["forgetting"].append(0.0)
         results["fwt"].append(0.0)
         results["bwt"].append(0.0)
 
-    with open(f"results_seed_{seed}.txt", "w") as f:
-        for i, period in enumerate(results["throughput"]):
-            f.write(f"{DAILY_PERIODS[i]}:\n")
-            for metric in results:
-                f.write(f"  {metric}: {results[metric][i]:.4f}\n")
+        with open(f"results_seed_{seed}.txt", "w") as f:
+            for i, period in enumerate(results["throughput"]):
+                f.write(f"{DAILY_PERIODS[i]}:\n")
+                for metric in results:
+                    f.write(f"  {metric}: {results[metric][i]:.4f}\n")
 
-    checkpoint_logger.info(f"[CHECKPOINT-Main] 🏁 Simulation finished for seed {seed}")
+        checkpoint_logger.info(f"[CHECKPOINT-Main] 🏁 Simulation finished for seed {seed}")
+
     logging.info(f"Simulation completed for seed {seed}")
 
 
