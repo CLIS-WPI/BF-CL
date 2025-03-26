@@ -64,7 +64,9 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         self.num_antennas = num_antennas
         self.input_conv = layers.Conv1D(64, 1, activation='relu', dtype=tf.float32)
         self.shared_transformer = layers.MultiHeadAttention(num_heads=4, key_dim=64)
-        
+        self.use_replay = False  # ← for debug only
+        self.use_fisher = False  # ← for debug only
+
         self.heads = {
             "Static": layers.GRU(128, return_sequences=True),
             "Pedestrian": layers.GRU(128, return_sequences=True),
@@ -140,33 +142,42 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         norm_factor = tf.cast(tf.sqrt(norm_squared + 1e-10), tf.complex64)
         scale_factor = tf.cast(tf.sqrt(POWER), tf.complex64)
 
-        w = w / norm_factor * scale_factor
+        #w = w / norm_factor * scale_factor
+        w = w / (norm_factor + 1e-6)
+
 
         return w
 
+    #def update_memory(self, x, h, loss):
+       # if loss > 0.5 and self.buffer_count < REPLAY_BUFFER_SIZE:
+          #  idx = self.buffer_count
+         #   current_users = tf.shape(x)[1]
+         #   pad_users = MAX_USERS - current_users
+
+        #    x0_padded = tf.pad(x[0], paddings=[[0, pad_users], [0, 0]])  # [MAX_USERS, NUM_ANTENNAS]
+         #   h0_padded = tf.pad(h[0], paddings=[[0, pad_users], [0, 0]])  # [MAX_USERS, NUM_ANTENNAS]
+
+        #    self.buffer_x = tf.tensor_scatter_nd_update(self.buffer_x, [[idx]], [x0_padded])
+        #    self.buffer_h = tf.tensor_scatter_nd_update(self.buffer_h, [[idx]], [h0_padded])
+         #   self.buffer_count += 1
     def update_memory(self, x, h, loss):
-        if loss > 0.5 and self.buffer_count < REPLAY_BUFFER_SIZE:
-            idx = self.buffer_count
-            current_users = tf.shape(x)[1]
-            pad_users = MAX_USERS - current_users
-
-            x0_padded = tf.pad(x[0], paddings=[[0, pad_users], [0, 0]])  # [MAX_USERS, NUM_ANTENNAS]
-            h0_padded = tf.pad(h[0], paddings=[[0, pad_users], [0, 0]])  # [MAX_USERS, NUM_ANTENNAS]
-
-            self.buffer_x = tf.tensor_scatter_nd_update(self.buffer_x, [[idx]], [x0_padded])
-            self.buffer_h = tf.tensor_scatter_nd_update(self.buffer_h, [[idx]], [h0_padded])
-            self.buffer_count += 1
+        if not self.use_replay:
+            return
 
 
+    #def regularization_loss(self):
+    #    reg_loss = 0.0
+    #    for head_name, head in self.heads.items():
+    #        for w in head.trainable_weights:
+    #            if w.name in self.old_params:
+    #                old_w = tf.convert_to_tensor(self.old_params[w.name], dtype=w.dtype)
+    #                fisher_w = tf.convert_to_tensor(self.fisher.get(w.name, 0.0), dtype=w.dtype)
+    #                reg_loss += tf.reduce_sum(fisher_w * tf.square(w - old_w))
+    #    return self.lambda_reg * reg_loss
     def regularization_loss(self):
-        reg_loss = 0.0
-        for head_name, head in self.heads.items():
-            for w in head.trainable_weights:
-                if w.name in self.old_params:
-                    old_w = tf.convert_to_tensor(self.old_params[w.name], dtype=w.dtype)
-                    fisher_w = tf.convert_to_tensor(self.fisher.get(w.name, 0.0), dtype=w.dtype)
-                    reg_loss += tf.reduce_sum(fisher_w * tf.square(w - old_w))
-        return self.lambda_reg * reg_loss
+        if not self.use_fisher:
+            return 0.0
+
 
 
 def generate_channel(task, num_slots, batch_size, num_users):
@@ -300,9 +311,11 @@ def simulate_daily_traffic():
 @tf.function
 def train_step(model, x_batch, h_batch, optimizer, channel_stats):
     with tf.GradientTape() as tape:
-        w = model(x_batch, channel_stats, training=True)
-        h_transposed = tf.transpose(h_batch, [0, 2, 1])
-        signal_matrix = tf.matmul(w, h_transposed)
+        w = model(x_batch, channel_stats, training=True)  # [B, U, A]
+        
+        # Transpose h for multiplication
+        h_transposed = tf.transpose(h_batch, [0, 2, 1])  # [B, A, U]
+        signal_matrix = tf.matmul(w, h_transposed)       # [B, U, U]
 
         desired_signal = tf.linalg.diag_part(signal_matrix)
         desired_power = tf.reduce_mean(tf.abs(desired_signal) ** 2)
@@ -314,15 +327,25 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats):
         interference = tf.reduce_mean(tf.reduce_sum(tf.abs(signal_matrix) ** 2 * mask, axis=-1))
 
         snr = desired_power / (interference + NOISE_POWER)
-
-        sinr_db = 10 * tf.math.log(snr) / tf.math.log(10.0)
+        sinr_db = 10 * tf.math.log(snr + 1e-8) / tf.math.log(10.0)
         alpha = tf.where(sinr_db < 15.0, 0.7 + 0.1 * (15.0 - sinr_db), 0.7)
         loss = -alpha * tf.math.log(1.0 + snr) + 0.5 * interference + model.regularization_loss()
 
     grads = tape.gradient(loss, model.trainable_variables)
     optimizer.apply_gradients(zip([g for g in grads if g is not None],
-                                   [v for g, v in zip(grads, model.trainable_variables) if g is not None]))
+                                 [v for g, v in zip(grads, model.trainable_variables) if g is not None]))
+
+    # ← log exact values (for debugging)
+    tf.print("[DEBUG] mean|w|:", tf.reduce_mean(tf.abs(w)))
+    tf.print("[DEBUG] desired_power:", desired_power)
+    tf.print("[DEBUG] interference:", interference)
+    tf.print("[DEBUG] snr:", snr)
+    tf.print("[DEBUG] loss:", loss)
+
+    tf.print("")  # newline for clarity
+
     return loss, snr
+
 
 
 

@@ -1,0 +1,548 @@
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Static] 📊 Mean(|h|): 0.99992
+INFO:root:[Static] 📊 Std(|h|): 0.80885
+INFO:root:[Static] 📐 Shape: (16, 180, 64)
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Mean(|h|): 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52302
+INFO:root:[Pedestrian] 📐 Shape: (16, 180, 64)
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Vehicular] 📊 Mean(|h|): 0.99991
+INFO:root:[Vehicular] 📊 Std(|h|): 0.55813
+INFO:root:[Vehicular] 📐 Shape: (16, 180, 64)
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Aerial] 📊 Mean(|h|): 0.99992
+INFO:root:[Aerial] 📊 Std(|h|): 0.55882
+INFO:root:[Aerial] 📐 Shape: (16, 180, 64)
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[TRAIN] mean|w|: 0.11118
+INFO:root:[TRAIN] loss: 150.74521, sinr: 0.00556
+INFO:root:[TRAIN] mean|w|: 0.10843
+INFO:root:[TRAIN] loss: 114.02711, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11331
+INFO:root:[TRAIN] loss: 121.56481, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11282
+INFO:root:[TRAIN] loss: 119.26344, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11044
+INFO:root:[TRAIN] loss: 138.87093, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11129
+INFO:root:[TRAIN] loss: 109.35879, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11180
+INFO:root:[TRAIN] loss: 112.88391, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11179
+INFO:root:[TRAIN] loss: 109.58230, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11038
+INFO:root:[TRAIN] loss: 125.81387, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.10957
+INFO:root:[TRAIN] loss: 105.36080, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11192
+INFO:root:[TRAIN] loss: 108.77489, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11214
+INFO:root:[TRAIN] loss: 103.60910, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11136
+INFO:root:[TRAIN] loss: 121.19646, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.10766
+INFO:root:[TRAIN] loss: 101.77862, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11254
+INFO:root:[TRAIN] loss: 106.22819, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11139
+INFO:root:[TRAIN] loss: 100.50749, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11170
+INFO:root:[TRAIN] loss: 116.67934, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.10748
+INFO:root:[TRAIN] loss: 99.76926, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11371
+INFO:root:[TRAIN] loss: 103.43452, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11123
+INFO:root:[TRAIN] loss: 98.46814, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11187
+INFO:root:[TRAIN] loss: 113.31030, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.10860
+INFO:root:[TRAIN] loss: 97.83263, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11457
+INFO:root:[TRAIN] loss: 100.59922, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11143
+INFO:root:[TRAIN] loss: 96.18769, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11300
+INFO:root:[TRAIN] loss: 110.47762, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.10942
+INFO:root:[TRAIN] loss: 96.10423, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11401
+INFO:root:[TRAIN] loss: 98.06945, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11110
+INFO:root:[TRAIN] loss: 94.53551, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11285
+INFO:root:[TRAIN] loss: 107.53098, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.10927
+INFO:root:[TRAIN] loss: 94.39697, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11328
+INFO:root:[TRAIN] loss: 96.03541, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11037
+INFO:root:[TRAIN] loss: 92.97330, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11182
+INFO:root:[TRAIN] loss: 104.86627, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.10905
+INFO:root:[TRAIN] loss: 93.13482, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11244
+INFO:root:[TRAIN] loss: 94.38765, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.10925
+INFO:root:[TRAIN] loss: 91.52126, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11102
+INFO:root:[TRAIN] loss: 102.36617, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.10995
+INFO:root:[TRAIN] loss: 92.08962, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11132
+INFO:root:[TRAIN] loss: 93.07425, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.10884
+INFO:root:[TRAIN] loss: 90.26507, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11052
+INFO:root:[TRAIN] loss: 100.02111, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11079
+INFO:root:[TRAIN] loss: 91.18924, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11022
+INFO:root:[TRAIN] loss: 91.92116, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.10922
+INFO:root:[TRAIN] loss: 89.21194, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11015
+INFO:root:[TRAIN] loss: 98.08714, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11118
+INFO:root:[TRAIN] loss: 90.45921, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11007
+INFO:root:[TRAIN] loss: 91.06710, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.10991
+INFO:root:[TRAIN] loss: 88.45788, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.10972
+INFO:root:[TRAIN] loss: 96.92709, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11139
+INFO:root:[TRAIN] loss: 89.89655, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11042
+INFO:root:[TRAIN] loss: 90.38506, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11031
+INFO:root:[TRAIN] loss: 87.90654, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11079
+INFO:root:[TRAIN] loss: 96.32555, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11197
+INFO:root:[TRAIN] loss: 89.44121, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11091
+INFO:root:[TRAIN] loss: 89.70956, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11063
+INFO:root:[TRAIN] loss: 87.52801, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11075
+INFO:root:[TRAIN] loss: 94.61140, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11242
+INFO:root:[TRAIN] loss: 89.07382, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11101
+INFO:root:[TRAIN] loss: 89.14975, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11108
+INFO:root:[TRAIN] loss: 87.07905, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11160
+INFO:root:[TRAIN] loss: 93.27080, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11244
+INFO:root:[TRAIN] loss: 88.76797, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11118
+INFO:root:[TRAIN] loss: 88.69852, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11108
+INFO:root:[TRAIN] loss: 86.42593, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11190
+INFO:root:[TRAIN] loss: 92.31878, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11220
+INFO:root:[TRAIN] loss: 88.53601, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11165
+INFO:root:[TRAIN] loss: 88.28265, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11114
+INFO:root:[TRAIN] loss: 86.05328, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11182
+INFO:root:[TRAIN] loss: 91.56004, sinr: 0.00557
+INFO:root:[TRAIN] mean|w|: 0.11212
+INFO:root:[TRAIN] loss: 88.34864, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11192
+INFO:root:[TRAIN] loss: 87.91753, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11106
+INFO:root:[TRAIN] loss: 85.85781, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11211
+INFO:root:[TRAIN] loss: 90.80416, sinr: 0.00557
+INFO:root:[TRAIN] mean|w|: 0.11209
+INFO:root:[TRAIN] loss: 88.19382, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11216
+INFO:root:[TRAIN] loss: 87.58614, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11107
+INFO:root:[TRAIN] loss: 85.56600, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11239
+INFO:root:[TRAIN] loss: 89.99327, sinr: 0.00557
+INFO:root:[TRAIN] mean|w|: 0.11183
+INFO:root:[TRAIN] loss: 88.06754, sinr: 0.00558
+INFO:root:[TRAIN] mean|w|: 0.11234
+INFO:root:[TRAIN] loss: 87.30394, sinr: 0.00559
+INFO:root:[TRAIN] mean|w|: 0.11126
+INFO:root:[TRAIN] loss: 85.33356, sinr: 0.00559
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Static] 📊 Mean(|h|): 0.99992
+INFO:root:[Static] 📊 Std(|h|): 0.79983
+INFO:root:[Static] 📐 Shape: (16, 200, 64)
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Mean(|h|): 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52374
+INFO:root:[Pedestrian] 📐 Shape: (16, 200, 64)
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Vehicular] 📊 Mean(|h|): 0.99991
+INFO:root:[Vehicular] 📊 Std(|h|): 0.55762
+INFO:root:[Vehicular] 📐 Shape: (16, 200, 64)
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Aerial] 📊 Mean(|h|): 0.99992
+INFO:root:[Aerial] 📊 Std(|h|): 0.56733
+INFO:root:[Aerial] 📐 Shape: (16, 200, 64)
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[TRAIN] mean|w|: 0.11206
+INFO:root:[TRAIN] loss: 158.65762, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11245
+INFO:root:[TRAIN] loss: 126.72840, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11214
+INFO:root:[TRAIN] loss: 129.08763, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11195
+INFO:root:[TRAIN] loss: 129.40047, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11113
+INFO:root:[TRAIN] loss: 145.89601, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11266
+INFO:root:[TRAIN] loss: 120.56480, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11223
+INFO:root:[TRAIN] loss: 121.80127, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11297
+INFO:root:[TRAIN] loss: 121.72901, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11176
+INFO:root:[TRAIN] loss: 133.63487, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11137
+INFO:root:[TRAIN] loss: 115.58584, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11184
+INFO:root:[TRAIN] loss: 117.61113, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11318
+INFO:root:[TRAIN] loss: 117.23713, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11241
+INFO:root:[TRAIN] loss: 126.99414, sinr: 0.00501
+INFO:root:[TRAIN] mean|w|: 0.11053
+INFO:root:[TRAIN] loss: 111.52362, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11311
+INFO:root:[TRAIN] loss: 114.99986, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11296
+INFO:root:[TRAIN] loss: 113.48181, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11249
+INFO:root:[TRAIN] loss: 121.30648, sinr: 0.00501
+INFO:root:[TRAIN] mean|w|: 0.11033
+INFO:root:[TRAIN] loss: 108.34151, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11399
+INFO:root:[TRAIN] loss: 112.85103, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11244
+INFO:root:[TRAIN] loss: 110.45291, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11157
+INFO:root:[TRAIN] loss: 115.81061, sinr: 0.00501
+INFO:root:[TRAIN] mean|w|: 0.11119
+INFO:root:[TRAIN] loss: 105.89155, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11501
+INFO:root:[TRAIN] loss: 111.05738, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11231
+INFO:root:[TRAIN] loss: 108.48154, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11180
+INFO:root:[TRAIN] loss: 112.04289, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11200
+INFO:root:[TRAIN] loss: 104.22608, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11554
+INFO:root:[TRAIN] loss: 109.31663, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11218
+INFO:root:[TRAIN] loss: 106.85259, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11301
+INFO:root:[TRAIN] loss: 108.17007, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11203
+INFO:root:[TRAIN] loss: 102.84412, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11553
+INFO:root:[TRAIN] loss: 107.59435, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11215
+INFO:root:[TRAIN] loss: 105.71096, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11364
+INFO:root:[TRAIN] loss: 103.88528, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11179
+INFO:root:[TRAIN] loss: 101.84808, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11505
+INFO:root:[TRAIN] loss: 106.12492, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11195
+INFO:root:[TRAIN] loss: 104.63033, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11364
+INFO:root:[TRAIN] loss: 99.93930, sinr: 0.00501
+INFO:root:[TRAIN] mean|w|: 0.11206
+INFO:root:[TRAIN] loss: 100.93835, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11421
+INFO:root:[TRAIN] loss: 104.70903, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11158
+INFO:root:[TRAIN] loss: 103.73212, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11311
+INFO:root:[TRAIN] loss: 98.91006, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11206
+INFO:root:[TRAIN] loss: 100.18050, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11359
+INFO:root:[TRAIN] loss: 103.43215, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11135
+INFO:root:[TRAIN] loss: 102.94064, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11290
+INFO:root:[TRAIN] loss: 100.04242, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11176
+INFO:root:[TRAIN] loss: 99.61580, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11272
+INFO:root:[TRAIN] loss: 102.18575, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11152
+INFO:root:[TRAIN] loss: 101.92765, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11187
+INFO:root:[TRAIN] loss: 92.47364, sinr: 0.00501
+INFO:root:[TRAIN] mean|w|: 0.11147
+INFO:root:[TRAIN] loss: 99.11518, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11180
+INFO:root:[TRAIN] loss: 100.88585, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11173
+INFO:root:[TRAIN] loss: 100.86167, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11194
+INFO:root:[TRAIN] loss: 87.72596, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11154
+INFO:root:[TRAIN] loss: 98.63475, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11149
+INFO:root:[TRAIN] loss: 99.26871, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11119
+INFO:root:[TRAIN] loss: 99.40651, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11167
+INFO:root:[TRAIN] loss: 82.76479, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11171
+INFO:root:[TRAIN] loss: 98.19456, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11097
+INFO:root:[TRAIN] loss: 97.20898, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11094
+INFO:root:[TRAIN] loss: 97.47131, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11145
+INFO:root:[TRAIN] loss: 79.33836, sinr: 0.00501
+INFO:root:[TRAIN] mean|w|: 0.11175
+INFO:root:[TRAIN] loss: 97.73022, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11069
+INFO:root:[TRAIN] loss: 95.15849, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11075
+INFO:root:[TRAIN] loss: 95.38190, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11153
+INFO:root:[TRAIN] loss: 75.96017, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11168
+INFO:root:[TRAIN] loss: 97.23856, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11115
+INFO:root:[TRAIN] loss: 96.75501, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11100
+INFO:root:[TRAIN] loss: 96.25520, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11146
+INFO:root:[TRAIN] loss: 73.10057, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11119
+INFO:root:[TRAIN] loss: 96.66122, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11013
+INFO:root:[TRAIN] loss: 93.95633, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11100
+INFO:root:[TRAIN] loss: 98.99246, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11132
+INFO:root:[TRAIN] loss: 72.07697, sinr: 0.00501
+INFO:root:[TRAIN] mean|w|: 0.11127
+INFO:root:[TRAIN] loss: 95.83472, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11131
+INFO:root:[TRAIN] loss: 89.39442, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11232
+INFO:root:[TRAIN] loss: 93.40536, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11132
+INFO:root:[TRAIN] loss: 70.84536, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11075
+INFO:root:[TRAIN] loss: 94.47551, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11150
+INFO:root:[TRAIN] loss: 85.37953, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11080
+INFO:root:[TRAIN] loss: 88.16857, sinr: 0.00502
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Static] 📊 Mean(|h|): 0.99992
+INFO:root:[Static] 📊 Std(|h|): 0.79615
+INFO:root:[Static] 📐 Shape: (16, 200, 64)
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Mean(|h|): 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52226
+INFO:root:[Pedestrian] 📐 Shape: (16, 200, 64)
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Vehicular] 📊 Mean(|h|): 0.99991
+INFO:root:[Vehicular] 📊 Std(|h|): 0.55738
+INFO:root:[Vehicular] 📐 Shape: (16, 200, 64)
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Aerial] 📊 Mean(|h|): 0.99992
+INFO:root:[Aerial] 📊 Std(|h|): 0.56486
+INFO:root:[Aerial] 📐 Shape: (16, 200, 64)
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[TRAIN] mean|w|: 0.11119
+INFO:root:[TRAIN] loss: 162.37312, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11021
+INFO:root:[TRAIN] loss: 129.73840, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11106
+INFO:root:[TRAIN] loss: 132.61995, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11026
+INFO:root:[TRAIN] loss: 133.07294, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11073
+INFO:root:[TRAIN] loss: 137.73996, sinr: 0.00501
+INFO:root:[TRAIN] mean|w|: 0.11261
+INFO:root:[TRAIN] loss: 123.17601, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11138
+INFO:root:[TRAIN] loss: 120.84264, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.10997
+INFO:root:[TRAIN] loss: 122.28227, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11081
+INFO:root:[TRAIN] loss: 124.12549, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11388
+INFO:root:[TRAIN] loss: 116.42548, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11240
+INFO:root:[TRAIN] loss: 112.98692, sinr: 0.00501
+INFO:root:[TRAIN] mean|w|: 0.11047
+INFO:root:[TRAIN] loss: 113.21106, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11154
+INFO:root:[TRAIN] loss: 110.73540, sinr: 0.00501
+INFO:root:[TRAIN] mean|w|: 0.11223
+INFO:root:[TRAIN] loss: 110.16434, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11217
+INFO:root:[TRAIN] loss: 107.48763, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11132
+INFO:root:[TRAIN] loss: 106.21433, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11193
+INFO:root:[TRAIN] loss: 102.27648, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11160
+INFO:root:[TRAIN] loss: 106.10103, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11202
+INFO:root:[TRAIN] loss: 100.67775, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11217
+INFO:root:[TRAIN] loss: 99.92029, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11140
+INFO:root:[TRAIN] loss: 95.15488, sinr: 0.00499
+INFO:root:[TRAIN] mean|w|: 0.11187
+INFO:root:[TRAIN] loss: 103.92770, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11197
+INFO:root:[TRAIN] loss: 96.61474, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11169
+INFO:root:[TRAIN] loss: 96.39717, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11161
+INFO:root:[TRAIN] loss: 88.61322, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11139
+INFO:root:[TRAIN] loss: 96.13833, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11155
+INFO:root:[TRAIN] loss: 92.73901, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11217
+INFO:root:[TRAIN] loss: 95.11852, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11123
+INFO:root:[TRAIN] loss: 83.03287, sinr: 0.00501
+INFO:root:[TRAIN] mean|w|: 0.11192
+INFO:root:[TRAIN] loss: 91.73757, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11167
+INFO:root:[TRAIN] loss: 88.99216, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11198
+INFO:root:[TRAIN] loss: 89.04012, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11169
+INFO:root:[TRAIN] loss: 79.92891, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11228
+INFO:root:[TRAIN] loss: 89.97297, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11178
+INFO:root:[TRAIN] loss: 83.87563, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11160
+INFO:root:[TRAIN] loss: 84.59825, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11145
+INFO:root:[TRAIN] loss: 75.77899, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11146
+INFO:root:[TRAIN] loss: 86.67625, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11193
+INFO:root:[TRAIN] loss: 79.43967, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11241
+INFO:root:[TRAIN] loss: 81.95726, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11115
+INFO:root:[TRAIN] loss: 71.43116, sinr: 0.00501
+INFO:root:[TRAIN] mean|w|: 0.11210
+INFO:root:[TRAIN] loss: 81.87369, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11222
+INFO:root:[TRAIN] loss: 75.98126, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11194
+INFO:root:[TRAIN] loss: 79.11617, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11115
+INFO:root:[TRAIN] loss: 68.47997, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11192
+INFO:root:[TRAIN] loss: 79.71614, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11196
+INFO:root:[TRAIN] loss: 74.68707, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11204
+INFO:root:[TRAIN] loss: 79.53959, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11079
+INFO:root:[TRAIN] loss: 66.66244, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11141
+INFO:root:[TRAIN] loss: 81.39159, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11205
+INFO:root:[TRAIN] loss: 72.35219, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11139
+INFO:root:[TRAIN] loss: 74.30409, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11080
+INFO:root:[TRAIN] loss: 63.80238, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11208
+INFO:root:[TRAIN] loss: 78.87466, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11177
+INFO:root:[TRAIN] loss: 70.01656, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11155
+INFO:root:[TRAIN] loss: 71.89751, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11042
+INFO:root:[TRAIN] loss: 61.64457, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11208
+INFO:root:[TRAIN] loss: 76.95460, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11190
+INFO:root:[TRAIN] loss: 68.73309, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11153
+INFO:root:[TRAIN] loss: 69.24342, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11061
+INFO:root:[TRAIN] loss: 59.48623, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11197
+INFO:root:[TRAIN] loss: 71.40881, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11213
+INFO:root:[TRAIN] loss: 67.57400, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11133
+INFO:root:[TRAIN] loss: 66.65340, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11042
+INFO:root:[TRAIN] loss: 57.86807, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11175
+INFO:root:[TRAIN] loss: 67.99094, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11184
+INFO:root:[TRAIN] loss: 64.54760, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11164
+INFO:root:[TRAIN] loss: 64.77648, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11039
+INFO:root:[TRAIN] loss: 55.54435, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11180
+INFO:root:[TRAIN] loss: 65.91164, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11174
+INFO:root:[TRAIN] loss: 62.19457, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11172
+INFO:root:[TRAIN] loss: 62.82050, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11041
+INFO:root:[TRAIN] loss: 54.17770, sinr: 0.00502
+INFO:root:[TRAIN] mean|w|: 0.11152
+INFO:root:[TRAIN] loss: 63.55184, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11177
+INFO:root:[TRAIN] loss: 60.35022, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11194
+INFO:root:[TRAIN] loss: 60.44440, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11053
+INFO:root:[TRAIN] loss: 52.98587, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11157
+INFO:root:[TRAIN] loss: 61.79834, sinr: 0.00503
+INFO:root:[TRAIN] mean|w|: 0.11155
+INFO:root:[TRAIN] loss: 58.79467, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11185
+INFO:root:[TRAIN] loss: 58.67548, sinr: 0.00504
+INFO:root:[TRAIN] mean|w|: 0.11185
+INFO:root:[TRAIN] loss: 58.67548, sinr: 0.00504
+INFO:root:[Mixed] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Mixed] 📊 Mean(|h|): 1.00000
+INFO:root:[Mixed] 📊 Std(|h|): 0.52169
+INFO:root:[Mixed] 📐 Shape: (16, 200, 64)
+INFO:root:[Mixed] 📏 Normalized |h| mean: 1.00000
+INFO:root:Simulation completed for seed 42
