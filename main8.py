@@ -432,6 +432,9 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats):
     tf.print("[CHECKPOINT-TrainStep] loss:", loss)
     tf.print()
 
+    with tf.device('/CPU:0'):
+        checkpoint_logger.info(f"[CHECKPOINT-Stats] mean|w|={tf.reduce_mean(tf.abs(w)).numpy():.4f}, mean|h|={tf.reduce_mean(tf.abs(h_batch)).numpy():.4f}")
+
     return loss, tf.reduce_mean(snr), tf.reduce_mean(tf.abs(w)), tf.reduce_mean(tf.abs(h_batch)), tf.reduce_mean(snr), tf.reduce_mean(sinr_db), loss
 
 
@@ -512,19 +515,32 @@ def main(seed):
                             checkpoint_logger.info(f"[CHECKPOINT-Main] [Epoch {epoch+1} | Task={task['name']}] mean|w|: {mean_w.numpy():.5f}")
                             checkpoint_logger.info(f"[CHECKPOINT-Main] [Epoch {epoch+1} | Task={task['name']}] mean|h|: {mean_h.numpy():.5f}")
                             checkpoint_logger.info(f"[CHECKPOINT-Main] [Epoch {epoch+1} | Task={task['name']}] loss: {loss_val.numpy():.5f}, snr: {snr_val.numpy():.5f}, sinr_db: {sinr_db_val.numpy():.2f}")
+                            checkpoint_logger.info(f"[CHECKPOINT-Main] 🔚 End of Epoch={epoch+1} | Task={task['name']} | Loss={loss_val.numpy():.2f} | SINR={sinr_db_val.numpy():.2f}dB")
+
+
+    model.save_weights(f"weights_seed_{seed}.h5")
+    checkpoint_logger.info(f"[CHECKPOINT-Main] 💾 Weights saved to weights_seed_{seed}.h5")
 
     # ✅ Final inference with averaging
     with tf.device('/CPU:0'):
         checkpoint_logger.info(f"[CHECKPOINT-Main] ✅ Training completed. Proceeding to inference...")
 
         sinr_values = []
-        for _ in range(10):  # Repeat inference 10 times for robustness
+        best_sinr = float('-inf')
+        best_index = -1
+
+        for run_idx in range(10):  # Repeat inference 10 times for robustness
             h_mixed = generate_channel(TASKS[-1], NUM_SLOTS, BATCH_SIZE, num_users)
             channel_stats_mixed = {
                 "delay_spread": tf.random.uniform([BATCH_SIZE, 1], 30e-9, 100e-9),
                 "doppler": tf.random.uniform([BATCH_SIZE, 1], 30, 600),
                 "snr": tf.ones([BATCH_SIZE, 1]) * 15.0
             }
+
+            # ✅ Log Doppler and Speed
+            doppler = tf.reduce_mean(channel_stats_mixed["doppler"]).numpy()
+            speed_kmph = doppler * 3e8 / FREQ * 3600 / 1000  # km/h
+            checkpoint_logger.info(f"[CHECKPOINT-1] Task=Mixed | Inference Iter={run_idx+1} | Doppler={doppler:.2f} Hz | MeanSpeed={speed_kmph:.2f} km/h")
 
             w = model(
                 h_mixed,
@@ -538,7 +554,12 @@ def main(seed):
             desired_power = tf.reduce_mean(tf.abs(tf.linalg.diag_part(signal_matrix))**2)
             interference = tf.reduce_mean(tf.reduce_sum(tf.abs(signal_matrix)**2 * (1.0 - tf.eye(num_users)), axis=-1))
             sinr = desired_power / (interference + NOISE_POWER)
+
             sinr_values.append(10 * np.log10(sinr.numpy()))  # SINR in dB
+
+            if sinr > best_sinr:
+                best_sinr = sinr
+                best_index = run_idx
 
         avg_sinr_db = np.mean(sinr_values)
         latency = 8.5 + np.random.uniform(-1.5, 2.2)
@@ -546,6 +567,7 @@ def main(seed):
         throughput = np.log2(1 + 10**(avg_sinr_db / 10))
 
         checkpoint_logger.info(f"[CHECKPOINT-Main] 📡 Inference (Mixed): throughput={throughput:.4f}, latency={latency:.2f}ms, sinr={avg_sinr_db:.2f}dB")
+        checkpoint_logger.info(f"[CHECKPOINT-Main] ⭐ Best SINR across 10 runs: {10*np.log10(best_sinr.numpy()):.2f} dB at run {best_index+1}")
 
         results["throughput"].append(throughput)
         results["latency"].append(latency)
@@ -564,6 +586,7 @@ def main(seed):
         checkpoint_logger.info(f"[CHECKPOINT-Main] 🏁 Simulation finished for seed {seed}")
 
     logging.info(f"Simulation completed for seed {seed}")
+
 
 
 if __name__ == "__main__":
