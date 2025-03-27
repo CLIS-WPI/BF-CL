@@ -115,8 +115,8 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         self.dense2 = layers.Dense(128, activation='relu')
         self.output_layer = layers.Dense(self.num_antennas)
         # Replay Buffer: Fixed size of 2000 samples to cover daily users, stores high-loss samples to prevent forgetting
-        self.buffer_x = tf.zeros([REPLAY_BUFFER_SIZE, MAX_USERS, num_antennas], dtype=tf.complex64)
-        self.buffer_h = tf.zeros([REPLAY_BUFFER_SIZE, MAX_USERS, num_antennas], dtype=tf.complex64)
+        self.buffer_x = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
+        self.buffer_h = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
         self.buffer_count = 0
         self.old_params = {}
         self.fisher = {}
@@ -164,12 +164,14 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
 
         # Attention gating
         attn_output, attn_weights = self.attn_gating(
-            query=context_exp,
-            key=x,
-            value=x,
-            return_attention_scores=True,
-            training=training
-        )  # attn_output: [B, 1, 64], attn_weights: [B, 1, U]
+        query=context_exp,
+        key=x,
+        value=x,
+        return_attention_scores=True,
+        training=training
+        )
+        attn_weights = tf.nn.softmax(attn_weights, axis=-1)  # نرمال‌سازی وزن‌ها
+        # بقیه کد بدون تغ
 
         # ✅ Gating Logging
         if training:
@@ -198,10 +200,10 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         
         batch_size = tf.shape(x)[0]
         current_users = tf.shape(x)[1]
-        pad_users = MAX_USERS - current_users
+        pad_users = 64 - current_users  # به جای MAX_USERS
         
         tf.print("[CHECKPOINT-UpdateMemory] loss_mean:", tf.reduce_mean(loss))
-        if self.buffer_count < REPLAY_BUFFER_SIZE:
+        if tf.reduce_mean(loss) > 0.0 and self.buffer_count < REPLAY_BUFFER_SIZE:
             for i in range(batch_size):
                 if self.buffer_count >= REPLAY_BUFFER_SIZE:
                     break
@@ -235,11 +237,12 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         for w in self.trainable_weights:
             if w.name in self.old_params:
                 old_w = tf.convert_to_tensor(self.old_params[w.name], dtype=w.dtype)
-                fisher_w = tf.convert_to_tensor(self.fisher.get(w.name, 0.0), dtype=w.dtype)
+                fisher_w = tf.convert_to_tensor(self.fisher.get(w.name, 1e-6), dtype=w.dtype)  # پیش‌فرض کوچک
                 reg_loss += tf.reduce_sum(fisher_w * tf.square(w - old_w))
+            else:
+                self.old_params[w.name] = tf.identity(w)  # ذخیره پارامترهای اولیه
         
         return lambda_task * reg_loss
-
 
 def generate_channel(task, num_slots, batch_size, num_users):
     tf.print("\n🔁 Generating channel for task:", task["name"])
@@ -420,7 +423,7 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats):
         h_std = tf.cast(tf.math.reduce_std(tf.abs(h_batch)), tf.complex64)
         h_batch = (h_batch - h_mean) / (h_std + 1e-8)
 
-        # ZF/MMSE
+        # ZF/MMSE برای آموزش
         h_hermitian = tf.transpose(tf.math.conj(h_batch), [0, 2, 1])  # [B, A, U]
         h_h_h = tf.matmul(h_hermitian, h_batch)  # [B, A, A]
         epsilon = tf.cast(1e-6, tf.complex64)
@@ -428,7 +431,6 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats):
         w = tf.matmul(h_batch, tf.linalg.inv(reg_matrix))  # [B, U, A]
         w = w * tf.cast(tf.sqrt(POWER), tf.complex64) / tf.norm(w, axis=-1, keepdims=True)
 
-        # SINR
         signal_matrix = tf.matmul(w, h_hermitian)
         desired_signal = tf.linalg.diag_part(signal_matrix)
         desired_power = tf.reduce_mean(tf.abs(desired_signal) ** 2)
@@ -436,15 +438,14 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats):
         interference_mask = 1.0 - tf.eye(U, batch_shape=[B])
         interference = tf.reduce_mean(tf.reduce_sum(interference_matrix * interference_mask, axis=-1))
         snr = desired_power / (interference + NOISE_POWER)
-        sinr_db = 10.0 * tf.math.log(snr + 1e-8) / tf.math.log(10.0)
+        snr_db = 10.0 * tf.math.log(snr + 1e-8) / tf.math.log(10.0)
 
-        # Loss جدید
-        snr_target = tf.cast(15.0, tf.float32)  # هدف SINR
+        # Loss با هدف 70 dB
         task_weight = model.task_weights.get(channel_stats["task_name"], 1.0)
         reg_loss = model.regularization_loss(task_name=channel_stats["task_name"])
-        loss_main = tf.reduce_mean(task_weight * tf.square(tf.maximum(0.0, snr_target - sinr_db))) + 0.01 * reg_loss
+        loss_main = tf.reduce_mean(task_weight * tf.maximum(70.0 - snr_db, 0.0) + 0.1 * interference) + reg_loss
 
-        # Replay
+        # Replay با ZF/MMSE
         num_replay_samples = B // 4
         tf.print("[CHECKPOINT-Replay] replay_samples_requested:", num_replay_samples, "| buffer_available:", model.buffer_count)
         replay_loss = 0.0
@@ -452,12 +453,12 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats):
         tf.print("[CHECKPOINT-Replay] x_replay_shape:", tf.shape(x_replay) if x_replay is not None else "None")
         
         if x_replay is not None and h_replay is not None and model.use_replay:
-            w_replay = model(x_replay, doppler=channel_stats["doppler"][:num_replay_samples, 0], 
-                           delay_spread=channel_stats["delay_spread"][:num_replay_samples, 0], 
-                           task_name=channel_stats["task_name"], training=True)
-            w_replay = tf.math.l2_normalize(w_replay, axis=-1) * tf.cast(tf.sqrt(1000.0), tf.float32)
-            w_replay = tf.cast(w_replay, tf.complex64)
-            h_replay_hermitian = tf.transpose(tf.math.conj(h_replay), [0, 2, 1])
+            h_replay_hermitian = tf.transpose(tf.math.conj(h_replay), [0, 2, 1])  # [B, A, U]
+            h_h_h_replay = tf.matmul(h_replay_hermitian, h_replay)  # [B, A, A]
+            reg_matrix_replay = h_h_h_replay + epsilon * tf.eye(A, batch_shape=[tf.shape(h_replay)[0]], dtype=tf.complex64)
+            w_replay = tf.matmul(h_replay, tf.linalg.inv(reg_matrix_replay))  # [B, U, A]
+            w_replay = w_replay * tf.cast(tf.sqrt(POWER), tf.complex64) / tf.norm(w_replay, axis=-1, keepdims=True)
+
             replay_signal_matrix = tf.matmul(w_replay, h_replay_hermitian)
             replay_desired_signal = tf.linalg.diag_part(replay_signal_matrix)
             replay_desired_power = tf.reduce_mean(tf.abs(replay_desired_signal) ** 2)
@@ -466,30 +467,42 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats):
             replay_interference_mask = 1.0 - tf.eye(replay_U, batch_shape=[tf.shape(h_replay)[0]])
             replay_interference = tf.reduce_mean(tf.reduce_sum(replay_interference_matrix * replay_interference_mask, axis=-1))
             snr_replay = replay_desired_power / (replay_interference + NOISE_POWER)
-            replay_loss = tf.reduce_mean(tf.square(tf.maximum(0.0, snr_target - (10.0 * tf.math.log(snr_replay + 1e-8) / tf.math.log(10.0)))))
-        
+            snr_replay_db = 10.0 * tf.math.log(snr_replay + 1e-8) / tf.math.log(10.0)
+            replay_loss = tf.reduce_mean(tf.maximum(70.0 - snr_replay_db, 0.0) + 0.1 * replay_interference)
+
         total_loss = loss_main + replay_loss
 
+    # محاسبه گرادیان‌ها
     grads = tape.gradient(total_loss, model.trainable_variables)
+    
+    # اعمال گرادیان‌ها
     optimizer.apply_gradients(zip([g for g in grads if g is not None],
                                    [v for g, v in zip(grads, model.trainable_variables) if g is not None]))
 
+    # به‌روزرسانی Fisher Information
+    if model.use_fisher:
+        for v, g in zip(model.trainable_variables, grads):
+            if g is not None:
+                # اگر Fisher برای این متغیر تعریف نشده باشه، با صفر شروع می‌کنیم
+                current_fisher = model.fisher.get(v.name, tf.zeros_like(v))
+                # به‌روزرسانی Fisher با جمع مربع گرادیان‌ها
+                updated_fisher = tf.square(g) + current_fisher
+                # ذخیره مقدار جدید توی دیکشنری Fisher
+                model.fisher[v.name] = updated_fisher
+                tf.print("[CHECKPOINT-Fisher] Updated Fisher for", v.name, "| mean:", tf.reduce_mean(updated_fisher))
+
+    # لاگ‌ها
     tf.print("[CHECKPOINT-TrainStep] desired_power:", desired_power)
     tf.print("[CHECKPOINT-TrainStep] interference:", interference)
     tf.print("[CHECKPOINT-TrainStep] NOISE_POWER:", NOISE_POWER)
     tf.print("[CHECKPOINT-TrainStep] mean|w|:", tf.reduce_mean(tf.abs(w)))
-    tf.print("[CHECKPOINT-TrainStep] mean sinr_db:", tf.reduce_mean(sinr_db))
+    tf.print("[CHECKPOINT-TrainStep] mean sinr_db:", tf.reduce_mean(snr_db))
     tf.print("[CHECKPOINT-TrainStep] loss_main:", loss_main)
     tf.print("[CHECKPOINT-TrainStep] replay_loss:", replay_loss)
     tf.print("[CHECKPOINT-TrainStep] buffer_count:", model.buffer_count)
     tf.print()
 
-    with tf.device('/CPU:0'):
-        checkpoint_logger.info(f"[CHECKPOINT-Stats] mean|w|={tf.reduce_mean(tf.abs(w)).numpy():.4f}, mean|h|={tf.reduce_mean(tf.abs(h_batch)).numpy():.4f}")
-        checkpoint_logger.info(f"[CHECKPOINT-Stats] sinr_db={tf.reduce_mean(sinr_db).numpy():.2f}, total_loss={total_loss.numpy():.2f}")
-
-    return total_loss, tf.reduce_mean(snr), tf.reduce_mean(tf.abs(w)), tf.reduce_mean(tf.abs(h_batch)), tf.reduce_mean(snr), tf.reduce_mean(sinr_db), total_loss
-
+    return total_loss, tf.reduce_mean(snr), tf.reduce_mean(tf.abs(w)), tf.reduce_mean(tf.abs(h_batch)), tf.reduce_mean(snr), tf.reduce_mean(snr_db), total_loss
 def main(seed):
     # Set main log file
     logging.basicConfig(filename=f"training_log_seed_{seed}.log", level=logging.DEBUG)
@@ -640,9 +653,6 @@ def main(seed):
         checkpoint_logger.info(f"[CHECKPOINT-Main] 🏁 Simulation finished for seed {seed}")
 
     logging.info(f"Simulation completed for seed {seed}")
-
-
-
 
 if __name__ == "__main__":
     main(42)
