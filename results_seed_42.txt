@@ -1,8 +1,8 @@
 morning:
-  throughput: 0.0072
-  latency: 10.1573
-  energy: 45.0000
-  sinr: -22.9894
+  throughput: 0.0226
+  latency: 7.8519
+  energy: 22.5000
+  sinr: -18.0206
   forgetting: 0.0000
   fwt: 0.0000
   bwt: 0.0000
