@@ -1,4 +1,3 @@
-
 import os
 # ⚙️ تنظیمات محیط قبل از ایمپورت TensorFlow
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
@@ -20,7 +19,7 @@ from tensorflow.keras.optimizers.legacy import Adam
 gpus = tf.config.list_physical_devices('GPU')
 if gpus:
     try:
-        tf.config.set_visible_devices(gpus[0], 'GPU')  # فقط GPU شماره 0
+        tf.config.set_visible_devices(gpus[0], 'GPU')
         tf.config.experimental.set_memory_growth(gpus[0], True)
         print("✅ Using only GPU:0 →", gpus[0])
     except RuntimeError as e:
@@ -75,16 +74,16 @@ diagnostic_logger.addHandler(diagnostic_handler)
 
 # Constants
 NUM_ANTENNAS = 64
-MAX_USERS = 64  # Maximum users per batch (can be increased later)
-MAX_USERS_PER_SLOT = 32  # For initial testing
+MAX_USERS = 64
+MAX_USERS_PER_SLOT = 32
 TOTAL_USERS = 2000
 FREQ = 28e9  # 28 GHz
-POWER = 1.0  # 0 dBm, more realistic power
+POWER = 1.0  # 0 dBm
 NUM_SLOTS = 10
 BATCH_SIZE = 16
 LAMBDA_REG = 10
 NUM_EPOCHS = 10
-NOISE_POWER = 1e-8  
+NOISE_POWER = 1e-8
 REPLAY_BUFFER_SIZE = 2000
 
 ARRIVAL_RATES = {"morning": 50, "noon": 75, "evening": 60}
@@ -113,11 +112,7 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
     def __init__(self, num_antennas):
         super(BeamformingMetaAttentionModel, self).__init__()
         self.num_antennas = num_antennas
-        self.input_conv = tf.keras.layers.Conv1D(
-            filters=64, kernel_size=1, activation="relu", dtype=tf.float32
-        )
-
-
+        self.input_conv = tf.keras.layers.Conv1D(filters=64, kernel_size=1, activation="relu", input_shape=(None, 128))
         self.shared_transformer = layers.MultiHeadAttention(num_heads=4, key_dim=64)
         self.use_replay = True
         self.use_fisher = False
@@ -132,9 +127,8 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
 
         dummy_input = tf.zeros([1, MAX_USERS, 64], dtype=tf.float32)
         for name, head in self.heads.items():
-            _ = head(dummy_input)  # build all GRU heads ahead of time
+            _ = head(dummy_input)
 
-        # Gating Network: Assigns users to heads using attention over [doppler, delay_spread, snr_estimate]
         self.cond_dense = layers.Dense(64, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(1e-5))
         self.attn_gating = layers.MultiHeadAttention(
             num_heads=2,
@@ -146,8 +140,8 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         self.norm = layers.LayerNormalization()
         self.dense1 = layers.Dense(256, activation='relu')
         self.dense2 = layers.Dense(128, activation='relu')
-        self.output_layer = layers.Dense(self.num_antennas)
-        # Replay Buffer: Fixed size of 2000 samples to cover daily users, stores high-loss samples to prevent forgetting
+        self.output_layer = layers.Dense(2 * self.num_antennas)  # اصلاح شده برای خروجی مختلط
+
         self.buffer_x = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
         self.buffer_h = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
         self.buffer_count = 0
@@ -168,8 +162,7 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
             "Vehicular": 8.0,
             "Aerial": 6.0
         }
-        
-        # Dummy forward pass to build entire model (incl. heads)
+
         dummy_h = tf.zeros([1, MAX_USERS, self.num_antennas], dtype=tf.complex64)
         dummy_task = "Static"
         _ = self.call(dummy_h, task_name=dummy_task, doppler=tf.zeros([1]), delay_spread=tf.zeros([1]), training=False)
@@ -183,39 +176,28 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         B = tf.shape(h)[0]
         U = tf.shape(h)[1]
 
-        # 🛠️ تبدیل complex → [real, imag]
-        h_real = tf.math.real(h)  # بخش حقیقی
-        h_imag = tf.math.imag(h)  # بخش موهومی
-
-        # Safety clamp
-        h_real = tf.clip_by_value(h_real, -10.0, 10.0)  # Clip بخش حقیقی
-        h_imag = tf.clip_by_value(h_imag, -10.0, 10.0)  # Clip بخش موهومی
-
-        # Replace NaNs/Infs with zero
+        h_real = tf.math.real(h)
+        h_imag = tf.math.imag(h)
+        h_real = tf.clip_by_value(h_real, -10.0, 10.0)
+        h_imag = tf.clip_by_value(h_imag, -10.0, 10.0)
         h_real = tf.where(tf.math.is_finite(h_real), h_real, tf.zeros_like(h_real))
         h_imag = tf.where(tf.math.is_finite(h_imag), h_imag, tf.zeros_like(h_imag))
+        x = tf.concat([h_real, h_imag], axis=-1)
 
-        # ترکیب دوباره بخش‌های حقیقی و موهومی
-        x = tf.concat([h_real, h_imag], axis=-1)  # Concatenate to get the final input
-
-        # Feed into input conv layer
         x = self.input_conv(x)
         x = self.shared_transformer(x, x, training=training)
 
-        # پردازش context
         if doppler is None or delay_spread is None:
             doppler = tf.zeros([B], dtype=tf.float32)
             delay_spread = tf.zeros([B], dtype=tf.float32)
 
-        snr_estimate = tf.reduce_mean(tf.square(tf.abs(h)), axis=[1, 2])  # [B]
-        context = tf.stack([doppler, delay_spread, snr_estimate], axis=-1)  # [B, 3]
-        context = self.cond_dense(context)  # [B, 64]
-        context_exp = tf.expand_dims(context, axis=1)  # [B, 1, 64]
+        snr_estimate = tf.reduce_mean(tf.square(tf.abs(h)), axis=[1, 2])
+        context = tf.stack([doppler, delay_spread, snr_estimate], axis=-1)
+        context = self.cond_dense(context)
+        context_exp = tf.expand_dims(context, axis=1)
 
-        # Inject conditioning
-        x = x + context_exp  # [B, U, 64]
+        x = x + context_exp
 
-        # Attention gating
         attn_output, attn_weights = self.attn_gating(
             query=context_exp,
             key=x,
@@ -223,15 +205,15 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
             return_attention_scores=True,
             training=training
         )
-        attn_weights = tf.nn.softmax(attn_weights, axis=-1)  # Normalize weights
+        attn_weights = tf.nn.softmax(attn_weights, axis=-1)
 
         if training:
             mean_attn = tf.reduce_mean(attn_weights, axis=[0, 1])
             std_attn = tf.math.reduce_std(attn_weights, axis=[0, 1])
             tf.print("[CHECKPOINT-Gating] mean_attn=", mean_attn, "std_attn=", std_attn)
-        
-        x = attn_output  # [B, 1, 64]
-        x = tf.tile(x, [1, U, 1])  # [B, U, 64]
+
+        x = attn_output
+        x = tf.tile(x, [1, U, 1])
 
         head_key = task_name if task_name in self.heads else "Static"
         head_output = self.heads[head_key](x)
@@ -240,20 +222,20 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         out = self.dense2(out)
         out = self.output_layer(out)
 
-        out = tf.math.l2_normalize(out, axis=-1) * tf.cast(tf.sqrt(tf.cast(self.num_antennas, tf.float32)), tf.float32)
-        out = tf.reshape(out, [B, U, self.num_antennas])
-        return out
-
-
-
+        out = tf.reshape(out, [B, U, self.num_antennas, 2])
+        w_real = out[..., 0]
+        w_imag = out[..., 1]
+        w = tf.complex(w_real, w_imag)
+        w = tf.math.l2_normalize(w, axis=-1) * tf.cast(tf.sqrt(tf.cast(self.num_antennas, tf.complex64)), tf.complex64)
+        return w
 
     def update_memory(self, x, h, loss):
         if not self.use_replay:
             return
-            
+
         batch_size = tf.shape(x)[0]
         current_users = tf.shape(x)[1]
-        pad_users = MAX_USERS - current_users  # using MAX_USERS instead of MAX_USERS_PER_SLOT
+        pad_users = MAX_USERS - current_users
 
         if tf.reduce_mean(loss) > 0.0 and self.buffer_count < REPLAY_BUFFER_SIZE:
             for i in range(batch_size):
@@ -264,14 +246,11 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
                 x_sample = x[i]
                 h_sample = h[i]
 
-                # جدا کردن بخش‌های real و imaginary
                 x_real = tf.math.real(x_sample)
                 x_imag = tf.math.imag(x_sample)
-
                 h_real = tf.math.real(h_sample)
                 h_imag = tf.math.imag(h_sample)
 
-                # اعمال padding و بروزرسانی buffer
                 x_padded = tf.pad(x_real, [[0, pad_users], [0, 0]])
                 h_padded = tf.pad(h_real, [[0, pad_users], [0, 0]])
 
@@ -280,7 +259,7 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
                 self.buffer_count += 1
 
                 tf.print("[CHECKPOINT-Replay] Updated buffer | buffer_count:", self.buffer_count, "| loss_mean:", tf.reduce_mean(loss))
-    
+
     def generate_replay(self, num_samples):
         if self.buffer_count == 0:
             return None, None
@@ -302,7 +281,7 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
                 reg_loss += tf.reduce_sum(fisher_w * tf.square(w - old_w))
             else:
                 self.old_params[w.name] = tf.identity(w)
-        
+
         return lambda_task * reg_loss
 
 def generate_channel(task, num_slots, batch_size, num_users):
@@ -389,17 +368,16 @@ def generate_channel(task, num_slots, batch_size, num_users):
     logging.info(f"[{task['name']}] 📐 Shape: {h.shape}")
     return h
 
-# Updated constants for simulation
 DAILY_PERIODS = ["morning", "noon", "evening"]
-PERIOD_HOURS = [8, 4, 12]  # Total 24 hours
+PERIOD_HOURS = [8, 4, 12]
 ARRIVAL_RATES = {"morning": 100, "noon": 150, "evening": 120}
 DAILY_COMPOSITION = {
     "morning": {"Static": 0.3, "Pedestrian": 0.4, "Vehicular": 0.2, "Aerial": 0.1},
     "noon": {"Static": 0.3, "Pedestrian": 0.4, "Vehicular": 0.2, "Aerial": 0.1},
     "evening": {"Static": 0.3, "Pedestrian": 0.4, "Vehicular": 0.2, "Aerial": 0.1}
 }
-USER_DURATION = 2  # in hours
-MAX_USERS_PER_SLOT = 32  # new limit
+USER_DURATION = 2
+MAX_USERS_PER_SLOT = 32
 
 def simulate_daily_traffic(checkpoint_logger):
     current_users = []
@@ -445,22 +423,19 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         h_batch = h_batch[:, :U, :]
         x_batch = x_batch[:, :U, :]
 
-        # نرمال‌سازی x_batch
-        x_mean = tf.reduce_mean(x_batch, axis=[1, 2], keepdims=True)  # [B, 1, 1] complex64
-        x_std = tf.math.reduce_std(tf.abs(x_batch), axis=[1, 2], keepdims=True)  # [B, 1, 1] float32
-        x_std_safe = tf.maximum(x_std, 1e-6)  # [B, 1, 1] float32
-        x_std_safe = tf.cast(x_std_safe, tf.complex64)  # تبدیل به complex64
+        x_mean = tf.reduce_mean(x_batch, axis=[1, 2], keepdims=True)
+        x_std = tf.math.reduce_std(tf.abs(x_batch), axis=[1, 2], keepdims=True)
+        x_std_safe = tf.maximum(x_std, 1e-6)
+        x_std_safe = tf.cast(x_std_safe, tf.complex64)
         x_batch = (x_batch - x_mean) / x_std_safe
 
-        # نرمال‌سازی h_batch
         h_mean = tf.reduce_mean(h_batch)
-        h_std = tf.math.reduce_std(tf.abs(h_batch))  # float32
-        h_std_safe = tf.maximum(h_std, 1e-6)  # float32
-        h_std_safe = tf.cast(h_std_safe, tf.complex64)  # تبدیل به complex64
+        h_std = tf.math.reduce_std(tf.abs(h_batch))
+        h_std_safe = tf.maximum(h_std, 1e-6)
+        h_std_safe = tf.cast(h_std_safe, tf.complex64)
         h_batch = (h_batch - h_mean) / h_std_safe
 
-        # ترکیب دوباره برای ورودی مدل
-        h_input = h_batch  # مستقیماً از h_batch استفاده می‌شود
+        h_input = h_batch
 
         w = model(
             h_input,
@@ -469,7 +444,6 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
             task_name=channel_stats["task_name"],
             training=True
         )
-        w = tf.cast(w, tf.complex64)
         w = tf.where(tf.math.is_finite(tf.abs(w)), w, tf.zeros_like(w))
 
         h_hermitian = tf.transpose(tf.math.conj(h_batch), [0, 2, 1])
@@ -500,11 +474,14 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         reg_loss = model.regularization_loss(task_name=channel_stats["task_name"])
         loss_main = tf.reduce_mean(task_weight * tf.maximum(70.0 - snr_db, 0.0) + 0.1 * interference) + reg_loss
 
+        tf.print("w sample:", w[0, 0, :5])
+        tf.print("h_batch sample:", h_batch[0, 0, :5])
+
         num_replay_samples = B // 4
         replay_loss = 0.0
         x_replay, h_replay = model.generate_replay(num_replay_samples)
         if x_replay is not None and h_replay is not None and model.use_replay:
-            h_input_replay = h_replay  # بدون نیاز به تبدیل complex64 به float32، مستقیم از h_replay استفاده کن
+            h_input_replay = h_replay
             w_replay = model(
                 h_input_replay,
                 doppler=channel_stats["doppler"][:num_replay_samples, 0],
@@ -512,7 +489,6 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
                 task_name=channel_stats["task_name"],
                 training=True
             )
-            w_replay = tf.cast(w_replay, tf.complex64)
             w_replay = tf.where(tf.math.is_finite(tf.abs(w_replay)), w_replay, tf.zeros_like(w_replay))
             h_replay_hermitian = tf.transpose(tf.math.conj(h_replay), [0, 2, 1])
             h_hh_replay = tf.matmul(h_replay_hermitian, h_replay)
@@ -661,12 +637,11 @@ def main(seed):
                 delay_spread=channel_stats_mixed["delay_spread"][:, 0],
                 task_name="Mixed"
             )
-            w = tf.cast(w, dtype=tf.complex64)
             signal_matrix = tf.matmul(w, tf.transpose(h_mixed, [0, 2, 1]))
             desired_power = tf.reduce_mean(tf.abs(tf.linalg.diag_part(signal_matrix))**2)
             interference = tf.reduce_mean(tf.reduce_sum(tf.abs(signal_matrix)**2 * (1.0 - tf.eye(num_users)), axis=-1))
             sinr = desired_power / (interference + NOISE_POWER + 1e-10)
-            sinr_db = 10.0 * tf.math.log(sinr + 1e-8) / tf.math.log(10.0)
+            sinr_db = 10.0 * tf.math.log(sinr + 1e-8) / tf.math.log(10.0)  # اصلاح شده: snr به sinr تغییر کرد
             sinr_db_val = sinr_db.numpy()
             sinr_values.append(sinr_db_val)
             if sinr > best_sinr:
