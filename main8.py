@@ -184,25 +184,25 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         U = tf.shape(h)[1]
 
         # 🛠️ تبدیل complex → [real, imag]
-        # Convert complex h to real-valued features
-        # Extract real and imaginary parts of h
-        h_real = tf.math.real(h)
-        h_imag = tf.math.imag(h)
-        x = tf.concat([h_real, h_imag], axis=-1)  # Shape: [B, U, 2*A]
+        h_real = tf.math.real(h)  # بخش حقیقی
+        h_imag = tf.math.imag(h)  # بخش موهومی
 
         # Safety clamp
-        x = tf.clip_by_value(x, -10.0, 10.0)
+        h_real = tf.clip_by_value(h_real, -10.0, 10.0)  # Clip بخش حقیقی
+        h_imag = tf.clip_by_value(h_imag, -10.0, 10.0)  # Clip بخش موهومی
 
         # Replace NaNs/Infs with zero
-        x = tf.where(tf.math.is_finite(x), x, tf.zeros_like(x))
+        h_real = tf.where(tf.math.is_finite(h_real), h_real, tf.zeros_like(h_real))
+        h_imag = tf.where(tf.math.is_finite(h_imag), h_imag, tf.zeros_like(h_imag))
+
+        # ترکیب دوباره بخش‌های حقیقی و موهومی
+        x = tf.concat([h_real, h_imag], axis=-1)  # Concatenate to get the final input
 
         # Feed into input conv layer
         x = self.input_conv(x)
-
-
         x = self.shared_transformer(x, x, training=training)
 
-        # ⬇️ پردازش context
+        # پردازش context
         if doppler is None or delay_spread is None:
             doppler = tf.zeros([B], dtype=tf.float32)
             delay_spread = tf.zeros([B], dtype=tf.float32)
@@ -229,8 +229,7 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
             mean_attn = tf.reduce_mean(attn_weights, axis=[0, 1])
             std_attn = tf.math.reduce_std(attn_weights, axis=[0, 1])
             tf.print("[CHECKPOINT-Gating] mean_attn=", mean_attn, "std_attn=", std_attn)
-        tf.print("[CHECKPOINT-Gating] attention_weights_sample:", attn_weights[0, 0, :5])  # first 5 weights from the first batch
-
+        
         x = attn_output  # [B, 1, 64]
         x = tf.tile(x, [1, U, 1])  # [B, U, 64]
 
@@ -247,30 +246,39 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
 
 
 
+
     def update_memory(self, x, h, loss):
         if not self.use_replay:
             return
-        
+            
         batch_size = tf.shape(x)[0]
         current_users = tf.shape(x)[1]
         pad_users = MAX_USERS - current_users  # using MAX_USERS instead of MAX_USERS_PER_SLOT
-        
-        tf.print("[CHECKPOINT-UpdateMemory] loss_mean:", tf.reduce_mean(loss))
+
         if tf.reduce_mean(loss) > 0.0 and self.buffer_count < REPLAY_BUFFER_SIZE:
             for i in range(batch_size):
                 if self.buffer_count >= REPLAY_BUFFER_SIZE:
                     break
-                    
+
                 idx = self.buffer_count
                 x_sample = x[i]
                 h_sample = h[i]
-                
-                x_padded = tf.pad(x_sample, [[0, pad_users], [0, 0]])
-                h_padded = tf.pad(h_sample, [[0, pad_users], [0, 0]])
-                
+
+                # جدا کردن بخش‌های real و imaginary
+                x_real = tf.math.real(x_sample)
+                x_imag = tf.math.imag(x_sample)
+
+                h_real = tf.math.real(h_sample)
+                h_imag = tf.math.imag(h_sample)
+
+                # اعمال padding و بروزرسانی buffer
+                x_padded = tf.pad(x_real, [[0, pad_users], [0, 0]])
+                h_padded = tf.pad(h_real, [[0, pad_users], [0, 0]])
+
                 self.buffer_x = tf.tensor_scatter_nd_update(self.buffer_x, [[idx]], [x_padded])
                 self.buffer_h = tf.tensor_scatter_nd_update(self.buffer_h, [[idx]], [h_padded])
                 self.buffer_count += 1
+
                 tf.print("[CHECKPOINT-Replay] Updated buffer | buffer_count:", self.buffer_count, "| loss_mean:", tf.reduce_mean(loss))
     
     def generate_replay(self, num_samples):
@@ -437,15 +445,22 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         h_batch = h_batch[:, :U, :]
         x_batch = x_batch[:, :U, :]
 
-        x_mean = tf.cast(tf.reduce_mean(x_batch), tf.complex64)
-        x_std = tf.cast(tf.math.reduce_std(tf.abs(x_batch)), tf.float32)
-        x_batch = (x_batch - x_mean) / tf.cast(tf.maximum(x_std, 1e-6), tf.complex64)
-        h_mean = tf.cast(tf.reduce_mean(h_batch), tf.complex64)
-        h_std = tf.cast(tf.math.reduce_std(tf.abs(h_batch)), tf.float32)
-        h_batch = (h_batch - h_mean) / tf.cast(tf.maximum(h_std, 1e-6), tf.complex64)
+        # نرمال‌سازی x_batch
+        x_mean = tf.reduce_mean(x_batch, axis=[1, 2], keepdims=True)  # [B, 1, 1] complex64
+        x_std = tf.math.reduce_std(tf.abs(x_batch), axis=[1, 2], keepdims=True)  # [B, 1, 1] float32
+        x_std_safe = tf.maximum(x_std, 1e-6)  # [B, 1, 1] float32
+        x_std_safe = tf.cast(x_std_safe, tf.complex64)  # تبدیل به complex64
+        x_batch = (x_batch - x_mean) / x_std_safe
 
-        x_real = tf.cast(tf.abs(h_batch), tf.float32)
-        h_input = tf.complex(x_real, tf.zeros_like(x_real))
+        # نرمال‌سازی h_batch
+        h_mean = tf.reduce_mean(h_batch)
+        h_std = tf.math.reduce_std(tf.abs(h_batch))  # float32
+        h_std_safe = tf.maximum(h_std, 1e-6)  # float32
+        h_std_safe = tf.cast(h_std_safe, tf.complex64)  # تبدیل به complex64
+        h_batch = (h_batch - h_mean) / h_std_safe
+
+        # ترکیب دوباره برای ورودی مدل
+        h_input = h_batch  # مستقیماً از h_batch استفاده می‌شود
 
         w = model(
             h_input,
@@ -489,8 +504,7 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         replay_loss = 0.0
         x_replay, h_replay = model.generate_replay(num_replay_samples)
         if x_replay is not None and h_replay is not None and model.use_replay:
-            x_replay_real = tf.cast(tf.abs(h_replay), tf.float32)
-            h_input_replay = tf.complex(x_replay_real, tf.zeros_like(x_replay_real))
+            h_input_replay = h_replay  # بدون نیاز به تبدیل complex64 به float32، مستقیم از h_replay استفاده کن
             w_replay = model(
                 h_input_replay,
                 doppler=channel_stats["doppler"][:num_replay_samples, 0],
