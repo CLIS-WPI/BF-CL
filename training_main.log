@@ -10,33 +10,149 @@ INFO:checkpoint_logger:[CHECKPOINT-Traffic] ✅ Simulation done | Simulated Tota
 INFO:checkpoint_logger:[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
 INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=morning Start
 INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in morning: 32
-INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01232 | shape=(16, 32, 64)
+ERROR:root:Traceback (most recent call last):
+  File "/home/tanglab/Desktop/BF-CL/main8.py", line 674, in <module>
+    main(42)
+  File "/home/tanglab/Desktop/BF-CL/main8.py", line 582, in main
+    h_dict[task["name"]] = generate_channel(task, NUM_SLOTS, BATCH_SIZE, num_users)
+  File "/home/tanglab/Desktop/BF-CL/main8.py", line 287, in generate_channel
+    h_t, _ = tdl(batch_size=batch_size, num_time_steps=num_slots, sampling_frequency=sampling_freq)
+  File "/home/tanglab/miniconda3/envs/BF-CL/lib/python3.10/site-packages/sionna/phy/channel/tr38901/tdl.py", line 382, in __call__
+    doppler = config.tf_rng.uniform([batch_size,
+  File "/home/tanglab/miniconda3/envs/BF-CL/lib/python3.10/site-packages/sionna/phy/config.py", line 109, in tf_rng
+    self._tf_rng = tf.random.Generator.from_non_deterministic_state()
+  File "/home/tanglab/miniconda3/envs/BF-CL/lib/python3.10/site-packages/tensorflow/python/ops/stateful_random_ops.py", line 387, in from_non_deterministic_state
+    raise RuntimeError('"from_non_deterministic_state" cannot be called when '  # pylint: disable=g-doc-exception
+RuntimeError: "from_non_deterministic_state" cannot be called when determinism is enabled.
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=morning Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in morning: 32
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01234 | shape=(16, 32, 64)
 INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
 INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
-INFO:root:[Static] 📊 Std(|h|): 0.59506
+INFO:root:[Static] 📊 Std(|h|): 0.59568
 INFO:root:[Static] 📐 Shape: (16, 32, 64)
-INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88125 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88552 | shape=(16, 32, 64)
 INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
 INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
-INFO:root:[Pedestrian] 📊 Std(|h|): 0.52371
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52368
+INFO:root:[Pedestrian] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01138 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Vehicular] 📊 Std(|h|): 0.54195
+INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01199 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Aerial] 📊 Std(|h|): 0.53800
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for morning
+ERROR:root:Traceback (most recent call last):
+  File "/home/tanglab/Desktop/BF-CL/main8.py", line 674, in <module>
+    main(42)
+  File "/home/tanglab/Desktop/BF-CL/main8.py", line 592, in main
+    "delay_spread": tf.ones([BATCH_SIZE, 1]) * task["delay_spread"],
+  File "/home/tanglab/miniconda3/envs/BF-CL/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/home/tanglab/miniconda3/envs/BF-CL/lib/python3.10/site-packages/tensorflow/python/eager/execute.py", line 53, in quick_execute
+    tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,
+tensorflow.python.framework.errors_impl.InternalError: {{function_node __wrapped__Mul_device_/job:localhost/replica:0/task:0/device:GPU:0}} 'cuLaunchKernel(function, gridX, gridY, gridZ, blockX, blockY, blockZ, 0, reinterpret_cast<CUstream>(stream), params, nullptr)' failed with 'CUDA_ERROR_INVALID_HANDLE' [Op:Mul]
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=morning Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in morning: 32
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01212 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Static] 📊 Std(|h|): 0.59063
+INFO:root:[Static] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88834 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52854
+INFO:root:[Pedestrian] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01156 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Vehicular] 📊 Std(|h|): 0.54385
+INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01210 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Aerial] 📊 Std(|h|): 0.53985
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for morning
+ERROR:root:Traceback (most recent call last):
+  File "/home/tanglab/Desktop/BF-CL/main8.py", line 675, in <module>
+    main(42)
+  File "/home/tanglab/Desktop/BF-CL/main8.py", line 592, in main
+    "delay_spread": tf.ones([BATCH_SIZE, 1], dtype=tf.float32) * tf.reduce_mean(tf.constant(task["delay_spread"], dtype=tf.float32)),
+  File "/home/tanglab/miniconda3/envs/BF-CL/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/home/tanglab/miniconda3/envs/BF-CL/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 6006, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+tensorflow.python.framework.errors_impl.InternalError: {{function_node __wrapped__Mul_device_/job:localhost/replica:0/task:0/device:GPU:0}} 'cuLaunchKernel(function, gridX, gridY, gridZ, blockX, blockY, blockZ, 0, reinterpret_cast<CUstream>(stream), params, nullptr)' failed with 'CUDA_ERROR_INVALID_HANDLE' [Op:Mul] name:
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=morning Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in morning: 32
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01220 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Static] 📊 Std(|h|): 0.59189
+INFO:root:[Static] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88254 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52797
 INFO:root:[Pedestrian] 📐 Shape: (16, 32, 64)
 INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01166 | shape=(16, 32, 64)
 INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
 INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
-INFO:root:[Vehicular] 📊 Std(|h|): 0.54896
+INFO:root:[Vehicular] 📊 Std(|h|): 0.55143
 INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
-INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01212 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01204 | shape=(16, 32, 64)
 INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
 INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
-INFO:root:[Aerial] 📊 Std(|h|): 0.53558
+INFO:root:[Aerial] 📊 Std(|h|): 0.53529
 INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
 INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
 INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for morning
-INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 0.10181
-INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.68032
 ERROR:root:Traceback (most recent call last):
-  File "/home/tanglab/Desktop/BF-CL/main8.py", line 681, in <module>
+  File "/home/tanglab/Desktop/BF-CL/main8.py", line 678, in <module>
     main(42)
-  File "/home/tanglab/Desktop/BF-CL/main8.py", line 603, in main
-    checkpoint_logger.info(f"[CHECKPOINT-Main] [Epoch {epoch+1} | Task={task['name']}] loss: {loss_val.numpy():.5f}, snr: {snr_val.numpy():.5f}, sinr_db: {sinr_db_val.numpy():.2f}")
-UnboundLocalError: local variable 'sinr_db_val' referenced before assignment
+  File "/home/tanglab/Desktop/BF-CL/main8.py", line 594, in main
+    "delay_spread": tf.ones([BATCH_SIZE, 1], dtype=tf.float32) * delay_spread_val,
+  File "/home/tanglab/miniconda3/envs/BF-CL/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/home/tanglab/miniconda3/envs/BF-CL/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 6006, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+tensorflow.python.framework.errors_impl.InternalError: {{function_node __wrapped__Mul_device_/job:localhost/replica:0/task:0/device:GPU:0}} 'cuLaunchKernel(function, gridX, gridY, gridZ, blockX, blockY, blockZ, 0, reinterpret_cast<CUstream>(stream), params, nullptr)' failed with 'CUDA_ERROR_INVALID_HANDLE' [Op:Mul] name:

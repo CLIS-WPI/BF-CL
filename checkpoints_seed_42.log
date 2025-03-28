@@ -10,15 +10,105 @@
 [CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
 [CHECKPOINT-Main] 🕒 Period=morning Start
 [CHECKPOINT-Main] 👥 Users in morning: 32
-[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01232 | shape=(16, 32, 64)
+[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+[CHECKPOINT-Main] 🕒 Period=morning Start
+[CHECKPOINT-Main] 👥 Users in morning: 32
+[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+[CHECKPOINT-Main] 🕒 Period=morning Start
+[CHECKPOINT-Main] 👥 Users in morning: 32
+[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+[CHECKPOINT-Main] 🕒 Period=morning Start
+[CHECKPOINT-Main] 👥 Users in morning: 32
+[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+[CHECKPOINT-Main] 🕒 Period=morning Start
+[CHECKPOINT-Main] 👥 Users in morning: 32
+[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01234 | shape=(16, 32, 64)
 [CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
-[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88125 | shape=(16, 32, 64)
+[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88552 | shape=(16, 32, 64)
 [CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
-[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01166 | shape=(16, 32, 64)
+[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01138 | shape=(16, 32, 64)
 [CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
-[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01212 | shape=(16, 32, 64)
+[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01199 | shape=(16, 32, 64)
 [CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
 [CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
 [CHECKPOINT-Main] 🔁 Epoch=1 start for morning
-[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 0.10181
-[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.68032
+[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+[CHECKPOINT-Main] 🕒 Period=morning Start
+[CHECKPOINT-Main] 👥 Users in morning: 32
+[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01212 | shape=(16, 32, 64)
+[CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88834 | shape=(16, 32, 64)
+[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01156 | shape=(16, 32, 64)
+[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01210 | shape=(16, 32, 64)
+[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+[CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
+[CHECKPOINT-Main] 🔁 Epoch=1 start for morning
+[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+[CHECKPOINT-Main] 🕒 Period=morning Start
+[CHECKPOINT-Main] 👥 Users in morning: 32
+[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01220 | shape=(16, 32, 64)
+[CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88254 | shape=(16, 32, 64)
+[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01166 | shape=(16, 32, 64)
+[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01204 | shape=(16, 32, 64)
+[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+[CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
+[CHECKPOINT-Main] 🔁 Epoch=1 start for morning

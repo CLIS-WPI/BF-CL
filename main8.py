@@ -1,21 +1,33 @@
-"""
-This code implements the BeamformingMetaAttentionModel for realistic 6G scenarios with dynamic traffic profiles,
-task-specific heads, gating, and continual learning (Replay + Fisher Regularization). The scenario assumes:
-  - Single-Cell with 64 antennas
-  - Up to 2000 daily users (max 500 concurrent)
-  - Realistic traffic fluctuations and channel models (TDL-A, TDL-C, Rayleigh)
-"""
+import os
+# ⚙️ تنظیمات محیط قبل از ایمپورت TensorFlow
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+os.environ["TF_XLA_FLAGS"] = "--tf_xla_auto_jit=2 --tf_xla_cpu_global_jit"
+
 import numpy as np
 import tensorflow as tf
-import sionna as sn
+from sionna.phy.channel.tr38901.tdl import TDL
+from sionna.phy.channel.rayleigh_block_fading import RayleighBlockFading
+
+
 import matplotlib.pyplot as plt
 from tensorflow.keras import layers, Model
 import time
-import os
 import logging
 import sys
 from tensorflow.keras.optimizers.legacy import Adam
-tf.get_logger().setLevel('ERROR')
+from tensorflow.keras.layers import GRUCell, RNN
+
+# ✅ استفاده فقط از GPU:0
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+    try:
+        tf.config.set_visible_devices(gpus[0], 'GPU')  # فقط GPU شماره 0
+        tf.config.experimental.set_memory_growth(gpus[0], True)
+        print("✅ Using only GPU:0 →", gpus[0])
+    except RuntimeError as e:
+        print("❌ Error setting GPU visibility:", e)
+
 
 class LoggerWriter:
     def __init__(self, logger, level):
@@ -47,16 +59,16 @@ diagnostic_logger.addHandler(diagnostic_handler)
 
 # Constants
 NUM_ANTENNAS = 64
-MAX_USERS = 64  # حداکثر کاربر همزمان (برای آینده می‌تونی 128 کنی با 256 آنتن)
-MAX_USERS_PER_SLOT = 32  # برای تست اولیه
+MAX_USERS = 64  # Maximum users per batch (can be increased later)
+MAX_USERS_PER_SLOT = 32  # For initial testing
 TOTAL_USERS = 2000
 FREQ = 28e9  # 28 GHz
-POWER = 1.0  # 0 dBm، واقعی‌تر
+POWER = 1.0  # 0 dBm, more realistic power
 NUM_SLOTS = 10
 BATCH_SIZE = 16
 LAMBDA_REG = 10
 NUM_EPOCHS = 10
-NOISE_POWER = 1e-8  # 
+NOISE_POWER = 1e-8  
 REPLAY_BUFFER_SIZE = 2000
 
 ARRIVAL_RATES = {"morning": 50, "noon": 75, "evening": 60}
@@ -85,24 +97,25 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
     def __init__(self, num_antennas):
         super(BeamformingMetaAttentionModel, self).__init__()
         self.num_antennas = num_antennas
+
         self.input_conv = layers.Conv1D(64, 1, activation='relu', dtype=tf.float32)
         self.shared_transformer = layers.MultiHeadAttention(num_heads=4, key_dim=64)
+
         self.use_replay = True
-        self.use_fisher = True
+        self.use_fisher = False
 
-        self.heads = {
-        "Static": layers.GRU(128, return_sequences=True),
-        "Pedestrian": layers.GRU(128, return_sequences=True),
-        "Vehicular": layers.GRU(128, return_sequences=True),
-        "Aerial": layers.GRU(128, return_sequences=True),
-        "Mixed": layers.GRU(128, return_sequences=True)
-        }
+        # ✅ GRU با seed مشخص برای جلوگیری از خطای CUDA
+        self.heads = {}
+        for name in ["Static", "Pedestrian", "Vehicular", "Aerial", "Mixed"]:
+            cell = GRUCell(128)
+            self.heads[name] = RNN(cell, return_sequences=True)
 
+        # ✅ ساخت dummy برای هر head
         dummy_input = tf.zeros([1, MAX_USERS, 64], dtype=tf.float32)
         for name, head in self.heads.items():
-            _ = head(dummy_input)  # build all GRU heads ahead of time
+            _ = head(dummy_input)
 
-        # Gating Network: Assigns users to heads using attention over [doppler, delay_spread, snr_estimate]
+        # 🔁 Gating Network
         self.cond_dense = layers.Dense(64, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(1e-5))
         self.attn_gating = layers.MultiHeadAttention(
             num_heads=2,
@@ -115,33 +128,35 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         self.dense1 = layers.Dense(256, activation='relu')
         self.dense2 = layers.Dense(128, activation='relu')
         self.output_layer = layers.Dense(self.num_antennas)
-        # Replay Buffer: Fixed size of 2000 samples to cover daily users, stores high-loss samples to prevent forgetting
-        self.buffer_x = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
-        self.buffer_h = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
+
+        # ✅ Replay Buffer با تخصیص روی CPU
+        with tf.device("/CPU:0"):
+            self.buffer_x = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
+            self.buffer_h = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
         self.buffer_count = 0
+
+        # 🎯 Regularization parameters
         self.old_params = {}
         self.fisher = {}
         self.lambda_reg = LAMBDA_REG
-        self.task_reg_lambda = {"Mixed": 0.1}
-        self.lambda_reg = 0.1
         self.task_weights = {
-        "Static": 1.0,
-        "Pedestrian": 1.0,
-        "Vehicular": 1.5,
-        "Aerial": 1.3
+            "Static": 1.0,
+            "Pedestrian": 1.0,
+            "Vehicular": 1.5,
+            "Aerial": 1.3
         }
         self.task_reg_lambda = {
             "Static": 10.0,
             "Pedestrian": 5.0,
             "Vehicular": 8.0,
-            "Aerial": 6.0
+            "Aerial": 6.0,
+            "Mixed": 0.1
         }
-        
-        # Dummy forward pass to build entire model (incl. heads)
+
+        # ✅ Dummy forward pass برای ساختن کامل مدل
         dummy_h = tf.zeros([1, MAX_USERS, self.num_antennas], dtype=tf.complex64)
         dummy_task = "Static"
         _ = self.call(dummy_h, task_name=dummy_task, doppler=tf.zeros([1]), delay_spread=tf.zeros([1]), training=False)
-
 
     def save_old_params(self):
         for w in self.trainable_weights:
@@ -170,21 +185,21 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
 
         # Attention gating
         attn_output, attn_weights = self.attn_gating(
-        query=context_exp,
-        key=x,
-        value=x,
-        return_attention_scores=True,
-        training=training
+            query=context_exp,
+            key=x,
+            value=x,
+            return_attention_scores=True,
+            training=training
         )
-        attn_weights = tf.nn.softmax(attn_weights, axis=-1)  # نرمال‌سازی وزن‌ها
-        # بقیه کد بدون تغ
-
+        attn_weights = tf.nn.softmax(attn_weights, axis=-1)  # Normalize weights
+        
         # ✅ Gating Logging
         if training:
             mean_attn = tf.reduce_mean(attn_weights, axis=[0, 1])
             std_attn = tf.math.reduce_std(attn_weights, axis=[0, 1])
             tf.print("[CHECKPOINT-Gating] mean_attn=", mean_attn, "std_attn=", std_attn)
-        tf.print("[CHECKPOINT-Gating] attention_weights_sample:", attn_weights[0, 0, :5])  # ۵ تا وزن اول از بچ اول
+        tf.print("[CHECKPOINT-Gating] attention_weights_sample:", attn_weights[0, 0, :5])  # first 5 weights from the first batch
+        
         # Expand gated feature
         x = attn_output  # [B, 1, 64]
         x = tf.tile(x, [1, U, 1])  # [B, U, 64]
@@ -205,7 +220,7 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         
         batch_size = tf.shape(x)[0]
         current_users = tf.shape(x)[1]
-        pad_users = MAX_USERS - current_users  # تغییر به MAX_USERS به جای MAX_USERS_PER_SLOT
+        pad_users = MAX_USERS - current_users  # using MAX_USERS instead of MAX_USERS_PER_SLOT
         
         tf.print("[CHECKPOINT-UpdateMemory] loss_mean:", tf.reduce_mean(loss))
         if tf.reduce_mean(loss) > 0.0 and self.buffer_count < REPLAY_BUFFER_SIZE:
@@ -242,72 +257,32 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         for w in self.trainable_weights:
             if w.name in self.old_params:
                 old_w = tf.convert_to_tensor(self.old_params[w.name], dtype=w.dtype)
-                fisher_w = tf.convert_to_tensor(self.fisher.get(w.name, 1e-6), dtype=w.dtype)  # پیش‌فرض کوچک
+                fisher_w = tf.convert_to_tensor(self.fisher.get(w.name, 1e-6), dtype=w.dtype)
                 reg_loss += tf.reduce_sum(fisher_w * tf.square(w - old_w))
             else:
-                self.old_params[w.name] = tf.identity(w)  # ذخیره پارامترهای اولیه
+                self.old_params[w.name] = tf.identity(w)
         
         return lambda_task * reg_loss
 
 def generate_channel(task, num_slots, batch_size, num_users):
-    speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], num_users)
-    doppler_freq = np.random.uniform(task["doppler"][0], task["doppler"][1])
-    delay = np.random.uniform(task["delay_spread"][0], task["delay_spread"][1])
+    with tf.device("/CPU:0"):  # 🚨 اجرای کل تابع روی CPU
+        speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], num_users)
+        doppler_freq = np.random.uniform(task["doppler"][0], task["doppler"][1])
+        delay = np.random.uniform(task["delay_spread"][0], task["delay_spread"][1])
+        sampling_freq = int(min(1 / delay, 2 * doppler_freq))
 
-    sampling_freq = int(min(1 / delay, 2 * doppler_freq))
-
-    if task["channel"] == "TDL":
-        tf.print("→ Using TDL model:", task["model"])
-        user_channels = []
-        for user_idx in range(num_users):
-            tdl = sn.channel.tr38901.TDL(
-                model=task["model"],
-                delay_spread=delay,  # استفاده از مقدار اسکالر محاسبه‌شده
-                carrier_frequency=FREQ,
-                num_tx_ant=NUM_ANTENNAS,
-                num_rx_ant=1,
-                min_speed=task["speed_range"][0],
-                max_speed=task["speed_range"][1],
-                dtype=tf.complex64
-            )
-            h_t, _ = tdl(batch_size=batch_size, num_time_steps=num_slots, sampling_frequency=sampling_freq)
-            h_t = tf.reduce_mean(h_t, axis=-1)
-            h_t = tf.reduce_mean(h_t, axis=-1)
-            h_t = tf.squeeze(h_t)
-            user_channels.append(h_t)
-        h = tf.stack(user_channels, axis=1)
-        tf.print("✅ Final TDL shape [B,U,A]:", h.shape)
-
-    elif task["channel"] == "Rayleigh":
-        tf.print("→ Using Rayleigh block fading")
-        channel_model = sn.channel.RayleighBlockFading(
-            num_rx=num_users,
-            num_rx_ant=1,
-            num_tx=1,
-            num_tx_ant=NUM_ANTENNAS,
-            dtype=tf.complex64
-        )
-        h, _ = channel_model(batch_size=batch_size, num_time_steps=1)
-        h = tf.squeeze(h)
-        tf.print("✅ Final Rayleigh shape [B,U,A]:", h.shape)
-
-    else:  # Mixed
-        tf.print("→ Using Random channel for Mixed")
-        model = np.random.choice(["A", "C"]) if np.random.random() < 0.5 else "Rayleigh"
-        delay_spread = np.random.uniform(task["delay_spread"][0], task["delay_spread"][1])
-        if model != "Rayleigh":
-            tf.print("→ Random TDL model:", model)
+        if task["channel"] == "TDL":
+            tf.print("→ Using TDL model:", task["model"])
             user_channels = []
             for user_idx in range(num_users):
-                tdl = sn.channel.tr38901.TDL(
-                    model=model,
-                    delay_spread=delay_spread,
+                tdl = TDL(
+                    model=task["model"],
+                    delay_spread=delay,
                     carrier_frequency=FREQ,
                     num_tx_ant=NUM_ANTENNAS,
                     num_rx_ant=1,
                     min_speed=task["speed_range"][0],
-                    max_speed=task["speed_range"][1],
-                    dtype=tf.complex64
+                    max_speed=task["speed_range"][1]
                 )
                 h_t, _ = tdl(batch_size=batch_size, num_time_steps=num_slots, sampling_frequency=sampling_freq)
                 h_t = tf.reduce_mean(h_t, axis=-1)
@@ -315,62 +290,86 @@ def generate_channel(task, num_slots, batch_size, num_users):
                 h_t = tf.squeeze(h_t)
                 user_channels.append(h_t)
             h = tf.stack(user_channels, axis=1)
-            tf.print("✅ Final Mixed-TDL shape [B,U,A]:", h.shape)
-        else:
-            tf.print("→ Random Rayleigh model")
-            channel_model = sn.channel.RayleighBlockFading(
+            tf.print("✅ Final TDL shape [B,U,A]:", h.shape)
+
+        elif task["channel"] == "Rayleigh":
+            tf.print("→ Using Rayleigh block fading")
+            channel_model = RayleighBlockFading(
                 num_rx=num_users,
                 num_rx_ant=1,
                 num_tx=1,
-                num_tx_ant=NUM_ANTENNAS,
-                dtype=tf.complex64
+                num_tx_ant=NUM_ANTENNAS
             )
             h, _ = channel_model(batch_size=batch_size, num_time_steps=1)
             h = tf.squeeze(h)
-            tf.print("✅ Final Mixed-Rayleigh shape [B,U,A]:", h.shape)
+            tf.print("✅ Final Rayleigh shape [B,U,A]:", h.shape)
 
-    # ✅ CHECKPOINT 2: Raw channel stats
-    checkpoint_logger.info(f"[CHECKPOINT-2] Task={task['name']} | Raw |h| mean={tf.reduce_mean(tf.abs(h)).numpy():.5f} | shape={h.shape}")
+        else:  # Mixed
+            tf.print("→ Using Random channel for Mixed")
+            model_choice = np.random.choice(["A", "C"]) if np.random.random() < 0.5 else "Rayleigh"
+            delay_spread = np.random.uniform(task["delay_spread"][0], task["delay_spread"][1])
+            if model_choice != "Rayleigh":
+                tf.print("→ Random TDL model:", model_choice)
+                user_channels = []
+                for user_idx in range(num_users):
+                    tdl = TDL(
+                        model=model_choice,
+                        delay_spread=delay_spread,
+                        carrier_frequency=FREQ,
+                        num_tx_ant=NUM_ANTENNAS,
+                        num_rx_ant=1,
+                        min_speed=task["speed_range"][0],
+                        max_speed=task["speed_range"][1]
+                    )
+                    h_t, _ = tdl(batch_size=batch_size, num_time_steps=num_slots, sampling_frequency=sampling_freq)
+                    h_t = tf.reduce_mean(h_t, axis=-1)
+                    h_t = tf.reduce_mean(h_t, axis=-1)
+                    h_t = tf.squeeze(h_t)
+                    user_channels.append(h_t)
+                h = tf.stack(user_channels, axis=1)
+                tf.print("✅ Final Mixed-TDL shape [B,U,A]:", h.shape)
+            else:
+                tf.print("→ Random Rayleigh model")
+                channel_model = RayleighBlockFading(
+                    num_rx=num_users,
+                    num_rx_ant=1,
+                    num_tx=1,
+                    num_tx_ant=NUM_ANTENNAS
+                )
+                h, _ = channel_model(batch_size=batch_size, num_time_steps=1)
+                h = tf.squeeze(h)
+                tf.print("✅ Final Mixed-Rayleigh shape [B,U,A]:", h.shape)
 
-    h_norm = tf.reduce_mean(tf.abs(h))
-    h = h / tf.cast(h_norm + 1e-6, tf.complex64)
+        checkpoint_logger.info(f"[CHECKPOINT-2] Task={task['name']} | Raw |h| mean={tf.reduce_mean(tf.abs(h)).numpy():.5f} | shape={h.shape}")
+        h_norm = tf.reduce_mean(tf.abs(h))
+        h = h / tf.cast(h_norm + 1e-6, tf.complex64)
+        checkpoint_logger.info(f"[CHECKPOINT-3] Task={task['name']} | Normalized |h| mean={tf.reduce_mean(tf.abs(h)).numpy():.5f}")
+        logging.info(f"[{task['name']}] 📏 Normalized |h| mean: {tf.reduce_mean(tf.abs(h)).numpy():.5f}")
+        logging.info(f"[{task['name']}] 📊 Std(|h|): {tf.math.reduce_std(tf.abs(h)).numpy():.5f}")
+        logging.info(f"[{task['name']}] 📐 Shape: {h.shape}")
+        return h
 
-    # ✅ CHECKPOINT 3: After normalization
-    checkpoint_logger.info(f"[CHECKPOINT-3] Task={task['name']} | Normalized |h| mean={tf.reduce_mean(tf.abs(h)).numpy():.5f}")
-
-    logging.info(f"[{task['name']}] 📏 Normalized |h| mean: {tf.reduce_mean(tf.abs(h)).numpy():.5f}")
-    logging.info(f"[{task['name']}] 📊 Std(|h|): {tf.math.reduce_std(tf.abs(h)).numpy():.5f}")
-    logging.info(f"[{task['name']}] 📐 Shape: {h.shape}")
-
-    return h
-
-
-# ثابت‌ها (اینجا فقط بخشی که نیازه رو می‌ذارم، بقیه رو فرض می‌کنم داری)
+# Updated constants for simulation
 DAILY_PERIODS = ["morning", "noon", "evening"]
-PERIOD_HOURS = [8, 4, 12]  # جمعشون 24 ساعت می‌شه
+PERIOD_HOURS = [8, 4, 12]  # Total 24 hours
 ARRIVAL_RATES = {"morning": 100, "noon": 150, "evening": 120}
 DAILY_COMPOSITION = {
     "morning": {"Static": 0.3, "Pedestrian": 0.4, "Vehicular": 0.2, "Aerial": 0.1},
     "noon": {"Static": 0.3, "Pedestrian": 0.4, "Vehicular": 0.2, "Aerial": 0.1},
     "evening": {"Static": 0.3, "Pedestrian": 0.4, "Vehicular": 0.2, "Aerial": 0.1}
 }
-
-USER_DURATION = 2  # ساعت
-MAX_USERS_PER_SLOT = 32  # محدودیت جدید
+USER_DURATION = 2  # in hours
+MAX_USERS_PER_SLOT = 32  # new limit
 
 def simulate_daily_traffic(checkpoint_logger):
     current_users = []
     user_counts = {task["name"]: [] for task in TASKS}
     total_time = 0
 
-    # ✅ CHECKPOINT 1: Begin simulation
     checkpoint_logger.info(f"[CHECKPOINT-Traffic] 🚦 Start traffic simulation")
-
     for period, hours in zip(DAILY_PERIODS, PERIOD_HOURS):
         lambda_base = ARRIVAL_RATES[period]
         composition = DAILY_COMPOSITION[period]
-
-        # ✅ CHECKPOINT 2: Period config
         checkpoint_logger.info(f"[CHECKPOINT-Traffic] 📅 Period={period} | λ_base={lambda_base} | Hours={hours}")
 
         for hour in range(hours):
@@ -381,7 +380,6 @@ def simulate_daily_traffic(checkpoint_logger):
                     task_name = np.random.choice(list(composition.keys()), p=list(composition.values()))
                     task = next(t for t in TASKS if t["name"] == task_name)
                     current_users.append({"task": task, "remaining_time": USER_DURATION * 60})
-
             current_users = [u for u in current_users if u["remaining_time"] > 0]
             for user in current_users:
                 user["remaining_time"] -= 1 / 60
@@ -391,30 +389,23 @@ def simulate_daily_traffic(checkpoint_logger):
                 counts[user["task"]["name"]] += 1
             for task_name in user_counts:
                 user_counts[task_name].append(counts[task_name])
-
         total_time += hours
-
-        # ✅ CHECKPOINT 3: End of each period
         checkpoint_logger.info(f"[CHECKPOINT-Traffic] 🧮 Period={period} completed | Final active users={len(current_users)}")
-
-    # ✅ CHECKPOINT 4: Overall summary with total_time verification
     checkpoint_logger.info(f"[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime={total_time:.2f} hrs")
     if total_time != 24:
         checkpoint_logger.warning(f"[CHECKPOINT-Traffic] ⚠️ TotalTime is not 24 hours, got {total_time:.2f} hrs")
-
     return user_counts, total_time
 
 def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
     with tf.GradientTape() as tape:
         B = tf.shape(h_batch)[0]
-        U = tf.minimum(tf.shape(h_batch)[1], MAX_USERS_PER_SLOT)  # محدود کردن کاربرها
+        U = tf.minimum(tf.shape(h_batch)[1], MAX_USERS_PER_SLOT)
         A = tf.shape(h_batch)[2]
 
-        # برش به حداکثر کاربرها
         h_batch = h_batch[:, :U, :]
         x_batch = x_batch[:, :U, :]
 
-        # نرمال‌سازی
+        # Normalization
         x_mean = tf.cast(tf.reduce_mean(x_batch), tf.complex64)
         x_std = tf.cast(tf.math.reduce_std(tf.abs(x_batch)), tf.float32)
         x_batch = (x_batch - x_mean) / tf.cast(tf.maximum(x_std, 1e-6), tf.complex64)
@@ -422,7 +413,7 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         h_std = tf.cast(tf.math.reduce_std(tf.abs(h_batch)), tf.float32)
         h_batch = (h_batch - h_mean) / tf.cast(tf.maximum(h_std, 1e-6), tf.complex64)
 
-        # خروجی مدل
+        # Model output
         w = model(
             h_batch,
             doppler=channel_stats["doppler"][:, 0],
@@ -433,20 +424,34 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         w = tf.cast(w, tf.complex64)
 
         # MMSE (Tikhonov Regularization)
-        # MMSE (Tikhonov Regularization)
+        # Compute h_hh and print its statistics
+        # Compute h_hh and print its statistics
         h_hermitian = tf.transpose(tf.math.conj(h_batch), [0, 2, 1])
         h_hh = tf.matmul(h_hermitian, h_batch)  # [B, A, A]
-        alpha = NOISE_POWER / POWER  # پارامتر منظم‌سازی MMSE
-        w_mmse = tf.matmul(h_batch, tf.linalg.inv(h_hh + alpha * tf.eye(A, dtype=tf.complex64)))  # H * inv(H^H H + alpha I)
-        # ترکیب پویا با وزن مبتنی بر اِپاک
+        tf.print("Milad[DEBUG] h_hh mean abs:", tf.reduce_mean(tf.abs(h_hh)))
+        tf.print("Milad[DEBUG] h_hh min:", tf.reduce_min(tf.abs(h_hh)), "max:", tf.reduce_max(tf.abs(h_hh)))
+
+        alpha = NOISE_POWER / POWER
+        reg_matrix = h_hh + alpha * tf.eye(A, dtype=tf.complex64)
+        tf.print("Milad[DEBUG] reg_matrix mean abs:", tf.reduce_mean(tf.abs(reg_matrix)))
+        tf.print("Milad[DEBUG] reg_matrix min:", tf.reduce_min(tf.abs(reg_matrix)), "max:", tf.reduce_max(tf.abs(reg_matrix)))
+
+        # Solve for X and check for NaNs using the absolute value
+        X = tf.linalg.solve(reg_matrix, tf.transpose(h_batch, [0, 2, 1]))
+        tf.print("Milad[DEBUG] X mean abs:", tf.reduce_mean(tf.abs(X)))
+        tf.print("Milad[DEBUG] X has NaNs (abs):", tf.reduce_any(tf.math.is_nan(tf.abs(X))))
+
+        w_mmse = tf.transpose(X, [0, 2, 1])
+        tf.print("Milad[DEBUG] w_mmse mean abs:", tf.reduce_mean(tf.abs(w_mmse)))
+        tf.print("Milad[DEBUG] w_mmse has NaNs (abs):", tf.reduce_any(tf.math.is_nan(tf.abs(w_mmse))))
+
+
         epoch_weight = tf.cast(epoch, tf.float32) / NUM_EPOCHS
-        epoch_weight_complex = tf.cast(epoch_weight, tf.complex64)  # تبدیل به complex64
-        w = (1 - epoch_weight_complex) * w_mmse + epoch_weight_complex * w  # ترکیب پویا
+        epoch_weight_complex = tf.cast(epoch_weight, tf.complex64)
+        w = (1 - epoch_weight_complex) * w_mmse + epoch_weight_complex * w
+        w = w * tf.cast(tf.sqrt(POWER), tf.complex64) / (tf.norm(w, axis=-1, keepdims=True) + 1e-6)
 
-        # نرمال‌سازی توان
-        w = w * tf.cast(tf.sqrt(POWER), tf.complex64) / tf.norm(w, axis=-1, keepdims=True)
 
-        # دیباگ و محاسبات SINR
         tf.print("[DEBUG] mean|w| before matmul:", tf.reduce_mean(tf.abs(w)))
         signal_matrix = tf.matmul(w, h_hermitian)
         tf.print("[DEBUG] mean|signal_matrix|:", tf.reduce_mean(tf.abs(signal_matrix)))
@@ -458,7 +463,6 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         snr = desired_power / (interference + NOISE_POWER + 1e-10)
         snr_db = 10.0 * tf.math.log(snr + 1e-8) / tf.math.log(10.0)
 
-        # Loss
         task_weight = model.task_weights.get(channel_stats["task_name"], 1.0)
         reg_loss = model.regularization_loss(task_name=channel_stats["task_name"])
         loss_main = tf.reduce_mean(task_weight * tf.maximum(70.0 - snr_db, 0.0) + 0.1 * interference) + reg_loss
@@ -479,7 +483,7 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
             h_replay_hermitian = tf.transpose(tf.math.conj(h_replay), [0, 2, 1])
             h_hh_replay = tf.matmul(h_replay_hermitian, h_replay)
             w_mmse_replay = tf.matmul(h_replay, tf.linalg.inv(h_hh_replay + alpha * tf.eye(A, dtype=tf.complex64)))
-            w_replay = (1 - epoch_weight_complex) * w_mmse_replay + epoch_weight_complex * w_replay  # استفاده از complex64
+            w_replay = (1 - epoch_weight_complex) * w_mmse_replay + epoch_weight_complex * w_replay
             w_replay = w_replay * tf.cast(tf.sqrt(POWER), tf.complex64) / tf.norm(w_replay, axis=-1, keepdims=True)
             replay_signal_matrix = tf.matmul(w_replay, h_replay_hermitian)
             replay_desired_signal = tf.linalg.diag_part(replay_signal_matrix)
@@ -494,13 +498,15 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
 
         total_loss = loss_main + replay_loss
 
-    # اعمال گرادیان‌ها
     grads = tape.gradient(total_loss, model.trainable_variables)
+    for v, g in zip(model.trainable_variables, grads):
+        if g is not None:
+            tf.debugging.check_numerics(g, message=f"Gradient for {v.name} contains nan or Inf")
+
     grads = [tf.clip_by_norm(g, 1.0) if g is not None else g for g in grads]
     optimizer.apply_gradients(zip([g for g in grads if g is not None],
-                                  [v for g, v in zip(grads, model.trainable_variables) if g is not None]))
+                                    [v for g, v in zip(grads, model.trainable_variables) if g is not None]))
 
-    # به‌روزرسانی Fisher
     if model.use_fisher:
         for v, g in zip(model.trainable_variables, grads):
             if g is not None:
@@ -509,7 +515,6 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
                 model.fisher[v.name] = updated_fisher
                 tf.print("[CHECKPOINT-Fisher] Updated Fisher for", v.name, "| mean:", tf.reduce_mean(updated_fisher))
 
-    # لاگ‌ها
     tf.print("[CHECKPOINT-TrainStep] desired_power:", desired_power)
     tf.print("[CHECKPOINT-TrainStep] interference:", interference)
     tf.print("[CHECKPOINT-TrainStep] NOISE_POWER:", NOISE_POWER)
@@ -520,14 +525,15 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
     tf.print("[CHECKPOINT-TrainStep] buffer_count:", model.buffer_count)
     tf.print()
 
-    return total_loss, tf.reduce_mean(snr), tf.reduce_mean(tf.abs(w)), tf.reduce_mean(tf.abs(h_batch)), tf.reduce_mean(snr), tf.reduce_mean(snr_db), total_loss
+
+    # Return six values: total_loss, mean SNR, mean |w|, mean |h|, mean SINR (in dB), and total_loss again
+    return total_loss, tf.reduce_mean(snr), tf.reduce_mean(tf.abs(w)), tf.reduce_mean(tf.abs(h_batch)), tf.reduce_mean(snr_db), total_loss
+
 def main(seed):
-    # Set main log file
     logging.basicConfig(filename=f"training_log_seed_{seed}.log", level=logging.DEBUG)
     sys.stdout = LoggerWriter(logging.getLogger(), logging.INFO)
     sys.stderr = LoggerWriter(logging.getLogger(), logging.ERROR)
 
-    # Set checkpoint logger
     checkpoint_logger = logging.getLogger("checkpoint_logger")
     checkpoint_logger.setLevel(logging.INFO)
     checkpoint_fh = logging.FileHandler(f"checkpoints_seed_{seed}.log")
@@ -536,19 +542,24 @@ def main(seed):
     tf.random.set_seed(seed)
     np.random.seed(seed)
 
-    model = BeamformingMetaAttentionModel(NUM_ANTENNAS)
-    # 👇 Warm-up pass to build all variables
-    dummy_h = tf.zeros([1, MAX_USERS, NUM_ANTENNAS], dtype=tf.complex64)
-    _ = model(dummy_h, task_name="Static", doppler=tf.zeros([1]), delay_spread=tf.zeros([1]), training=False)
+    tf.keras.utils.set_random_seed(seed)
+    #tf.config.experimental.enable_op_determinism()
 
-    # ✅ حالا Optimizer رو بساز
-    lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
-        initial_learning_rate=0.005, decay_steps=1000, decay_rate=0.9)
-    optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
-    optimizer.build(model.trainable_variables)  # 👈 این خط رو اضافه کن تا متغیرها به Optimizer معرفی بشن
+    # ✅ ساخت مدل روی CPU برای جلوگیری از crash در GRUCell
+        # ✅ ساخت مدل روی CPU برای جلوگیری از crash در GRUCell
+    with tf.device("/CPU:0"):
+        model = BeamformingMetaAttentionModel(NUM_ANTENNAS)
+        dummy_h = tf.zeros([1, MAX_USERS, NUM_ANTENNAS], dtype=tf.complex64)
+        _ = model(dummy_h, task_name="Static", doppler=tf.zeros([1]), delay_spread=tf.zeros([1]), training=False)
+
+        lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+            initial_learning_rate=0.005, decay_steps=1000, decay_rate=0.9)
+        optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
+
+    optimizer.build(model.trainable_variables)
 
     checkpoint_logger.info(f"[CHECKPOINT-Main] 🚀 Start simulation | Seed={seed}")
-    user_counts, total_time = simulate_daily_traffic(checkpoint_logger)  # اضافه کردن checkpoint_logger
+    user_counts, total_time = simulate_daily_traffic(checkpoint_logger)
     checkpoint_logger.info(f"[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time={total_time:.2f} hrs")
 
     results = {metric: [] for metric in ["throughput", "latency", "energy", "sinr", "forgetting", "fwt", "bwt"]}
@@ -559,8 +570,7 @@ def main(seed):
         for task in TASKS:
             period_slice = user_counts[task["name"]][period_idx*4:(period_idx+1)*4]
             total_period_users += sum(period_slice) / len(period_slice) if period_slice else 0
-        num_users = min(int(total_period_users), MAX_USERS_PER_SLOT)  # نه MAX_USERS
-
+        num_users = min(int(total_period_users), MAX_USERS_PER_SLOT)
         checkpoint_logger.info(f"[CHECKPOINT-Main] 👥 Users in {period}: {num_users}")
 
         if num_users == 0:
@@ -568,7 +578,7 @@ def main(seed):
             continue
 
         h_dict = {}
-        for task in TASKS[:-1]:  # Exclude Mixed during training
+        for task in TASKS[:-1]:
             h_dict[task["name"]] = generate_channel(task, NUM_SLOTS, BATCH_SIZE, num_users)
         checkpoint_logger.info(f"[CHECKPOINT-Main] ✅ Channel generation done for all tasks in {period}")
 
@@ -577,18 +587,20 @@ def main(seed):
             for task_idx, task in enumerate(TASKS[:-1]):
                 h = h_dict[task["name"]]
                 x = h
-                dataset = [(x, h)]
+                delay_spread_val = float(np.mean(task["delay_spread"]))
+                doppler_val = float(np.mean(task["doppler"]))
 
                 channel_stats = {
-                    "delay_spread": tf.ones([BATCH_SIZE, 1]) * task["delay_spread"],
-                    "doppler": tf.ones([BATCH_SIZE, 1]) * (task["doppler"] if isinstance(task["doppler"], (int, float)) else np.mean(task["doppler"])),
-                    "snr": tf.ones([BATCH_SIZE, 1]) * 15.0,
+                    "delay_spread": tf.ones([BATCH_SIZE, 1], dtype=tf.float32) * delay_spread_val,
+                    "doppler": tf.ones([BATCH_SIZE, 1], dtype=tf.float32) * doppler_val,
+                    "snr": tf.ones([BATCH_SIZE, 1], dtype=tf.float32) * 15.0,
                     "task_idx": task_idx,
                     "task_name": task["name"]
                 }
 
+
                 for i, (x_batch, h_batch) in enumerate(dataset):
-                    loss, sinr, mean_w, mean_h, snr_val, snr_db_val, loss_val = train_step(
+                    loss, snr_val, mean_w, mean_h, sinr_db_val, loss_val = train_step(
                         model, x_batch, h_batch, optimizer, channel_stats, epoch
                     )
                     model.update_memory(x_batch, h_batch, loss)
@@ -601,36 +613,27 @@ def main(seed):
                             checkpoint_logger.info(f"[CHECKPOINT-Main] [Epoch {epoch+1} | Task={task['name']}] mean|h|: {mean_h.numpy():.5f}")
                             checkpoint_logger.info(f"[CHECKPOINT-Main] [Epoch {epoch+1} | Task={task['name']}] loss: {loss_val.numpy():.5f}, snr: {snr_val.numpy():.5f}, sinr_db: {sinr_db_val.numpy():.2f}")
                             checkpoint_logger.info(f"[CHECKPOINT-Main] 🔚 End of Epoch={epoch+1} | Task={task['name']} | Loss={loss_val.numpy():.2f} | SINR={sinr_db_val.numpy():.2f}dB")
-
-                # بعد از اتمام هر تسک و قبل از رفتن به تسک بعدی، پارامترها رو ذخیره کن
-                if task_idx < len(TASKS[:-1]) - 1:  # برای همه تسک‌ها جز آخری توی این دوره
+                if task_idx < len(TASKS[:-1]) - 1:
                     model.save_old_params()
-
-    # بقیه کد بدون تغییر
 
     model.save_weights(f"weights_seed_{seed}.h5")
     checkpoint_logger.info(f"[CHECKPOINT-Main] 💾 Weights saved to weights_seed_{seed}.h5")
 
-    # ✅ Final inference with averaging
     with tf.device('/CPU:0'):
         checkpoint_logger.info(f"[CHECKPOINT-Main] ✅ Training completed. Proceeding to inference...")
-
         sinr_values = []
         best_sinr = float('-inf')
         best_index = -1
-
-        for run_idx in range(10):  # Repeat inference 10 times for robustness
+        for run_idx in range(10):
             h_mixed = generate_channel(TASKS[-1], NUM_SLOTS, BATCH_SIZE, num_users)
             channel_stats_mixed = {
                 "delay_spread": tf.random.uniform([BATCH_SIZE, 1], 30e-9, 100e-9),
                 "doppler": tf.random.uniform([BATCH_SIZE, 1], 30, 600),
                 "snr": tf.ones([BATCH_SIZE, 1]) * 15.0
             }
-
             doppler = tf.reduce_mean(channel_stats_mixed["doppler"]).numpy()
-            speed_kmph = doppler * 3e8 / FREQ * 3600 / 1000  # km/h
+            speed_kmph = doppler * 3e8 / FREQ * 3600 / 1000
             checkpoint_logger.info(f"[CHECKPOINT-1] Task=Mixed | Inference Iter={run_idx+1} | Doppler={doppler:.2f} Hz | MeanSpeed={speed_kmph:.2f} km/h")
-
             w = model(
                 h_mixed,
                 doppler=channel_stats_mixed["doppler"][:, 0],
@@ -638,23 +641,20 @@ def main(seed):
                 task_name="Mixed"
             )
             w = tf.cast(w, dtype=tf.complex64)
-
-            signal_matrix = tf.matmul(w, tf.transpose(h_mixed, [0, 2, 1]))  # [B, U, U]
+            signal_matrix = tf.matmul(w, tf.transpose(h_mixed, [0, 2, 1]))
             desired_power = tf.reduce_mean(tf.abs(tf.linalg.diag_part(signal_matrix))**2)
             interference = tf.reduce_mean(tf.reduce_sum(tf.abs(signal_matrix)**2 * (1.0 - tf.eye(num_users)), axis=-1))
             sinr = desired_power / (interference + NOISE_POWER + 1e-10)
-            sinr_db = 10.0 * tf.math.log(sinr + 1e-8) / tf.math.log(10.0)  # snr به sinr تغییر کرد
+            sinr_db = 10.0 * tf.math.log(sinr + 1e-8) / tf.math.log(10.0)
             sinr_db_val = sinr_db.numpy()
             sinr_values.append(sinr_db_val)
-            if sinr > best_sinr:  # مقایسه مستقیم با sinr
-                best_sinr = sinr  # نگه داشتن تنسور
+            if sinr > best_sinr:
+                best_sinr = sinr
                 best_index = run_idx
-
         avg_sinr_db = np.mean(sinr_values)
         latency = 8.5 + np.random.uniform(-1.5, 2.2)
         energy = 45 * (num_users / MAX_USERS)
-        throughput = np.log2(1 + 10**(avg_sinr_db / 10)) if not np.isnan(avg_sinr_db) else 0.0  # چک کردن NaN
-
+        throughput = np.log2(1 + 10**(avg_sinr_db / 10)) if not np.isnan(avg_sinr_db) else 0.0
         checkpoint_logger.info(f"[CHECKPOINT-Main] 📡 Inference (Mixed): throughput={throughput:.4f}, latency={latency:.2f}ms, sinr={avg_sinr_db:.2f}dB")
         checkpoint_logger.info(f"[CHECKPOINT-Main] ⭐ Best SINR across 10 runs: {(10.0 * tf.math.log(best_sinr + 1e-10) / tf.math.log(10.0)).numpy():.2f} dB at run {best_index+1}")
 
@@ -671,11 +671,8 @@ def main(seed):
                 f.write(f"{DAILY_PERIODS[i] if i < len(DAILY_PERIODS) else 'Final'}:\n")
                 for metric in results:
                     f.write(f"  {metric}: {results[metric][i]:.4f}\n")
-
         checkpoint_logger.info(f"[CHECKPOINT-Main] 🏁 Simulation finished for seed {seed}")
-
     logging.info(f"Simulation completed for seed {seed}")
 
 if __name__ == "__main__":
     main(42)
-
