@@ -1,0 +1,617 @@
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=64
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=64
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=64
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=morning Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in morning: 64
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Static | Doppler=62.07 Hz | MeanSpeed=2.39 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01238 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Static] 📊 Std(|h|): 0.65435
+INFO:root:[Static] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Pedestrian | Doppler=203.92 Hz | MeanSpeed=7.87 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88800 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52255
+INFO:root:[Pedestrian] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Vehicular | Doppler=2279.01 Hz | MeanSpeed=87.90 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01144 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Vehicular] 📊 Std(|h|): 0.55720
+INFO:root:[Vehicular] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Aerial | Doppler=908.69 Hz | MeanSpeed=35.05 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01258 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Aerial] 📊 Std(|h|): 0.56582
+INFO:root:[Aerial] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 3.16376
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.52812
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: 21146.06055, snr: 0.01587, sinr_db: -17.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=21146.06 | SINR=-17.99dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: 3.09484
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.91367
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: 37616.01172, snr: 0.01587, sinr_db: -17.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=37616.01 | SINR=-17.99dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: 3.13547
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.79454
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: 33207.58984, snr: 0.01592, sinr_db: -17.98
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=33207.59 | SINR=-17.98dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: 3.31943
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.76718
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: 34932.08594, snr: 0.01585, sinr_db: -18.00
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=34932.09 | SINR=-18.00dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=2 start for morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: 3.33046
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.52812
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: 592740.06250, snr: 0.01589, sinr_db: -17.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=592740.06 | SINR=-17.99dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: 3.19113
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.91367
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: 35608.08594, snr: 0.01584, sinr_db: -18.00
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=35608.09 | SINR=-18.00dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: 3.22072
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.79454
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: 31684.63281, snr: 0.01596, sinr_db: -17.97
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=31684.63 | SINR=-17.97dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: 3.31731
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.76718
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: 35540.63672, snr: 0.01583, sinr_db: -18.01
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=35540.64 | SINR=-18.01dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=3 start for morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: 3.01220
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.52812
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: 3865104128.00000, snr: 0.01590, sinr_db: -17.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=3865104128.00 | SINR=-17.99dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: 3.09027
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.91367
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: 34544.82812, snr: 0.01589, sinr_db: -17.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=34544.83 | SINR=-17.99dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: 3.25841
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.79454
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: 30899.25391, snr: 0.01594, sinr_db: -17.98
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=30899.25 | SINR=-17.98dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: 3.25186
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.76718
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: 32645.02734, snr: 0.01590, sinr_db: -17.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=32645.03 | SINR=-17.99dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=4 start for morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: 3.18350
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.52812
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: 18969093460763607040.00000, snr: 0.01586, sinr_db: -18.00
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=18969093460763607040.00 | SINR=-18.00dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: 3.09940
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.91367
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: nan, snr: 0.01587, sinr_db: -17.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=nan | SINR=-17.99dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.79454
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.76718
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=5 start for morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.52812
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.91367
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.79454
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.76718
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=6 start for morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.52812
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.91367
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.79454
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.76718
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=7 start for morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.52812
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.91367
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.79454
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.76718
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=8 start for morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.52812
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.91367
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.79454
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.76718
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=9 start for morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.52812
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.91367
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.79454
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.76718
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=10 start for morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.52812
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.91367
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.79454
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.76718
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=noon Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in noon: 64
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Static | Doppler=64.13 Hz | MeanSpeed=2.47 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01256 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Static] 📊 Std(|h|): 0.64461
+INFO:root:[Static] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Pedestrian | Doppler=203.52 Hz | MeanSpeed=7.85 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88642 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52310
+INFO:root:[Pedestrian] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Vehicular | Doppler=2346.51 Hz | MeanSpeed=90.51 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01147 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Vehicular] 📊 Std(|h|): 0.55831
+INFO:root:[Vehicular] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Aerial | Doppler=843.19 Hz | MeanSpeed=32.52 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01185 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Aerial] 📊 Std(|h|): 0.55053
+INFO:root:[Aerial] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.55119
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.91167
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.79096
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.81628
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=2 start for noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.55119
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.91167
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.79096
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.81628
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=3 start for noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.55119
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.91167
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.79096
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.81628
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=4 start for noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.55119
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.91167
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.79096
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.81628
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=5 start for noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.55119
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.91167
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.79096
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.81628
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=6 start for noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.55119
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.91167
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.79096
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.81628
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=7 start for noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.55119
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.91167
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.79096
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.81628
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=8 start for noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.55119
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.91167
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.79096
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.81628
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=9 start for noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.55119
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.91167
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.79096
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.81628
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=10 start for noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.55119
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.91167
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.79096
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.81628
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=evening Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in evening: 64
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Static | Doppler=61.48 Hz | MeanSpeed=2.37 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01251 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Static] 📊 Std(|h|): 0.62710
+INFO:root:[Static] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Pedestrian | Doppler=196.21 Hz | MeanSpeed=7.57 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88477 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52024
+INFO:root:[Pedestrian] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Vehicular | Doppler=2366.45 Hz | MeanSpeed=91.28 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01154 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Vehicular] 📊 Std(|h|): 0.55970
+INFO:root:[Vehicular] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Aerial | Doppler=840.21 Hz | MeanSpeed=32.41 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01181 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Aerial] 📊 Std(|h|): 0.55475
+INFO:root:[Aerial] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.59447
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.92218
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.78653
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.80249
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=2 start for evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.59447
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.92218
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.78653
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.80249
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=3 start for evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.59447
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.92218
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.78653
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.80249
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=4 start for evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.59447
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.92218
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.78653
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.80249
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=5 start for evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.59447
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.92218
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.78653
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.80249
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=6 start for evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.59447
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.92218
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.78653
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.80249
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=7 start for evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.59447
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.92218
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.78653
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.80249
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=8 start for evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.59447
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.92218
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.78653
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.80249
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=9 start for evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.59447
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.92218
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.78653
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.80249
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=10 start for evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.59447
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.92218
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.78653
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.80249
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=nan | SINR=nandB
+DEBUG:h5py._conv:Creating converter from 5 to 3
+INFO:checkpoint_logger:[CHECKPOINT-Main] 💾 Weights saved to weights_seed_42.h5
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Training completed. Proceeding to inference...
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Mixed | Doppler=1461.44 Hz | MeanSpeed=56.37 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.01237 | shape=(16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Mixed | Normalized |h| mean=0.99992
+INFO:root:[Mixed] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Mixed] 📊 Std(|h|): 0.64532
+INFO:root:[Mixed] 📐 Shape: (16, 64, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Mixed | Inference Iter=1 | Doppler=353.24 Hz | MeanSpeed=13.63 km/h
+ERROR:root:Traceback (most recent call last):
+  File "/home/tanglab/Desktop/BF-CL/main8.py", line 673, in <module>
+    main(42)
+  File "/home/tanglab/Desktop/BF-CL/main8.py", line 638, in main
+    sinr_db = 10 * tf.math.log10(sinr + 1e-10)  # اضافه کردن 1e-10 برای جلوگیری از log(0)
+AttributeError: module 'tensorflow._api.v2.math' has no attribute 'log10'. Did you mean: 'log1p'?
