@@ -1,0 +1,63 @@
+DEBUG:tensorflow:Layer gru will use cuDNN kernels when running on GPU.
+DEBUG:tensorflow:Layer gru_1 will use cuDNN kernels when running on GPU.
+DEBUG:tensorflow:Layer gru_2 will use cuDNN kernels when running on GPU.
+DEBUG:tensorflow:Layer gru_3 will use cuDNN kernels when running on GPU.
+DEBUG:tensorflow:Layer gru_4 will use cuDNN kernels when running on GPU.
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=morning Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in morning: 32
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01217 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Static] 📊 Std(|h|): 0.60270
+INFO:root:[Static] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88688 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.51886
+INFO:root:[Pedestrian] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01152 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Vehicular] 📊 Std(|h|): 0.54922
+INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01211 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Aerial] 📊 Std(|h|): 0.53255
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for morning
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:5 out of the last 5 calls to <function _BaseOptimizer._update_step_xla at 0x732c631d5e10> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+WARNING:tensorflow:6 out of the last 6 calls to <function _BaseOptimizer._update_step_xla at 0x732c631d5e10> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 0.10978
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.65905
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: 96.12006, snr: 0.03473, sinr_db: -14.59
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=96.12 | SINR=-14.59dB
+ERROR:root:Traceback (most recent call last):
+ERROR:root:File "/home/tanglab/Desktop/BF-CL/main8.py", line 686, in <module>
+ERROR:root:main(42)
+ERROR:root:File "/home/tanglab/Desktop/BF-CL/main8.py", line 611, in main
+ERROR:root:loss, snr_val, mean_w, mean_h, sinr_db_val, loss_val = train_step(
+ERROR:root:File "/home/tanglab/Desktop/BF-CL/main8.py", line 503, in train_step
+ERROR:root:w_replay = tf.where(tf.math.is_finite(w_replay), w_replay, tf.zeros_like(w_replay))
+ERROR:root:File "/home/tanglab/miniconda3/envs/BF-CL/lib/python3.10/site-packages/tensorflow/python/ops/gen_math_ops.py", line 4966, in is_finite
+ERROR:root:_ops.raise_from_not_ok_status(e, name)
+ERROR:root:File "/home/tanglab/miniconda3/envs/BF-CL/lib/python3.10/site-packages/tensorflow/python/framework/ops.py", line 5883, in raise_from_not_ok_status
+ERROR:root:raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+ERROR:root:tensorflow.python.framework.errors_impl
+ERROR:root:.
+ERROR:root:InvalidArgumentError
+ERROR:root::
+ERROR:root:Value for attr 'T' of complex64 is not in the list of allowed values: bfloat16, half, float, double
+	; NodeDef: {{node IsFinite}}; Op<name=IsFinite; signature=x:T -> y:bool; attr=T:type,allowed=[DT_BFLOAT16, DT_HALF, DT_FLOAT, DT_DOUBLE]> [Op:IsFinite] name:

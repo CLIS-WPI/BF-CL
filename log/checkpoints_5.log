@@ -1,0 +1,26 @@
+2025-03-28 17:45:21,729 - [CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+2025-03-28 17:45:21,729 - [CHECKPOINT-Traffic] 🚦 Start traffic simulation
+2025-03-28 17:45:21,729 - [CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+2025-03-28 17:45:21,730 - [CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+2025-03-28 17:45:21,730 - [CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+2025-03-28 17:45:21,730 - [CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+2025-03-28 17:45:21,730 - [CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+2025-03-28 17:45:21,730 - [CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+2025-03-28 17:45:21,730 - [CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+2025-03-28 17:45:21,730 - [CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+2025-03-28 17:45:21,730 - [CHECKPOINT-Main] 🕒 Period=morning Start
+2025-03-28 17:45:21,730 - [CHECKPOINT-Main] 👥 Users in morning: 32
+2025-03-28 17:45:22,052 - [CHECKPOINT-2] Task=Static | Raw |h| mean=0.01217 | shape=(16, 32, 64)
+2025-03-28 17:45:22,054 - [CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+2025-03-28 17:45:22,060 - [CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88688 | shape=(16, 32, 64)
+2025-03-28 17:45:22,060 - [CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+2025-03-28 17:45:22,343 - [CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01152 | shape=(16, 32, 64)
+2025-03-28 17:45:22,343 - [CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+2025-03-28 17:45:22,625 - [CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01211 | shape=(16, 32, 64)
+2025-03-28 17:45:22,626 - [CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+2025-03-28 17:45:22,626 - [CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
+2025-03-28 17:45:22,626 - [CHECKPOINT-Main] 🔁 Epoch=1 start for morning
+2025-03-28 17:45:25,605 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 0.10978
+2025-03-28 17:45:25,605 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.65905
+2025-03-28 17:45:25,605 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: 96.12006, snr: 0.03473, sinr_db: -14.59
+2025-03-28 17:45:25,605 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=96.12 | SINR=-14.59dB

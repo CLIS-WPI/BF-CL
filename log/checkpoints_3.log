@@ -1,0 +1,588 @@
+2025-03-28 17:38:35,205 - [CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+2025-03-28 17:38:35,206 - [CHECKPOINT-Traffic] 🚦 Start traffic simulation
+2025-03-28 17:38:35,206 - [CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+2025-03-28 17:38:35,206 - [CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+2025-03-28 17:38:35,207 - [CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+2025-03-28 17:38:35,207 - [CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+2025-03-28 17:38:35,207 - [CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+2025-03-28 17:38:35,207 - [CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+2025-03-28 17:38:35,207 - [CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+2025-03-28 17:38:35,207 - [CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+2025-03-28 17:38:35,207 - [CHECKPOINT-Main] 🕒 Period=morning Start
+2025-03-28 17:38:35,207 - [CHECKPOINT-Main] 👥 Users in morning: 32
+2025-03-28 17:38:35,545 - [CHECKPOINT-2] Task=Static | Raw |h| mean=0.01226 | shape=(16, 32, 64)
+2025-03-28 17:38:35,547 - [CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+2025-03-28 17:38:35,553 - [CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88445 | shape=(16, 32, 64)
+2025-03-28 17:38:35,553 - [CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+2025-03-28 17:38:35,850 - [CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01149 | shape=(16, 32, 64)
+2025-03-28 17:38:35,851 - [CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+2025-03-28 17:38:36,147 - [CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01215 | shape=(16, 32, 64)
+2025-03-28 17:38:36,148 - [CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+2025-03-28 17:38:36,149 - [CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
+2025-03-28 17:38:36,149 - [CHECKPOINT-Main] 🔁 Epoch=1 start for morning
+2025-03-28 17:38:38,678 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 0.11026
+2025-03-28 17:38:38,679 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.60168
+2025-03-28 17:38:38,679 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: 94.76209, snr: 0.03277, sinr_db: -14.85
+2025-03-28 17:38:38,679 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=94.76 | SINR=-14.85dB
+2025-03-28 17:38:39,124 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: 0.11024
+2025-03-28 17:38:39,124 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.91522
+2025-03-28 17:38:39,124 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: nan, snr: 0.03110, sinr_db: -15.07
+2025-03-28 17:38:39,124 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=nan | SINR=-15.07dB
+2025-03-28 17:38:39,401 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:39,401 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.81573
+2025-03-28 17:38:39,401 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:39,401 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:39,679 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:39,679 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.85109
+2025-03-28 17:38:39,679 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:39,679 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:39,679 - [CHECKPOINT-Main] 🔁 Epoch=2 start for morning
+2025-03-28 17:38:39,791 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: nan
+2025-03-28 17:38:39,792 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.60168
+2025-03-28 17:38:39,792 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:39,792 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:39,905 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:39,905 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.91522
+2025-03-28 17:38:39,905 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:39,905 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:40,018 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:40,018 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.81573
+2025-03-28 17:38:40,019 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:40,019 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:40,132 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:40,132 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.85109
+2025-03-28 17:38:40,132 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:40,132 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:40,132 - [CHECKPOINT-Main] 🔁 Epoch=3 start for morning
+2025-03-28 17:38:40,241 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: nan
+2025-03-28 17:38:40,241 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.60168
+2025-03-28 17:38:40,241 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:40,241 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:40,352 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:40,352 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.91522
+2025-03-28 17:38:40,352 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:40,352 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:40,464 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:40,464 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.81573
+2025-03-28 17:38:40,464 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:40,464 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:40,575 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:40,575 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.85109
+2025-03-28 17:38:40,575 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:40,575 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:40,575 - [CHECKPOINT-Main] 🔁 Epoch=4 start for morning
+2025-03-28 17:38:40,683 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: nan
+2025-03-28 17:38:40,683 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.60168
+2025-03-28 17:38:40,683 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:40,683 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:40,795 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:40,795 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.91522
+2025-03-28 17:38:40,795 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:40,795 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:40,907 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:40,907 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.81573
+2025-03-28 17:38:40,907 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:40,907 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:41,019 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:41,019 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.85109
+2025-03-28 17:38:41,019 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:41,019 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:41,019 - [CHECKPOINT-Main] 🔁 Epoch=5 start for morning
+2025-03-28 17:38:41,128 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: nan
+2025-03-28 17:38:41,128 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.60168
+2025-03-28 17:38:41,128 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:41,128 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:41,240 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:41,240 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.91522
+2025-03-28 17:38:41,241 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:41,241 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:41,353 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:41,353 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.81573
+2025-03-28 17:38:41,353 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:41,353 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:41,465 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:41,465 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.85109
+2025-03-28 17:38:41,465 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:41,465 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:41,465 - [CHECKPOINT-Main] 🔁 Epoch=6 start for morning
+2025-03-28 17:38:41,574 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: nan
+2025-03-28 17:38:41,574 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.60168
+2025-03-28 17:38:41,574 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:41,574 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:41,686 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:41,686 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.91522
+2025-03-28 17:38:41,687 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:41,687 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:41,798 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:41,799 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.81573
+2025-03-28 17:38:41,799 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:41,799 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:41,911 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:41,911 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.85109
+2025-03-28 17:38:41,911 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:41,911 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:41,911 - [CHECKPOINT-Main] 🔁 Epoch=7 start for morning
+2025-03-28 17:38:42,020 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: nan
+2025-03-28 17:38:42,020 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.60168
+2025-03-28 17:38:42,020 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:42,020 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:42,132 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:42,132 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.91522
+2025-03-28 17:38:42,132 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:42,132 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:42,244 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:42,244 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.81573
+2025-03-28 17:38:42,244 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:42,244 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:42,356 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:42,356 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.85109
+2025-03-28 17:38:42,356 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:42,356 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:42,356 - [CHECKPOINT-Main] 🔁 Epoch=8 start for morning
+2025-03-28 17:38:42,464 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: nan
+2025-03-28 17:38:42,464 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.60168
+2025-03-28 17:38:42,464 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:42,464 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:42,575 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:42,576 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.91522
+2025-03-28 17:38:42,576 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:42,576 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:42,687 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:42,687 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.81573
+2025-03-28 17:38:42,687 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:42,687 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:42,798 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:42,798 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.85109
+2025-03-28 17:38:42,798 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:42,798 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:42,798 - [CHECKPOINT-Main] 🔁 Epoch=9 start for morning
+2025-03-28 17:38:42,906 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: nan
+2025-03-28 17:38:42,906 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.60168
+2025-03-28 17:38:42,906 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:42,906 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:43,017 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:43,017 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.91522
+2025-03-28 17:38:43,017 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:43,017 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:43,128 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:43,128 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.81573
+2025-03-28 17:38:43,128 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:43,128 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:43,240 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:43,240 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.85109
+2025-03-28 17:38:43,240 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:43,240 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:43,240 - [CHECKPOINT-Main] 🔁 Epoch=10 start for morning
+2025-03-28 17:38:43,351 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: nan
+2025-03-28 17:38:43,351 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.60168
+2025-03-28 17:38:43,351 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:43,351 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:43,462 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:43,462 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.91522
+2025-03-28 17:38:43,463 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:43,463 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:43,574 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:43,574 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.81573
+2025-03-28 17:38:43,574 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:43,574 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:43,685 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:43,685 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.85109
+2025-03-28 17:38:43,685 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:43,685 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:43,685 - [CHECKPOINT-Main] 🕒 Period=noon Start
+2025-03-28 17:38:43,685 - [CHECKPOINT-Main] 👥 Users in noon: 32
+2025-03-28 17:38:43,989 - [CHECKPOINT-2] Task=Static | Raw |h| mean=0.01229 | shape=(16, 32, 64)
+2025-03-28 17:38:43,989 - [CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+2025-03-28 17:38:43,993 - [CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88666 | shape=(16, 32, 64)
+2025-03-28 17:38:43,993 - [CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+2025-03-28 17:38:44,292 - [CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01160 | shape=(16, 32, 64)
+2025-03-28 17:38:44,293 - [CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+2025-03-28 17:38:44,588 - [CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01202 | shape=(16, 32, 64)
+2025-03-28 17:38:44,589 - [CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+2025-03-28 17:38:44,589 - [CHECKPOINT-Main] ✅ Channel generation done for all tasks in noon
+2025-03-28 17:38:44,589 - [CHECKPOINT-Main] 🔁 Epoch=1 start for noon
+2025-03-28 17:38:44,696 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: nan
+2025-03-28 17:38:44,696 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.64866
+2025-03-28 17:38:44,696 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:44,696 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:44,807 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:44,807 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.91349
+2025-03-28 17:38:44,807 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:44,807 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:44,918 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:44,918 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.81189
+2025-03-28 17:38:44,918 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:44,918 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:45,029 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:45,029 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.84242
+2025-03-28 17:38:45,029 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:45,029 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:45,029 - [CHECKPOINT-Main] 🔁 Epoch=2 start for noon
+2025-03-28 17:38:45,137 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: nan
+2025-03-28 17:38:45,137 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.64866
+2025-03-28 17:38:45,138 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:45,138 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:45,248 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:45,249 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.91349
+2025-03-28 17:38:45,249 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:45,249 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:45,360 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:45,360 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.81189
+2025-03-28 17:38:45,360 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:45,360 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:45,471 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:45,471 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.84242
+2025-03-28 17:38:45,471 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:45,471 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:45,471 - [CHECKPOINT-Main] 🔁 Epoch=3 start for noon
+2025-03-28 17:38:45,579 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: nan
+2025-03-28 17:38:45,579 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.64866
+2025-03-28 17:38:45,579 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:45,579 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:45,690 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:45,690 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.91349
+2025-03-28 17:38:45,690 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:45,690 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:45,801 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:45,801 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.81189
+2025-03-28 17:38:45,801 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:45,801 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:45,912 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:45,912 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.84242
+2025-03-28 17:38:45,912 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:45,912 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:45,912 - [CHECKPOINT-Main] 🔁 Epoch=4 start for noon
+2025-03-28 17:38:46,019 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: nan
+2025-03-28 17:38:46,019 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.64866
+2025-03-28 17:38:46,019 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:46,019 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:46,129 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:46,129 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.91349
+2025-03-28 17:38:46,129 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:46,129 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:46,239 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:46,239 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.81189
+2025-03-28 17:38:46,239 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:46,239 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:46,350 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:46,350 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.84242
+2025-03-28 17:38:46,350 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:46,350 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:46,350 - [CHECKPOINT-Main] 🔁 Epoch=5 start for noon
+2025-03-28 17:38:46,457 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: nan
+2025-03-28 17:38:46,457 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.64866
+2025-03-28 17:38:46,457 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:46,457 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:46,567 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:46,568 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.91349
+2025-03-28 17:38:46,568 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:46,568 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:46,678 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:46,678 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.81189
+2025-03-28 17:38:46,678 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:46,678 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:46,789 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:46,789 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.84242
+2025-03-28 17:38:46,789 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:46,789 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:46,789 - [CHECKPOINT-Main] 🔁 Epoch=6 start for noon
+2025-03-28 17:38:46,896 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: nan
+2025-03-28 17:38:46,896 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.64866
+2025-03-28 17:38:46,896 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:46,896 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:47,006 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:47,006 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.91349
+2025-03-28 17:38:47,006 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:47,006 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:47,117 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:47,117 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.81189
+2025-03-28 17:38:47,117 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:47,117 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:47,227 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:47,227 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.84242
+2025-03-28 17:38:47,227 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:47,227 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:47,227 - [CHECKPOINT-Main] 🔁 Epoch=7 start for noon
+2025-03-28 17:38:47,334 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: nan
+2025-03-28 17:38:47,335 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.64866
+2025-03-28 17:38:47,335 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:47,335 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:47,446 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:47,446 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.91349
+2025-03-28 17:38:47,446 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:47,446 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:47,556 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:47,556 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.81189
+2025-03-28 17:38:47,556 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:47,556 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:47,666 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:47,666 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.84242
+2025-03-28 17:38:47,666 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:47,666 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:47,666 - [CHECKPOINT-Main] 🔁 Epoch=8 start for noon
+2025-03-28 17:38:47,774 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: nan
+2025-03-28 17:38:47,774 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.64866
+2025-03-28 17:38:47,774 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:47,774 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:47,884 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:47,884 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.91349
+2025-03-28 17:38:47,884 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:47,884 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:47,995 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:47,995 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.81189
+2025-03-28 17:38:47,995 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:47,995 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:48,111 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:48,112 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.84242
+2025-03-28 17:38:48,112 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:48,112 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:48,112 - [CHECKPOINT-Main] 🔁 Epoch=9 start for noon
+2025-03-28 17:38:48,222 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: nan
+2025-03-28 17:38:48,222 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.64866
+2025-03-28 17:38:48,222 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:48,223 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:48,333 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:48,333 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.91349
+2025-03-28 17:38:48,333 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:48,333 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:48,444 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:48,444 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.81189
+2025-03-28 17:38:48,444 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:48,444 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:48,554 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:48,555 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.84242
+2025-03-28 17:38:48,555 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:48,555 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:48,555 - [CHECKPOINT-Main] 🔁 Epoch=10 start for noon
+2025-03-28 17:38:48,662 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: nan
+2025-03-28 17:38:48,662 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.64866
+2025-03-28 17:38:48,662 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:48,662 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:48,773 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:48,773 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.91349
+2025-03-28 17:38:48,773 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:48,773 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:48,884 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:48,884 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.81189
+2025-03-28 17:38:48,884 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:48,884 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:48,995 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:48,995 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.84242
+2025-03-28 17:38:48,995 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:48,995 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:48,995 - [CHECKPOINT-Main] 🕒 Period=evening Start
+2025-03-28 17:38:48,995 - [CHECKPOINT-Main] 👥 Users in evening: 32
+2025-03-28 17:38:49,290 - [CHECKPOINT-2] Task=Static | Raw |h| mean=0.01213 | shape=(16, 32, 64)
+2025-03-28 17:38:49,290 - [CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+2025-03-28 17:38:49,293 - [CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88641 | shape=(16, 32, 64)
+2025-03-28 17:38:49,294 - [CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+2025-03-28 17:38:49,586 - [CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01136 | shape=(16, 32, 64)
+2025-03-28 17:38:49,587 - [CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+2025-03-28 17:38:49,888 - [CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01204 | shape=(16, 32, 64)
+2025-03-28 17:38:49,888 - [CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+2025-03-28 17:38:49,889 - [CHECKPOINT-Main] ✅ Channel generation done for all tasks in evening
+2025-03-28 17:38:49,889 - [CHECKPOINT-Main] 🔁 Epoch=1 start for evening
+2025-03-28 17:38:50,001 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: nan
+2025-03-28 17:38:50,001 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.71680
+2025-03-28 17:38:50,001 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:50,001 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:50,112 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:50,112 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.91806
+2025-03-28 17:38:50,113 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:50,113 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:50,224 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:50,224 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.83632
+2025-03-28 17:38:50,224 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:50,224 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:50,335 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:50,336 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.79116
+2025-03-28 17:38:50,336 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:50,336 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:50,336 - [CHECKPOINT-Main] 🔁 Epoch=2 start for evening
+2025-03-28 17:38:50,443 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: nan
+2025-03-28 17:38:50,444 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.71680
+2025-03-28 17:38:50,444 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:50,444 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:50,555 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:50,555 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.91806
+2025-03-28 17:38:50,555 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:50,555 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:50,666 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:50,666 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.83632
+2025-03-28 17:38:50,666 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:50,666 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:50,777 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:50,777 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.79116
+2025-03-28 17:38:50,777 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:50,778 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:50,778 - [CHECKPOINT-Main] 🔁 Epoch=3 start for evening
+2025-03-28 17:38:50,897 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: nan
+2025-03-28 17:38:50,897 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.71680
+2025-03-28 17:38:50,897 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:50,897 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:51,009 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:51,009 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.91806
+2025-03-28 17:38:51,009 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:51,009 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:51,120 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:51,121 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.83632
+2025-03-28 17:38:51,121 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:51,121 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:51,232 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:51,232 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.79116
+2025-03-28 17:38:51,232 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:51,232 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:51,232 - [CHECKPOINT-Main] 🔁 Epoch=4 start for evening
+2025-03-28 17:38:51,340 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: nan
+2025-03-28 17:38:51,340 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.71680
+2025-03-28 17:38:51,340 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:51,340 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:51,451 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:51,451 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.91806
+2025-03-28 17:38:51,451 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:51,451 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:51,563 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:51,563 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.83632
+2025-03-28 17:38:51,563 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:51,563 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:51,673 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:51,673 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.79116
+2025-03-28 17:38:51,673 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:51,674 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:51,674 - [CHECKPOINT-Main] 🔁 Epoch=5 start for evening
+2025-03-28 17:38:51,781 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: nan
+2025-03-28 17:38:51,781 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.71680
+2025-03-28 17:38:51,781 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:51,781 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:51,897 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:51,897 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.91806
+2025-03-28 17:38:51,898 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:51,898 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:52,009 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:52,009 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.83632
+2025-03-28 17:38:52,009 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:52,009 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:52,121 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:52,121 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.79116
+2025-03-28 17:38:52,121 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:52,121 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:52,121 - [CHECKPOINT-Main] 🔁 Epoch=6 start for evening
+2025-03-28 17:38:52,229 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: nan
+2025-03-28 17:38:52,229 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.71680
+2025-03-28 17:38:52,229 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:52,229 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:52,340 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:52,340 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.91806
+2025-03-28 17:38:52,340 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:52,340 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:52,450 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:52,450 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.83632
+2025-03-28 17:38:52,450 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:52,450 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:52,561 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:52,562 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.79116
+2025-03-28 17:38:52,562 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:52,562 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:52,562 - [CHECKPOINT-Main] 🔁 Epoch=7 start for evening
+2025-03-28 17:38:52,669 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: nan
+2025-03-28 17:38:52,669 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.71680
+2025-03-28 17:38:52,669 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:52,670 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:52,779 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:52,779 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.91806
+2025-03-28 17:38:52,780 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:52,780 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:52,896 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:52,896 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.83632
+2025-03-28 17:38:52,897 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:52,897 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:53,007 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:53,008 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.79116
+2025-03-28 17:38:53,008 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:53,008 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:53,008 - [CHECKPOINT-Main] 🔁 Epoch=8 start for evening
+2025-03-28 17:38:53,116 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: nan
+2025-03-28 17:38:53,116 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.71680
+2025-03-28 17:38:53,116 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:53,116 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:53,228 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:53,228 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.91806
+2025-03-28 17:38:53,228 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:53,228 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:53,339 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:53,339 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.83632
+2025-03-28 17:38:53,339 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:53,339 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:53,450 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:53,451 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.79116
+2025-03-28 17:38:53,451 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:53,451 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:53,451 - [CHECKPOINT-Main] 🔁 Epoch=9 start for evening
+2025-03-28 17:38:53,559 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: nan
+2025-03-28 17:38:53,559 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.71680
+2025-03-28 17:38:53,559 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:53,559 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:53,671 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:53,671 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.91806
+2025-03-28 17:38:53,671 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:53,671 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:53,783 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:53,783 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.83632
+2025-03-28 17:38:53,783 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:53,783 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:53,894 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:53,894 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.79116
+2025-03-28 17:38:53,895 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:53,895 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:53,895 - [CHECKPOINT-Main] 🔁 Epoch=10 start for evening
+2025-03-28 17:38:54,003 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: nan
+2025-03-28 17:38:54,003 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.71680
+2025-03-28 17:38:54,003 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:54,003 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=nan | SINR=nandB
+2025-03-28 17:38:54,115 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: nan
+2025-03-28 17:38:54,115 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.91806
+2025-03-28 17:38:54,115 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:54,115 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=nan | SINR=nandB
+2025-03-28 17:38:54,228 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: nan
+2025-03-28 17:38:54,228 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.83632
+2025-03-28 17:38:54,228 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:54,228 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=nan | SINR=nandB
+2025-03-28 17:38:54,340 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: nan
+2025-03-28 17:38:54,340 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.79116
+2025-03-28 17:38:54,340 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+2025-03-28 17:38:54,340 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=nan | SINR=nandB
+2025-03-28 17:38:54,362 - [CHECKPOINT-Main] 💾 Weights saved to weights_seed_42.h5
+2025-03-28 17:38:54,363 - [CHECKPOINT-Main] ✅ Training completed. Proceeding to inference...
+2025-03-28 17:38:54,376 - [CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88312 | shape=(16, 32, 64)
+2025-03-28 17:38:54,379 - [CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+2025-03-28 17:38:54,383 - [CHECKPOINT-1] Task=Mixed | Inference Iter=1 | Doppler=353.24 Hz | MeanSpeed=13.63 km/h
+2025-03-28 17:38:54,959 - [CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.01210 | shape=(16, 32, 64)
+2025-03-28 17:38:54,960 - [CHECKPOINT-3] Task=Mixed | Normalized |h| mean=0.99992
+2025-03-28 17:38:54,963 - [CHECKPOINT-1] Task=Mixed | Inference Iter=2 | Doppler=290.97 Hz | MeanSpeed=11.22 km/h
+2025-03-28 17:38:55,005 - [CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88525 | shape=(16, 32, 64)
+2025-03-28 17:38:55,006 - [CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+2025-03-28 17:38:55,009 - [CHECKPOINT-1] Task=Mixed | Inference Iter=3 | Doppler=293.85 Hz | MeanSpeed=11.33 km/h
+2025-03-28 17:38:55,412 - [CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.01212 | shape=(16, 32, 64)
+2025-03-28 17:38:55,413 - [CHECKPOINT-3] Task=Mixed | Normalized |h| mean=0.99992
+2025-03-28 17:38:55,415 - [CHECKPOINT-1] Task=Mixed | Inference Iter=4 | Doppler=239.73 Hz | MeanSpeed=9.25 km/h
+2025-03-28 17:38:55,455 - [CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.89217 | shape=(16, 32, 64)
+2025-03-28 17:38:55,455 - [CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+2025-03-28 17:38:55,457 - [CHECKPOINT-1] Task=Mixed | Inference Iter=5 | Doppler=244.97 Hz | MeanSpeed=9.45 km/h
+2025-03-28 17:38:55,498 - [CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88959 | shape=(16, 32, 64)
+2025-03-28 17:38:55,499 - [CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+2025-03-28 17:38:55,501 - [CHECKPOINT-1] Task=Mixed | Inference Iter=6 | Doppler=267.46 Hz | MeanSpeed=10.32 km/h
+2025-03-28 17:38:55,540 - [CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88664 | shape=(16, 32, 64)
+2025-03-28 17:38:55,541 - [CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+2025-03-28 17:38:55,543 - [CHECKPOINT-1] Task=Mixed | Inference Iter=7 | Doppler=312.31 Hz | MeanSpeed=12.05 km/h
+2025-03-28 17:38:55,583 - [CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88682 | shape=(16, 32, 64)
+2025-03-28 17:38:55,584 - [CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+2025-03-28 17:38:55,586 - [CHECKPOINT-1] Task=Mixed | Inference Iter=8 | Doppler=315.29 Hz | MeanSpeed=12.16 km/h
+2025-03-28 17:38:55,625 - [CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88906 | shape=(16, 32, 64)
+2025-03-28 17:38:55,626 - [CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+2025-03-28 17:38:55,628 - [CHECKPOINT-1] Task=Mixed | Inference Iter=9 | Doppler=295.00 Hz | MeanSpeed=11.38 km/h
+2025-03-28 17:38:55,668 - [CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88653 | shape=(16, 32, 64)
+2025-03-28 17:38:55,668 - [CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+2025-03-28 17:38:55,671 - [CHECKPOINT-1] Task=Mixed | Inference Iter=10 | Doppler=298.63 Hz | MeanSpeed=11.52 km/h
+2025-03-28 17:38:55,708 - [CHECKPOINT-Main] 📡 Inference (Mixed): throughput=0.0000, latency=7.82ms, sinr=nandB
+2025-03-28 17:38:55,708 - [CHECKPOINT-Main] ⭐ Best SINR across 10 runs: nan dB at run 0
+2025-03-28 17:38:55,708 - [CHECKPOINT-Main] 🏁 Simulation finished for seed 42

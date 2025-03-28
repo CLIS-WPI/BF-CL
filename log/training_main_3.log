@@ -1,0 +1,902 @@
+DEBUG:tensorflow:Layer gru will use cuDNN kernels when running on GPU.
+DEBUG:tensorflow:Layer gru_1 will use cuDNN kernels when running on GPU.
+DEBUG:tensorflow:Layer gru_2 will use cuDNN kernels when running on GPU.
+DEBUG:tensorflow:Layer gru_3 will use cuDNN kernels when running on GPU.
+DEBUG:tensorflow:Layer gru_4 will use cuDNN kernels when running on GPU.
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=morning Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in morning: 32
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01226 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Static] 📊 Std(|h|): 0.62429
+INFO:root:[Static] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88445 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52212
+INFO:root:[Pedestrian] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01149 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Vehicular] 📊 Std(|h|): 0.55070
+INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01215 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Aerial] 📊 Std(|h|): 0.54016
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for morning
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:5 out of the last 5 calls to <function _BaseOptimizer._update_step_xla at 0x76b5bb1e1cf0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+WARNING:tensorflow:6 out of the last 6 calls to <function _BaseOptimizer._update_step_xla at 0x76b5bb1e1cf0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 0.11026
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.60168
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: 94.76209, snr: 0.03277, sinr_db: -14.85
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=94.76 | SINR=-14.85dB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: 0.11024
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.91522
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: nan, snr: 0.03110, sinr_db: -15.07
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=nan | SINR=-15.07dB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.81573
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.85109
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=2 start for morning
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.60168
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.91522
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.81573
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.85109
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=3 start for morning
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.60168
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.91522
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.81573
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.85109
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=4 start for morning
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.60168
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.91522
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.81573
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.85109
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=5 start for morning
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.60168
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.91522
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.81573
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.85109
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=6 start for morning
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.60168
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.91522
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.81573
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.85109
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=7 start for morning
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.60168
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.91522
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.81573
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.85109
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=8 start for morning
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.60168
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.91522
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.81573
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.85109
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=9 start for morning
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.60168
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.91522
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.81573
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.85109
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=10 start for morning
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.60168
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.91522
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.81573
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.85109
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=noon Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in noon: 32
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01229 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Static] 📊 Std(|h|): 0.60649
+INFO:root:[Static] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88666 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52256
+INFO:root:[Pedestrian] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01160 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Vehicular] 📊 Std(|h|): 0.55186
+INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01202 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Aerial] 📊 Std(|h|): 0.54271
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for noon
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.64866
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.91349
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.81189
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.84242
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=2 start for noon
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.64866
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.91349
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.81189
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.84242
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=3 start for noon
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.64866
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.91349
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.81189
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.84242
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=4 start for noon
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.64866
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.91349
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.81189
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.84242
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=5 start for noon
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.64866
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.91349
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.81189
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.84242
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=6 start for noon
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.64866
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.91349
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.81189
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.84242
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=7 start for noon
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.64866
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.91349
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.81189
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.84242
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=8 start for noon
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.64866
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.91349
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.81189
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.84242
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=9 start for noon
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.64866
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.91349
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.81189
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.84242
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=10 start for noon
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.64866
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.91349
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.81189
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.84242
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=evening Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in evening: 32
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=0.01213 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=0.99992
+INFO:root:[Static] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Static] 📊 Std(|h|): 0.58241
+INFO:root:[Static] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=0.88641 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52135
+INFO:root:[Pedestrian] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=0.01136 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=0.99991
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 0.99991
+INFO:root:[Vehicular] 📊 Std(|h|): 0.54450
+INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=0.01204 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=0.99992
+INFO:root:[Aerial] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Aerial] 📊 Std(|h|): 0.55825
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for evening
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.71680
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.91806
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.83632
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.79116
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=2 start for evening
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.71680
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.91806
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.83632
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.79116
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=3 start for evening
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.71680
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.91806
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.83632
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.79116
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=4 start for evening
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.71680
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.91806
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.83632
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.79116
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=5 start for evening
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.71680
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.91806
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.83632
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.79116
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=6 start for evening
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.71680
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.91806
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.83632
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.79116
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=7 start for evening
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.71680
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.91806
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.83632
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.79116
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=8 start for evening
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.71680
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.91806
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.83632
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.79116
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=9 start for evening
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.71680
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.91806
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.83632
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.79116
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=nan | SINR=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=10 start for evening
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.71680
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.91806
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.83632
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=nan | SINR=nandB
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.79116
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: nan, snr: nan, sinr_db: nan
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=nan | SINR=nandB
+DEBUG:h5py._conv:Creating converter from 5 to 3
+INFO:checkpoint_logger:[CHECKPOINT-Main] 💾 Weights saved to weights_seed_42.h5
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Training completed. Proceeding to inference...
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88312 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+INFO:root:[Mixed] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Mixed] 📊 Std(|h|): 0.52110
+INFO:root:[Mixed] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Mixed | Inference Iter=1 | Doppler=353.24 Hz | MeanSpeed=13.63 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.01210 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Mixed | Normalized |h| mean=0.99992
+INFO:root:[Mixed] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Mixed] 📊 Std(|h|): 0.54237
+INFO:root:[Mixed] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Mixed | Inference Iter=2 | Doppler=290.97 Hz | MeanSpeed=11.22 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88525 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+INFO:root:[Mixed] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Mixed] 📊 Std(|h|): 0.52213
+INFO:root:[Mixed] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Mixed | Inference Iter=3 | Doppler=293.85 Hz | MeanSpeed=11.33 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.01212 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Mixed | Normalized |h| mean=0.99992
+INFO:root:[Mixed] 📏 Normalized |h| mean: 0.99992
+INFO:root:[Mixed] 📊 Std(|h|): 0.63221
+INFO:root:[Mixed] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Mixed | Inference Iter=4 | Doppler=239.73 Hz | MeanSpeed=9.25 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.89217 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+INFO:root:[Mixed] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Mixed] 📊 Std(|h|): 0.52127
+INFO:root:[Mixed] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Mixed | Inference Iter=5 | Doppler=244.97 Hz | MeanSpeed=9.45 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88959 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+INFO:root:[Mixed] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Mixed] 📊 Std(|h|): 0.52232
+INFO:root:[Mixed] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Mixed | Inference Iter=6 | Doppler=267.46 Hz | MeanSpeed=10.32 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88664 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+INFO:root:[Mixed] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Mixed] 📊 Std(|h|): 0.52010
+INFO:root:[Mixed] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Mixed | Inference Iter=7 | Doppler=312.31 Hz | MeanSpeed=12.05 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88682 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+INFO:root:[Mixed] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Mixed] 📊 Std(|h|): 0.52310
+INFO:root:[Mixed] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Mixed | Inference Iter=8 | Doppler=315.29 Hz | MeanSpeed=12.16 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88906 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+INFO:root:[Mixed] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Mixed] 📊 Std(|h|): 0.52278
+INFO:root:[Mixed] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Mixed | Inference Iter=9 | Doppler=295.00 Hz | MeanSpeed=11.38 km/h
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Mixed | Raw |h| mean=0.88653 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Mixed | Normalized |h| mean=1.00000
+INFO:root:[Mixed] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Mixed] 📊 Std(|h|): 0.52343
+INFO:root:[Mixed] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Task=Mixed | Inference Iter=10 | Doppler=298.63 Hz | MeanSpeed=11.52 km/h
+INFO:checkpoint_logger:[CHECKPOINT-Main] 📡 Inference (Mixed): throughput=0.0000, latency=7.82ms, sinr=nandB
+INFO:checkpoint_logger:[CHECKPOINT-Main] ⭐ Best SINR across 10 runs: nan dB at run 0
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🏁 Simulation finished for seed 42
+INFO:root:Simulation completed for seed 42

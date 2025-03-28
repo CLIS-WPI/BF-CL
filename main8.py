@@ -1,3 +1,4 @@
+
 import os
 # ⚙️ تنظیمات محیط قبل از ایمپورت TensorFlow
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
@@ -6,17 +7,14 @@ os.environ["TF_XLA_FLAGS"] = "--tf_xla_auto_jit=2 --tf_xla_cpu_global_jit"
 
 import numpy as np
 import tensorflow as tf
-from sionna.phy.channel.tr38901.tdl import TDL
+from sionna.phy.channel.tr38901 import TDL
 from sionna.phy.channel.rayleigh_block_fading import RayleighBlockFading
-
-
 import matplotlib.pyplot as plt
 from tensorflow.keras import layers, Model
 import time
 import logging
 import sys
 from tensorflow.keras.optimizers.legacy import Adam
-from tensorflow.keras.layers import GRUCell, RNN
 
 # ✅ استفاده فقط از GPU:0
 gpus = tf.config.list_physical_devices('GPU')
@@ -39,20 +37,38 @@ class LoggerWriter:
     def flush(self):
         pass
 
-# Logging setup
-logging.basicConfig(filename="training_main.log", level=logging.DEBUG)
+# ==============================
+# Log Folder Setup
+# ==============================
+LOG_DIR = "log"
+os.makedirs(LOG_DIR, exist_ok=True)
+
+def next_log_file(filename_base):
+    idx = 1
+    while True:
+        path = os.path.join(LOG_DIR, f"{filename_base}_{idx}.log")
+        if not os.path.exists(path):
+            return path
+        idx += 1
+
+# 🪵 General Logging Setup
+training_log_file = next_log_file("training_main")
+logging.basicConfig(filename=training_log_file, level=logging.DEBUG)
+
+# 🪵 Checkpoint Logger
 checkpoint_logger = logging.getLogger("checkpoint_logger")
 checkpoint_logger.setLevel(logging.DEBUG)
-checkpoint_handler = logging.FileHandler("checkpoints.log")
-checkpoint_handler.setLevel(logging.DEBUG)
+checkpoint_file = next_log_file("checkpoints")
+checkpoint_handler = logging.FileHandler(checkpoint_file)
 checkpoint_formatter = logging.Formatter('%(asctime)s - %(message)s')
 checkpoint_handler.setFormatter(checkpoint_formatter)
 checkpoint_logger.addHandler(checkpoint_handler)
 
+# 🪵 Diagnostic Logger
 diagnostic_logger = logging.getLogger("diagnostic_logger")
 diagnostic_logger.setLevel(logging.DEBUG)
-diagnostic_handler = logging.FileHandler("diagnostics.log")
-diagnostic_handler.setLevel(logging.DEBUG)
+diagnostic_file = next_log_file("diagnostics")
+diagnostic_handler = logging.FileHandler(diagnostic_file)
 diagnostic_formatter = logging.Formatter('%(asctime)s - %(message)s')
 diagnostic_handler.setFormatter(diagnostic_formatter)
 diagnostic_logger.addHandler(diagnostic_handler)
@@ -97,25 +113,28 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
     def __init__(self, num_antennas):
         super(BeamformingMetaAttentionModel, self).__init__()
         self.num_antennas = num_antennas
+        self.input_conv = tf.keras.layers.Conv1D(
+            filters=64, kernel_size=1, activation="relu", dtype=tf.float32
+        )
 
-        self.input_conv = layers.Conv1D(64, 1, activation='relu', dtype=tf.float32)
+
         self.shared_transformer = layers.MultiHeadAttention(num_heads=4, key_dim=64)
-
         self.use_replay = True
         self.use_fisher = False
 
-        # ✅ GRU با seed مشخص برای جلوگیری از خطای CUDA
-        self.heads = {}
-        for name in ["Static", "Pedestrian", "Vehicular", "Aerial", "Mixed"]:
-            cell = GRUCell(128)
-            self.heads[name] = RNN(cell, return_sequences=True)
+        self.heads = {
+            "Static": layers.GRU(128, return_sequences=True),
+            "Pedestrian": layers.GRU(128, return_sequences=True),
+            "Vehicular": layers.GRU(128, return_sequences=True),
+            "Aerial": layers.GRU(128, return_sequences=True),
+            "Mixed": layers.GRU(128, return_sequences=True)
+        }
 
-        # ✅ ساخت dummy برای هر head
         dummy_input = tf.zeros([1, MAX_USERS, 64], dtype=tf.float32)
         for name, head in self.heads.items():
-            _ = head(dummy_input)
+            _ = head(dummy_input)  # build all GRU heads ahead of time
 
-        # 🔁 Gating Network
+        # Gating Network: Assigns users to heads using attention over [doppler, delay_spread, snr_estimate]
         self.cond_dense = layers.Dense(64, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(1e-5))
         self.attn_gating = layers.MultiHeadAttention(
             num_heads=2,
@@ -128,17 +147,15 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         self.dense1 = layers.Dense(256, activation='relu')
         self.dense2 = layers.Dense(128, activation='relu')
         self.output_layer = layers.Dense(self.num_antennas)
-
-        # ✅ Replay Buffer با تخصیص روی CPU
-        with tf.device("/CPU:0"):
-            self.buffer_x = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
-            self.buffer_h = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
+        # Replay Buffer: Fixed size of 2000 samples to cover daily users, stores high-loss samples to prevent forgetting
+        self.buffer_x = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
+        self.buffer_h = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
         self.buffer_count = 0
-
-        # 🎯 Regularization parameters
         self.old_params = {}
         self.fisher = {}
         self.lambda_reg = LAMBDA_REG
+        self.task_reg_lambda = {"Mixed": 0.1}
+        self.lambda_reg = 0.1
         self.task_weights = {
             "Static": 1.0,
             "Pedestrian": 1.0,
@@ -149,11 +166,10 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
             "Static": 10.0,
             "Pedestrian": 5.0,
             "Vehicular": 8.0,
-            "Aerial": 6.0,
-            "Mixed": 0.1
+            "Aerial": 6.0
         }
-
-        # ✅ Dummy forward pass برای ساختن کامل مدل
+        
+        # Dummy forward pass to build entire model (incl. heads)
         dummy_h = tf.zeros([1, MAX_USERS, self.num_antennas], dtype=tf.complex64)
         dummy_task = "Static"
         _ = self.call(dummy_h, task_name=dummy_task, doppler=tf.zeros([1]), delay_spread=tf.zeros([1]), training=False)
@@ -167,10 +183,26 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         B = tf.shape(h)[0]
         U = tf.shape(h)[1]
 
-        x = tf.abs(h)
+        # 🛠️ تبدیل complex → [real, imag]
+        # Convert complex h to real-valued features
+        # Extract real and imaginary parts of h
+        h_real = tf.math.real(h)
+        h_imag = tf.math.imag(h)
+        x = tf.concat([h_real, h_imag], axis=-1)  # Shape: [B, U, 2*A]
+
+        # Safety clamp
+        x = tf.clip_by_value(x, -10.0, 10.0)
+
+        # Replace NaNs/Infs with zero
+        x = tf.where(tf.math.is_finite(x), x, tf.zeros_like(x))
+
+        # Feed into input conv layer
         x = self.input_conv(x)
+
+
         x = self.shared_transformer(x, x, training=training)
 
+        # ⬇️ پردازش context
         if doppler is None or delay_spread is None:
             doppler = tf.zeros([B], dtype=tf.float32)
             delay_spread = tf.zeros([B], dtype=tf.float32)
@@ -192,15 +224,13 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
             training=training
         )
         attn_weights = tf.nn.softmax(attn_weights, axis=-1)  # Normalize weights
-        
-        # ✅ Gating Logging
+
         if training:
             mean_attn = tf.reduce_mean(attn_weights, axis=[0, 1])
             std_attn = tf.math.reduce_std(attn_weights, axis=[0, 1])
             tf.print("[CHECKPOINT-Gating] mean_attn=", mean_attn, "std_attn=", std_attn)
         tf.print("[CHECKPOINT-Gating] attention_weights_sample:", attn_weights[0, 0, :5])  # first 5 weights from the first batch
-        
-        # Expand gated feature
+
         x = attn_output  # [B, 1, 64]
         x = tf.tile(x, [1, U, 1])  # [B, U, 64]
 
@@ -210,9 +240,12 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         out = self.dense1(out)
         out = self.dense2(out)
         out = self.output_layer(out)
+
         out = tf.math.l2_normalize(out, axis=-1) * tf.cast(tf.sqrt(tf.cast(self.num_antennas, tf.float32)), tf.float32)
         out = tf.reshape(out, [B, U, self.num_antennas])
         return out
+
+
 
     def update_memory(self, x, h, loss):
         if not self.use_replay:
@@ -265,19 +298,55 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         return lambda_task * reg_loss
 
 def generate_channel(task, num_slots, batch_size, num_users):
-    with tf.device("/CPU:0"):  # 🚨 اجرای کل تابع روی CPU
-        speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], num_users)
-        doppler_freq = np.random.uniform(task["doppler"][0], task["doppler"][1])
-        delay = np.random.uniform(task["delay_spread"][0], task["delay_spread"][1])
-        sampling_freq = int(min(1 / delay, 2 * doppler_freq))
+    speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], num_users)
+    doppler_freq = np.random.uniform(task["doppler"][0], task["doppler"][1])
+    delay = np.random.uniform(task["delay_spread"][0], task["delay_spread"][1])
+    sampling_freq = int(min(1 / delay, 2 * doppler_freq))
 
-        if task["channel"] == "TDL":
-            tf.print("→ Using TDL model:", task["model"])
+    if task["channel"] == "TDL":
+        tf.print("→ Using TDL model:", task["model"])
+        user_channels = []
+        for user_idx in range(num_users):
+            tdl = TDL(
+                model=task["model"],
+                delay_spread=delay,
+                carrier_frequency=FREQ,
+                num_tx_ant=NUM_ANTENNAS,
+                num_rx_ant=1,
+                min_speed=task["speed_range"][0],
+                max_speed=task["speed_range"][1]
+            )
+            h_t, _ = tdl(batch_size=batch_size, num_time_steps=num_slots, sampling_frequency=sampling_freq)
+            h_t = tf.reduce_mean(h_t, axis=-1)
+            h_t = tf.reduce_mean(h_t, axis=-1)
+            h_t = tf.squeeze(h_t)
+            user_channels.append(h_t)
+        h = tf.stack(user_channels, axis=1)
+        tf.print("✅ Final TDL shape [B,U,A]:", h.shape)
+
+    elif task["channel"] == "Rayleigh":
+        tf.print("→ Using Rayleigh block fading")
+        channel_model = RayleighBlockFading(
+            num_rx=num_users,
+            num_rx_ant=1,
+            num_tx=1,
+            num_tx_ant=NUM_ANTENNAS
+        )
+        h, _ = channel_model(batch_size=batch_size, num_time_steps=1)
+        h = tf.squeeze(h)
+        tf.print("✅ Final Rayleigh shape [B,U,A]:", h.shape)
+
+    else:  # Mixed
+        tf.print("→ Using Random channel for Mixed")
+        model_choice = np.random.choice(["A", "C"]) if np.random.random() < 0.5 else "Rayleigh"
+        delay_spread = np.random.uniform(task["delay_spread"][0], task["delay_spread"][1])
+        if model_choice != "Rayleigh":
+            tf.print("→ Random TDL model:", model_choice)
             user_channels = []
             for user_idx in range(num_users):
                 tdl = TDL(
-                    model=task["model"],
-                    delay_spread=delay,
+                    model=model_choice,
+                    delay_spread=delay_spread,
                     carrier_frequency=FREQ,
                     num_tx_ant=NUM_ANTENNAS,
                     num_rx_ant=1,
@@ -290,10 +359,9 @@ def generate_channel(task, num_slots, batch_size, num_users):
                 h_t = tf.squeeze(h_t)
                 user_channels.append(h_t)
             h = tf.stack(user_channels, axis=1)
-            tf.print("✅ Final TDL shape [B,U,A]:", h.shape)
-
-        elif task["channel"] == "Rayleigh":
-            tf.print("→ Using Rayleigh block fading")
+            tf.print("✅ Final Mixed-TDL shape [B,U,A]:", h.shape)
+        else:
+            tf.print("→ Random Rayleigh model")
             channel_model = RayleighBlockFading(
                 num_rx=num_users,
                 num_rx_ant=1,
@@ -302,52 +370,16 @@ def generate_channel(task, num_slots, batch_size, num_users):
             )
             h, _ = channel_model(batch_size=batch_size, num_time_steps=1)
             h = tf.squeeze(h)
-            tf.print("✅ Final Rayleigh shape [B,U,A]:", h.shape)
+            tf.print("✅ Final Mixed-Rayleigh shape [B,U,A]:", h.shape)
 
-        else:  # Mixed
-            tf.print("→ Using Random channel for Mixed")
-            model_choice = np.random.choice(["A", "C"]) if np.random.random() < 0.5 else "Rayleigh"
-            delay_spread = np.random.uniform(task["delay_spread"][0], task["delay_spread"][1])
-            if model_choice != "Rayleigh":
-                tf.print("→ Random TDL model:", model_choice)
-                user_channels = []
-                for user_idx in range(num_users):
-                    tdl = TDL(
-                        model=model_choice,
-                        delay_spread=delay_spread,
-                        carrier_frequency=FREQ,
-                        num_tx_ant=NUM_ANTENNAS,
-                        num_rx_ant=1,
-                        min_speed=task["speed_range"][0],
-                        max_speed=task["speed_range"][1]
-                    )
-                    h_t, _ = tdl(batch_size=batch_size, num_time_steps=num_slots, sampling_frequency=sampling_freq)
-                    h_t = tf.reduce_mean(h_t, axis=-1)
-                    h_t = tf.reduce_mean(h_t, axis=-1)
-                    h_t = tf.squeeze(h_t)
-                    user_channels.append(h_t)
-                h = tf.stack(user_channels, axis=1)
-                tf.print("✅ Final Mixed-TDL shape [B,U,A]:", h.shape)
-            else:
-                tf.print("→ Random Rayleigh model")
-                channel_model = RayleighBlockFading(
-                    num_rx=num_users,
-                    num_rx_ant=1,
-                    num_tx=1,
-                    num_tx_ant=NUM_ANTENNAS
-                )
-                h, _ = channel_model(batch_size=batch_size, num_time_steps=1)
-                h = tf.squeeze(h)
-                tf.print("✅ Final Mixed-Rayleigh shape [B,U,A]:", h.shape)
-
-        checkpoint_logger.info(f"[CHECKPOINT-2] Task={task['name']} | Raw |h| mean={tf.reduce_mean(tf.abs(h)).numpy():.5f} | shape={h.shape}")
-        h_norm = tf.reduce_mean(tf.abs(h))
-        h = h / tf.cast(h_norm + 1e-6, tf.complex64)
-        checkpoint_logger.info(f"[CHECKPOINT-3] Task={task['name']} | Normalized |h| mean={tf.reduce_mean(tf.abs(h)).numpy():.5f}")
-        logging.info(f"[{task['name']}] 📏 Normalized |h| mean: {tf.reduce_mean(tf.abs(h)).numpy():.5f}")
-        logging.info(f"[{task['name']}] 📊 Std(|h|): {tf.math.reduce_std(tf.abs(h)).numpy():.5f}")
-        logging.info(f"[{task['name']}] 📐 Shape: {h.shape}")
-        return h
+    checkpoint_logger.info(f"[CHECKPOINT-2] Task={task['name']} | Raw |h| mean={tf.reduce_mean(tf.abs(h)).numpy():.5f} | shape={h.shape}")
+    h_norm = tf.reduce_mean(tf.abs(h))
+    h = h / tf.cast(h_norm + 1e-6, tf.complex64)
+    checkpoint_logger.info(f"[CHECKPOINT-3] Task={task['name']} | Normalized |h| mean={tf.reduce_mean(tf.abs(h)).numpy():.5f}")
+    logging.info(f"[{task['name']}] 📏 Normalized |h| mean: {tf.reduce_mean(tf.abs(h)).numpy():.5f}")
+    logging.info(f"[{task['name']}] 📊 Std(|h|): {tf.math.reduce_std(tf.abs(h)).numpy():.5f}")
+    logging.info(f"[{task['name']}] 📐 Shape: {h.shape}")
+    return h
 
 # Updated constants for simulation
 DAILY_PERIODS = ["morning", "noon", "evening"]
@@ -405,7 +437,6 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         h_batch = h_batch[:, :U, :]
         x_batch = x_batch[:, :U, :]
 
-        # Normalization
         x_mean = tf.cast(tf.reduce_mean(x_batch), tf.complex64)
         x_std = tf.cast(tf.math.reduce_std(tf.abs(x_batch)), tf.float32)
         x_batch = (x_batch - x_mean) / tf.cast(tf.maximum(x_std, 1e-6), tf.complex64)
@@ -413,48 +444,32 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         h_std = tf.cast(tf.math.reduce_std(tf.abs(h_batch)), tf.float32)
         h_batch = (h_batch - h_mean) / tf.cast(tf.maximum(h_std, 1e-6), tf.complex64)
 
-        # Model output
+        x_real = tf.cast(tf.abs(h_batch), tf.float32)
+        h_input = tf.complex(x_real, tf.zeros_like(x_real))
+
         w = model(
-            h_batch,
+            h_input,
             doppler=channel_stats["doppler"][:, 0],
             delay_spread=channel_stats["delay_spread"][:, 0],
             task_name=channel_stats["task_name"],
             training=True
         )
         w = tf.cast(w, tf.complex64)
+        w = tf.where(tf.math.is_finite(tf.abs(w)), w, tf.zeros_like(w))
 
-        # MMSE (Tikhonov Regularization)
-        # Compute h_hh and print its statistics
-        # Compute h_hh and print its statistics
         h_hermitian = tf.transpose(tf.math.conj(h_batch), [0, 2, 1])
-        h_hh = tf.matmul(h_hermitian, h_batch)  # [B, A, A]
-        tf.print("Milad[DEBUG] h_hh mean abs:", tf.reduce_mean(tf.abs(h_hh)))
-        tf.print("Milad[DEBUG] h_hh min:", tf.reduce_min(tf.abs(h_hh)), "max:", tf.reduce_max(tf.abs(h_hh)))
-
+        h_hh = tf.matmul(h_hermitian, h_batch)
         alpha = NOISE_POWER / POWER
         reg_matrix = h_hh + alpha * tf.eye(A, dtype=tf.complex64)
-        tf.print("Milad[DEBUG] reg_matrix mean abs:", tf.reduce_mean(tf.abs(reg_matrix)))
-        tf.print("Milad[DEBUG] reg_matrix min:", tf.reduce_min(tf.abs(reg_matrix)), "max:", tf.reduce_max(tf.abs(reg_matrix)))
-
-        # Solve for X and check for NaNs using the absolute value
         X = tf.linalg.solve(reg_matrix, tf.transpose(h_batch, [0, 2, 1]))
-        tf.print("Milad[DEBUG] X mean abs:", tf.reduce_mean(tf.abs(X)))
-        tf.print("Milad[DEBUG] X has NaNs (abs):", tf.reduce_any(tf.math.is_nan(tf.abs(X))))
-
         w_mmse = tf.transpose(X, [0, 2, 1])
-        tf.print("Milad[DEBUG] w_mmse mean abs:", tf.reduce_mean(tf.abs(w_mmse)))
-        tf.print("Milad[DEBUG] w_mmse has NaNs (abs):", tf.reduce_any(tf.math.is_nan(tf.abs(w_mmse))))
-
 
         epoch_weight = tf.cast(epoch, tf.float32) / NUM_EPOCHS
-        epoch_weight_complex = tf.cast(epoch_weight, tf.complex64)
-        w = (1 - epoch_weight_complex) * w_mmse + epoch_weight_complex * w
+        epoch_weight_c = tf.cast(epoch_weight, tf.complex64)
+        w = (1 - epoch_weight_c) * w_mmse + epoch_weight_c * w
         w = w * tf.cast(tf.sqrt(POWER), tf.complex64) / (tf.norm(w, axis=-1, keepdims=True) + 1e-6)
 
-
-        tf.print("[DEBUG] mean|w| before matmul:", tf.reduce_mean(tf.abs(w)))
         signal_matrix = tf.matmul(w, h_hermitian)
-        tf.print("[DEBUG] mean|signal_matrix|:", tf.reduce_mean(tf.abs(signal_matrix)))
         desired_signal = tf.linalg.diag_part(signal_matrix)
         desired_power = tf.reduce_mean(tf.abs(desired_signal) ** 2)
         interference_matrix = tf.abs(signal_matrix) ** 2
@@ -463,28 +478,35 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         snr = desired_power / (interference + NOISE_POWER + 1e-10)
         snr_db = 10.0 * tf.math.log(snr + 1e-8) / tf.math.log(10.0)
 
+        snr = tf.where(tf.math.is_finite(snr), snr, tf.constant(0.0, dtype=tf.float32))
+        snr_db = tf.where(tf.math.is_finite(snr_db), snr_db, tf.constant(-100.0, dtype=tf.float32))
+
         task_weight = model.task_weights.get(channel_stats["task_name"], 1.0)
         reg_loss = model.regularization_loss(task_name=channel_stats["task_name"])
         loss_main = tf.reduce_mean(task_weight * tf.maximum(70.0 - snr_db, 0.0) + 0.1 * interference) + reg_loss
 
-        # Replay
         num_replay_samples = B // 4
         replay_loss = 0.0
         x_replay, h_replay = model.generate_replay(num_replay_samples)
         if x_replay is not None and h_replay is not None and model.use_replay:
+            x_replay_real = tf.cast(tf.abs(h_replay), tf.float32)
+            h_input_replay = tf.complex(x_replay_real, tf.zeros_like(x_replay_real))
             w_replay = model(
-                h_replay,
+                h_input_replay,
                 doppler=channel_stats["doppler"][:num_replay_samples, 0],
                 delay_spread=channel_stats["delay_spread"][:num_replay_samples, 0],
                 task_name=channel_stats["task_name"],
                 training=True
             )
             w_replay = tf.cast(w_replay, tf.complex64)
+            w_replay = tf.where(tf.math.is_finite(tf.abs(w_replay)), w_replay, tf.zeros_like(w_replay))
             h_replay_hermitian = tf.transpose(tf.math.conj(h_replay), [0, 2, 1])
             h_hh_replay = tf.matmul(h_replay_hermitian, h_replay)
-            w_mmse_replay = tf.matmul(h_replay, tf.linalg.inv(h_hh_replay + alpha * tf.eye(A, dtype=tf.complex64)))
-            w_replay = (1 - epoch_weight_complex) * w_mmse_replay + epoch_weight_complex * w_replay
-            w_replay = w_replay * tf.cast(tf.sqrt(POWER), tf.complex64) / tf.norm(w_replay, axis=-1, keepdims=True)
+            reg_matrix_replay = h_hh_replay + alpha * tf.eye(A, dtype=tf.complex64)
+            X_replay = tf.linalg.solve(reg_matrix_replay, tf.transpose(h_replay, [0, 2, 1]))
+            w_mmse_replay = tf.transpose(X_replay, [0, 2, 1])
+            w_replay = (1 - epoch_weight_c) * w_mmse_replay + epoch_weight_c * w_replay
+            w_replay = w_replay * tf.cast(tf.sqrt(POWER), tf.complex64) / (tf.norm(w_replay, axis=-1, keepdims=True) + 1e-6)
             replay_signal_matrix = tf.matmul(w_replay, h_replay_hermitian)
             replay_desired_signal = tf.linalg.diag_part(replay_signal_matrix)
             replay_desired_power = tf.reduce_mean(tf.abs(replay_desired_signal) ** 2)
@@ -494,18 +516,23 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
             replay_interference = tf.reduce_mean(tf.reduce_sum(replay_interference_matrix * replay_interference_mask, axis=-1))
             snr_replay = replay_desired_power / (replay_interference + NOISE_POWER + 1e-10)
             snr_replay_db = 10.0 * tf.math.log(snr_replay + 1e-8) / tf.math.log(10.0)
+            snr_replay_db = tf.where(tf.math.is_finite(snr_replay_db), snr_replay_db, tf.constant(-100.0, dtype=tf.float32))
             replay_loss = tf.reduce_mean(tf.maximum(70.0 - snr_replay_db, 0.0) + 0.1 * replay_interference)
 
         total_loss = loss_main + replay_loss
+        total_loss = tf.where(tf.math.is_finite(total_loss), total_loss, tf.constant(0.0, dtype=tf.float32))
 
     grads = tape.gradient(total_loss, model.trainable_variables)
     for v, g in zip(model.trainable_variables, grads):
         if g is not None:
-            tf.debugging.check_numerics(g, message=f"Gradient for {v.name} contains nan or Inf")
+            if tf.reduce_any(tf.math.is_nan(g)):
+                tf.print(f"❌ NaN in gradient of: {v.name}")
 
     grads = [tf.clip_by_norm(g, 1.0) if g is not None else g for g in grads]
-    optimizer.apply_gradients(zip([g for g in grads if g is not None],
-                                    [v for g, v in zip(grads, model.trainable_variables) if g is not None]))
+    optimizer.apply_gradients(zip(
+        [g for g in grads if g is not None],
+        [v for g, v in zip(grads, model.trainable_variables) if g is not None]
+    ))
 
     if model.use_fisher:
         for v, g in zip(model.trainable_variables, grads):
@@ -513,21 +540,12 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
                 current_fisher = model.fisher.get(v.name, tf.zeros_like(v))
                 updated_fisher = tf.square(g) + current_fisher
                 model.fisher[v.name] = updated_fisher
-                tf.print("[CHECKPOINT-Fisher] Updated Fisher for", v.name, "| mean:", tf.reduce_mean(updated_fisher))
 
-    tf.print("[CHECKPOINT-TrainStep] desired_power:", desired_power)
-    tf.print("[CHECKPOINT-TrainStep] interference:", interference)
-    tf.print("[CHECKPOINT-TrainStep] NOISE_POWER:", NOISE_POWER)
-    tf.print("[CHECKPOINT-TrainStep] mean|w|:", tf.reduce_mean(tf.abs(w)))
-    tf.print("[CHECKPOINT-TrainStep] mean sinr_db:", tf.reduce_mean(snr_db))
-    tf.print("[CHECKPOINT-TrainStep] loss_main:", loss_main)
-    tf.print("[CHECKPOINT-TrainStep] replay_loss:", replay_loss)
-    tf.print("[CHECKPOINT-TrainStep] buffer_count:", model.buffer_count)
-    tf.print()
+    mean_w = tf.reduce_mean(tf.abs(w))
+    mean_h = tf.reduce_mean(tf.abs(h_batch))
+    sinr_db_val = tf.reduce_mean(snr_db)
 
-
-    # Return six values: total_loss, mean SNR, mean |w|, mean |h|, mean SINR (in dB), and total_loss again
-    return total_loss, tf.reduce_mean(snr), tf.reduce_mean(tf.abs(w)), tf.reduce_mean(tf.abs(h_batch)), tf.reduce_mean(snr_db), total_loss
+    return total_loss, tf.reduce_mean(snr), mean_w, mean_h, sinr_db_val, total_loss
 
 def main(seed):
     logging.basicConfig(filename=f"training_log_seed_{seed}.log", level=logging.DEBUG)
@@ -542,20 +560,13 @@ def main(seed):
     tf.random.set_seed(seed)
     np.random.seed(seed)
 
-    tf.keras.utils.set_random_seed(seed)
-    #tf.config.experimental.enable_op_determinism()
+    model = BeamformingMetaAttentionModel(NUM_ANTENNAS)
+    dummy_h = tf.zeros([1, MAX_USERS, NUM_ANTENNAS], dtype=tf.complex64)
+    _ = model(dummy_h, task_name="Static", doppler=tf.zeros([1]), delay_spread=tf.zeros([1]), training=False)
 
-    # ✅ ساخت مدل روی CPU برای جلوگیری از crash در GRUCell
-        # ✅ ساخت مدل روی CPU برای جلوگیری از crash در GRUCell
-    with tf.device("/CPU:0"):
-        model = BeamformingMetaAttentionModel(NUM_ANTENNAS)
-        dummy_h = tf.zeros([1, MAX_USERS, NUM_ANTENNAS], dtype=tf.complex64)
-        _ = model(dummy_h, task_name="Static", doppler=tf.zeros([1]), delay_spread=tf.zeros([1]), training=False)
-
-        lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
-            initial_learning_rate=0.005, decay_steps=1000, decay_rate=0.9)
-        optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
-
+    lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+        initial_learning_rate=0.005, decay_steps=1000, decay_rate=0.9)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
     optimizer.build(model.trainable_variables)
 
     checkpoint_logger.info(f"[CHECKPOINT-Main] 🚀 Start simulation | Seed={seed}")
@@ -587,18 +598,14 @@ def main(seed):
             for task_idx, task in enumerate(TASKS[:-1]):
                 h = h_dict[task["name"]]
                 x = h
-                delay_spread_val = float(np.mean(task["delay_spread"]))
-                doppler_val = float(np.mean(task["doppler"]))
-
+                dataset = [(x, h)]
                 channel_stats = {
-                    "delay_spread": tf.ones([BATCH_SIZE, 1], dtype=tf.float32) * delay_spread_val,
-                    "doppler": tf.ones([BATCH_SIZE, 1], dtype=tf.float32) * doppler_val,
-                    "snr": tf.ones([BATCH_SIZE, 1], dtype=tf.float32) * 15.0,
+                    "delay_spread": tf.ones([BATCH_SIZE, 1]) * task["delay_spread"],
+                    "doppler": tf.ones([BATCH_SIZE, 1]) * (task["doppler"] if isinstance(task["doppler"], (int, float)) else np.mean(task["doppler"])),
+                    "snr": tf.ones([BATCH_SIZE, 1]) * 15.0,
                     "task_idx": task_idx,
                     "task_name": task["name"]
                 }
-
-
                 for i, (x_batch, h_batch) in enumerate(dataset):
                     loss, snr_val, mean_w, mean_h, sinr_db_val, loss_val = train_step(
                         model, x_batch, h_batch, optimizer, channel_stats, epoch
