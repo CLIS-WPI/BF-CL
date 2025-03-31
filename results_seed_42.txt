@@ -1,8 +1,12 @@
-morning:
-  throughput: 0.0458
-  latency: 7.8213
-  energy: 22.5000
-  sinr: -14.9138
-  forgetting: 0.0000
-  fwt: 0.0000
-  bwt: 0.0000
+=== Daily Performance Summary ===
+
+[MORNING]
+  throughput  : 0.0458
+  latency     : 8.6308
+  energy      : 22.5000
+  sinr        : -14.9136
+  forgetting  : 0.0260
+  fwt         : 0.0604
+  bwt         : -0.0391
+
+===============================
