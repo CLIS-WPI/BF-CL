@@ -1,0 +1,66 @@
+2025-04-01 13:09:59,416 - [Static] 📡 Mean |h|: 0.11109
+2025-04-01 13:09:59,417 - [Static] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:09:59,417 - [Static] 🔄 Avg inter-user correlation: 0.11063
+2025-04-01 13:09:59,764 - [Pedestrian] 📡 Mean |h|: 0.04407
+2025-04-01 13:09:59,764 - [Pedestrian] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:09:59,764 - [Pedestrian] 🔄 Avg inter-user correlation: 0.04324
+2025-04-01 13:10:00,336 - [Vehicular] 📡 Mean |h|: 0.11097
+2025-04-01 13:10:00,337 - [Vehicular] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:00,337 - [Vehicular] 🔄 Avg inter-user correlation: 0.11051
+2025-04-01 13:10:00,908 - [Aerial] 📡 Mean |h|: 0.11097
+2025-04-01 13:10:00,908 - [Aerial] 📏 Mean ||h||: 1.00000-0.00000j
+2025-04-01 13:10:00,908 - [Aerial] 🔄 Avg inter-user correlation: 0.11095
+2025-04-01 13:10:10,317 - [Static] 📡 Mean |h|: 0.11092
+2025-04-01 13:10:10,317 - [Static] 📏 Mean ||h||: 1.00000-0.00000j
+2025-04-01 13:10:10,317 - [Static] 🔄 Avg inter-user correlation: 0.11094
+2025-04-01 13:10:10,667 - [Pedestrian] 📡 Mean |h|: 0.04339
+2025-04-01 13:10:10,667 - [Pedestrian] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:10,667 - [Pedestrian] 🔄 Avg inter-user correlation: 0.07650
+2025-04-01 13:10:11,239 - [Vehicular] 📡 Mean |h|: 0.11096
+2025-04-01 13:10:11,239 - [Vehicular] 📏 Mean ||h||: 1.00000-0.00000j
+2025-04-01 13:10:11,239 - [Vehicular] 🔄 Avg inter-user correlation: 0.11120
+2025-04-01 13:10:11,808 - [Aerial] 📡 Mean |h|: 0.11085
+2025-04-01 13:10:11,809 - [Aerial] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:11,809 - [Aerial] 🔄 Avg inter-user correlation: 0.11011
+2025-04-01 13:10:18,167 - [Static] 📡 Mean |h|: 0.11111
+2025-04-01 13:10:18,167 - [Static] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:18,167 - [Static] 🔄 Avg inter-user correlation: 0.10977
+2025-04-01 13:10:18,513 - [Pedestrian] 📡 Mean |h|: 0.04097
+2025-04-01 13:10:18,513 - [Pedestrian] 📏 Mean ||h||: 1.00000-0.00000j
+2025-04-01 13:10:18,513 - [Pedestrian] 🔄 Avg inter-user correlation: 0.05361
+2025-04-01 13:10:19,083 - [Vehicular] 📡 Mean |h|: 0.11084
+2025-04-01 13:10:19,083 - [Vehicular] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:19,083 - [Vehicular] 🔄 Avg inter-user correlation: 0.11108
+2025-04-01 13:10:19,650 - [Aerial] 📡 Mean |h|: 0.11086
+2025-04-01 13:10:19,650 - [Aerial] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:19,650 - [Aerial] 🔄 Avg inter-user correlation: 0.11132
+2025-04-01 13:10:26,155 - [Static] 📡 Mean |h|: 0.11097
+2025-04-01 13:10:26,155 - [Static] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:26,155 - [Static] 🔄 Avg inter-user correlation: 0.11155
+2025-04-01 13:10:26,481 - [Pedestrian] 📡 Mean |h|: 0.03858
+2025-04-01 13:10:26,481 - [Pedestrian] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:26,481 - [Pedestrian] 🔄 Avg inter-user correlation: 0.03768
+2025-04-01 13:10:27,263 - [Static] 📡 Mean |h|: 0.11096
+2025-04-01 13:10:27,263 - [Static] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:27,263 - [Static] 🔄 Avg inter-user correlation: 0.10964
+2025-04-01 13:10:27,976 - [Vehicular] 📡 Mean |h|: 0.11112
+2025-04-01 13:10:27,976 - [Vehicular] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:27,976 - [Vehicular] 🔄 Avg inter-user correlation: 0.11127
+2025-04-01 13:10:28,689 - [Vehicular] 📡 Mean |h|: 0.11095
+2025-04-01 13:10:28,689 - [Vehicular] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:28,689 - [Vehicular] 🔄 Avg inter-user correlation: 0.11163
+2025-04-01 13:10:29,424 - [Aerial] 📡 Mean |h|: 0.11096
+2025-04-01 13:10:29,424 - [Aerial] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:29,424 - [Aerial] 🔄 Avg inter-user correlation: 0.11022
+2025-04-01 13:10:29,700 - [Pedestrian] 📡 Mean |h|: 0.04168
+2025-04-01 13:10:29,701 - [Pedestrian] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:29,701 - [Pedestrian] 🔄 Avg inter-user correlation: 0.07562
+2025-04-01 13:10:29,971 - [Pedestrian] 📡 Mean |h|: 0.03865
+2025-04-01 13:10:29,971 - [Pedestrian] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:29,971 - [Pedestrian] 🔄 Avg inter-user correlation: 0.06569
+2025-04-01 13:10:30,651 - [Aerial] 📡 Mean |h|: 0.11104
+2025-04-01 13:10:30,651 - [Aerial] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:30,651 - [Aerial] 🔄 Avg inter-user correlation: 0.11075
+2025-04-01 13:10:30,925 - [Pedestrian] 📡 Mean |h|: 0.04421
+2025-04-01 13:10:30,925 - [Pedestrian] 📏 Mean ||h||: 1.00000+0.00000j
+2025-04-01 13:10:30,925 - [Pedestrian] 🔄 Avg inter-user correlation: 0.04270

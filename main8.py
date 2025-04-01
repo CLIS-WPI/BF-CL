@@ -70,7 +70,6 @@ inference_debug_handler = logging.FileHandler(inference_debug_file)
 inference_debug_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
 inference_debug_logger.addHandler(inference_debug_handler)
 
-
 # 🪵 Diagnostic Logger
 diagnostic_logger = logging.getLogger("diagnostic_logger")
 diagnostic_logger.setLevel(logging.DEBUG)
@@ -88,6 +87,15 @@ deep_diag_handler = logging.FileHandler(deep_diag_file)
 deep_diag_formatter = logging.Formatter('%(asctime)s - %(message)s')
 deep_diag_handler.setFormatter(deep_diag_formatter)
 deep_diag_logger.addHandler(deep_diag_handler)
+
+# to find the issue of channel
+channel_diag_logger = logging.getLogger("channel_diag_logger")
+channel_diag_logger.setLevel(logging.DEBUG)
+channel_diag_file = next_log_file("channel_diagnostics")
+channel_diag_handler = logging.FileHandler(channel_diag_file)
+channel_diag_formatter = logging.Formatter('%(asctime)s - %(message)s')
+channel_diag_handler.setFormatter(channel_diag_formatter)
+channel_diag_logger.addHandler(channel_diag_handler)
 
 
 # Constants
@@ -410,19 +418,28 @@ def generate_channel(task, num_slots, batch_size, num_users):
     effective_duration = num_slots * 0.01  # 10 ms per slot
 
     def apply_beamspace(h):
-        """Apply angular domain projection (beamspace)"""
-        h = tf.reshape(h, [tf.shape(h)[0], -1, NUM_ANTENNAS])  # Always [B, U, A]
+        h = tf.reshape(h, [tf.shape(h)[0], -1, NUM_ANTENNAS])  # [B, U, A]
         dft_matrix = tf.signal.fft(tf.eye(NUM_ANTENNAS, dtype=tf.complex64))  # [A, A]
         return tf.einsum("bua,ac->buc", h, dft_matrix)
 
+    def steering_vector(theta, num_antennas):
+        n = tf.cast(tf.range(num_antennas), tf.float32)
+        phase = 2 * np.pi * n * tf.math.sin(theta)
+        phase_c = tf.cast(phase, tf.complex64)  # 👈 تبدیل به complex
+        return tf.exp(tf.complex(0.0, 1.0) * phase_c)
 
 
-    if task["channel"] == "TDL":
-        tf.print("→ Using TDL model:", task["model"])
-        user_channels = []
-        for _ in range(num_users):
+    user_channels = []
+
+    for _ in range(num_users):
+        angle_rad = np.random.uniform(0, np.pi)
+        steer = steering_vector(angle_rad, NUM_ANTENNAS)  # [A]
+        steer = tf.expand_dims(steer, axis=0)  # [1, A]
+
+        if task["channel"] == "TDL":
+            tf.print("→ Using TDL model:", task["model"])
             tdl = TDL(
-                model=task["model"],
+                model=task.get("model", "A"),
                 delay_spread=delay,
                 carrier_frequency=FREQ,
                 num_tx_ant=NUM_ANTENNAS,
@@ -431,80 +448,56 @@ def generate_channel(task, num_slots, batch_size, num_users):
                 max_speed=task["speed_range"][1]
             )
             h_t, _ = tdl(batch_size=batch_size, num_time_steps=num_slots, sampling_frequency=sampling_freq)
-            h_t = tf.reduce_mean(h_t, axis=[-1, -2])     # → [B, A]
-            h_t = tf.expand_dims(h_t, axis=1)            # → [B, 1, A]
-            h_beam = apply_beamspace(h_t)                # → [B, 1, A]
-            if effective_duration > coherence_time:
-                scale = tf.cast(coherence_time / effective_duration, tf.float32)
-                scale = tf.clip_by_value(scale, 0.5, 1.0)  # Prevent too much attenuation
-                tf.print("⚠️ Coherence time exceeded → scaling energy by", scale)
-                h_beam *= tf.cast(scale, tf.complex64)
-
-            user_channels.append(tf.squeeze(h_beam, axis=1))  # → [B, A]
-        h = tf.stack(user_channels, axis=1)  # [B, U, A]
-        h_norm = tf.reduce_mean(tf.abs(h))
-        h = h / tf.cast(h_norm + 1e-6, tf.complex64)
-
-        tf.print("✅ Final TDL+Beamspace shape:", tf.shape(h))
-
-    elif task["channel"] == "Rayleigh":
-        tf.print("→ Using Rayleigh block fading")
-        channel_model = RayleighBlockFading(
-            num_rx=num_users,
-            num_rx_ant=1,
-            num_tx=1,
-            num_tx_ant=NUM_ANTENNAS
-        )
-        h, _ = channel_model(batch_size=batch_size, num_time_steps=1)  # → [B, U, A]
-        h = apply_beamspace(h)  # → [B, U, A]
-        tf.print("✅ Final Rayleigh+Beamspace shape:", tf.shape(h))
-
-    else:  # Mixed
-        tf.print("→ Using Random channel for Mixed")
-        model_choice = np.random.choice(["A", "C"]) if np.random.random() < 0.5 else "Rayleigh"
-        if model_choice != "Rayleigh":
-            tf.print("→ Random TDL model:", model_choice)
-            user_channels = []
-            for _ in range(num_users):
-                tdl = TDL(
-                    model=model_choice,
-                    delay_spread=delay,
-                    carrier_frequency=FREQ,
-                    num_tx_ant=NUM_ANTENNAS,
-                    num_rx_ant=1,
-                    min_speed=task["speed_range"][0],
-                    max_speed=task["speed_range"][1]
-                )
-                h_t, _ = tdl(batch_size=batch_size, num_time_steps=num_slots, sampling_frequency=sampling_freq)
-                h_t = tf.reduce_mean(h_t, axis=[-1, -2])   # → [B, A]
-                h_t = tf.expand_dims(h_t, axis=1)          # → [B, 1, A]
-                h_beam = apply_beamspace(h_t)              # → [B, 1, A]
-                if effective_duration > coherence_time:
-                    tf.print("⚠️ Mixed: coherence exceeded → pruning")
-                    h_beam *= 0.5
-                user_channels.append(tf.squeeze(h_beam, axis=1))  # → [B, A]
-            h = tf.stack(user_channels, axis=1)  # → [B, U, A]
-            tf.print("✅ Final Mixed-TDL+Beamspace shape:", tf.shape(h))
+            h_t = tf.reduce_mean(h_t, axis=[-1, -2])     # [B, A]
         else:
-            tf.print("→ Random Rayleigh model")
-            channel_model = RayleighBlockFading(
-                num_rx=num_users,
+            tf.print("→ Using Rayleigh block fading")
+            rb = RayleighBlockFading(
+                num_rx=1,
                 num_rx_ant=1,
                 num_tx=1,
                 num_tx_ant=NUM_ANTENNAS
             )
-            h, _ = channel_model(batch_size=batch_size, num_time_steps=1)  # → [B, U, A]
-            h = apply_beamspace(h)  # → [B, U, A]
-            tf.print("✅ Final Mixed-Rayleigh+Beamspace shape:", tf.shape(h))
+            h_t, _ = rb(batch_size=batch_size, num_time_steps=1)  # [B,1,A]
+            h_t = tf.squeeze(h_t, axis=1)  # [B, A]
 
-    h_norm = tf.reduce_mean(tf.abs(h))
-    h = h / tf.cast(h_norm + 1e-6, tf.complex64)  # Normalize
+        h_t = h_t * steer  # Apply angular selectivity
+        h_beam = apply_beamspace(tf.expand_dims(h_t, axis=1))  # [B, 1, A]
 
+        if effective_duration > coherence_time:
+            scale = tf.cast(coherence_time / effective_duration, tf.float32)
+            scale = tf.clip_by_value(scale, 0.5, 1.0)
+            h_beam *= tf.cast(scale, tf.complex64)
+
+        user_channels.append(h_beam[:, 0, :])        # [B, A] ✅ درست
+
+    h = tf.stack(user_channels, axis=1)  # [B, U, A]
+    h_norm = tf.reduce_mean(tf.norm(h, axis=-1, keepdims=True))
+    h = h / tf.cast(h_norm + 1e-6, tf.complex64)
+
+
+    # Logging
     checkpoint_logger.info(f"[CHECKPOINT-2] Task={task['name']} | Raw |h| mean={tf.reduce_mean(tf.abs(h)).numpy():.5f} | shape={h.shape}")
     checkpoint_logger.info(f"[CHECKPOINT-3] Task={task['name']} | Normalized |h| mean={tf.reduce_mean(tf.abs(h)).numpy():.5f}")
     logging.info(f"[{task['name']}] 📏 Normalized |h| mean: {tf.reduce_mean(tf.abs(h)).numpy():.5f}")
     logging.info(f"[{task['name']}] 📊 Std(|h|): {tf.math.reduce_std(tf.abs(h)).numpy():.5f}")
     logging.info(f"[{task['name']}] 📐 Shape: {h.shape}")
+
+    # Diagnosis
+    mean_abs_h = tf.reduce_mean(tf.abs(h)).numpy()
+    mean_norm_h = tf.reduce_mean(tf.norm(h, axis=-1)).numpy()
+    inter_user_corrs = []
+    U = h.shape[1]
+    for i in range(U):
+        for j in range(i + 1, U):
+            dot = tf.reduce_sum(h[:, i, :] * tf.math.conj(h[:, j, :]), axis=-1)
+            corr = tf.reduce_mean(tf.abs(dot))
+            inter_user_corrs.append(corr.numpy())
+    avg_corr = np.mean(inter_user_corrs) if inter_user_corrs else 0.0
+
+    channel_diag_logger.info(f"[{task['name']}] 📡 Mean |h|: {mean_abs_h:.5f}")
+    channel_diag_logger.info(f"[{task['name']}] 📏 Mean ||h||: {mean_norm_h:.5f}")
+    channel_diag_logger.info(f"[{task['name']}] 🔄 Avg inter-user correlation: {avg_corr:.5f}")
+
     return h
 
 
