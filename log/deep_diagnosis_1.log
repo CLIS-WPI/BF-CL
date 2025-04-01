@@ -1,0 +1,440 @@
+2025-03-31 18:34:07,233 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+2025-03-31 18:34:07,233 - 🧭 Angle Offset (rad): 1.5654
+2025-03-31 18:34:07,233 - 🔄 Orthogonality Loss: 0.2619
+2025-03-31 18:34:09,477 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+2025-03-31 18:34:09,477 - 🧭 Angle Offset (rad): 1.5620
+2025-03-31 18:34:09,477 - 🔄 Orthogonality Loss: 0.2727
+2025-03-31 18:34:10,082 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+2025-03-31 18:34:10,082 - 🧭 Angle Offset (rad): 1.5756
+2025-03-31 18:34:10,082 - 🔄 Orthogonality Loss: 0.2776
+2025-03-31 18:34:10,243 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+2025-03-31 18:34:10,243 - 🧭 Angle Offset (rad): 1.5727
+2025-03-31 18:34:10,243 - 🔄 Orthogonality Loss: 0.2824
+2025-03-31 18:34:10,408 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+2025-03-31 18:34:10,408 - 🧭 Angle Offset (rad): 1.5654
+2025-03-31 18:34:10,408 - 🔄 Orthogonality Loss: 0.2619
+2025-03-31 18:34:10,517 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+2025-03-31 18:34:10,518 - 🧭 Angle Offset (rad): 1.5620
+2025-03-31 18:34:10,518 - 🔄 Orthogonality Loss: 0.2727
+2025-03-31 18:34:10,686 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+2025-03-31 18:34:10,686 - 🧭 Angle Offset (rad): 1.5756
+2025-03-31 18:34:10,686 - 🔄 Orthogonality Loss: 0.2776
+2025-03-31 18:34:10,836 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+2025-03-31 18:34:10,836 - 🧭 Angle Offset (rad): 1.5727
+2025-03-31 18:34:10,836 - 🔄 Orthogonality Loss: 0.2824
+2025-03-31 18:34:10,992 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+2025-03-31 18:34:10,992 - 🧭 Angle Offset (rad): 1.5654
+2025-03-31 18:34:10,992 - 🔄 Orthogonality Loss: 0.2619
+2025-03-31 18:34:11,100 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+2025-03-31 18:34:11,100 - 🧭 Angle Offset (rad): 1.5620
+2025-03-31 18:34:11,100 - 🔄 Orthogonality Loss: 0.2727
+2025-03-31 18:34:11,268 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+2025-03-31 18:34:11,268 - 🧭 Angle Offset (rad): 1.5756
+2025-03-31 18:34:11,268 - 🔄 Orthogonality Loss: 0.2776
+2025-03-31 18:34:11,418 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+2025-03-31 18:34:11,419 - 🧭 Angle Offset (rad): 1.5727
+2025-03-31 18:34:11,419 - 🔄 Orthogonality Loss: 0.2824
+2025-03-31 18:34:11,574 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+2025-03-31 18:34:11,574 - 🧭 Angle Offset (rad): 1.5654
+2025-03-31 18:34:11,574 - 🔄 Orthogonality Loss: 0.2619
+2025-03-31 18:34:11,683 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+2025-03-31 18:34:11,683 - 🧭 Angle Offset (rad): 1.5620
+2025-03-31 18:34:11,683 - 🔄 Orthogonality Loss: 0.2727
+2025-03-31 18:34:11,852 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+2025-03-31 18:34:11,852 - 🧭 Angle Offset (rad): 1.5756
+2025-03-31 18:34:11,852 - 🔄 Orthogonality Loss: 0.2776
+2025-03-31 18:34:12,001 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+2025-03-31 18:34:12,002 - 🧭 Angle Offset (rad): 1.5727
+2025-03-31 18:34:12,002 - 🔄 Orthogonality Loss: 0.2824
+2025-03-31 18:34:12,158 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+2025-03-31 18:34:12,158 - 🧭 Angle Offset (rad): 1.5654
+2025-03-31 18:34:12,158 - 🔄 Orthogonality Loss: 0.2619
+2025-03-31 18:34:12,266 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+2025-03-31 18:34:12,266 - 🧭 Angle Offset (rad): 1.5620
+2025-03-31 18:34:12,267 - 🔄 Orthogonality Loss: 0.2727
+2025-03-31 18:34:12,435 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+2025-03-31 18:34:12,435 - 🧭 Angle Offset (rad): 1.5756
+2025-03-31 18:34:12,435 - 🔄 Orthogonality Loss: 0.2776
+2025-03-31 18:34:12,585 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+2025-03-31 18:34:12,585 - 🧭 Angle Offset (rad): 1.5727
+2025-03-31 18:34:12,585 - 🔄 Orthogonality Loss: 0.2824
+2025-03-31 18:34:12,741 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+2025-03-31 18:34:12,742 - 🧭 Angle Offset (rad): 1.5654
+2025-03-31 18:34:12,742 - 🔄 Orthogonality Loss: 0.2619
+2025-03-31 18:34:12,850 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+2025-03-31 18:34:12,850 - 🧭 Angle Offset (rad): 1.5620
+2025-03-31 18:34:12,850 - 🔄 Orthogonality Loss: 0.2727
+2025-03-31 18:34:13,018 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+2025-03-31 18:34:13,018 - 🧭 Angle Offset (rad): 1.5756
+2025-03-31 18:34:13,018 - 🔄 Orthogonality Loss: 0.2776
+2025-03-31 18:34:13,168 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+2025-03-31 18:34:13,168 - 🧭 Angle Offset (rad): 1.5727
+2025-03-31 18:34:13,168 - 🔄 Orthogonality Loss: 0.2824
+2025-03-31 18:34:13,324 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+2025-03-31 18:34:13,324 - 🧭 Angle Offset (rad): 1.5654
+2025-03-31 18:34:13,324 - 🔄 Orthogonality Loss: 0.2619
+2025-03-31 18:34:13,432 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+2025-03-31 18:34:13,432 - 🧭 Angle Offset (rad): 1.5620
+2025-03-31 18:34:13,432 - 🔄 Orthogonality Loss: 0.2727
+2025-03-31 18:34:13,600 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+2025-03-31 18:34:13,600 - 🧭 Angle Offset (rad): 1.5756
+2025-03-31 18:34:13,600 - 🔄 Orthogonality Loss: 0.2776
+2025-03-31 18:34:13,750 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+2025-03-31 18:34:13,750 - 🧭 Angle Offset (rad): 1.5727
+2025-03-31 18:34:13,750 - 🔄 Orthogonality Loss: 0.2824
+2025-03-31 18:34:13,906 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+2025-03-31 18:34:13,906 - 🧭 Angle Offset (rad): 1.5654
+2025-03-31 18:34:13,906 - 🔄 Orthogonality Loss: 0.2619
+2025-03-31 18:34:14,015 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+2025-03-31 18:34:14,015 - 🧭 Angle Offset (rad): 1.5620
+2025-03-31 18:34:14,015 - 🔄 Orthogonality Loss: 0.2727
+2025-03-31 18:34:14,183 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+2025-03-31 18:34:14,183 - 🧭 Angle Offset (rad): 1.5756
+2025-03-31 18:34:14,183 - 🔄 Orthogonality Loss: 0.2776
+2025-03-31 18:34:14,333 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+2025-03-31 18:34:14,334 - 🧭 Angle Offset (rad): 1.5727
+2025-03-31 18:34:14,334 - 🔄 Orthogonality Loss: 0.2824
+2025-03-31 18:34:14,489 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+2025-03-31 18:34:14,489 - 🧭 Angle Offset (rad): 1.5654
+2025-03-31 18:34:14,489 - 🔄 Orthogonality Loss: 0.2619
+2025-03-31 18:34:14,598 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+2025-03-31 18:34:14,598 - 🧭 Angle Offset (rad): 1.5620
+2025-03-31 18:34:14,598 - 🔄 Orthogonality Loss: 0.2727
+2025-03-31 18:34:14,765 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+2025-03-31 18:34:14,766 - 🧭 Angle Offset (rad): 1.5756
+2025-03-31 18:34:14,766 - 🔄 Orthogonality Loss: 0.2776
+2025-03-31 18:34:14,915 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+2025-03-31 18:34:14,915 - 🧭 Angle Offset (rad): 1.5727
+2025-03-31 18:34:14,916 - 🔄 Orthogonality Loss: 0.2824
+2025-03-31 18:34:15,071 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+2025-03-31 18:34:15,072 - 🧭 Angle Offset (rad): 1.5654
+2025-03-31 18:34:15,072 - 🔄 Orthogonality Loss: 0.2619
+2025-03-31 18:34:15,180 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+2025-03-31 18:34:15,180 - 🧭 Angle Offset (rad): 1.5620
+2025-03-31 18:34:15,180 - 🔄 Orthogonality Loss: 0.2727
+2025-03-31 18:34:15,347 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+2025-03-31 18:34:15,347 - 🧭 Angle Offset (rad): 1.5756
+2025-03-31 18:34:15,347 - 🔄 Orthogonality Loss: 0.2776
+2025-03-31 18:34:15,497 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+2025-03-31 18:34:15,498 - 🧭 Angle Offset (rad): 1.5727
+2025-03-31 18:34:15,498 - 🔄 Orthogonality Loss: 0.2824
+2025-03-31 18:34:16,619 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+2025-03-31 18:34:16,619 - 🧭 Angle Offset (rad): 1.5714
+2025-03-31 18:34:16,619 - 🔄 Orthogonality Loss: 0.2787
+2025-03-31 18:34:16,728 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+2025-03-31 18:34:16,728 - 🧭 Angle Offset (rad): 1.5527
+2025-03-31 18:34:16,728 - 🔄 Orthogonality Loss: 0.2718
+2025-03-31 18:34:16,895 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+2025-03-31 18:34:16,895 - 🧭 Angle Offset (rad): 1.5622
+2025-03-31 18:34:16,895 - 🔄 Orthogonality Loss: 0.2901
+2025-03-31 18:34:17,045 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+2025-03-31 18:34:17,045 - 🧭 Angle Offset (rad): 1.5744
+2025-03-31 18:34:17,045 - 🔄 Orthogonality Loss: 0.2680
+2025-03-31 18:34:17,200 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+2025-03-31 18:34:17,200 - 🧭 Angle Offset (rad): 1.5714
+2025-03-31 18:34:17,200 - 🔄 Orthogonality Loss: 0.2787
+2025-03-31 18:34:17,309 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+2025-03-31 18:34:17,309 - 🧭 Angle Offset (rad): 1.5527
+2025-03-31 18:34:17,309 - 🔄 Orthogonality Loss: 0.2718
+2025-03-31 18:34:17,485 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+2025-03-31 18:34:17,485 - 🧭 Angle Offset (rad): 1.5622
+2025-03-31 18:34:17,485 - 🔄 Orthogonality Loss: 0.2901
+2025-03-31 18:34:17,636 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+2025-03-31 18:34:17,636 - 🧭 Angle Offset (rad): 1.5744
+2025-03-31 18:34:17,636 - 🔄 Orthogonality Loss: 0.2680
+2025-03-31 18:34:17,792 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+2025-03-31 18:34:17,793 - 🧭 Angle Offset (rad): 1.5714
+2025-03-31 18:34:17,793 - 🔄 Orthogonality Loss: 0.2787
+2025-03-31 18:34:17,900 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+2025-03-31 18:34:17,901 - 🧭 Angle Offset (rad): 1.5527
+2025-03-31 18:34:17,901 - 🔄 Orthogonality Loss: 0.2718
+2025-03-31 18:34:18,068 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+2025-03-31 18:34:18,068 - 🧭 Angle Offset (rad): 1.5622
+2025-03-31 18:34:18,068 - 🔄 Orthogonality Loss: 0.2901
+2025-03-31 18:34:18,218 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+2025-03-31 18:34:18,218 - 🧭 Angle Offset (rad): 1.5744
+2025-03-31 18:34:18,218 - 🔄 Orthogonality Loss: 0.2680
+2025-03-31 18:34:18,374 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+2025-03-31 18:34:18,375 - 🧭 Angle Offset (rad): 1.5714
+2025-03-31 18:34:18,375 - 🔄 Orthogonality Loss: 0.2787
+2025-03-31 18:34:18,483 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+2025-03-31 18:34:18,483 - 🧭 Angle Offset (rad): 1.5527
+2025-03-31 18:34:18,483 - 🔄 Orthogonality Loss: 0.2718
+2025-03-31 18:34:18,650 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+2025-03-31 18:34:18,650 - 🧭 Angle Offset (rad): 1.5622
+2025-03-31 18:34:18,651 - 🔄 Orthogonality Loss: 0.2901
+2025-03-31 18:34:18,800 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+2025-03-31 18:34:18,800 - 🧭 Angle Offset (rad): 1.5744
+2025-03-31 18:34:18,800 - 🔄 Orthogonality Loss: 0.2680
+2025-03-31 18:34:18,955 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+2025-03-31 18:34:18,955 - 🧭 Angle Offset (rad): 1.5714
+2025-03-31 18:34:18,955 - 🔄 Orthogonality Loss: 0.2787
+2025-03-31 18:34:19,064 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+2025-03-31 18:34:19,064 - 🧭 Angle Offset (rad): 1.5527
+2025-03-31 18:34:19,064 - 🔄 Orthogonality Loss: 0.2718
+2025-03-31 18:34:19,231 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+2025-03-31 18:34:19,231 - 🧭 Angle Offset (rad): 1.5622
+2025-03-31 18:34:19,231 - 🔄 Orthogonality Loss: 0.2901
+2025-03-31 18:34:19,380 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+2025-03-31 18:34:19,381 - 🧭 Angle Offset (rad): 1.5744
+2025-03-31 18:34:19,381 - 🔄 Orthogonality Loss: 0.2680
+2025-03-31 18:34:19,536 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+2025-03-31 18:34:19,537 - 🧭 Angle Offset (rad): 1.5714
+2025-03-31 18:34:19,537 - 🔄 Orthogonality Loss: 0.2787
+2025-03-31 18:34:19,644 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+2025-03-31 18:34:19,645 - 🧭 Angle Offset (rad): 1.5527
+2025-03-31 18:34:19,645 - 🔄 Orthogonality Loss: 0.2718
+2025-03-31 18:34:19,812 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+2025-03-31 18:34:19,812 - 🧭 Angle Offset (rad): 1.5622
+2025-03-31 18:34:19,812 - 🔄 Orthogonality Loss: 0.2901
+2025-03-31 18:34:19,969 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+2025-03-31 18:34:19,970 - 🧭 Angle Offset (rad): 1.5744
+2025-03-31 18:34:19,970 - 🔄 Orthogonality Loss: 0.2680
+2025-03-31 18:34:20,125 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+2025-03-31 18:34:20,125 - 🧭 Angle Offset (rad): 1.5714
+2025-03-31 18:34:20,125 - 🔄 Orthogonality Loss: 0.2787
+2025-03-31 18:34:20,233 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+2025-03-31 18:34:20,234 - 🧭 Angle Offset (rad): 1.5527
+2025-03-31 18:34:20,234 - 🔄 Orthogonality Loss: 0.2718
+2025-03-31 18:34:20,401 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+2025-03-31 18:34:20,401 - 🧭 Angle Offset (rad): 1.5622
+2025-03-31 18:34:20,401 - 🔄 Orthogonality Loss: 0.2901
+2025-03-31 18:34:20,551 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+2025-03-31 18:34:20,551 - 🧭 Angle Offset (rad): 1.5744
+2025-03-31 18:34:20,551 - 🔄 Orthogonality Loss: 0.2680
+2025-03-31 18:34:20,706 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+2025-03-31 18:34:20,707 - 🧭 Angle Offset (rad): 1.5714
+2025-03-31 18:34:20,707 - 🔄 Orthogonality Loss: 0.2787
+2025-03-31 18:34:20,820 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+2025-03-31 18:34:20,820 - 🧭 Angle Offset (rad): 1.5527
+2025-03-31 18:34:20,820 - 🔄 Orthogonality Loss: 0.2718
+2025-03-31 18:34:20,993 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+2025-03-31 18:34:20,994 - 🧭 Angle Offset (rad): 1.5622
+2025-03-31 18:34:20,994 - 🔄 Orthogonality Loss: 0.2901
+2025-03-31 18:34:21,143 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+2025-03-31 18:34:21,143 - 🧭 Angle Offset (rad): 1.5745
+2025-03-31 18:34:21,143 - 🔄 Orthogonality Loss: 0.2680
+2025-03-31 18:34:21,299 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+2025-03-31 18:34:21,299 - 🧭 Angle Offset (rad): 1.5714
+2025-03-31 18:34:21,299 - 🔄 Orthogonality Loss: 0.2787
+2025-03-31 18:34:21,408 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+2025-03-31 18:34:21,408 - 🧭 Angle Offset (rad): 1.5527
+2025-03-31 18:34:21,408 - 🔄 Orthogonality Loss: 0.2718
+2025-03-31 18:34:21,575 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+2025-03-31 18:34:21,575 - 🧭 Angle Offset (rad): 1.5622
+2025-03-31 18:34:21,575 - 🔄 Orthogonality Loss: 0.2901
+2025-03-31 18:34:21,724 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+2025-03-31 18:34:21,724 - 🧭 Angle Offset (rad): 1.5745
+2025-03-31 18:34:21,725 - 🔄 Orthogonality Loss: 0.2680
+2025-03-31 18:34:21,886 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+2025-03-31 18:34:21,886 - 🧭 Angle Offset (rad): 1.5714
+2025-03-31 18:34:21,886 - 🔄 Orthogonality Loss: 0.2787
+2025-03-31 18:34:21,995 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+2025-03-31 18:34:21,995 - 🧭 Angle Offset (rad): 1.5527
+2025-03-31 18:34:21,995 - 🔄 Orthogonality Loss: 0.2718
+2025-03-31 18:34:22,164 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+2025-03-31 18:34:22,164 - 🧭 Angle Offset (rad): 1.5622
+2025-03-31 18:34:22,164 - 🔄 Orthogonality Loss: 0.2901
+2025-03-31 18:34:22,314 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+2025-03-31 18:34:22,314 - 🧭 Angle Offset (rad): 1.5745
+2025-03-31 18:34:22,314 - 🔄 Orthogonality Loss: 0.2680
+2025-03-31 18:34:23,441 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+2025-03-31 18:34:23,441 - 🧭 Angle Offset (rad): 1.5633
+2025-03-31 18:34:23,441 - 🔄 Orthogonality Loss: 0.2710
+2025-03-31 18:34:23,551 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+2025-03-31 18:34:23,551 - 🧭 Angle Offset (rad): 1.5696
+2025-03-31 18:34:23,551 - 🔄 Orthogonality Loss: 0.2788
+2025-03-31 18:34:23,719 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+2025-03-31 18:34:23,719 - 🧭 Angle Offset (rad): 1.5758
+2025-03-31 18:34:23,720 - 🔄 Orthogonality Loss: 0.2738
+2025-03-31 18:34:23,871 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+2025-03-31 18:34:23,871 - 🧭 Angle Offset (rad): 1.5610
+2025-03-31 18:34:23,871 - 🔄 Orthogonality Loss: 0.2951
+2025-03-31 18:34:24,027 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+2025-03-31 18:34:24,027 - 🧭 Angle Offset (rad): 1.5633
+2025-03-31 18:34:24,027 - 🔄 Orthogonality Loss: 0.2710
+2025-03-31 18:34:24,135 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+2025-03-31 18:34:24,135 - 🧭 Angle Offset (rad): 1.5696
+2025-03-31 18:34:24,135 - 🔄 Orthogonality Loss: 0.2788
+2025-03-31 18:34:24,303 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+2025-03-31 18:34:24,303 - 🧭 Angle Offset (rad): 1.5758
+2025-03-31 18:34:24,303 - 🔄 Orthogonality Loss: 0.2738
+2025-03-31 18:34:24,454 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+2025-03-31 18:34:24,454 - 🧭 Angle Offset (rad): 1.5610
+2025-03-31 18:34:24,454 - 🔄 Orthogonality Loss: 0.2951
+2025-03-31 18:34:24,610 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+2025-03-31 18:34:24,610 - 🧭 Angle Offset (rad): 1.5633
+2025-03-31 18:34:24,610 - 🔄 Orthogonality Loss: 0.2710
+2025-03-31 18:34:24,718 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+2025-03-31 18:34:24,718 - 🧭 Angle Offset (rad): 1.5696
+2025-03-31 18:34:24,718 - 🔄 Orthogonality Loss: 0.2788
+2025-03-31 18:34:24,886 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+2025-03-31 18:34:24,886 - 🧭 Angle Offset (rad): 1.5758
+2025-03-31 18:34:24,886 - 🔄 Orthogonality Loss: 0.2738
+2025-03-31 18:34:25,036 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+2025-03-31 18:34:25,036 - 🧭 Angle Offset (rad): 1.5610
+2025-03-31 18:34:25,036 - 🔄 Orthogonality Loss: 0.2951
+2025-03-31 18:34:25,192 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+2025-03-31 18:34:25,193 - 🧭 Angle Offset (rad): 1.5633
+2025-03-31 18:34:25,193 - 🔄 Orthogonality Loss: 0.2710
+2025-03-31 18:34:25,301 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+2025-03-31 18:34:25,301 - 🧭 Angle Offset (rad): 1.5696
+2025-03-31 18:34:25,301 - 🔄 Orthogonality Loss: 0.2788
+2025-03-31 18:34:25,469 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+2025-03-31 18:34:25,469 - 🧭 Angle Offset (rad): 1.5758
+2025-03-31 18:34:25,469 - 🔄 Orthogonality Loss: 0.2738
+2025-03-31 18:34:25,619 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+2025-03-31 18:34:25,619 - 🧭 Angle Offset (rad): 1.5610
+2025-03-31 18:34:25,619 - 🔄 Orthogonality Loss: 0.2951
+2025-03-31 18:34:25,775 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+2025-03-31 18:34:25,775 - 🧭 Angle Offset (rad): 1.5633
+2025-03-31 18:34:25,775 - 🔄 Orthogonality Loss: 0.2710
+2025-03-31 18:34:25,884 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+2025-03-31 18:34:25,884 - 🧭 Angle Offset (rad): 1.5696
+2025-03-31 18:34:25,884 - 🔄 Orthogonality Loss: 0.2788
+2025-03-31 18:34:26,051 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+2025-03-31 18:34:26,052 - 🧭 Angle Offset (rad): 1.5758
+2025-03-31 18:34:26,052 - 🔄 Orthogonality Loss: 0.2738
+2025-03-31 18:34:26,201 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+2025-03-31 18:34:26,202 - 🧭 Angle Offset (rad): 1.5610
+2025-03-31 18:34:26,202 - 🔄 Orthogonality Loss: 0.2951
+2025-03-31 18:34:26,357 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+2025-03-31 18:34:26,358 - 🧭 Angle Offset (rad): 1.5633
+2025-03-31 18:34:26,358 - 🔄 Orthogonality Loss: 0.2710
+2025-03-31 18:34:26,466 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+2025-03-31 18:34:26,466 - 🧭 Angle Offset (rad): 1.5696
+2025-03-31 18:34:26,466 - 🔄 Orthogonality Loss: 0.2788
+2025-03-31 18:34:26,633 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+2025-03-31 18:34:26,633 - 🧭 Angle Offset (rad): 1.5758
+2025-03-31 18:34:26,633 - 🔄 Orthogonality Loss: 0.2738
+2025-03-31 18:34:26,783 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+2025-03-31 18:34:26,784 - 🧭 Angle Offset (rad): 1.5610
+2025-03-31 18:34:26,784 - 🔄 Orthogonality Loss: 0.2951
+2025-03-31 18:34:26,939 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+2025-03-31 18:34:26,939 - 🧭 Angle Offset (rad): 1.5633
+2025-03-31 18:34:26,939 - 🔄 Orthogonality Loss: 0.2710
+2025-03-31 18:34:27,048 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+2025-03-31 18:34:27,048 - 🧭 Angle Offset (rad): 1.5696
+2025-03-31 18:34:27,048 - 🔄 Orthogonality Loss: 0.2788
+2025-03-31 18:34:27,215 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+2025-03-31 18:34:27,215 - 🧭 Angle Offset (rad): 1.5758
+2025-03-31 18:34:27,215 - 🔄 Orthogonality Loss: 0.2738
+2025-03-31 18:34:27,365 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+2025-03-31 18:34:27,366 - 🧭 Angle Offset (rad): 1.5610
+2025-03-31 18:34:27,366 - 🔄 Orthogonality Loss: 0.2951
+2025-03-31 18:34:27,521 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+2025-03-31 18:34:27,522 - 🧭 Angle Offset (rad): 1.5633
+2025-03-31 18:34:27,522 - 🔄 Orthogonality Loss: 0.2710
+2025-03-31 18:34:27,630 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+2025-03-31 18:34:27,630 - 🧭 Angle Offset (rad): 1.5696
+2025-03-31 18:34:27,630 - 🔄 Orthogonality Loss: 0.2788
+2025-03-31 18:34:27,797 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+2025-03-31 18:34:27,798 - 🧭 Angle Offset (rad): 1.5758
+2025-03-31 18:34:27,798 - 🔄 Orthogonality Loss: 0.2738
+2025-03-31 18:34:27,947 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+2025-03-31 18:34:27,947 - 🧭 Angle Offset (rad): 1.5610
+2025-03-31 18:34:27,948 - 🔄 Orthogonality Loss: 0.2951
+2025-03-31 18:34:28,104 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+2025-03-31 18:34:28,104 - 🧭 Angle Offset (rad): 1.5633
+2025-03-31 18:34:28,104 - 🔄 Orthogonality Loss: 0.2710
+2025-03-31 18:34:28,212 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+2025-03-31 18:34:28,212 - 🧭 Angle Offset (rad): 1.5696
+2025-03-31 18:34:28,212 - 🔄 Orthogonality Loss: 0.2788
+2025-03-31 18:34:28,380 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+2025-03-31 18:34:28,380 - 🧭 Angle Offset (rad): 1.5758
+2025-03-31 18:34:28,380 - 🔄 Orthogonality Loss: 0.2738
+2025-03-31 18:34:28,530 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+2025-03-31 18:34:28,530 - 🧭 Angle Offset (rad): 1.5610
+2025-03-31 18:34:28,530 - 🔄 Orthogonality Loss: 0.2951
+2025-03-31 18:34:28,685 - [BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+2025-03-31 18:34:28,685 - 🧭 Angle Offset (rad): 1.5633
+2025-03-31 18:34:28,685 - 🔄 Orthogonality Loss: 0.2710
+2025-03-31 18:34:28,793 - [BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+2025-03-31 18:34:28,794 - 🧭 Angle Offset (rad): 1.5696
+2025-03-31 18:34:28,794 - 🔄 Orthogonality Loss: 0.2788
+2025-03-31 18:34:28,961 - [BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+2025-03-31 18:34:28,961 - 🧭 Angle Offset (rad): 1.5758
+2025-03-31 18:34:28,961 - 🔄 Orthogonality Loss: 0.2738
+2025-03-31 18:34:29,110 - [BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+2025-03-31 18:34:29,110 - 🧭 Angle Offset (rad): 1.5610
+2025-03-31 18:34:29,110 - 🔄 Orthogonality Loss: 0.2951
+2025-03-31 18:34:29,884 - ==================== Run 1 ====================
+2025-03-31 18:34:29,884 - Task: Aerial, Doppler: 535.45 Hz, Speed: 20.65 km/h
+2025-03-31 18:34:29,884 - Raw |h| mean: 1.00000, std: 0.55576
+2025-03-31 18:34:29,885 - Beamforming weights sample [0,0,:5]: [-0.5422803 -0.03046058j -0.45362782+0.27158812j -0.14459215-0.38435802j
+ -0.6688624 -1.6388687j   0.24787004-0.05080226j]
+2025-03-31 18:34:29,885 - Desired Power: 80.47920
+2025-03-31 18:34:29,885 - Interference: 2494.84546
+2025-03-31 18:34:29,885 - → SINR (dB): -14.9136
+2025-03-31 18:34:30,288 - ==================== Run 2 ====================
+2025-03-31 18:34:30,288 - Task: Aerial, Doppler: 691.25 Hz, Speed: 26.66 km/h
+2025-03-31 18:34:30,289 - Raw |h| mean: 1.00000, std: 0.55329
+2025-03-31 18:34:30,289 - Beamforming weights sample [0,0,:5]: [-0.5422549 -0.03066721j -0.4533489 +0.27139574j -0.14441061-0.38420793j
+ -0.6690438 -1.6389937j   0.2475718 -0.05067457j]
+2025-03-31 18:34:30,289 - Desired Power: 82.04517
+2025-03-31 18:34:30,289 - Interference: 2543.40674
+2025-03-31 18:34:30,289 - → SINR (dB): -14.9136
+2025-03-31 18:34:30,688 - ==================== Run 3 ====================
+2025-03-31 18:34:30,688 - Task: Static, Doppler: 29.22 Hz, Speed: 1.13 km/h
+2025-03-31 18:34:30,689 - Raw |h| mean: 1.00000, std: 0.63129
+2025-03-31 18:34:30,689 - Beamforming weights sample [0,0,:5]: [-0.5646458 -0.3557874j  -0.30038077+0.4742808j   0.03091148-0.5159615j
+ -0.6441561 -1.3455528j   0.42665532-0.21411845j]
+2025-03-31 18:34:30,690 - Desired Power: 96.63907
+2025-03-31 18:34:30,690 - Interference: 2995.84888
+2025-03-31 18:34:30,690 - → SINR (dB): -14.9137
+2025-03-31 18:34:31,097 - ==================== Run 4 ====================
+2025-03-31 18:34:31,097 - Task: Vehicular, Doppler: 1337.68 Hz, Speed: 51.60 km/h
+2025-03-31 18:34:31,098 - Raw |h| mean: 1.00000, std: 0.55366
+2025-03-31 18:34:31,098 - Beamforming weights sample [0,0,:5]: [-0.5292946 -0.36939403j -0.26851812+0.41234177j -0.03029493-0.45087704j
+ -0.8485873 -1.4397788j   0.32116956-0.14325078j]
+2025-03-31 18:34:31,098 - Desired Power: 79.38812
+2025-03-31 18:34:31,098 - Interference: 2460.72925
+2025-03-31 18:34:31,098 - → SINR (dB): -14.9131
+2025-03-31 18:34:31,497 - ==================== Run 5 ====================
+2025-03-31 18:34:31,497 - Task: Static, Doppler: 29.84 Hz, Speed: 1.15 km/h
+2025-03-31 18:34:31,498 - Raw |h| mean: 1.00000, std: 0.57714
+2025-03-31 18:34:31,498 - Beamforming weights sample [0,0,:5]: [-0.5647344 -0.3557521j  -0.3003644 +0.47434357j  0.0307593 -0.51595235j
+ -0.6442207 -1.3455048j   0.42684558-0.21422581j]
+2025-03-31 18:34:31,498 - Desired Power: 84.09566
+2025-03-31 18:34:31,498 - Interference: 2606.92822
+2025-03-31 18:34:31,498 - → SINR (dB): -14.9136
+2025-03-31 18:34:31,905 - ==================== Run 6 ====================
+2025-03-31 18:34:31,905 - Task: Aerial, Doppler: 589.63 Hz, Speed: 22.74 km/h
+2025-03-31 18:34:31,906 - Raw |h| mean: 1.00000, std: 0.56368
+2025-03-31 18:34:31,906 - Beamforming weights sample [0,0,:5]: [-0.5422605 -0.03059207j -0.45342588+0.27142918j -0.14446093-0.38424677j
+ -0.6689822 -1.6389556j   0.24765995-0.05071558j]
+2025-03-31 18:34:31,906 - Desired Power: 81.32426
+2025-03-31 18:34:31,906 - Interference: 2521.07031
+2025-03-31 18:34:31,906 - → SINR (dB): -14.9136
+2025-03-31 18:34:32,308 - ==================== Run 7 ====================
+2025-03-31 18:34:32,308 - Task: Aerial, Doppler: 600.46 Hz, Speed: 23.16 km/h
+2025-03-31 18:34:32,309 - Raw |h| mean: 1.00000, std: 0.56155
+2025-03-31 18:34:32,309 - Beamforming weights sample [0,0,:5]: [-0.5422654 -0.03055618j -0.45349768+0.27148846j -0.1444887 -0.38429296j
+ -0.66893846-1.6389295j   0.24771795-0.05073817j]
+2025-03-31 18:34:32,309 - Desired Power: 83.88322
+2025-03-31 18:34:32,309 - Interference: 2600.34863
+2025-03-31 18:34:32,309 - → SINR (dB): -14.9136
+2025-03-31 18:34:32,708 - ==================== Run 8 ====================
+2025-03-31 18:34:32,708 - Task: Static, Doppler: 25.22 Hz, Speed: 0.97 km/h
+2025-03-31 18:34:32,709 - Raw |h| mean: 1.00000, std: 0.60032
+2025-03-31 18:34:32,709 - Beamforming weights sample [0,0,:5]: [-0.56454563-0.35585147j -0.30035543+0.47423086j  0.03102352-0.5159719j
+ -0.6441632 -1.3455846j   0.42650038-0.21403192j]
+2025-03-31 18:34:32,709 - Desired Power: 85.43687
+2025-03-31 18:34:32,709 - Interference: 2648.79419
+2025-03-31 18:34:32,709 - → SINR (dB): -14.9140
+2025-03-31 18:34:33,119 - ==================== Run 9 ====================
+2025-03-31 18:34:33,119 - Task: Vehicular, Doppler: 1267.51 Hz, Speed: 48.89 km/h
+2025-03-31 18:34:33,120 - Raw |h| mean: 1.00000, std: 0.54807
+2025-03-31 18:34:33,120 - Beamforming weights sample [0,0,:5]: [-0.52926075-0.36935312j -0.2685214 +0.41253483j -0.03046914-0.45099062j
+ -0.8486203 -1.4396089j   0.32133758-0.14338525j]
+2025-03-31 18:34:33,120 - Desired Power: 84.21771
+2025-03-31 18:34:33,120 - Interference: 2610.69678
+2025-03-31 18:34:33,120 - → SINR (dB): -14.9135
+2025-03-31 18:34:33,529 - ==================== Run 10 ====================
+2025-03-31 18:34:33,529 - Task: Vehicular, Doppler: 1283.37 Hz, Speed: 49.50 km/h
+2025-03-31 18:34:33,530 - Raw |h| mean: 1.00000, std: 0.54827
+2025-03-31 18:34:33,530 - Beamforming weights sample [0,0,:5]: [-0.52932703-0.3694083j  -0.2685157 +0.41223654j -0.03022793-0.45081225j
+ -0.8485812 -1.4398522j   0.3210984 -0.14320579j]
+2025-03-31 18:34:33,530 - Desired Power: 81.62070
+2025-03-31 18:34:33,530 - Interference: 2530.14282
+2025-03-31 18:34:33,530 - → SINR (dB): -14.9134

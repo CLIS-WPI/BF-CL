@@ -1,0 +1,708 @@
+2025-03-31 18:34:05,438 - [CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+2025-03-31 18:34:05,439 - [CHECKPOINT-Traffic] 🚦 Start traffic simulation
+2025-03-31 18:34:05,439 - [CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+2025-03-31 18:34:05,440 - [CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+2025-03-31 18:34:05,440 - [CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+2025-03-31 18:34:05,440 - [CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+2025-03-31 18:34:05,440 - [CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+2025-03-31 18:34:05,440 - [CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+2025-03-31 18:34:05,440 - [CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+2025-03-31 18:34:05,440 - [CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+2025-03-31 18:34:05,440 - [CHECKPOINT-Main] 🕒 Period=morning Start
+2025-03-31 18:34:05,440 - [CHECKPOINT-Main] 👥 Users in morning: 32
+2025-03-31 18:34:05,856 - [CHECKPOINT-2] Task=Static | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:05,856 - [CHECKPOINT-3] Task=Static | Normalized |h| mean=1.00000
+2025-03-31 18:34:05,863 - [CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:05,863 - [CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+2025-03-31 18:34:06,175 - [CHECKPOINT-2] Task=Vehicular | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:06,175 - [CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=1.00000
+2025-03-31 18:34:06,487 - [CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:06,487 - [CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+2025-03-31 18:34:06,488 - [CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
+2025-03-31 18:34:06,488 - [CHECKPOINT-Main] 🔁 Epoch=1 start for morning
+2025-03-31 18:34:09,431 - [TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=9.22 ms
+2025-03-31 18:34:09,433 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 0.11030
+2025-03-31 18:34:09,433 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.66430
+2025-03-31 18:34:09,433 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: 96.73065, snr: 0.03037, sinr_db: -15.18
+2025-03-31 18:34:09,433 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=96.73 | SINR=-15.18dB
+2025-03-31 18:34:09,963 - [TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=9.22 ms
+2025-03-31 18:34:10,049 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: 0.11054
+2025-03-31 18:34:10,049 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.91236
+2025-03-31 18:34:10,049 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: 99.12977, snr: 0.03131, sinr_db: -15.04
+2025-03-31 18:34:10,049 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=99.13 | SINR=-15.04dB
+2025-03-31 18:34:10,171 - [TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=7.43 ms
+2025-03-31 18:34:10,211 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: 0.11039
+2025-03-31 18:34:10,211 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.82511
+2025-03-31 18:34:10,211 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: 227.42978, snr: 0.03172, sinr_db: -14.99
+2025-03-31 18:34:10,211 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=227.43 | SINR=-14.99dB
+2025-03-31 18:34:10,331 - [TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=9.76 ms
+2025-03-31 18:34:10,370 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: 0.11025
+2025-03-31 18:34:10,370 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.81835
+2025-03-31 18:34:10,370 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: 210.85243, snr: 0.03008, sinr_db: -15.22
+2025-03-31 18:34:10,370 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=210.85 | SINR=-15.22dB
+2025-03-31 18:34:10,370 - [CHECKPOINT-Main] 🔁 Epoch=2 start for morning
+2025-03-31 18:34:10,476 - [TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=8.07 ms
+2025-03-31 18:34:10,479 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: 0.11030
+2025-03-31 18:34:10,479 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.66430
+2025-03-31 18:34:10,479 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: 96.70480, snr: 0.03037, sinr_db: -15.18
+2025-03-31 18:34:10,479 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=96.70 | SINR=-15.18dB
+2025-03-31 18:34:10,619 - [TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=9.46 ms
+2025-03-31 18:34:10,655 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: 0.11054
+2025-03-31 18:34:10,655 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.91236
+2025-03-31 18:34:10,655 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: 190.51308, snr: 0.03131, sinr_db: -15.04
+2025-03-31 18:34:10,656 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=190.51 | SINR=-15.04dB
+2025-03-31 18:34:10,769 - [TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=9.61 ms
+2025-03-31 18:34:10,805 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: 0.11039
+2025-03-31 18:34:10,805 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.82511
+2025-03-31 18:34:10,805 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: 232.22916, snr: 0.03172, sinr_db: -14.99
+2025-03-31 18:34:10,805 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=232.23 | SINR=-14.99dB
+2025-03-31 18:34:10,919 - [TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=7.49 ms
+2025-03-31 18:34:10,955 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: 0.11025
+2025-03-31 18:34:10,955 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.81835
+2025-03-31 18:34:10,955 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: 216.25327, snr: 0.03008, sinr_db: -15.22
+2025-03-31 18:34:10,955 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=216.25 | SINR=-15.22dB
+2025-03-31 18:34:10,955 - [CHECKPOINT-Main] 🔁 Epoch=3 start for morning
+2025-03-31 18:34:11,059 - [TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=7.72 ms
+2025-03-31 18:34:11,061 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: 0.11030
+2025-03-31 18:34:11,062 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.66430
+2025-03-31 18:34:11,062 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: 96.69128, snr: 0.03037, sinr_db: -15.18
+2025-03-31 18:34:11,062 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=96.69 | SINR=-15.18dB
+2025-03-31 18:34:11,201 - [TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=7.64 ms
+2025-03-31 18:34:11,237 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: 0.11054
+2025-03-31 18:34:11,237 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.91236
+2025-03-31 18:34:11,237 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: 191.31187, snr: 0.03131, sinr_db: -15.04
+2025-03-31 18:34:11,237 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=191.31 | SINR=-15.04dB
+2025-03-31 18:34:11,351 - [TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=9.80 ms
+2025-03-31 18:34:11,387 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: 0.11039
+2025-03-31 18:34:11,387 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.82511
+2025-03-31 18:34:11,387 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: 231.42502, snr: 0.03172, sinr_db: -14.99
+2025-03-31 18:34:11,387 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=231.43 | SINR=-14.99dB
+2025-03-31 18:34:11,501 - [TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=8.80 ms
+2025-03-31 18:34:11,537 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: 0.11025
+2025-03-31 18:34:11,537 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.81835
+2025-03-31 18:34:11,537 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: 215.85385, snr: 0.03008, sinr_db: -15.22
+2025-03-31 18:34:11,537 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=215.85 | SINR=-15.22dB
+2025-03-31 18:34:11,537 - [CHECKPOINT-Main] 🔁 Epoch=4 start for morning
+2025-03-31 18:34:11,642 - [TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=7.05 ms
+2025-03-31 18:34:11,644 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: 0.11030
+2025-03-31 18:34:11,644 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.66430
+2025-03-31 18:34:11,644 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: 96.68491, snr: 0.03037, sinr_db: -15.18
+2025-03-31 18:34:11,644 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=96.68 | SINR=-15.18dB
+2025-03-31 18:34:11,784 - [TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=7.33 ms
+2025-03-31 18:34:11,820 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: 0.11054
+2025-03-31 18:34:11,820 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.91236
+2025-03-31 18:34:11,820 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: 191.21631, snr: 0.03131, sinr_db: -15.04
+2025-03-31 18:34:11,820 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=191.22 | SINR=-15.04dB
+2025-03-31 18:34:11,934 - [TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=7.04 ms
+2025-03-31 18:34:11,970 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: 0.11039
+2025-03-31 18:34:11,970 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.82511
+2025-03-31 18:34:11,970 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: 231.71646, snr: 0.03172, sinr_db: -14.99
+2025-03-31 18:34:11,970 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=231.72 | SINR=-14.99dB
+2025-03-31 18:34:12,085 - [TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=8.41 ms
+2025-03-31 18:34:12,121 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: 0.11025
+2025-03-31 18:34:12,121 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.81835
+2025-03-31 18:34:12,121 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: 216.04143, snr: 0.03008, sinr_db: -15.22
+2025-03-31 18:34:12,121 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=216.04 | SINR=-15.22dB
+2025-03-31 18:34:12,121 - [CHECKPOINT-Main] 🔁 Epoch=5 start for morning
+2025-03-31 18:34:12,225 - [TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=8.38 ms
+2025-03-31 18:34:12,228 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: 0.11030
+2025-03-31 18:34:12,228 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.66430
+2025-03-31 18:34:12,228 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: 96.68121, snr: 0.03037, sinr_db: -15.18
+2025-03-31 18:34:12,228 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=96.68 | SINR=-15.18dB
+2025-03-31 18:34:12,367 - [TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=9.21 ms
+2025-03-31 18:34:12,403 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: 0.11054
+2025-03-31 18:34:12,403 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.91236
+2025-03-31 18:34:12,404 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: 191.40805, snr: 0.03131, sinr_db: -15.04
+2025-03-31 18:34:12,404 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=191.41 | SINR=-15.04dB
+2025-03-31 18:34:12,518 - [TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=9.21 ms
+2025-03-31 18:34:12,554 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: 0.11039
+2025-03-31 18:34:12,554 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.82511
+2025-03-31 18:34:12,554 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: 232.02513, snr: 0.03172, sinr_db: -14.99
+2025-03-31 18:34:12,554 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=232.03 | SINR=-14.99dB
+2025-03-31 18:34:12,668 - [TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=8.84 ms
+2025-03-31 18:34:12,704 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: 0.11025
+2025-03-31 18:34:12,704 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.81835
+2025-03-31 18:34:12,704 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: 215.40630, snr: 0.03008, sinr_db: -15.22
+2025-03-31 18:34:12,704 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=215.41 | SINR=-15.22dB
+2025-03-31 18:34:12,705 - [CHECKPOINT-Main] 🔁 Epoch=6 start for morning
+2025-03-31 18:34:12,809 - [TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=9.84 ms
+2025-03-31 18:34:12,811 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: 0.11030
+2025-03-31 18:34:12,811 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.66430
+2025-03-31 18:34:12,811 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: 96.67941, snr: 0.03037, sinr_db: -15.18
+2025-03-31 18:34:12,811 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=96.68 | SINR=-15.18dB
+2025-03-31 18:34:12,951 - [TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=9.71 ms
+2025-03-31 18:34:12,987 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: 0.11054
+2025-03-31 18:34:12,987 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.91236
+2025-03-31 18:34:12,987 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: 191.39787, snr: 0.03131, sinr_db: -15.04
+2025-03-31 18:34:12,987 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=191.40 | SINR=-15.04dB
+2025-03-31 18:34:13,101 - [TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=7.56 ms
+2025-03-31 18:34:13,137 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: 0.11039
+2025-03-31 18:34:13,137 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.82511
+2025-03-31 18:34:13,137 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: 231.67233, snr: 0.03172, sinr_db: -14.99
+2025-03-31 18:34:13,137 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=231.67 | SINR=-14.99dB
+2025-03-31 18:34:13,251 - [TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=7.24 ms
+2025-03-31 18:34:13,287 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: 0.11025
+2025-03-31 18:34:13,287 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.81835
+2025-03-31 18:34:13,287 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: 214.99207, snr: 0.03008, sinr_db: -15.22
+2025-03-31 18:34:13,287 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=214.99 | SINR=-15.22dB
+2025-03-31 18:34:13,287 - [CHECKPOINT-Main] 🔁 Epoch=7 start for morning
+2025-03-31 18:34:13,391 - [TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=7.62 ms
+2025-03-31 18:34:13,393 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: 0.11030
+2025-03-31 18:34:13,394 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.66430
+2025-03-31 18:34:13,394 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: 96.67863, snr: 0.03037, sinr_db: -15.18
+2025-03-31 18:34:13,394 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=96.68 | SINR=-15.18dB
+2025-03-31 18:34:13,533 - [TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=7.55 ms
+2025-03-31 18:34:13,569 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: 0.11054
+2025-03-31 18:34:13,569 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.91236
+2025-03-31 18:34:13,570 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: 190.20485, snr: 0.03131, sinr_db: -15.04
+2025-03-31 18:34:13,570 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=190.20 | SINR=-15.04dB
+2025-03-31 18:34:13,683 - [TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=8.27 ms
+2025-03-31 18:34:13,719 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: 0.11039
+2025-03-31 18:34:13,719 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.82511
+2025-03-31 18:34:13,719 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: 232.14798, snr: 0.03172, sinr_db: -14.99
+2025-03-31 18:34:13,719 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=232.15 | SINR=-14.99dB
+2025-03-31 18:34:13,833 - [TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=7.03 ms
+2025-03-31 18:34:13,869 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: 0.11025
+2025-03-31 18:34:13,869 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.81835
+2025-03-31 18:34:13,869 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: 215.54576, snr: 0.03008, sinr_db: -15.22
+2025-03-31 18:34:13,869 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=215.55 | SINR=-15.22dB
+2025-03-31 18:34:13,869 - [CHECKPOINT-Main] 🔁 Epoch=8 start for morning
+2025-03-31 18:34:13,973 - [TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=7.05 ms
+2025-03-31 18:34:13,976 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: 0.11030
+2025-03-31 18:34:13,976 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.66430
+2025-03-31 18:34:13,976 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: 96.67844, snr: 0.03037, sinr_db: -15.18
+2025-03-31 18:34:13,976 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=96.68 | SINR=-15.18dB
+2025-03-31 18:34:14,116 - [TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=7.75 ms
+2025-03-31 18:34:14,152 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: 0.11054
+2025-03-31 18:34:14,152 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.91236
+2025-03-31 18:34:14,152 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: 190.13612, snr: 0.03131, sinr_db: -15.04
+2025-03-31 18:34:14,152 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=190.14 | SINR=-15.04dB
+2025-03-31 18:34:14,267 - [TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=7.68 ms
+2025-03-31 18:34:14,302 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: 0.11039
+2025-03-31 18:34:14,302 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.82511
+2025-03-31 18:34:14,302 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: 231.33690, snr: 0.03172, sinr_db: -14.99
+2025-03-31 18:34:14,303 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=231.34 | SINR=-14.99dB
+2025-03-31 18:34:14,416 - [TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=8.04 ms
+2025-03-31 18:34:14,452 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: 0.11025
+2025-03-31 18:34:14,452 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.81835
+2025-03-31 18:34:14,452 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: 215.30470, snr: 0.03008, sinr_db: -15.22
+2025-03-31 18:34:14,452 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=215.30 | SINR=-15.22dB
+2025-03-31 18:34:14,452 - [CHECKPOINT-Main] 🔁 Epoch=9 start for morning
+2025-03-31 18:34:14,556 - [TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=8.86 ms
+2025-03-31 18:34:14,559 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: 0.11030
+2025-03-31 18:34:14,559 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.66430
+2025-03-31 18:34:14,559 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: 96.67852, snr: 0.03037, sinr_db: -15.18
+2025-03-31 18:34:14,559 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=96.68 | SINR=-15.18dB
+2025-03-31 18:34:14,698 - [TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=9.57 ms
+2025-03-31 18:34:14,734 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: 0.11054
+2025-03-31 18:34:14,734 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.91236
+2025-03-31 18:34:14,734 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: 190.48709, snr: 0.03131, sinr_db: -15.04
+2025-03-31 18:34:14,734 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=190.49 | SINR=-15.04dB
+2025-03-31 18:34:14,848 - [TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=9.64 ms
+2025-03-31 18:34:14,884 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: 0.11039
+2025-03-31 18:34:14,884 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.82511
+2025-03-31 18:34:14,884 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: 231.85330, snr: 0.03172, sinr_db: -14.99
+2025-03-31 18:34:14,884 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=231.85 | SINR=-14.99dB
+2025-03-31 18:34:14,998 - [TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=9.79 ms
+2025-03-31 18:34:15,034 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: 0.11025
+2025-03-31 18:34:15,035 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.81835
+2025-03-31 18:34:15,035 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: 215.56639, snr: 0.03008, sinr_db: -15.22
+2025-03-31 18:34:15,035 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=215.57 | SINR=-15.22dB
+2025-03-31 18:34:15,035 - [CHECKPOINT-Main] 🔁 Epoch=10 start for morning
+2025-03-31 18:34:15,138 - [TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=8.28 ms
+2025-03-31 18:34:15,141 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: 0.11030
+2025-03-31 18:34:15,141 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.66430
+2025-03-31 18:34:15,141 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: 96.67875, snr: 0.03037, sinr_db: -15.18
+2025-03-31 18:34:15,141 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=96.68 | SINR=-15.18dB
+2025-03-31 18:34:15,280 - [TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=8.84 ms
+2025-03-31 18:34:15,316 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: 0.11054
+2025-03-31 18:34:15,316 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.91236
+2025-03-31 18:34:15,316 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: 189.65059, snr: 0.03131, sinr_db: -15.04
+2025-03-31 18:34:15,316 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=189.65 | SINR=-15.04dB
+2025-03-31 18:34:15,430 - [TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=7.89 ms
+2025-03-31 18:34:15,466 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: 0.11039
+2025-03-31 18:34:15,467 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.82511
+2025-03-31 18:34:15,467 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: 230.99442, snr: 0.03172, sinr_db: -14.99
+2025-03-31 18:34:15,467 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=230.99 | SINR=-14.99dB
+2025-03-31 18:34:15,580 - [TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=7.99 ms
+2025-03-31 18:34:15,616 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: 0.11025
+2025-03-31 18:34:15,616 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.81835
+2025-03-31 18:34:15,616 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: 215.50951, snr: 0.03008, sinr_db: -15.22
+2025-03-31 18:34:15,616 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=215.51 | SINR=-15.22dB
+2025-03-31 18:34:15,617 - [CHECKPOINT-Main] 🕒 Period=noon Start
+2025-03-31 18:34:15,617 - [CHECKPOINT-Main] 👥 Users in noon: 32
+2025-03-31 18:34:15,939 - [CHECKPOINT-2] Task=Static | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:15,940 - [CHECKPOINT-3] Task=Static | Normalized |h| mean=1.00000
+2025-03-31 18:34:15,944 - [CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:15,944 - [CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+2025-03-31 18:34:16,263 - [CHECKPOINT-2] Task=Vehicular | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:16,263 - [CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=1.00000
+2025-03-31 18:34:16,581 - [CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:16,581 - [CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+2025-03-31 18:34:16,582 - [CHECKPOINT-Main] ✅ Channel generation done for all tasks in noon
+2025-03-31 18:34:16,582 - [CHECKPOINT-Main] 🔁 Epoch=1 start for noon
+2025-03-31 18:34:16,686 - [TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=9.34 ms
+2025-03-31 18:34:16,689 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 0.11021
+2025-03-31 18:34:16,689 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.59801
+2025-03-31 18:34:16,689 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: 95.44363, snr: 0.03256, sinr_db: -14.87
+2025-03-31 18:34:16,689 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=95.44 | SINR=-14.87dB
+2025-03-31 18:34:16,828 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=9.51 ms
+2025-03-31 18:34:16,864 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: 0.11028
+2025-03-31 18:34:16,864 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.90579
+2025-03-31 18:34:16,864 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: 184.52190, snr: 0.03311, sinr_db: -14.80
+2025-03-31 18:34:16,864 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=184.52 | SINR=-14.80dB
+2025-03-31 18:34:16,977 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=8.84 ms
+2025-03-31 18:34:17,013 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: 0.11110
+2025-03-31 18:34:17,014 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.77267
+2025-03-31 18:34:17,014 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: 226.08919, snr: 0.03144, sinr_db: -15.03
+2025-03-31 18:34:17,014 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=226.09 | SINR=-15.03dB
+2025-03-31 18:34:17,128 - [TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.53 ms
+2025-03-31 18:34:17,163 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: 0.11085
+2025-03-31 18:34:17,163 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.82235
+2025-03-31 18:34:17,163 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: 210.61156, snr: 0.03280, sinr_db: -14.84
+2025-03-31 18:34:17,163 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=210.61 | SINR=-14.84dB
+2025-03-31 18:34:17,163 - [CHECKPOINT-Main] 🔁 Epoch=2 start for noon
+2025-03-31 18:34:17,267 - [TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=9.35 ms
+2025-03-31 18:34:17,270 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: 0.11021
+2025-03-31 18:34:17,270 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.59801
+2025-03-31 18:34:17,270 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: 95.44360, snr: 0.03256, sinr_db: -14.87
+2025-03-31 18:34:17,270 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=95.44 | SINR=-14.87dB
+2025-03-31 18:34:17,416 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=7.28 ms
+2025-03-31 18:34:17,452 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: 0.11028
+2025-03-31 18:34:17,452 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.90579
+2025-03-31 18:34:17,452 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: 188.33809, snr: 0.03311, sinr_db: -14.80
+2025-03-31 18:34:17,453 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=188.34 | SINR=-14.80dB
+2025-03-31 18:34:17,569 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=7.08 ms
+2025-03-31 18:34:17,605 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: 0.11110
+2025-03-31 18:34:17,605 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.77267
+2025-03-31 18:34:17,605 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: 230.35548, snr: 0.03144, sinr_db: -15.03
+2025-03-31 18:34:17,605 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=230.36 | SINR=-15.03dB
+2025-03-31 18:34:17,719 - [TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=9.33 ms
+2025-03-31 18:34:17,756 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: 0.11085
+2025-03-31 18:34:17,756 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.82235
+2025-03-31 18:34:17,756 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: 215.25504, snr: 0.03280, sinr_db: -14.84
+2025-03-31 18:34:17,756 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=215.26 | SINR=-14.84dB
+2025-03-31 18:34:17,756 - [CHECKPOINT-Main] 🔁 Epoch=3 start for noon
+2025-03-31 18:34:17,859 - [TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=9.22 ms
+2025-03-31 18:34:17,862 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: 0.11021
+2025-03-31 18:34:17,862 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.59801
+2025-03-31 18:34:17,862 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: 95.44369, snr: 0.03256, sinr_db: -14.87
+2025-03-31 18:34:17,862 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=95.44 | SINR=-14.87dB
+2025-03-31 18:34:18,001 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=7.50 ms
+2025-03-31 18:34:18,037 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: 0.11028
+2025-03-31 18:34:18,037 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.90579
+2025-03-31 18:34:18,037 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: 189.90007, snr: 0.03311, sinr_db: -14.80
+2025-03-31 18:34:18,037 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=189.90 | SINR=-14.80dB
+2025-03-31 18:34:18,151 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=8.29 ms
+2025-03-31 18:34:18,187 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: 0.11110
+2025-03-31 18:34:18,187 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.77267
+2025-03-31 18:34:18,187 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: 231.04463, snr: 0.03144, sinr_db: -15.03
+2025-03-31 18:34:18,187 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=231.04 | SINR=-15.03dB
+2025-03-31 18:34:18,301 - [TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=7.99 ms
+2025-03-31 18:34:18,337 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: 0.11085
+2025-03-31 18:34:18,337 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.82235
+2025-03-31 18:34:18,337 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: 214.31146, snr: 0.03280, sinr_db: -14.84
+2025-03-31 18:34:18,337 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=214.31 | SINR=-14.84dB
+2025-03-31 18:34:18,337 - [CHECKPOINT-Main] 🔁 Epoch=4 start for noon
+2025-03-31 18:34:18,442 - [TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=7.07 ms
+2025-03-31 18:34:18,444 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: 0.11021
+2025-03-31 18:34:18,444 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.59801
+2025-03-31 18:34:18,444 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: 95.44375, snr: 0.03256, sinr_db: -14.87
+2025-03-31 18:34:18,444 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=95.44 | SINR=-14.87dB
+2025-03-31 18:34:18,583 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=8.12 ms
+2025-03-31 18:34:18,619 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: 0.11028
+2025-03-31 18:34:18,619 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.90579
+2025-03-31 18:34:18,619 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: 189.53438, snr: 0.03311, sinr_db: -14.80
+2025-03-31 18:34:18,620 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=189.53 | SINR=-14.80dB
+2025-03-31 18:34:18,733 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=8.64 ms
+2025-03-31 18:34:18,769 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: 0.11110
+2025-03-31 18:34:18,769 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.77267
+2025-03-31 18:34:18,769 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: 231.70293, snr: 0.03144, sinr_db: -15.03
+2025-03-31 18:34:18,769 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=231.70 | SINR=-15.03dB
+2025-03-31 18:34:18,882 - [TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.93 ms
+2025-03-31 18:34:18,918 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: 0.11085
+2025-03-31 18:34:18,918 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.82235
+2025-03-31 18:34:18,918 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: 214.20546, snr: 0.03280, sinr_db: -14.84
+2025-03-31 18:34:18,918 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=214.21 | SINR=-14.84dB
+2025-03-31 18:34:18,918 - [CHECKPOINT-Main] 🔁 Epoch=5 start for noon
+2025-03-31 18:34:19,022 - [TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=9.71 ms
+2025-03-31 18:34:19,025 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: 0.11021
+2025-03-31 18:34:19,025 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.59801
+2025-03-31 18:34:19,025 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: 95.44367, snr: 0.03256, sinr_db: -14.87
+2025-03-31 18:34:19,025 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=95.44 | SINR=-14.87dB
+2025-03-31 18:34:19,164 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=8.98 ms
+2025-03-31 18:34:19,200 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: 0.11028
+2025-03-31 18:34:19,200 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.90579
+2025-03-31 18:34:19,200 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: 189.39656, snr: 0.03311, sinr_db: -14.80
+2025-03-31 18:34:19,200 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=189.40 | SINR=-14.80dB
+2025-03-31 18:34:19,314 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=7.22 ms
+2025-03-31 18:34:19,349 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: 0.11110
+2025-03-31 18:34:19,349 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.77267
+2025-03-31 18:34:19,350 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: 231.21051, snr: 0.03144, sinr_db: -15.03
+2025-03-31 18:34:19,350 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=231.21 | SINR=-15.03dB
+2025-03-31 18:34:19,463 - [TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.40 ms
+2025-03-31 18:34:19,499 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: 0.11085
+2025-03-31 18:34:19,499 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.82235
+2025-03-31 18:34:19,499 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: 215.90788, snr: 0.03280, sinr_db: -14.84
+2025-03-31 18:34:19,499 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=215.91 | SINR=-14.84dB
+2025-03-31 18:34:19,499 - [CHECKPOINT-Main] 🔁 Epoch=6 start for noon
+2025-03-31 18:34:19,603 - [TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=8.21 ms
+2025-03-31 18:34:19,606 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: 0.11021
+2025-03-31 18:34:19,606 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.59801
+2025-03-31 18:34:19,606 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: 95.44357, snr: 0.03256, sinr_db: -14.87
+2025-03-31 18:34:19,606 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=95.44 | SINR=-14.87dB
+2025-03-31 18:34:19,745 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=9.01 ms
+2025-03-31 18:34:19,781 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: 0.11028
+2025-03-31 18:34:19,781 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.90579
+2025-03-31 18:34:19,781 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: 190.89178, snr: 0.03311, sinr_db: -14.80
+2025-03-31 18:34:19,781 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=190.89 | SINR=-14.80dB
+2025-03-31 18:34:19,902 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=9.33 ms
+2025-03-31 18:34:19,938 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: 0.11110
+2025-03-31 18:34:19,938 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.77267
+2025-03-31 18:34:19,938 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: 230.81146, snr: 0.03144, sinr_db: -15.03
+2025-03-31 18:34:19,938 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=230.81 | SINR=-15.03dB
+2025-03-31 18:34:20,052 - [TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.21 ms
+2025-03-31 18:34:20,088 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: 0.11085
+2025-03-31 18:34:20,088 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.82235
+2025-03-31 18:34:20,088 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: 214.57173, snr: 0.03280, sinr_db: -14.84
+2025-03-31 18:34:20,088 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=214.57 | SINR=-14.84dB
+2025-03-31 18:34:20,088 - [CHECKPOINT-Main] 🔁 Epoch=7 start for noon
+2025-03-31 18:34:20,192 - [TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=9.45 ms
+2025-03-31 18:34:20,195 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: 0.11021
+2025-03-31 18:34:20,195 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.59801
+2025-03-31 18:34:20,195 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: 95.44346, snr: 0.03256, sinr_db: -14.87
+2025-03-31 18:34:20,195 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=95.44 | SINR=-14.87dB
+2025-03-31 18:34:20,334 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=8.60 ms
+2025-03-31 18:34:20,370 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: 0.11028
+2025-03-31 18:34:20,370 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.90579
+2025-03-31 18:34:20,370 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: 189.09590, snr: 0.03311, sinr_db: -14.80
+2025-03-31 18:34:20,370 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=189.10 | SINR=-14.80dB
+2025-03-31 18:34:20,484 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=8.20 ms
+2025-03-31 18:34:20,519 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: 0.11110
+2025-03-31 18:34:20,519 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.77267
+2025-03-31 18:34:20,519 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: 231.08424, snr: 0.03144, sinr_db: -15.03
+2025-03-31 18:34:20,520 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=231.08 | SINR=-15.03dB
+2025-03-31 18:34:20,633 - [TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.29 ms
+2025-03-31 18:34:20,669 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: 0.11085
+2025-03-31 18:34:20,669 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.82235
+2025-03-31 18:34:20,669 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: 215.25424, snr: 0.03280, sinr_db: -14.84
+2025-03-31 18:34:20,669 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=215.25 | SINR=-14.84dB
+2025-03-31 18:34:20,670 - [CHECKPOINT-Main] 🔁 Epoch=8 start for noon
+2025-03-31 18:34:20,776 - [TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=8.05 ms
+2025-03-31 18:34:20,779 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: 0.11021
+2025-03-31 18:34:20,779 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.59801
+2025-03-31 18:34:20,779 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: 95.44326, snr: 0.03256, sinr_db: -14.87
+2025-03-31 18:34:20,779 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=95.44 | SINR=-14.87dB
+2025-03-31 18:34:20,926 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=8.79 ms
+2025-03-31 18:34:20,962 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: 0.11028
+2025-03-31 18:34:20,962 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.90579
+2025-03-31 18:34:20,962 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: 188.94373, snr: 0.03311, sinr_db: -14.80
+2025-03-31 18:34:20,963 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=188.94 | SINR=-14.80dB
+2025-03-31 18:34:21,076 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=9.81 ms
+2025-03-31 18:34:21,112 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: 0.11110
+2025-03-31 18:34:21,112 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.77267
+2025-03-31 18:34:21,112 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: 230.96841, snr: 0.03144, sinr_db: -15.03
+2025-03-31 18:34:21,112 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=230.97 | SINR=-15.03dB
+2025-03-31 18:34:21,226 - [TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=9.29 ms
+2025-03-31 18:34:21,262 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: 0.11085
+2025-03-31 18:34:21,262 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.82235
+2025-03-31 18:34:21,262 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: 215.66298, snr: 0.03280, sinr_db: -14.84
+2025-03-31 18:34:21,262 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=215.66 | SINR=-14.84dB
+2025-03-31 18:34:21,262 - [CHECKPOINT-Main] 🔁 Epoch=9 start for noon
+2025-03-31 18:34:21,366 - [TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=7.88 ms
+2025-03-31 18:34:21,369 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: 0.11021
+2025-03-31 18:34:21,369 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.59801
+2025-03-31 18:34:21,369 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: 95.44305, snr: 0.03256, sinr_db: -14.87
+2025-03-31 18:34:21,369 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=95.44 | SINR=-14.87dB
+2025-03-31 18:34:21,508 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=9.64 ms
+2025-03-31 18:34:21,544 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: 0.11028
+2025-03-31 18:34:21,544 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.90579
+2025-03-31 18:34:21,544 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: 189.74309, snr: 0.03311, sinr_db: -14.80
+2025-03-31 18:34:21,544 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=189.74 | SINR=-14.80dB
+2025-03-31 18:34:21,657 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=9.75 ms
+2025-03-31 18:34:21,693 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: 0.11110
+2025-03-31 18:34:21,693 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.77267
+2025-03-31 18:34:21,693 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: 231.00221, snr: 0.03144, sinr_db: -15.03
+2025-03-31 18:34:21,693 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=231.00 | SINR=-15.03dB
+2025-03-31 18:34:21,813 - [TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.53 ms
+2025-03-31 18:34:21,848 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: 0.11085
+2025-03-31 18:34:21,848 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.82235
+2025-03-31 18:34:21,848 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: 215.53444, snr: 0.03280, sinr_db: -14.84
+2025-03-31 18:34:21,848 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=215.53 | SINR=-14.84dB
+2025-03-31 18:34:21,848 - [CHECKPOINT-Main] 🔁 Epoch=10 start for noon
+2025-03-31 18:34:21,954 - [TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=8.30 ms
+2025-03-31 18:34:21,956 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: 0.11021
+2025-03-31 18:34:21,956 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.59801
+2025-03-31 18:34:21,956 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: 95.44294, snr: 0.03256, sinr_db: -14.87
+2025-03-31 18:34:21,956 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=95.44 | SINR=-14.87dB
+2025-03-31 18:34:22,097 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=7.52 ms
+2025-03-31 18:34:22,132 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: 0.11028
+2025-03-31 18:34:22,133 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.90579
+2025-03-31 18:34:22,133 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: 190.20253, snr: 0.03311, sinr_db: -14.80
+2025-03-31 18:34:22,133 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=190.20 | SINR=-14.80dB
+2025-03-31 18:34:22,247 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=9.83 ms
+2025-03-31 18:34:22,282 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: 0.11110
+2025-03-31 18:34:22,283 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.77267
+2025-03-31 18:34:22,283 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: 229.91460, snr: 0.03144, sinr_db: -15.03
+2025-03-31 18:34:22,283 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=229.91 | SINR=-15.03dB
+2025-03-31 18:34:22,396 - [TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.15 ms
+2025-03-31 18:34:22,432 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: 0.11085
+2025-03-31 18:34:22,432 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.82235
+2025-03-31 18:34:22,433 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: 215.10072, snr: 0.03280, sinr_db: -14.84
+2025-03-31 18:34:22,433 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=215.10 | SINR=-14.84dB
+2025-03-31 18:34:22,433 - [CHECKPOINT-Main] 🕒 Period=evening Start
+2025-03-31 18:34:22,433 - [CHECKPOINT-Main] 👥 Users in evening: 32
+2025-03-31 18:34:22,754 - [CHECKPOINT-2] Task=Static | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:22,755 - [CHECKPOINT-3] Task=Static | Normalized |h| mean=1.00000
+2025-03-31 18:34:22,761 - [CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:22,761 - [CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+2025-03-31 18:34:23,081 - [CHECKPOINT-2] Task=Vehicular | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:23,082 - [CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=1.00000
+2025-03-31 18:34:23,402 - [CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:23,402 - [CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+2025-03-31 18:34:23,403 - [CHECKPOINT-Main] ✅ Channel generation done for all tasks in evening
+2025-03-31 18:34:23,403 - [CHECKPOINT-Main] 🔁 Epoch=1 start for evening
+2025-03-31 18:34:23,510 - [TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=9.67 ms
+2025-03-31 18:34:23,512 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 0.10999
+2025-03-31 18:34:23,512 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.61497
+2025-03-31 18:34:23,513 - [CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: 96.34672, snr: 0.03190, sinr_db: -14.96
+2025-03-31 18:34:23,513 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=96.35 | SINR=-14.96dB
+2025-03-31 18:34:23,652 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=8.21 ms
+2025-03-31 18:34:23,688 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: 0.10963
+2025-03-31 18:34:23,688 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.90112
+2025-03-31 18:34:23,688 - [CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: 186.30624, snr: 0.03343, sinr_db: -14.76
+2025-03-31 18:34:23,688 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=186.31 | SINR=-14.76dB
+2025-03-31 18:34:23,803 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=8.96 ms
+2025-03-31 18:34:23,839 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: 0.11034
+2025-03-31 18:34:23,839 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.82951
+2025-03-31 18:34:23,839 - [CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: 227.70872, snr: 0.03011, sinr_db: -15.21
+2025-03-31 18:34:23,839 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=227.71 | SINR=-15.21dB
+2025-03-31 18:34:23,953 - [TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=8.80 ms
+2025-03-31 18:34:23,990 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: 0.11095
+2025-03-31 18:34:23,990 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.78361
+2025-03-31 18:34:23,990 - [CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: 210.28484, snr: 0.03116, sinr_db: -15.06
+2025-03-31 18:34:23,990 - [CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=210.28 | SINR=-15.06dB
+2025-03-31 18:34:23,990 - [CHECKPOINT-Main] 🔁 Epoch=2 start for evening
+2025-03-31 18:34:24,094 - [TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=7.83 ms
+2025-03-31 18:34:24,096 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: 0.10999
+2025-03-31 18:34:24,096 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.61497
+2025-03-31 18:34:24,096 - [CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: 96.34637, snr: 0.03190, sinr_db: -14.96
+2025-03-31 18:34:24,096 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=96.35 | SINR=-14.96dB
+2025-03-31 18:34:24,236 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=7.23 ms
+2025-03-31 18:34:24,272 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: 0.10963
+2025-03-31 18:34:24,272 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.90112
+2025-03-31 18:34:24,272 - [CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: 189.93761, snr: 0.03343, sinr_db: -14.76
+2025-03-31 18:34:24,272 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=189.94 | SINR=-14.76dB
+2025-03-31 18:34:24,386 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=8.01 ms
+2025-03-31 18:34:24,422 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: 0.11034
+2025-03-31 18:34:24,422 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.82951
+2025-03-31 18:34:24,422 - [CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: 231.09904, snr: 0.03011, sinr_db: -15.21
+2025-03-31 18:34:24,423 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=231.10 | SINR=-15.21dB
+2025-03-31 18:34:24,537 - [TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=7.74 ms
+2025-03-31 18:34:24,573 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: 0.11095
+2025-03-31 18:34:24,573 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.78361
+2025-03-31 18:34:24,573 - [CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: 215.22450, snr: 0.03116, sinr_db: -15.06
+2025-03-31 18:34:24,573 - [CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=215.22 | SINR=-15.06dB
+2025-03-31 18:34:24,573 - [CHECKPOINT-Main] 🔁 Epoch=3 start for evening
+2025-03-31 18:34:24,677 - [TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=7.61 ms
+2025-03-31 18:34:24,679 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: 0.10999
+2025-03-31 18:34:24,679 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.61497
+2025-03-31 18:34:24,680 - [CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: 96.34635, snr: 0.03190, sinr_db: -14.96
+2025-03-31 18:34:24,680 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=96.35 | SINR=-14.96dB
+2025-03-31 18:34:24,819 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=8.65 ms
+2025-03-31 18:34:24,855 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: 0.10963
+2025-03-31 18:34:24,855 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.90112
+2025-03-31 18:34:24,855 - [CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: 190.20245, snr: 0.03343, sinr_db: -14.76
+2025-03-31 18:34:24,855 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=190.20 | SINR=-14.76dB
+2025-03-31 18:34:24,969 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=9.32 ms
+2025-03-31 18:34:25,005 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: 0.11034
+2025-03-31 18:34:25,005 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.82951
+2025-03-31 18:34:25,005 - [CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: 231.83481, snr: 0.03011, sinr_db: -15.21
+2025-03-31 18:34:25,005 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=231.83 | SINR=-15.21dB
+2025-03-31 18:34:25,119 - [TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=8.47 ms
+2025-03-31 18:34:25,155 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: 0.11095
+2025-03-31 18:34:25,155 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.78361
+2025-03-31 18:34:25,156 - [CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: 214.95164, snr: 0.03116, sinr_db: -15.06
+2025-03-31 18:34:25,156 - [CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=214.95 | SINR=-15.06dB
+2025-03-31 18:34:25,156 - [CHECKPOINT-Main] 🔁 Epoch=4 start for evening
+2025-03-31 18:34:25,259 - [TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=9.14 ms
+2025-03-31 18:34:25,262 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: 0.10999
+2025-03-31 18:34:25,262 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.61497
+2025-03-31 18:34:25,262 - [CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: 96.34618, snr: 0.03190, sinr_db: -14.96
+2025-03-31 18:34:25,262 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=96.35 | SINR=-14.96dB
+2025-03-31 18:34:25,402 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=8.50 ms
+2025-03-31 18:34:25,438 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: 0.10963
+2025-03-31 18:34:25,438 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.90112
+2025-03-31 18:34:25,438 - [CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: 189.99553, snr: 0.03343, sinr_db: -14.76
+2025-03-31 18:34:25,438 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=190.00 | SINR=-14.76dB
+2025-03-31 18:34:25,552 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=9.59 ms
+2025-03-31 18:34:25,588 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: 0.11034
+2025-03-31 18:34:25,588 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.82951
+2025-03-31 18:34:25,588 - [CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: 232.11125, snr: 0.03011, sinr_db: -15.21
+2025-03-31 18:34:25,588 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=232.11 | SINR=-15.21dB
+2025-03-31 18:34:25,702 - [TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=9.90 ms
+2025-03-31 18:34:25,738 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: 0.11095
+2025-03-31 18:34:25,738 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.78361
+2025-03-31 18:34:25,738 - [CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: 214.90442, snr: 0.03116, sinr_db: -15.06
+2025-03-31 18:34:25,738 - [CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=214.90 | SINR=-15.06dB
+2025-03-31 18:34:25,738 - [CHECKPOINT-Main] 🔁 Epoch=5 start for evening
+2025-03-31 18:34:25,842 - [TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=7.70 ms
+2025-03-31 18:34:25,845 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: 0.10999
+2025-03-31 18:34:25,845 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.61497
+2025-03-31 18:34:25,845 - [CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: 96.34597, snr: 0.03190, sinr_db: -14.96
+2025-03-31 18:34:25,845 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=96.35 | SINR=-14.96dB
+2025-03-31 18:34:25,985 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=9.70 ms
+2025-03-31 18:34:26,020 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: 0.10963
+2025-03-31 18:34:26,020 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.90112
+2025-03-31 18:34:26,020 - [CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: 190.26173, snr: 0.03343, sinr_db: -14.76
+2025-03-31 18:34:26,021 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=190.26 | SINR=-14.76dB
+2025-03-31 18:34:26,134 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=8.66 ms
+2025-03-31 18:34:26,170 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: 0.11034
+2025-03-31 18:34:26,170 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.82951
+2025-03-31 18:34:26,171 - [CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: 231.53384, snr: 0.03011, sinr_db: -15.21
+2025-03-31 18:34:26,171 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=231.53 | SINR=-15.21dB
+2025-03-31 18:34:26,284 - [TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=7.91 ms
+2025-03-31 18:34:26,320 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: 0.11095
+2025-03-31 18:34:26,320 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.78361
+2025-03-31 18:34:26,321 - [CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: 214.42201, snr: 0.03116, sinr_db: -15.06
+2025-03-31 18:34:26,321 - [CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=214.42 | SINR=-15.06dB
+2025-03-31 18:34:26,321 - [CHECKPOINT-Main] 🔁 Epoch=6 start for evening
+2025-03-31 18:34:26,424 - [TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=9.29 ms
+2025-03-31 18:34:26,427 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: 0.10999
+2025-03-31 18:34:26,427 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.61497
+2025-03-31 18:34:26,427 - [CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: 96.34578, snr: 0.03190, sinr_db: -14.96
+2025-03-31 18:34:26,427 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=96.35 | SINR=-14.96dB
+2025-03-31 18:34:26,566 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=7.92 ms
+2025-03-31 18:34:26,602 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: 0.10963
+2025-03-31 18:34:26,602 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.90112
+2025-03-31 18:34:26,602 - [CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: 190.15726, snr: 0.03343, sinr_db: -14.76
+2025-03-31 18:34:26,602 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=190.16 | SINR=-14.76dB
+2025-03-31 18:34:26,716 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=7.14 ms
+2025-03-31 18:34:26,752 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: 0.11034
+2025-03-31 18:34:26,752 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.82951
+2025-03-31 18:34:26,752 - [CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: 232.67897, snr: 0.03011, sinr_db: -15.21
+2025-03-31 18:34:26,752 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=232.68 | SINR=-15.21dB
+2025-03-31 18:34:26,866 - [TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=7.21 ms
+2025-03-31 18:34:26,902 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: 0.11095
+2025-03-31 18:34:26,902 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.78361
+2025-03-31 18:34:26,902 - [CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: 214.40120, snr: 0.03116, sinr_db: -15.06
+2025-03-31 18:34:26,903 - [CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=214.40 | SINR=-15.06dB
+2025-03-31 18:34:26,903 - [CHECKPOINT-Main] 🔁 Epoch=7 start for evening
+2025-03-31 18:34:27,006 - [TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=7.59 ms
+2025-03-31 18:34:27,009 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: 0.10999
+2025-03-31 18:34:27,009 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.61497
+2025-03-31 18:34:27,009 - [CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: 96.34562, snr: 0.03190, sinr_db: -14.96
+2025-03-31 18:34:27,009 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=96.35 | SINR=-14.96dB
+2025-03-31 18:34:27,148 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=7.27 ms
+2025-03-31 18:34:27,184 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: 0.10963
+2025-03-31 18:34:27,184 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.90112
+2025-03-31 18:34:27,184 - [CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: 189.54950, snr: 0.03343, sinr_db: -14.76
+2025-03-31 18:34:27,184 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=189.55 | SINR=-14.76dB
+2025-03-31 18:34:27,298 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=9.09 ms
+2025-03-31 18:34:27,334 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: 0.11034
+2025-03-31 18:34:27,334 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.82951
+2025-03-31 18:34:27,334 - [CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: 231.59840, snr: 0.03011, sinr_db: -15.21
+2025-03-31 18:34:27,334 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=231.60 | SINR=-15.21dB
+2025-03-31 18:34:27,448 - [TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=8.27 ms
+2025-03-31 18:34:27,484 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: 0.11095
+2025-03-31 18:34:27,485 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.78361
+2025-03-31 18:34:27,485 - [CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: 214.31798, snr: 0.03116, sinr_db: -15.06
+2025-03-31 18:34:27,485 - [CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=214.32 | SINR=-15.06dB
+2025-03-31 18:34:27,485 - [CHECKPOINT-Main] 🔁 Epoch=8 start for evening
+2025-03-31 18:34:27,588 - [TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=8.62 ms
+2025-03-31 18:34:27,591 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: 0.10999
+2025-03-31 18:34:27,591 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.61497
+2025-03-31 18:34:27,591 - [CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: 96.34560, snr: 0.03190, sinr_db: -14.96
+2025-03-31 18:34:27,591 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=96.35 | SINR=-14.96dB
+2025-03-31 18:34:27,730 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=7.44 ms
+2025-03-31 18:34:27,766 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: 0.10963
+2025-03-31 18:34:27,767 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.90112
+2025-03-31 18:34:27,767 - [CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: 189.15491, snr: 0.03343, sinr_db: -14.76
+2025-03-31 18:34:27,767 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=189.15 | SINR=-14.76dB
+2025-03-31 18:34:27,880 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=9.63 ms
+2025-03-31 18:34:27,916 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: 0.11034
+2025-03-31 18:34:27,916 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.82951
+2025-03-31 18:34:27,916 - [CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: 231.95306, snr: 0.03011, sinr_db: -15.21
+2025-03-31 18:34:27,916 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=231.95 | SINR=-15.21dB
+2025-03-31 18:34:28,030 - [TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=8.09 ms
+2025-03-31 18:34:28,067 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: 0.11095
+2025-03-31 18:34:28,067 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.78361
+2025-03-31 18:34:28,067 - [CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: 214.94926, snr: 0.03116, sinr_db: -15.06
+2025-03-31 18:34:28,067 - [CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=214.95 | SINR=-15.06dB
+2025-03-31 18:34:28,067 - [CHECKPOINT-Main] 🔁 Epoch=9 start for evening
+2025-03-31 18:34:28,171 - [TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=8.06 ms
+2025-03-31 18:34:28,174 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: 0.10999
+2025-03-31 18:34:28,174 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.61497
+2025-03-31 18:34:28,174 - [CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: 96.34535, snr: 0.03190, sinr_db: -14.96
+2025-03-31 18:34:28,174 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=96.35 | SINR=-14.96dB
+2025-03-31 18:34:28,313 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=9.03 ms
+2025-03-31 18:34:28,349 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: 0.10963
+2025-03-31 18:34:28,349 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.90112
+2025-03-31 18:34:28,349 - [CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: 189.35750, snr: 0.03343, sinr_db: -14.76
+2025-03-31 18:34:28,349 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=189.36 | SINR=-14.76dB
+2025-03-31 18:34:28,462 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=8.92 ms
+2025-03-31 18:34:28,498 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: 0.11034
+2025-03-31 18:34:28,499 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.82951
+2025-03-31 18:34:28,499 - [CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: 231.21027, snr: 0.03011, sinr_db: -15.21
+2025-03-31 18:34:28,499 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=231.21 | SINR=-15.21dB
+2025-03-31 18:34:28,612 - [TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=7.74 ms
+2025-03-31 18:34:28,648 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: 0.11095
+2025-03-31 18:34:28,648 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.78361
+2025-03-31 18:34:28,648 - [CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: 214.35980, snr: 0.03116, sinr_db: -15.06
+2025-03-31 18:34:28,648 - [CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=214.36 | SINR=-15.06dB
+2025-03-31 18:34:28,648 - [CHECKPOINT-Main] 🔁 Epoch=10 start for evening
+2025-03-31 18:34:28,752 - [TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=9.22 ms
+2025-03-31 18:34:28,755 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: 0.10999
+2025-03-31 18:34:28,755 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.61497
+2025-03-31 18:34:28,755 - [CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: 96.34520, snr: 0.03190, sinr_db: -14.96
+2025-03-31 18:34:28,755 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=96.35 | SINR=-14.96dB
+2025-03-31 18:34:28,894 - [TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=7.71 ms
+2025-03-31 18:34:28,930 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: 0.10963
+2025-03-31 18:34:28,930 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.90112
+2025-03-31 18:34:28,930 - [CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: 189.73126, snr: 0.03343, sinr_db: -14.76
+2025-03-31 18:34:28,930 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=189.73 | SINR=-14.76dB
+2025-03-31 18:34:29,044 - [TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=8.88 ms
+2025-03-31 18:34:29,079 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: 0.11034
+2025-03-31 18:34:29,079 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.82951
+2025-03-31 18:34:29,079 - [CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: 232.41579, snr: 0.03011, sinr_db: -15.21
+2025-03-31 18:34:29,079 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=232.42 | SINR=-15.21dB
+2025-03-31 18:34:29,193 - [TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=7.01 ms
+2025-03-31 18:34:29,229 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: 0.11095
+2025-03-31 18:34:29,229 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.78361
+2025-03-31 18:34:29,229 - [CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: 215.09373, snr: 0.03116, sinr_db: -15.06
+2025-03-31 18:34:29,229 - [CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=215.09 | SINR=-15.06dB
+2025-03-31 18:34:29,249 - [CHECKPOINT-Main] 💾 Weights saved to weights_seed_42.h5
+2025-03-31 18:34:29,249 - [CHECKPOINT-Main] ✅ Training completed. Proceeding to inference...
+2025-03-31 18:34:29,724 - [CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:29,725 - [CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+2025-03-31 18:34:29,729 - [CHECKPOINT-1] Inference Iter=1 | Task=Aerial | Doppler=535.45 Hz | Speed=20.65 km/h
+2025-03-31 18:34:30,219 - [CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:30,219 - [CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+2025-03-31 18:34:30,222 - [CHECKPOINT-1] Inference Iter=2 | Task=Aerial | Doppler=691.25 Hz | Speed=26.66 km/h
+2025-03-31 18:34:30,620 - [CHECKPOINT-2] Task=Static | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:30,620 - [CHECKPOINT-3] Task=Static | Normalized |h| mean=1.00000
+2025-03-31 18:34:30,622 - [CHECKPOINT-1] Inference Iter=3 | Task=Static | Doppler=29.22 Hz | Speed=1.13 km/h
+2025-03-31 18:34:31,029 - [CHECKPOINT-2] Task=Vehicular | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:31,029 - [CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=1.00000
+2025-03-31 18:34:31,031 - [CHECKPOINT-1] Inference Iter=4 | Task=Vehicular | Doppler=1337.68 Hz | Speed=51.60 km/h
+2025-03-31 18:34:31,430 - [CHECKPOINT-2] Task=Static | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:31,430 - [CHECKPOINT-3] Task=Static | Normalized |h| mean=1.00000
+2025-03-31 18:34:31,433 - [CHECKPOINT-1] Inference Iter=5 | Task=Static | Doppler=29.84 Hz | Speed=1.15 km/h
+2025-03-31 18:34:31,835 - [CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:31,835 - [CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+2025-03-31 18:34:31,837 - [CHECKPOINT-1] Inference Iter=6 | Task=Aerial | Doppler=589.63 Hz | Speed=22.74 km/h
+2025-03-31 18:34:32,239 - [CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:32,239 - [CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+2025-03-31 18:34:32,241 - [CHECKPOINT-1] Inference Iter=7 | Task=Aerial | Doppler=600.46 Hz | Speed=23.16 km/h
+2025-03-31 18:34:32,640 - [CHECKPOINT-2] Task=Static | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:32,641 - [CHECKPOINT-3] Task=Static | Normalized |h| mean=1.00000
+2025-03-31 18:34:32,643 - [CHECKPOINT-1] Inference Iter=8 | Task=Static | Doppler=25.22 Hz | Speed=0.97 km/h
+2025-03-31 18:34:33,051 - [CHECKPOINT-2] Task=Vehicular | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:33,051 - [CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=1.00000
+2025-03-31 18:34:33,053 - [CHECKPOINT-1] Inference Iter=9 | Task=Vehicular | Doppler=1267.51 Hz | Speed=48.89 km/h
+2025-03-31 18:34:33,460 - [CHECKPOINT-2] Task=Vehicular | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+2025-03-31 18:34:33,460 - [CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=1.00000
+2025-03-31 18:34:33,463 - [CHECKPOINT-1] Inference Iter=10 | Task=Vehicular | Doppler=1283.37 Hz | Speed=49.50 km/h
+2025-03-31 18:34:33,531 - [CHECKPOINT-Main] 📡 Inference (All Tasks): throughput=0.0458, latency=8.63ms, sinr=-14.91dB
+2025-03-31 18:34:33,531 - [CHECKPOINT-Main] ⭐ Best SINR across 10 runs: -14.91 dB at run 4
+2025-03-31 18:34:33,531 - [CHECKPOINT-Main] 🏁 Simulation finished for seed 42

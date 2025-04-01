@@ -1,0 +1,1502 @@
+DEBUG:tensorflow:Layer gru will use cuDNN kernels when running on GPU.
+DEBUG:tensorflow:Layer gru_1 will use cuDNN kernels when running on GPU.
+DEBUG:tensorflow:Layer gru_2 will use cuDNN kernels when running on GPU.
+DEBUG:tensorflow:Layer gru_3 will use cuDNN kernels when running on GPU.
+DEBUG:tensorflow:Layer gru_4 will use cuDNN kernels when running on GPU.
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🚀 Start simulation | Seed=42
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🚦 Start traffic simulation
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=morning | λ_base=100 | Hours=8
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=morning completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=noon | λ_base=150 | Hours=4
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=noon completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 📅 Period=evening | λ_base=120 | Hours=12
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] 🧮 Period=evening completed | Final active users=32
+INFO:checkpoint_logger:[CHECKPOINT-Traffic] ✅ Simulation done | Simulated TotalTime=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 📊 Traffic simulation completed | total_time=24.00 hrs
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=morning Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in morning: 32
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=1.00000
+INFO:root:[Static] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Static] 📊 Std(|h|): 0.60085
+INFO:root:[Static] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52290
+INFO:root:[Pedestrian] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=1.00000
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Vehicular] 📊 Std(|h|): 0.54790
+INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+INFO:root:[Aerial] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Aerial] 📊 Std(|h|): 0.54993
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in morning
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for morning
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5654
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2619
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:5 out of the last 5 calls to <function _BaseOptimizer._update_step_xla at 0x797c043dd6c0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+WARNING:tensorflow:6 out of the last 6 calls to <function _BaseOptimizer._update_step_xla at 0x797c043dd6c0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=9.22 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 0.11030
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.66430
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: 96.73065, snr: 0.03037, sinr_db: -15.18
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=96.73 | SINR=-15.18dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5620
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2727
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=9.22 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: 0.11054
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.91236
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: 99.12977, snr: 0.03131, sinr_db: -15.04
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=99.13 | SINR=-15.04dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5756
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2776
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=7.43 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: 0.11039
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.82511
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: 227.42978, snr: 0.03172, sinr_db: -14.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=227.43 | SINR=-14.99dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5727
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2824
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=9.76 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: 0.11025
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.81835
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: 210.85243, snr: 0.03008, sinr_db: -15.22
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=210.85 | SINR=-15.22dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=2 start for morning
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5654
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2619
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=8.07 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: 0.11030
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.66430
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: 96.70480, snr: 0.03037, sinr_db: -15.18
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=96.70 | SINR=-15.18dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5620
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2727
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=9.46 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: 0.11054
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.91236
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: 190.51308, snr: 0.03131, sinr_db: -15.04
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=190.51 | SINR=-15.04dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5756
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2776
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=9.61 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: 0.11039
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.82511
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: 232.22916, snr: 0.03172, sinr_db: -14.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=232.23 | SINR=-14.99dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5727
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2824
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=7.49 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: 0.11025
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.81835
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: 216.25327, snr: 0.03008, sinr_db: -15.22
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=216.25 | SINR=-15.22dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=3 start for morning
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5654
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2619
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=7.72 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: 0.11030
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.66430
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: 96.69128, snr: 0.03037, sinr_db: -15.18
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=96.69 | SINR=-15.18dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5620
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2727
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=7.64 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: 0.11054
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.91236
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: 191.31187, snr: 0.03131, sinr_db: -15.04
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=191.31 | SINR=-15.04dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5756
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2776
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=9.80 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: 0.11039
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.82511
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: 231.42502, snr: 0.03172, sinr_db: -14.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=231.43 | SINR=-14.99dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5727
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2824
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=8.80 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: 0.11025
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.81835
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: 215.85385, snr: 0.03008, sinr_db: -15.22
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=215.85 | SINR=-15.22dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=4 start for morning
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5654
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2619
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=7.05 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: 0.11030
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.66430
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: 96.68491, snr: 0.03037, sinr_db: -15.18
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=96.68 | SINR=-15.18dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5620
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2727
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=7.33 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: 0.11054
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.91236
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: 191.21631, snr: 0.03131, sinr_db: -15.04
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=191.22 | SINR=-15.04dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5756
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2776
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=7.04 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: 0.11039
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.82511
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: 231.71646, snr: 0.03172, sinr_db: -14.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=231.72 | SINR=-14.99dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5727
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2824
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=8.41 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: 0.11025
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.81835
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: 216.04143, snr: 0.03008, sinr_db: -15.22
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=216.04 | SINR=-15.22dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=5 start for morning
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5654
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2619
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=8.38 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: 0.11030
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.66430
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: 96.68121, snr: 0.03037, sinr_db: -15.18
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=96.68 | SINR=-15.18dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5620
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2727
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=9.21 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: 0.11054
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.91236
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: 191.40805, snr: 0.03131, sinr_db: -15.04
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=191.41 | SINR=-15.04dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5756
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2776
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=9.21 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: 0.11039
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.82511
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: 232.02513, snr: 0.03172, sinr_db: -14.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=232.03 | SINR=-14.99dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5727
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2824
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=8.84 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: 0.11025
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.81835
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: 215.40630, snr: 0.03008, sinr_db: -15.22
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=215.41 | SINR=-15.22dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=6 start for morning
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5654
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2619
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=9.84 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: 0.11030
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.66430
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: 96.67941, snr: 0.03037, sinr_db: -15.18
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=96.68 | SINR=-15.18dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5620
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2727
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=9.71 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: 0.11054
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.91236
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: 191.39787, snr: 0.03131, sinr_db: -15.04
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=191.40 | SINR=-15.04dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5756
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2776
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=7.56 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: 0.11039
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.82511
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: 231.67233, snr: 0.03172, sinr_db: -14.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=231.67 | SINR=-14.99dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5727
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2824
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=7.24 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: 0.11025
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.81835
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: 214.99207, snr: 0.03008, sinr_db: -15.22
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=214.99 | SINR=-15.22dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=7 start for morning
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5654
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2619
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=7.62 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: 0.11030
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.66430
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: 96.67863, snr: 0.03037, sinr_db: -15.18
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=96.68 | SINR=-15.18dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5620
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2727
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=7.55 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: 0.11054
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.91236
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: 190.20485, snr: 0.03131, sinr_db: -15.04
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=190.20 | SINR=-15.04dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5756
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2776
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=8.27 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: 0.11039
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.82511
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: 232.14798, snr: 0.03172, sinr_db: -14.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=232.15 | SINR=-14.99dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5727
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2824
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=7.03 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: 0.11025
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.81835
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: 215.54576, snr: 0.03008, sinr_db: -15.22
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=215.55 | SINR=-15.22dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=8 start for morning
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5654
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2619
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=7.05 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: 0.11030
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.66430
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: 96.67844, snr: 0.03037, sinr_db: -15.18
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=96.68 | SINR=-15.18dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5620
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2727
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=7.75 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: 0.11054
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.91236
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: 190.13612, snr: 0.03131, sinr_db: -15.04
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=190.14 | SINR=-15.04dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5756
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2776
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=7.68 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: 0.11039
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.82511
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: 231.33690, snr: 0.03172, sinr_db: -14.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=231.34 | SINR=-14.99dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5727
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2824
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=8.04 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: 0.11025
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.81835
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: 215.30470, snr: 0.03008, sinr_db: -15.22
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=215.30 | SINR=-15.22dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=9 start for morning
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5654
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2619
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=8.86 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: 0.11030
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.66430
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: 96.67852, snr: 0.03037, sinr_db: -15.18
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=96.68 | SINR=-15.18dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5620
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2727
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=9.57 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: 0.11054
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.91236
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: 190.48709, snr: 0.03131, sinr_db: -15.04
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=190.49 | SINR=-15.04dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5756
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2776
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=9.64 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: 0.11039
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.82511
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: 231.85330, snr: 0.03172, sinr_db: -14.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=231.85 | SINR=-14.99dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5727
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2824
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=9.79 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: 0.11025
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.81835
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: 215.56639, snr: 0.03008, sinr_db: -15.22
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=215.57 | SINR=-15.22dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=10 start for morning
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2697 | orthogonality_loss=0.2619
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5654
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2619
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-15.18 dB | Throughput=0.0432 bps/Hz | Latency=8.28 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: 0.11030
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.66430
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: 96.67875, snr: 0.03037, sinr_db: -15.18
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=96.68 | SINR=-15.18dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2805 | orthogonality_loss=0.2727
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5620
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2727
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-15.04 dB | Throughput=0.0445 bps/Hz | Latency=8.84 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: 0.11054
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.91236
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: 189.65059, snr: 0.03131, sinr_db: -15.04
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=189.65 | SINR=-15.04dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2854 | orthogonality_loss=0.2776
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5756
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2776
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-14.99 dB | Throughput=0.0450 bps/Hz | Latency=7.89 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: 0.11039
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.82511
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: 230.99442, snr: 0.03172, sinr_db: -14.99
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=230.99 | SINR=-14.99dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2902 | orthogonality_loss=0.2824
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5727
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2824
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.22 dB | Throughput=0.0428 bps/Hz | Latency=7.99 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: 0.11025
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.81835
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: 215.50951, snr: 0.03008, sinr_db: -15.22
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=215.51 | SINR=-15.22dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=noon Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in noon: 32
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=1.00000
+INFO:root:[Static] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Static] 📊 Std(|h|): 0.62577
+INFO:root:[Static] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52471
+INFO:root:[Pedestrian] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=1.00000
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Vehicular] 📊 Std(|h|): 0.56412
+INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+INFO:root:[Aerial] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Aerial] 📊 Std(|h|): 0.54870
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in noon
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for noon
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5714
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2787
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=9.34 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 0.11021
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.59801
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: 95.44363, snr: 0.03256, sinr_db: -14.87
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=95.44 | SINR=-14.87dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5527
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2718
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=9.51 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: 0.11028
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.90579
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: 184.52190, snr: 0.03311, sinr_db: -14.80
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=184.52 | SINR=-14.80dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5622
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2901
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=8.84 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: 0.11110
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.77267
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: 226.08919, snr: 0.03144, sinr_db: -15.03
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=226.09 | SINR=-15.03dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5744
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2680
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.53 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: 0.11085
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.82235
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: 210.61156, snr: 0.03280, sinr_db: -14.84
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=210.61 | SINR=-14.84dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=2 start for noon
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5714
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2787
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=9.35 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: 0.11021
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.59801
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: 95.44360, snr: 0.03256, sinr_db: -14.87
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=95.44 | SINR=-14.87dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5527
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2718
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=7.28 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: 0.11028
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.90579
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: 188.33809, snr: 0.03311, sinr_db: -14.80
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=188.34 | SINR=-14.80dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5622
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2901
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=7.08 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: 0.11110
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.77267
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: 230.35548, snr: 0.03144, sinr_db: -15.03
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=230.36 | SINR=-15.03dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5744
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2680
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=9.33 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: 0.11085
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.82235
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: 215.25504, snr: 0.03280, sinr_db: -14.84
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=215.26 | SINR=-14.84dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=3 start for noon
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5714
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2787
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=9.22 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: 0.11021
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.59801
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: 95.44369, snr: 0.03256, sinr_db: -14.87
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=95.44 | SINR=-14.87dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5527
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2718
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=7.50 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: 0.11028
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.90579
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: 189.90007, snr: 0.03311, sinr_db: -14.80
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=189.90 | SINR=-14.80dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5622
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2901
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=8.29 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: 0.11110
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.77267
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: 231.04463, snr: 0.03144, sinr_db: -15.03
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=231.04 | SINR=-15.03dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5744
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2680
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=7.99 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: 0.11085
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.82235
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: 214.31146, snr: 0.03280, sinr_db: -14.84
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=214.31 | SINR=-14.84dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=4 start for noon
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5714
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2787
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=7.07 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: 0.11021
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.59801
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: 95.44375, snr: 0.03256, sinr_db: -14.87
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=95.44 | SINR=-14.87dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5527
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2718
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=8.12 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: 0.11028
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.90579
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: 189.53438, snr: 0.03311, sinr_db: -14.80
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=189.53 | SINR=-14.80dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5622
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2901
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=8.64 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: 0.11110
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.77267
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: 231.70293, snr: 0.03144, sinr_db: -15.03
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=231.70 | SINR=-15.03dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5744
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2680
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.93 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: 0.11085
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.82235
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: 214.20546, snr: 0.03280, sinr_db: -14.84
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=214.21 | SINR=-14.84dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=5 start for noon
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5714
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2787
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=9.71 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: 0.11021
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.59801
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: 95.44367, snr: 0.03256, sinr_db: -14.87
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=95.44 | SINR=-14.87dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5527
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2718
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=8.98 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: 0.11028
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.90579
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: 189.39656, snr: 0.03311, sinr_db: -14.80
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=189.40 | SINR=-14.80dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5622
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2901
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=7.22 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: 0.11110
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.77267
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: 231.21051, snr: 0.03144, sinr_db: -15.03
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=231.21 | SINR=-15.03dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5744
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2680
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.40 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: 0.11085
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.82235
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: 215.90788, snr: 0.03280, sinr_db: -14.84
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=215.91 | SINR=-14.84dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=6 start for noon
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5714
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2787
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=8.21 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: 0.11021
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.59801
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: 95.44357, snr: 0.03256, sinr_db: -14.87
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=95.44 | SINR=-14.87dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5527
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2718
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=9.01 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: 0.11028
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.90579
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: 190.89178, snr: 0.03311, sinr_db: -14.80
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=190.89 | SINR=-14.80dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5622
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2901
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=9.33 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: 0.11110
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.77267
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: 230.81146, snr: 0.03144, sinr_db: -15.03
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=230.81 | SINR=-15.03dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5744
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2680
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.21 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: 0.11085
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.82235
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: 214.57173, snr: 0.03280, sinr_db: -14.84
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=214.57 | SINR=-14.84dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=7 start for noon
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5714
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2787
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=9.45 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: 0.11021
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.59801
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: 95.44346, snr: 0.03256, sinr_db: -14.87
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=95.44 | SINR=-14.87dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5527
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2718
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=8.60 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: 0.11028
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.90579
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: 189.09590, snr: 0.03311, sinr_db: -14.80
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=189.10 | SINR=-14.80dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5622
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2901
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=8.20 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: 0.11110
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.77267
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: 231.08424, snr: 0.03144, sinr_db: -15.03
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=231.08 | SINR=-15.03dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5744
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2680
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.29 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: 0.11085
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.82235
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: 215.25424, snr: 0.03280, sinr_db: -14.84
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=215.25 | SINR=-14.84dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=8 start for noon
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5714
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2787
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=8.05 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: 0.11021
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.59801
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: 95.44326, snr: 0.03256, sinr_db: -14.87
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=95.44 | SINR=-14.87dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5527
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2718
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=8.79 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: 0.11028
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.90579
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: 188.94373, snr: 0.03311, sinr_db: -14.80
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=188.94 | SINR=-14.80dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5622
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2901
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=9.81 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: 0.11110
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.77267
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: 230.96841, snr: 0.03144, sinr_db: -15.03
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=230.97 | SINR=-15.03dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5745
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2680
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=9.29 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: 0.11085
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.82235
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: 215.66298, snr: 0.03280, sinr_db: -14.84
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=215.66 | SINR=-14.84dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=9 start for noon
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5714
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2787
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=7.88 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: 0.11021
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.59801
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: 95.44305, snr: 0.03256, sinr_db: -14.87
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=95.44 | SINR=-14.87dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5527
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2718
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=9.64 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: 0.11028
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.90579
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: 189.74309, snr: 0.03311, sinr_db: -14.80
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=189.74 | SINR=-14.80dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5622
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2901
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=9.75 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: 0.11110
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.77267
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: 231.00221, snr: 0.03144, sinr_db: -15.03
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=231.00 | SINR=-15.03dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5745
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2680
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.53 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: 0.11085
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.82235
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: 215.53444, snr: 0.03280, sinr_db: -14.84
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=215.53 | SINR=-14.84dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=10 start for noon
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2865 | orthogonality_loss=0.2787
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5714
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2787
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.87 dB | Throughput=0.0462 bps/Hz | Latency=8.30 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: 0.11021
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.59801
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: 95.44294, snr: 0.03256, sinr_db: -14.87
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=95.44 | SINR=-14.87dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2796 | orthogonality_loss=0.2718
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5527
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2718
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.80 dB | Throughput=0.0470 bps/Hz | Latency=7.52 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: 0.11028
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.90579
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: 190.20253, snr: 0.03311, sinr_db: -14.80
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=190.20 | SINR=-14.80dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2980 | orthogonality_loss=0.2901
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5622
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2901
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.03 dB | Throughput=0.0447 bps/Hz | Latency=9.83 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: 0.11110
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.77267
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: 229.91460, snr: 0.03144, sinr_db: -15.03
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=229.91 | SINR=-15.03dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.2758 | orthogonality_loss=0.2680
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5745
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2680
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-14.84 dB | Throughput=0.0466 bps/Hz | Latency=8.15 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: 0.11085
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.82235
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: 215.10072, snr: 0.03280, sinr_db: -14.84
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=215.10 | SINR=-14.84dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🕒 Period=evening Start
+INFO:checkpoint_logger:[CHECKPOINT-Main] 👥 Users in evening: 32
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=1.00000
+INFO:root:[Static] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Static] 📊 Std(|h|): 0.61920
+INFO:root:[Static] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Pedestrian | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Pedestrian | Normalized |h| mean=1.00000
+INFO:root:[Pedestrian] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Pedestrian] 📊 Std(|h|): 0.52598
+INFO:root:[Pedestrian] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=1.00000
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Vehicular] 📊 Std(|h|): 0.54660
+INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+INFO:root:[Aerial] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Aerial] 📊 Std(|h|): 0.56065
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Channel generation done for all tasks in evening
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=1 start for evening
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5633
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2710
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=9.67 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|w|: 0.10999
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] mean|h|: 1.61497
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Static] loss: 96.34672, snr: 0.03190, sinr_db: -14.96
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Static | Loss=96.35 | SINR=-14.96dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5696
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2788
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=8.21 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|w|: 0.10963
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] mean|h|: 1.90112
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Pedestrian] loss: 186.30624, snr: 0.03343, sinr_db: -14.76
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Pedestrian | Loss=186.31 | SINR=-14.76dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5758
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2738
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=8.96 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|w|: 0.11034
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] mean|h|: 1.82951
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Vehicular] loss: 227.70872, snr: 0.03011, sinr_db: -15.21
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Vehicular | Loss=227.71 | SINR=-15.21dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5610
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2951
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=8.80 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|w|: 0.11095
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] mean|h|: 1.78361
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 1 | Task=Aerial] loss: 210.28484, snr: 0.03116, sinr_db: -15.06
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=1 | Task=Aerial | Loss=210.28 | SINR=-15.06dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=2 start for evening
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5633
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2710
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=7.83 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|w|: 0.10999
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] mean|h|: 1.61497
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Static] loss: 96.34637, snr: 0.03190, sinr_db: -14.96
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Static | Loss=96.35 | SINR=-14.96dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5696
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2788
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=7.23 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|w|: 0.10963
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] mean|h|: 1.90112
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Pedestrian] loss: 189.93761, snr: 0.03343, sinr_db: -14.76
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Pedestrian | Loss=189.94 | SINR=-14.76dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5758
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2738
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=8.01 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|w|: 0.11034
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] mean|h|: 1.82951
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Vehicular] loss: 231.09904, snr: 0.03011, sinr_db: -15.21
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Vehicular | Loss=231.10 | SINR=-15.21dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5610
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2951
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=7.74 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|w|: 0.11095
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] mean|h|: 1.78361
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 2 | Task=Aerial] loss: 215.22450, snr: 0.03116, sinr_db: -15.06
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=2 | Task=Aerial | Loss=215.22 | SINR=-15.06dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=3 start for evening
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5633
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2710
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=7.61 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|w|: 0.10999
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] mean|h|: 1.61497
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Static] loss: 96.34635, snr: 0.03190, sinr_db: -14.96
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Static | Loss=96.35 | SINR=-14.96dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5696
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2788
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=8.65 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|w|: 0.10963
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] mean|h|: 1.90112
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Pedestrian] loss: 190.20245, snr: 0.03343, sinr_db: -14.76
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Pedestrian | Loss=190.20 | SINR=-14.76dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5758
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2738
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=9.32 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|w|: 0.11034
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] mean|h|: 1.82951
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Vehicular] loss: 231.83481, snr: 0.03011, sinr_db: -15.21
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Vehicular | Loss=231.83 | SINR=-15.21dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5610
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2951
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=8.47 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|w|: 0.11095
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] mean|h|: 1.78361
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 3 | Task=Aerial] loss: 214.95164, snr: 0.03116, sinr_db: -15.06
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=3 | Task=Aerial | Loss=214.95 | SINR=-15.06dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=4 start for evening
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5633
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2710
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=9.14 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|w|: 0.10999
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] mean|h|: 1.61497
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Static] loss: 96.34618, snr: 0.03190, sinr_db: -14.96
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Static | Loss=96.35 | SINR=-14.96dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5696
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2788
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=8.50 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|w|: 0.10963
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] mean|h|: 1.90112
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Pedestrian] loss: 189.99553, snr: 0.03343, sinr_db: -14.76
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Pedestrian | Loss=190.00 | SINR=-14.76dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5758
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2738
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=9.59 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|w|: 0.11034
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] mean|h|: 1.82951
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Vehicular] loss: 232.11125, snr: 0.03011, sinr_db: -15.21
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Vehicular | Loss=232.11 | SINR=-15.21dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5610
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2951
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=9.90 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|w|: 0.11095
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] mean|h|: 1.78361
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 4 | Task=Aerial] loss: 214.90442, snr: 0.03116, sinr_db: -15.06
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=4 | Task=Aerial | Loss=214.90 | SINR=-15.06dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=5 start for evening
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5633
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2710
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=7.70 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|w|: 0.10999
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] mean|h|: 1.61497
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Static] loss: 96.34597, snr: 0.03190, sinr_db: -14.96
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Static | Loss=96.35 | SINR=-14.96dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5696
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2788
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=9.70 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|w|: 0.10963
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] mean|h|: 1.90112
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Pedestrian] loss: 190.26173, snr: 0.03343, sinr_db: -14.76
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Pedestrian | Loss=190.26 | SINR=-14.76dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5758
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2738
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=8.66 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|w|: 0.11034
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] mean|h|: 1.82951
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Vehicular] loss: 231.53384, snr: 0.03011, sinr_db: -15.21
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Vehicular | Loss=231.53 | SINR=-15.21dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5610
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2951
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=7.91 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|w|: 0.11095
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] mean|h|: 1.78361
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 5 | Task=Aerial] loss: 214.42201, snr: 0.03116, sinr_db: -15.06
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=5 | Task=Aerial | Loss=214.42 | SINR=-15.06dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=6 start for evening
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5633
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2710
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=9.29 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|w|: 0.10999
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] mean|h|: 1.61497
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Static] loss: 96.34578, snr: 0.03190, sinr_db: -14.96
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Static | Loss=96.35 | SINR=-14.96dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5696
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2788
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=7.92 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|w|: 0.10963
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] mean|h|: 1.90112
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Pedestrian] loss: 190.15726, snr: 0.03343, sinr_db: -14.76
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Pedestrian | Loss=190.16 | SINR=-14.76dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5758
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2738
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=7.14 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|w|: 0.11034
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] mean|h|: 1.82951
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Vehicular] loss: 232.67897, snr: 0.03011, sinr_db: -15.21
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Vehicular | Loss=232.68 | SINR=-15.21dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5610
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2951
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=7.21 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|w|: 0.11095
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] mean|h|: 1.78361
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 6 | Task=Aerial] loss: 214.40120, snr: 0.03116, sinr_db: -15.06
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=6 | Task=Aerial | Loss=214.40 | SINR=-15.06dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=7 start for evening
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5633
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2710
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=7.59 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|w|: 0.10999
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] mean|h|: 1.61497
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Static] loss: 96.34562, snr: 0.03190, sinr_db: -14.96
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Static | Loss=96.35 | SINR=-14.96dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5696
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2788
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=7.27 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|w|: 0.10963
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] mean|h|: 1.90112
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Pedestrian] loss: 189.54950, snr: 0.03343, sinr_db: -14.76
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Pedestrian | Loss=189.55 | SINR=-14.76dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5758
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2738
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=9.09 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|w|: 0.11034
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] mean|h|: 1.82951
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Vehicular] loss: 231.59840, snr: 0.03011, sinr_db: -15.21
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Vehicular | Loss=231.60 | SINR=-15.21dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5610
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2951
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=8.27 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|w|: 0.11095
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] mean|h|: 1.78361
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 7 | Task=Aerial] loss: 214.31798, snr: 0.03116, sinr_db: -15.06
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=7 | Task=Aerial | Loss=214.32 | SINR=-15.06dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=8 start for evening
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5633
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2710
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=8.62 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|w|: 0.10999
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] mean|h|: 1.61497
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Static] loss: 96.34560, snr: 0.03190, sinr_db: -14.96
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Static | Loss=96.35 | SINR=-14.96dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5696
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2788
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=7.44 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|w|: 0.10963
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] mean|h|: 1.90112
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Pedestrian] loss: 189.15491, snr: 0.03343, sinr_db: -14.76
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Pedestrian | Loss=189.15 | SINR=-14.76dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5758
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2738
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=9.63 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|w|: 0.11034
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] mean|h|: 1.82951
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Vehicular] loss: 231.95306, snr: 0.03011, sinr_db: -15.21
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Vehicular | Loss=231.95 | SINR=-15.21dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5610
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2951
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=8.09 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|w|: 0.11095
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] mean|h|: 1.78361
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 8 | Task=Aerial] loss: 214.94926, snr: 0.03116, sinr_db: -15.06
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=8 | Task=Aerial | Loss=214.95 | SINR=-15.06dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=9 start for evening
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5633
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2710
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=8.06 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|w|: 0.10999
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] mean|h|: 1.61497
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Static] loss: 96.34535, snr: 0.03190, sinr_db: -14.96
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Static | Loss=96.35 | SINR=-14.96dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5696
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2788
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=9.03 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|w|: 0.10963
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] mean|h|: 1.90112
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Pedestrian] loss: 189.35750, snr: 0.03343, sinr_db: -14.76
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Pedestrian | Loss=189.36 | SINR=-14.76dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5758
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2738
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=8.92 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|w|: 0.11034
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] mean|h|: 1.82951
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Vehicular] loss: 231.21027, snr: 0.03011, sinr_db: -15.21
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Vehicular | Loss=231.21 | SINR=-15.21dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5610
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2951
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=7.74 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|w|: 0.11095
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] mean|h|: 1.78361
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 9 | Task=Aerial] loss: 214.35980, snr: 0.03116, sinr_db: -15.06
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=9 | Task=Aerial | Loss=214.36 | SINR=-15.06dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔁 Epoch=10 start for evening
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Static | mean(w_cross)=0.2788 | orthogonality_loss=0.2710
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5633
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2710
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Static | SINR=-14.96 dB | Throughput=0.0453 bps/Hz | Latency=9.22 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|w|: 0.10999
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] mean|h|: 1.61497
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Static] loss: 96.34520, snr: 0.03190, sinr_db: -14.96
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Static | Loss=96.35 | SINR=-14.96dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Pedestrian | mean(w_cross)=0.2866 | orthogonality_loss=0.2788
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5696
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2788
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Pedestrian | SINR=-14.76 dB | Throughput=0.0474 bps/Hz | Latency=7.71 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|w|: 0.10963
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] mean|h|: 1.90112
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Pedestrian] loss: 189.73126, snr: 0.03343, sinr_db: -14.76
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Pedestrian | Loss=189.73 | SINR=-14.76dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Vehicular | mean(w_cross)=0.2816 | orthogonality_loss=0.2738
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5758
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2738
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Vehicular | SINR=-15.21 dB | Throughput=0.0428 bps/Hz | Latency=8.88 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|w|: 0.11034
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] mean|h|: 1.82951
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Vehicular] loss: 232.41579, snr: 0.03011, sinr_db: -15.21
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Vehicular | Loss=232.42 | SINR=-15.21dB
+INFO:deep_diagnosis_logger:[BeamOrthogonality] task=Aerial | mean(w_cross)=0.3029 | orthogonality_loss=0.2951
+INFO:deep_diagnosis_logger:🧭 Angle Offset (rad): 1.5610
+INFO:deep_diagnosis_logger:🔄 Orthogonality Loss: 0.2951
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:checkpoint_logger:[TRAIN-METRIC] Task=Aerial | SINR=-15.06 dB | Throughput=0.0443 bps/Hz | Latency=7.01 ms
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|w|: 0.11095
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] mean|h|: 1.78361
+INFO:checkpoint_logger:[CHECKPOINT-Main] [Epoch 10 | Task=Aerial] loss: 215.09373, snr: 0.03116, sinr_db: -15.06
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🔚 End of Epoch=10 | Task=Aerial | Loss=215.09 | SINR=-15.06dB
+DEBUG:h5py._conv:Creating converter from 5 to 3
+INFO:checkpoint_logger:[CHECKPOINT-Main] 💾 Weights saved to weights_seed_42.h5
+INFO:checkpoint_logger:[CHECKPOINT-Main] ✅ Training completed. Proceeding to inference...
+INFO:inference_debug_logger:==================== Run 1 ====================
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+INFO:root:[Aerial] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Aerial] 📊 Std(|h|): 0.55576
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Inference Iter=1 | Task=Aerial | Doppler=535.45 Hz | Speed=20.65 km/h
+INFO:inference_debug_logger:Task: Aerial, Doppler: 535.45 Hz, Speed: 20.65 km/h
+INFO:inference_debug_logger:Raw |h| mean: 1.00000, std: 0.55576
+INFO:inference_debug_logger:Beamforming weights sample [0,0,:5]: [-0.5422803 -0.03046058j -0.45362782+0.27158812j -0.14459215-0.38435802j
+ -0.6688624 -1.6388687j   0.24787004-0.05080226j]
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:inference_debug_logger:🧠 **New log***BeamAlignment | Cosine Similarity (User 0): 0.1399
+INFO:inference_debug_logger:🧭 **New log***Angle Offset (rad): -2.3533
+INFO:inference_debug_logger:🔄 **New log***Mean Cross Interference w/ User 0: 9.4721
+INFO:inference_debug_logger:⚙️ **New log***w[0,0] Norm: 8.0000+0.0000j
+INFO:inference_debug_logger:⚙️ **New log***h[0,0] Norm: 8.4742+0.0000j
+INFO:inference_debug_logger:Desired Power: 80.47920
+INFO:inference_debug_logger:Interference: 2494.84546
+INFO:deep_diagnosis_logger:==================== Run 1 ====================
+INFO:deep_diagnosis_logger:Task: Aerial, Doppler: 535.45 Hz, Speed: 20.65 km/h
+INFO:deep_diagnosis_logger:Raw |h| mean: 1.00000, std: 0.55576
+INFO:deep_diagnosis_logger:Beamforming weights sample [0,0,:5]: [-0.5422803 -0.03046058j -0.45362782+0.27158812j -0.14459215-0.38435802j
+ -0.6688624 -1.6388687j   0.24787004-0.05080226j]
+INFO:deep_diagnosis_logger:Desired Power: 80.47920
+INFO:deep_diagnosis_logger:Interference: 2494.84546
+INFO:deep_diagnosis_logger:→ SINR (dB): -14.9136
+INFO:inference_debug_logger:→ SINR (dB): -14.9136
+INFO:inference_debug_logger:→ Throughput (bps/Hz): 0.0458
+INFO:inference_debug_logger:==================== Run 2 ====================
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+INFO:root:[Aerial] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Aerial] 📊 Std(|h|): 0.55329
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Inference Iter=2 | Task=Aerial | Doppler=691.25 Hz | Speed=26.66 km/h
+INFO:inference_debug_logger:Task: Aerial, Doppler: 691.25 Hz, Speed: 26.66 km/h
+INFO:inference_debug_logger:Raw |h| mean: 1.00000, std: 0.55329
+INFO:inference_debug_logger:Beamforming weights sample [0,0,:5]: [-0.5422549 -0.03066721j -0.4533489 +0.27139574j -0.14441061-0.38420793j
+ -0.6690438 -1.6389937j   0.2475718 -0.05067457j]
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:inference_debug_logger:🧠 **New log***BeamAlignment | Cosine Similarity (User 0): 0.1651
+INFO:inference_debug_logger:🧭 **New log***Angle Offset (rad): -0.8907
+INFO:inference_debug_logger:🔄 **New log***Mean Cross Interference w/ User 0: 11.6158
+INFO:inference_debug_logger:⚙️ **New log***w[0,0] Norm: 8.0000+0.0000j
+INFO:inference_debug_logger:⚙️ **New log***h[0,0] Norm: 8.7927+0.0000j
+INFO:inference_debug_logger:Desired Power: 82.04517
+INFO:inference_debug_logger:Interference: 2543.40674
+INFO:deep_diagnosis_logger:==================== Run 2 ====================
+INFO:deep_diagnosis_logger:Task: Aerial, Doppler: 691.25 Hz, Speed: 26.66 km/h
+INFO:deep_diagnosis_logger:Raw |h| mean: 1.00000, std: 0.55329
+INFO:deep_diagnosis_logger:Beamforming weights sample [0,0,:5]: [-0.5422549 -0.03066721j -0.4533489 +0.27139574j -0.14441061-0.38420793j
+ -0.6690438 -1.6389937j   0.2475718 -0.05067457j]
+INFO:deep_diagnosis_logger:Desired Power: 82.04517
+INFO:deep_diagnosis_logger:Interference: 2543.40674
+INFO:deep_diagnosis_logger:→ SINR (dB): -14.9136
+INFO:inference_debug_logger:→ SINR (dB): -14.9136
+INFO:inference_debug_logger:→ Throughput (bps/Hz): 0.0458
+INFO:inference_debug_logger:==================== Run 3 ====================
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=1.00000
+INFO:root:[Static] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Static] 📊 Std(|h|): 0.63129
+INFO:root:[Static] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Inference Iter=3 | Task=Static | Doppler=29.22 Hz | Speed=1.13 km/h
+INFO:inference_debug_logger:Task: Static, Doppler: 29.22 Hz, Speed: 1.13 km/h
+INFO:inference_debug_logger:Raw |h| mean: 1.00000, std: 0.63129
+INFO:inference_debug_logger:Beamforming weights sample [0,0,:5]: [-0.5646458 -0.3557874j  -0.30038077+0.4742808j   0.03091148-0.5159615j
+ -0.6441561 -1.3455528j   0.42665532-0.21411845j]
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:inference_debug_logger:🧠 **New log***BeamAlignment | Cosine Similarity (User 0): 0.0549
+INFO:inference_debug_logger:🧭 **New log***Angle Offset (rad): 0.3308
+INFO:inference_debug_logger:🔄 **New log***Mean Cross Interference w/ User 0: 4.2686
+INFO:inference_debug_logger:⚙️ **New log***w[0,0] Norm: 8.0000+0.0000j
+INFO:inference_debug_logger:⚙️ **New log***h[0,0] Norm: 9.7011+0.0000j
+INFO:inference_debug_logger:Desired Power: 96.63907
+INFO:inference_debug_logger:Interference: 2995.84888
+INFO:deep_diagnosis_logger:==================== Run 3 ====================
+INFO:deep_diagnosis_logger:Task: Static, Doppler: 29.22 Hz, Speed: 1.13 km/h
+INFO:deep_diagnosis_logger:Raw |h| mean: 1.00000, std: 0.63129
+INFO:deep_diagnosis_logger:Beamforming weights sample [0,0,:5]: [-0.5646458 -0.3557874j  -0.30038077+0.4742808j   0.03091148-0.5159615j
+ -0.6441561 -1.3455528j   0.42665532-0.21411845j]
+INFO:deep_diagnosis_logger:Desired Power: 96.63907
+INFO:deep_diagnosis_logger:Interference: 2995.84888
+INFO:deep_diagnosis_logger:→ SINR (dB): -14.9137
+INFO:inference_debug_logger:→ SINR (dB): -14.9137
+INFO:inference_debug_logger:→ Throughput (bps/Hz): 0.0458
+INFO:inference_debug_logger:==================== Run 4 ====================
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=1.00000
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Vehicular] 📊 Std(|h|): 0.55366
+INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Inference Iter=4 | Task=Vehicular | Doppler=1337.68 Hz | Speed=51.60 km/h
+INFO:inference_debug_logger:Task: Vehicular, Doppler: 1337.68 Hz, Speed: 51.60 km/h
+INFO:inference_debug_logger:Raw |h| mean: 1.00000, std: 0.55366
+INFO:inference_debug_logger:Beamforming weights sample [0,0,:5]: [-0.5292946 -0.36939403j -0.26851812+0.41234177j -0.03029493-0.45087704j
+ -0.8485873 -1.4397788j   0.32116956-0.14325078j]
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:inference_debug_logger:🧠 **New log***BeamAlignment | Cosine Similarity (User 0): 0.3187
+INFO:inference_debug_logger:🧭 **New log***Angle Offset (rad): -1.1365
+INFO:inference_debug_logger:🔄 **New log***Mean Cross Interference w/ User 0: 22.4484
+INFO:inference_debug_logger:⚙️ **New log***w[0,0] Norm: 8.0000+0.0000j
+INFO:inference_debug_logger:⚙️ **New log***h[0,0] Norm: 8.8077+0.0000j
+INFO:inference_debug_logger:Desired Power: 79.38812
+INFO:inference_debug_logger:Interference: 2460.72925
+INFO:deep_diagnosis_logger:==================== Run 4 ====================
+INFO:deep_diagnosis_logger:Task: Vehicular, Doppler: 1337.68 Hz, Speed: 51.60 km/h
+INFO:deep_diagnosis_logger:Raw |h| mean: 1.00000, std: 0.55366
+INFO:deep_diagnosis_logger:Beamforming weights sample [0,0,:5]: [-0.5292946 -0.36939403j -0.26851812+0.41234177j -0.03029493-0.45087704j
+ -0.8485873 -1.4397788j   0.32116956-0.14325078j]
+INFO:deep_diagnosis_logger:Desired Power: 79.38812
+INFO:deep_diagnosis_logger:Interference: 2460.72925
+INFO:deep_diagnosis_logger:→ SINR (dB): -14.9131
+INFO:inference_debug_logger:→ SINR (dB): -14.9131
+INFO:inference_debug_logger:→ Throughput (bps/Hz): 0.0458
+INFO:inference_debug_logger:==================== Run 5 ====================
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=1.00000
+INFO:root:[Static] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Static] 📊 Std(|h|): 0.57714
+INFO:root:[Static] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Inference Iter=5 | Task=Static | Doppler=29.84 Hz | Speed=1.15 km/h
+INFO:inference_debug_logger:Task: Static, Doppler: 29.84 Hz, Speed: 1.15 km/h
+INFO:inference_debug_logger:Raw |h| mean: 1.00000, std: 0.57714
+INFO:inference_debug_logger:Beamforming weights sample [0,0,:5]: [-0.5647344 -0.3557521j  -0.3003644 +0.47434357j  0.0307593 -0.51595235j
+ -0.6442207 -1.3455048j   0.42684558-0.21422581j]
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:inference_debug_logger:🧠 **New log***BeamAlignment | Cosine Similarity (User 0): 0.1753
+INFO:inference_debug_logger:🧭 **New log***Angle Offset (rad): -1.3034
+INFO:inference_debug_logger:🔄 **New log***Mean Cross Interference w/ User 0: 13.8851
+INFO:inference_debug_logger:⚙️ **New log***w[0,0] Norm: 8.0000+0.0000j
+INFO:inference_debug_logger:⚙️ **New log***h[0,0] Norm: 9.9190+0.0000j
+INFO:inference_debug_logger:Desired Power: 84.09566
+INFO:inference_debug_logger:Interference: 2606.92822
+INFO:deep_diagnosis_logger:==================== Run 5 ====================
+INFO:deep_diagnosis_logger:Task: Static, Doppler: 29.84 Hz, Speed: 1.15 km/h
+INFO:deep_diagnosis_logger:Raw |h| mean: 1.00000, std: 0.57714
+INFO:deep_diagnosis_logger:Beamforming weights sample [0,0,:5]: [-0.5647344 -0.3557521j  -0.3003644 +0.47434357j  0.0307593 -0.51595235j
+ -0.6442207 -1.3455048j   0.42684558-0.21422581j]
+INFO:deep_diagnosis_logger:Desired Power: 84.09566
+INFO:deep_diagnosis_logger:Interference: 2606.92822
+INFO:deep_diagnosis_logger:→ SINR (dB): -14.9136
+INFO:inference_debug_logger:→ SINR (dB): -14.9136
+INFO:inference_debug_logger:→ Throughput (bps/Hz): 0.0458
+INFO:inference_debug_logger:==================== Run 6 ====================
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+INFO:root:[Aerial] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Aerial] 📊 Std(|h|): 0.56368
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Inference Iter=6 | Task=Aerial | Doppler=589.63 Hz | Speed=22.74 km/h
+INFO:inference_debug_logger:Task: Aerial, Doppler: 589.63 Hz, Speed: 22.74 km/h
+INFO:inference_debug_logger:Raw |h| mean: 1.00000, std: 0.56368
+INFO:inference_debug_logger:Beamforming weights sample [0,0,:5]: [-0.5422605 -0.03059207j -0.45342588+0.27142918j -0.14446093-0.38424677j
+ -0.6689822 -1.6389556j   0.24765995-0.05071558j]
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:inference_debug_logger:🧠 **New log***BeamAlignment | Cosine Similarity (User 0): 0.0552
+INFO:inference_debug_logger:🧭 **New log***Angle Offset (rad): 0.1015
+INFO:inference_debug_logger:🔄 **New log***Mean Cross Interference w/ User 0: 4.5102
+INFO:inference_debug_logger:⚙️ **New log***w[0,0] Norm: 8.0000+0.0000j
+INFO:inference_debug_logger:⚙️ **New log***h[0,0] Norm: 10.2003+0.0000j
+INFO:inference_debug_logger:Desired Power: 81.32426
+INFO:inference_debug_logger:Interference: 2521.07031
+INFO:deep_diagnosis_logger:==================== Run 6 ====================
+INFO:deep_diagnosis_logger:Task: Aerial, Doppler: 589.63 Hz, Speed: 22.74 km/h
+INFO:deep_diagnosis_logger:Raw |h| mean: 1.00000, std: 0.56368
+INFO:deep_diagnosis_logger:Beamforming weights sample [0,0,:5]: [-0.5422605 -0.03059207j -0.45342588+0.27142918j -0.14446093-0.38424677j
+ -0.6689822 -1.6389556j   0.24765995-0.05071558j]
+INFO:deep_diagnosis_logger:Desired Power: 81.32426
+INFO:deep_diagnosis_logger:Interference: 2521.07031
+INFO:deep_diagnosis_logger:→ SINR (dB): -14.9136
+INFO:inference_debug_logger:→ SINR (dB): -14.9136
+INFO:inference_debug_logger:→ Throughput (bps/Hz): 0.0458
+INFO:inference_debug_logger:==================== Run 7 ====================
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Aerial | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Aerial | Normalized |h| mean=1.00000
+INFO:root:[Aerial] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Aerial] 📊 Std(|h|): 0.56155
+INFO:root:[Aerial] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Inference Iter=7 | Task=Aerial | Doppler=600.46 Hz | Speed=23.16 km/h
+INFO:inference_debug_logger:Task: Aerial, Doppler: 600.46 Hz, Speed: 23.16 km/h
+INFO:inference_debug_logger:Raw |h| mean: 1.00000, std: 0.56155
+INFO:inference_debug_logger:Beamforming weights sample [0,0,:5]: [-0.5422654 -0.03055618j -0.45349768+0.27148846j -0.1444887 -0.38429296j
+ -0.66893846-1.6389295j   0.24771795-0.05073817j]
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:inference_debug_logger:🧠 **New log***BeamAlignment | Cosine Similarity (User 0): 0.0722
+INFO:inference_debug_logger:🧭 **New log***Angle Offset (rad): -0.5846
+INFO:inference_debug_logger:🔄 **New log***Mean Cross Interference w/ User 0: 6.2013
+INFO:inference_debug_logger:⚙️ **New log***w[0,0] Norm: 8.0000+0.0000j
+INFO:inference_debug_logger:⚙️ **New log***h[0,0] Norm: 10.7339+0.0000j
+INFO:inference_debug_logger:Desired Power: 83.88322
+INFO:inference_debug_logger:Interference: 2600.34863
+INFO:deep_diagnosis_logger:==================== Run 7 ====================
+INFO:deep_diagnosis_logger:Task: Aerial, Doppler: 600.46 Hz, Speed: 23.16 km/h
+INFO:deep_diagnosis_logger:Raw |h| mean: 1.00000, std: 0.56155
+INFO:deep_diagnosis_logger:Beamforming weights sample [0,0,:5]: [-0.5422654 -0.03055618j -0.45349768+0.27148846j -0.1444887 -0.38429296j
+ -0.66893846-1.6389295j   0.24771795-0.05073817j]
+INFO:deep_diagnosis_logger:Desired Power: 83.88322
+INFO:deep_diagnosis_logger:Interference: 2600.34863
+INFO:deep_diagnosis_logger:→ SINR (dB): -14.9136
+INFO:inference_debug_logger:→ SINR (dB): -14.9136
+INFO:inference_debug_logger:→ Throughput (bps/Hz): 0.0458
+INFO:inference_debug_logger:==================== Run 8 ====================
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Static | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Static | Normalized |h| mean=1.00000
+INFO:root:[Static] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Static] 📊 Std(|h|): 0.60032
+INFO:root:[Static] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Inference Iter=8 | Task=Static | Doppler=25.22 Hz | Speed=0.97 km/h
+INFO:inference_debug_logger:Task: Static, Doppler: 25.22 Hz, Speed: 0.97 km/h
+INFO:inference_debug_logger:Raw |h| mean: 1.00000, std: 0.60032
+INFO:inference_debug_logger:Beamforming weights sample [0,0,:5]: [-0.56454563-0.35585147j -0.30035543+0.47423086j  0.03102352-0.5159719j
+ -0.6441632 -1.3455846j   0.42650038-0.21403192j]
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:inference_debug_logger:🧠 **New log***BeamAlignment | Cosine Similarity (User 0): 0.1670
+INFO:inference_debug_logger:🧭 **New log***Angle Offset (rad): -1.3063
+INFO:inference_debug_logger:🔄 **New log***Mean Cross Interference w/ User 0: 11.3514
+INFO:inference_debug_logger:⚙️ **New log***w[0,0] Norm: 8.0000+0.0000j
+INFO:inference_debug_logger:⚙️ **New log***h[0,0] Norm: 8.5157+0.0000j
+INFO:inference_debug_logger:Desired Power: 85.43687
+INFO:inference_debug_logger:Interference: 2648.79419
+INFO:deep_diagnosis_logger:==================== Run 8 ====================
+INFO:deep_diagnosis_logger:Task: Static, Doppler: 25.22 Hz, Speed: 0.97 km/h
+INFO:deep_diagnosis_logger:Raw |h| mean: 1.00000, std: 0.60032
+INFO:deep_diagnosis_logger:Beamforming weights sample [0,0,:5]: [-0.56454563-0.35585147j -0.30035543+0.47423086j  0.03102352-0.5159719j
+ -0.6441632 -1.3455846j   0.42650038-0.21403192j]
+INFO:deep_diagnosis_logger:Desired Power: 85.43687
+INFO:deep_diagnosis_logger:Interference: 2648.79419
+INFO:deep_diagnosis_logger:→ SINR (dB): -14.9140
+INFO:inference_debug_logger:→ SINR (dB): -14.9140
+INFO:inference_debug_logger:→ Throughput (bps/Hz): 0.0458
+INFO:inference_debug_logger:==================== Run 9 ====================
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=1.00000
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Vehicular] 📊 Std(|h|): 0.54807
+INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Inference Iter=9 | Task=Vehicular | Doppler=1267.51 Hz | Speed=48.89 km/h
+INFO:inference_debug_logger:Task: Vehicular, Doppler: 1267.51 Hz, Speed: 48.89 km/h
+INFO:inference_debug_logger:Raw |h| mean: 1.00000, std: 0.54807
+INFO:inference_debug_logger:Beamforming weights sample [0,0,:5]: [-0.52926075-0.36935312j -0.2685214 +0.41253483j -0.03046914-0.45099062j
+ -0.8486203 -1.4396089j   0.32133758-0.14338525j]
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:inference_debug_logger:🧠 **New log***BeamAlignment | Cosine Similarity (User 0): 0.1478
+INFO:inference_debug_logger:🧭 **New log***Angle Offset (rad): 0.3319
+INFO:inference_debug_logger:🔄 **New log***Mean Cross Interference w/ User 0: 10.8045
+INFO:inference_debug_logger:⚙️ **New log***w[0,0] Norm: 8.0000+0.0000j
+INFO:inference_debug_logger:⚙️ **New log***h[0,0] Norm: 9.1289+0.0000j
+INFO:inference_debug_logger:Desired Power: 84.21771
+INFO:inference_debug_logger:Interference: 2610.69678
+INFO:deep_diagnosis_logger:==================== Run 9 ====================
+INFO:deep_diagnosis_logger:Task: Vehicular, Doppler: 1267.51 Hz, Speed: 48.89 km/h
+INFO:deep_diagnosis_logger:Raw |h| mean: 1.00000, std: 0.54807
+INFO:deep_diagnosis_logger:Beamforming weights sample [0,0,:5]: [-0.52926075-0.36935312j -0.2685214 +0.41253483j -0.03046914-0.45099062j
+ -0.8486203 -1.4396089j   0.32133758-0.14338525j]
+INFO:deep_diagnosis_logger:Desired Power: 84.21771
+INFO:deep_diagnosis_logger:Interference: 2610.69678
+INFO:deep_diagnosis_logger:→ SINR (dB): -14.9135
+INFO:inference_debug_logger:→ SINR (dB): -14.9135
+INFO:inference_debug_logger:→ Throughput (bps/Hz): 0.0458
+INFO:inference_debug_logger:==================== Run 10 ====================
+INFO:checkpoint_logger:[CHECKPOINT-2] Task=Vehicular | Raw |h| mean=1.00000 | shape=(16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-3] Task=Vehicular | Normalized |h| mean=1.00000
+INFO:root:[Vehicular] 📏 Normalized |h| mean: 1.00000
+INFO:root:[Vehicular] 📊 Std(|h|): 0.54827
+INFO:root:[Vehicular] 📐 Shape: (16, 32, 64)
+INFO:checkpoint_logger:[CHECKPOINT-1] Inference Iter=10 | Task=Vehicular | Doppler=1283.37 Hz | Speed=49.50 km/h
+INFO:inference_debug_logger:Task: Vehicular, Doppler: 1283.37 Hz, Speed: 49.50 km/h
+INFO:inference_debug_logger:Raw |h| mean: 1.00000, std: 0.54827
+INFO:inference_debug_logger:Beamforming weights sample [0,0,:5]: [-0.52932703-0.3694083j  -0.2685157 +0.41223654j -0.03022793-0.45081225j
+ -0.8485812 -1.4398522j   0.3210984 -0.14320579j]
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+WARNING:tensorflow:You are casting an input of type complex64 to an incompatible dtype float32.  This will discard the imaginary part and may not be what you intended.
+INFO:inference_debug_logger:🧠 **New log***BeamAlignment | Cosine Similarity (User 0): 0.2357
+INFO:inference_debug_logger:🧭 **New log***Angle Offset (rad): -1.4826
+INFO:inference_debug_logger:🔄 **New log***Mean Cross Interference w/ User 0: 17.7140
+INFO:inference_debug_logger:⚙️ **New log***w[0,0] Norm: 8.0000+0.0000j
+INFO:inference_debug_logger:⚙️ **New log***h[0,0] Norm: 9.4143+0.0000j
+INFO:inference_debug_logger:Desired Power: 81.62070
+INFO:inference_debug_logger:Interference: 2530.14282
+INFO:deep_diagnosis_logger:==================== Run 10 ====================
+INFO:deep_diagnosis_logger:Task: Vehicular, Doppler: 1283.37 Hz, Speed: 49.50 km/h
+INFO:deep_diagnosis_logger:Raw |h| mean: 1.00000, std: 0.54827
+INFO:deep_diagnosis_logger:Beamforming weights sample [0,0,:5]: [-0.52932703-0.3694083j  -0.2685157 +0.41223654j -0.03022793-0.45081225j
+ -0.8485812 -1.4398522j   0.3210984 -0.14320579j]
+INFO:deep_diagnosis_logger:Desired Power: 81.62070
+INFO:deep_diagnosis_logger:Interference: 2530.14282
+INFO:deep_diagnosis_logger:→ SINR (dB): -14.9134
+INFO:inference_debug_logger:→ SINR (dB): -14.9134
+INFO:inference_debug_logger:→ Throughput (bps/Hz): 0.0458
+INFO:checkpoint_logger:[CHECKPOINT-Main] 📡 Inference (All Tasks): throughput=0.0458, latency=8.63ms, sinr=-14.91dB
+INFO:checkpoint_logger:[CHECKPOINT-Main] ⭐ Best SINR across 10 runs: -14.91 dB at run 4
+INFO:checkpoint_logger:[CHECKPOINT-Main] 🏁 Simulation finished for seed 42

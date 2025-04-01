@@ -1,0 +1,61 @@
+== Inference Results for Seed 42 ==
+[Run 1] Task: Aerial
+  Doppler: 535.45 Hz
+  Speed: 20.65 km/h
+  SINR (dB): -14.91
+  Throughput (bps/Hz): 0.0458
+----------------------------------------
+[Run 2] Task: Aerial
+  Doppler: 691.25 Hz
+  Speed: 26.66 km/h
+  SINR (dB): -14.91
+  Throughput (bps/Hz): 0.0458
+----------------------------------------
+[Run 3] Task: Static
+  Doppler: 29.22 Hz
+  Speed: 1.13 km/h
+  SINR (dB): -14.91
+  Throughput (bps/Hz): 0.0458
+----------------------------------------
+[Run 4] Task: Vehicular
+  Doppler: 1337.68 Hz
+  Speed: 51.60 km/h
+  SINR (dB): -14.91
+  Throughput (bps/Hz): 0.0458
+----------------------------------------
+[Run 5] Task: Static
+  Doppler: 29.84 Hz
+  Speed: 1.15 km/h
+  SINR (dB): -14.91
+  Throughput (bps/Hz): 0.0458
+----------------------------------------
+[Run 6] Task: Aerial
+  Doppler: 589.63 Hz
+  Speed: 22.74 km/h
+  SINR (dB): -14.91
+  Throughput (bps/Hz): 0.0458
+----------------------------------------
+[Run 7] Task: Aerial
+  Doppler: 600.46 Hz
+  Speed: 23.16 km/h
+  SINR (dB): -14.91
+  Throughput (bps/Hz): 0.0458
+----------------------------------------
+[Run 8] Task: Static
+  Doppler: 25.22 Hz
+  Speed: 0.97 km/h
+  SINR (dB): -14.91
+  Throughput (bps/Hz): 0.0458
+----------------------------------------
+[Run 9] Task: Vehicular
+  Doppler: 1267.51 Hz
+  Speed: 48.89 km/h
+  SINR (dB): -14.91
+  Throughput (bps/Hz): 0.0458
+----------------------------------------
+[Run 10] Task: Vehicular
+  Doppler: 1283.37 Hz
+  Speed: 49.50 km/h
+  SINR (dB): -14.91
+  Throughput (bps/Hz): 0.0458
+----------------------------------------

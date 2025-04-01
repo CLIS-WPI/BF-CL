@@ -62,6 +62,15 @@ checkpoint_formatter = logging.Formatter('%(asctime)s - %(message)s')
 checkpoint_handler.setFormatter(checkpoint_formatter)
 checkpoint_logger.addHandler(checkpoint_handler)
 
+# 🪵 Inference Debug Logger
+inference_debug_logger = logging.getLogger("inference_debug_logger")
+inference_debug_logger.setLevel(logging.DEBUG)
+inference_debug_file = next_log_file("inference_debug")
+inference_debug_handler = logging.FileHandler(inference_debug_file)
+inference_debug_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
+inference_debug_logger.addHandler(inference_debug_handler)
+
+
 # 🪵 Diagnostic Logger
 diagnostic_logger = logging.getLogger("diagnostic_logger")
 diagnostic_logger.setLevel(logging.DEBUG)
@@ -70,6 +79,16 @@ diagnostic_handler = logging.FileHandler(diagnostic_file)
 diagnostic_formatter = logging.Formatter('%(asctime)s - %(message)s')
 diagnostic_handler.setFormatter(diagnostic_formatter)
 diagnostic_logger.addHandler(diagnostic_handler)
+
+# 🧠 Deep Diagnosis Logger
+deep_diag_logger = logging.getLogger("deep_diagnosis_logger")
+deep_diag_logger.setLevel(logging.DEBUG)
+deep_diag_file = next_log_file("deep_diagnosis")
+deep_diag_handler = logging.FileHandler(deep_diag_file)
+deep_diag_formatter = logging.Formatter('%(asctime)s - %(message)s')
+deep_diag_handler.setFormatter(deep_diag_formatter)
+deep_diag_logger.addHandler(deep_diag_handler)
+
 
 # Constants
 NUM_ANTENNAS = 64
@@ -155,7 +174,7 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
     def __init__(self, num_antennas):
         super(BeamformingMetaAttentionModel, self).__init__()
         self.num_antennas = num_antennas
-        self.input_conv = tf.keras.layers.Conv1D(filters=64, kernel_size=1, activation="relu", input_shape=(None, 128))
+        self.input_conv = tf.keras.layers.Conv1D(filters=64, kernel_size=1, activation="relu")
         self.shared_transformer = layers.MultiHeadAttention(num_heads=4, key_dim=64)
         # Adaptive regularization flags per group
         self.replay_usage = {
@@ -231,9 +250,25 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
             "Aerial": 6.0
         }
 
-        dummy_h = tf.zeros([1, MAX_USERS, self.num_antennas], dtype=tf.complex64)
-        dummy_task = "Static"
-        _ = self.call(dummy_h, task_name=dummy_task, doppler=tf.zeros([1]), delay_spread=tf.zeros([1]), training=False)
+        # Dummy input warm-up to build the model and initialize weights
+        try:
+            dummy_h = tf.complex(
+                tf.random.normal([1, MAX_USERS, self.num_antennas], dtype=tf.float32),
+                tf.random.normal([1, MAX_USERS, self.num_antennas], dtype=tf.float32)
+            )
+            output = self.call(
+                dummy_h,
+                task_name="Static",
+                doppler=tf.zeros([1]),
+                delay_spread=tf.zeros([1]),
+                training=False
+            )
+            tf.print("[DEBUG] Warmup output shape:", tf.shape(output))
+        except Exception as e:
+            tf.print("[INIT] Skipped warmup:", e)
+
+
+
 
     def save_old_params(self):
         for w in self.trainable_weights:
@@ -250,9 +285,8 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         h_imag = tf.clip_by_value(h_imag, -10.0, 10.0)
         h_real = tf.where(tf.math.is_finite(h_real), h_real, tf.zeros_like(h_real))
         h_imag = tf.where(tf.math.is_finite(h_imag), h_imag, tf.zeros_like(h_imag))
-        x = tf.concat([h_real, h_imag], axis=-1)
-
-        x = self.input_conv(x)
+        x = tf.concat([h_real, h_imag], axis=-1)  # [B, U, 2*num_antennas] = [1, 64, 128]
+        x = self.input_conv(x)                   # → [B, U, 64]
         x = self.shared_transformer(x, x, training=training)
 
         if doppler is None or delay_spread is None:
@@ -264,28 +298,41 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         context = self.cond_dense(context)
         context_exp = tf.expand_dims(context, axis=1)
 
-        x = x + context_exp
+        #x = x + context_exp
 
-        attn_output, attn_weights = self.attn_gating(
-            query=context_exp,
-            key=x,
-            value=x,
-            return_attention_scores=True,
-            training=training
-        )
-        attn_weights = tf.nn.softmax(attn_weights, axis=-1)
+        #attn_output, attn_weights = self.attn_gating(
+        #    query=context_exp,
+        #    key=x,
+        #    value=x,
+        #    return_attention_scores=True,
+        #    training=training
+        #)
+        #attn_weights = tf.nn.softmax(attn_weights, axis=-1)
 
-        if training:
-            mean_attn = tf.reduce_mean(attn_weights, axis=[0, 1])
-            std_attn = tf.math.reduce_std(attn_weights, axis=[0, 1])
-            tf.print("[CHECKPOINT-Gating] mean_attn=", mean_attn, "std_attn=", std_attn)
+        #if training:
+        #    mean_attn = tf.reduce_mean(attn_weights, axis=[0, 1])
+        #    std_attn = tf.math.reduce_std(attn_weights, axis=[0, 1])
+        #    tf.print("[CHECKPOINT-Gating] mean_attn=", mean_attn, "std_attn=", std_attn)
 
-        x = attn_output
-        x = tf.tile(x, [1, U, 1])
+        #x = attn_output
+        #x = tf.tile(x, [1, U, 1])
+
+        #temp
 
         head_key = task_name if task_name in self.heads else "Static"
         head_output = self.heads[head_key](x)
+        head_output = tf.math.l2_normalize(head_output, axis=-1)
+        x_aligned = self.norm(head_output)  # LayerNorm
+        out = self.dense1(x_aligned)
+
+
+        head_key = task_name if task_name in self.heads else "Static"
+        head_output = self.heads[head_key](x)
+        head_output = tf.math.l2_normalize(head_output, axis=-1)
         out = self.norm(head_output)
+        #temp
+
+
         out = self.dense1(out)
         out = self.dense2(out)
         out = self.output_layer(out)
@@ -517,20 +564,18 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         h_batch = h_batch[:, :U, :]
         x_batch = x_batch[:, :U, :]
 
+        # Normalize x and h
         x_mean = tf.reduce_mean(x_batch, axis=[1, 2], keepdims=True)
-        x_std = tf.math.reduce_std(tf.abs(x_batch), axis=[1, 2], keepdims=True)
-        x_std_safe = tf.maximum(x_std, 1e-6)
-        x_std_safe = tf.cast(x_std_safe, tf.complex64)
-        x_batch = (x_batch - x_mean) / x_std_safe
+        x_std_safe = tf.maximum(tf.math.reduce_std(tf.abs(x_batch), axis=[1, 2], keepdims=True), 1e-6)
+        x_batch = (x_batch - x_mean) / tf.cast(x_std_safe, tf.complex64)
 
         h_mean = tf.reduce_mean(h_batch)
-        h_std = tf.math.reduce_std(tf.abs(h_batch))
-        h_std_safe = tf.maximum(h_std, 1e-6)
-        h_std_safe = tf.cast(h_std_safe, tf.complex64)
-        h_batch = (h_batch - h_mean) / h_std_safe
+        h_std_safe = tf.maximum(tf.math.reduce_std(tf.abs(h_batch)), 1e-6)
+        h_batch = (h_batch - h_mean) / tf.cast(h_std_safe, tf.complex64)
 
         h_input = h_batch
 
+        # Inference from model
         w = model(
             h_input,
             doppler=channel_stats["doppler"][:, 0],
@@ -540,6 +585,7 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         )
         w = tf.where(tf.math.is_finite(tf.abs(w)), w, tf.zeros_like(w))
 
+        # MMSE fallback
         h_hermitian = tf.transpose(tf.math.conj(h_batch), [0, 2, 1])
         h_hh = tf.matmul(h_hermitian, h_batch)
         alpha = NOISE_POWER / POWER
@@ -552,6 +598,7 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         w = (1 - epoch_weight_c) * w_mmse + epoch_weight_c * w
         w = w * tf.cast(tf.sqrt(POWER), tf.complex64) / (tf.norm(w, axis=-1, keepdims=True) + 1e-6)
 
+        # SINR Calculation
         signal_matrix = tf.matmul(w, h_hermitian)
         desired_signal = tf.linalg.diag_part(signal_matrix)
         desired_power = tf.reduce_mean(tf.abs(desired_signal) ** 2)
@@ -560,33 +607,64 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         interference = tf.reduce_mean(tf.reduce_sum(interference_matrix * interference_mask, axis=-1))
         snr = desired_power / (interference + NOISE_POWER + 1e-10)
         snr_db = 10.0 * tf.math.log(snr + 1e-8) / tf.math.log(10.0)
-
         snr = tf.where(tf.math.is_finite(snr), snr, tf.constant(0.0, dtype=tf.float32))
         snr_db = tf.where(tf.math.is_finite(snr_db), snr_db, tf.constant(-100.0, dtype=tf.float32))
 
-        task_weight = model.task_weights.get(channel_stats["task_name"], 1.0)
+        # Task-related parameters
         task_name = channel_stats["task_name"]
+        task_weight = model.task_weights.get(task_name, 1.0)
         model.use_replay = model.replay_usage.get(task_name, True)
         model.use_fisher = model.fisher_usage.get(task_name, False)
         weight_decay = model.weight_decay_per_task.get(task_name, 1e-6)
 
-        reg_loss = model.regularization_loss(task_name=channel_stats["task_name"])
-
-        # Apply dynamic weight decay based on task
-        weight_decay = model.weight_decay_per_task.get(channel_stats["task_name"], 1e-6)
+        # Regularization
+        reg_loss = model.regularization_loss(task_name=task_name)
         decay_loss = tf.add_n([
-            tf.nn.l2_loss(v)
-            for v in model.trainable_variables
-            if 'bias' not in v.name.lower()
+            tf.nn.l2_loss(v) for v in model.trainable_variables if 'bias' not in v.name.lower()
         ]) * weight_decay
 
+        # Main loss
         loss_main = tf.reduce_mean(task_weight * tf.maximum(70.0 - snr_db, 0.0) + 0.1 * interference) + reg_loss + decay_loss
 
-        tf.print("w sample:", w[0, 0, :5])
-        tf.print("h_batch sample:", h_batch[0, 0, :5])
+        # Alignment loss
+        # Alignment loss
+        cos_sim = tf.reduce_mean(
+            tf.math.real(
+                tf.reduce_sum(tf.math.conj(w) * h_batch, axis=-1) /
+                tf.cast(tf.norm(w, axis=-1) * tf.norm(h_batch, axis=-1) + 1e-8, tf.complex64)
+            )
+        )
+        alignment_loss = -cos_sim
+        tf.print("🎯 Alignment Cosine Similarity:", cos_sim)
 
+        # Angle offset loss
+        angle_diff = tf.math.angle(tf.exp(1j * tf.cast(tf.math.angle(w) - tf.math.angle(h_batch), tf.complex64)))
+        angle_offset_rad = tf.reduce_mean(tf.abs(angle_diff))
+        angle_offset_loss = angle_offset_rad
+
+        # Orthogonality loss
+        w_normed = w / (tf.norm(w, axis=-1, keepdims=True) + 1e-6)
+        w_hermitian = tf.transpose(tf.math.conj(w_normed), [0, 2, 1])  # [B, U, A]^H = [B, A, U]
+        w_cross = tf.matmul(w_hermitian, w_normed)  # [B, U, U]
+
+        # ⛑️ Make sure the mask has matching batch and spatial dims
+        off_diag_mask = 1.0 - tf.eye(tf.shape(w_cross)[1], batch_shape=tf.shape(w_cross)[:1], dtype=w_cross.dtype)
+
+        orthogonality_loss = tf.reduce_mean(tf.abs(w_cross * off_diag_mask))
+
+        deep_diag_logger.info(
+            f"[BeamOrthogonality] task={task_name} | "
+            f"mean(w_cross)={tf.reduce_mean(tf.abs(w_cross)).numpy():.4f} | "
+            f"orthogonality_loss={orthogonality_loss.numpy():.4f}"
+        )
+        deep_diag_logger.info(f"🧭 Angle Offset (rad): {angle_offset_rad.numpy():.4f}")
+        deep_diag_logger.info(f"🔄 Orthogonality Loss: {orthogonality_loss.numpy():.4f}")
+
+        # Initialize replay_loss safely
+        replay_loss = tf.constant(0.0, dtype=tf.float32)
+
+        # Replay logic
         num_replay_samples = B // 4
-        replay_loss = 0.0
         x_replay, h_replay = model.generate_replay(num_replay_samples)
         if x_replay is not None and h_replay is not None and model.use_replay:
             h_input_replay = h_replay
@@ -594,7 +672,7 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
                 h_input_replay,
                 doppler=channel_stats["doppler"][:num_replay_samples, 0],
                 delay_spread=channel_stats["delay_spread"][:num_replay_samples, 0],
-                task_name=channel_stats["task_name"],
+                task_name=task_name,
                 training=True
             )
             w_replay = tf.where(tf.math.is_finite(tf.abs(w_replay)), w_replay, tf.zeros_like(w_replay))
@@ -605,6 +683,7 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
             w_mmse_replay = tf.transpose(X_replay, [0, 2, 1])
             w_replay = (1 - epoch_weight_c) * w_mmse_replay + epoch_weight_c * w_replay
             w_replay = w_replay * tf.cast(tf.sqrt(POWER), tf.complex64) / (tf.norm(w_replay, axis=-1, keepdims=True) + 1e-6)
+
             replay_signal_matrix = tf.matmul(w_replay, h_replay_hermitian)
             replay_desired_signal = tf.linalg.diag_part(replay_signal_matrix)
             replay_desired_power = tf.reduce_mean(tf.abs(replay_desired_signal) ** 2)
@@ -617,15 +696,15 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
             snr_replay_db = tf.where(tf.math.is_finite(snr_replay_db), snr_replay_db, tf.constant(-100.0, dtype=tf.float32))
             replay_loss = tf.reduce_mean(tf.maximum(70.0 - snr_replay_db, 0.0) + 0.1 * replay_interference)
 
+        # Final total loss
         total_loss = loss_main + replay_loss
-        total_loss = tf.where(tf.math.is_finite(total_loss), total_loss, tf.constant(0.0, dtype=tf.float32))
+        total_loss += 0.2 * alignment_loss + 0.1 * angle_offset_loss + 0.1 * orthogonality_loss
 
+    # Backprop
     grads = tape.gradient(total_loss, model.trainable_variables)
     for v, g in zip(model.trainable_variables, grads):
-        if g is not None:
-            if tf.reduce_any(tf.math.is_nan(g)):
-                tf.print(f"❌ NaN in gradient of: {v.name}")
-
+        if g is not None and tf.reduce_any(tf.math.is_nan(g)):
+            tf.print(f"❌ NaN in gradient of: {v.name}")
     grads = [tf.clip_by_norm(g, 1.0) if g is not None else g for g in grads]
     optimizer.apply_gradients(zip(
         [g for g in grads if g is not None],
@@ -636,25 +715,24 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         for v, g in zip(model.trainable_variables, grads):
             if g is not None:
                 current_fisher = model.fisher.get(v.name, tf.zeros_like(v))
-                updated_fisher = tf.square(g) + current_fisher
-                model.fisher[v.name] = updated_fisher
+                model.fisher[v.name] = tf.square(g) + current_fisher
 
+    # Metrics
     mean_w = tf.reduce_mean(tf.abs(w))
     mean_h = tf.reduce_mean(tf.abs(h_batch))
     sinr_db_val = tf.reduce_mean(snr_db)
-    # Compute and log metrics during training per task
     throughput = tf.math.log(1.0 + snr) / tf.math.log(2.0)
-    latency_ms = tf.random.uniform([], 7.0, 10.0)  # Mock latency per task
+    latency_ms = tf.random.uniform([], 7.0, 10.0)
 
-    tf.print("[TRAIN-METRIC]", channel_stats["task_name"],
-            "| SINR (dB):", sinr_db_val,
-            "| Throughput (bps/Hz):", tf.reduce_mean(throughput),
-            "| Latency (ms):", latency_ms)
+    tf.print("[TRAIN-METRIC]", task_name,
+             "| SINR (dB):", sinr_db_val,
+             "| Throughput (bps/Hz):", tf.reduce_mean(throughput),
+             "| Latency (ms):", latency_ms)
 
-    checkpoint_logger.info(f"[TRAIN-METRIC] Task={channel_stats['task_name']} | SINR={sinr_db_val.numpy():.2f} dB | Throughput={tf.reduce_mean(throughput).numpy():.4f} bps/Hz | Latency={latency_ms.numpy():.2f} ms")
-
+    checkpoint_logger.info(f"[TRAIN-METRIC] Task={task_name} | SINR={sinr_db_val.numpy():.2f} dB | Throughput={tf.reduce_mean(throughput).numpy():.4f} bps/Hz | Latency={latency_ms.numpy():.2f} ms")
 
     return total_loss, tf.reduce_mean(snr), mean_w, mean_h, sinr_db_val, total_loss
+
 
 def main(seed):
     logging.basicConfig(filename=f"training_log_seed_{seed}.log", level=logging.DEBUG)
@@ -751,6 +829,7 @@ def main(seed):
 
         # Run inference using a mix of all task types for fairness
         for run_idx in range(10):
+            inference_debug_logger.info(f"==================== Run {run_idx+1} ====================")
             task_name = np.random.choice(all_task_names)
             task = next(t for t in TASKS if t["name"] == task_name)
             h_mixed = generate_channel(task, NUM_SLOTS, BATCH_SIZE, num_users)
@@ -765,6 +844,8 @@ def main(seed):
             doppler = tf.reduce_mean(channel_stats_mixed["doppler"]).numpy()
             speed_kmph = doppler * 3e8 / FREQ * 3600 / 1000
             checkpoint_logger.info(f"[CHECKPOINT-1] Inference Iter={run_idx+1} | Task={task_name} | Doppler={doppler:.2f} Hz | Speed={speed_kmph:.2f} km/h")
+            inference_debug_logger.info(f"Task: {task_name}, Doppler: {doppler:.2f} Hz, Speed: {speed_kmph:.2f} km/h")
+            inference_debug_logger.info(f"Raw |h| mean: {tf.reduce_mean(tf.abs(h_mixed)).numpy():.5f}, std: {tf.math.reduce_std(tf.abs(h_mixed)).numpy():.5f}")
 
             w = model(
                 h_mixed,
@@ -772,12 +853,60 @@ def main(seed):
                 delay_spread=channel_stats_mixed["delay_spread"][:, 0],
                 task_name=task_name
             )
+            inference_debug_logger.info(f"Beamforming weights sample [0,0,:5]: {w[0,0,:5].numpy()}")
+
             signal_matrix = tf.matmul(w, tf.transpose(h_mixed, [0, 2, 1]))
+            ####for diag#####
+            # ===== Debug Smart Logs =====
+            w_sample = w[0, 0, :]  # [A]
+            h_sample = h_mixed[0, 0, :]  # [A]
+            inner_product = tf.reduce_sum(w_sample * tf.math.conj(h_sample))
+            angle_offset = tf.math.angle(inner_product)
+            w_norm = tf.cast(tf.norm(w_sample), tf.float32)
+            h_norm = tf.cast(tf.norm(h_sample), tf.float32)
+            alignment_num = tf.abs(inner_product)
+            beam_alignment = alignment_num / (w_norm * h_norm + 1e-6)
+
+            # Pairwise interference between user 0 and others
+            cross_corrs = []
+            for u in range(1, tf.shape(h_mixed)[1]):
+                w_u = w[0, u, :]
+                h_0 = h_mixed[0, 0, :]
+                cross = tf.reduce_sum(w_u * tf.math.conj(h_0))
+                cross_corrs.append(tf.abs(cross).numpy())
+            mean_cross = np.mean(cross_corrs)
+
+            # Log smart insights
+            inference_debug_logger.info(f"🧠 **New log***BeamAlignment | Cosine Similarity (User 0): {beam_alignment.numpy():.4f}")
+            inference_debug_logger.info(f"🧭 **New log***Angle Offset (rad): {angle_offset.numpy():.4f}")
+            inference_debug_logger.info(f"🔄 **New log***Mean Cross Interference w/ User 0: {mean_cross:.4f}")
+            inference_debug_logger.info(f"⚙️ **New log***w[0,0] Norm: {tf.norm(w_sample).numpy():.4f}")
+            inference_debug_logger.info(f"⚙️ **New log***h[0,0] Norm: {tf.norm(h_sample).numpy():.4f}")
+
+
+
+            ###################
             desired_power = tf.reduce_mean(tf.abs(tf.linalg.diag_part(signal_matrix))**2)
             interference = tf.reduce_mean(tf.reduce_sum(tf.abs(signal_matrix)**2 * (1.0 - tf.eye(num_users)), axis=-1))
+            inference_debug_logger.info(f"Desired Power: {desired_power.numpy():.5f}")
+            inference_debug_logger.info(f"Interference: {interference.numpy():.5f}")
+
             sinr = desired_power / (interference + NOISE_POWER + 1e-10)
             sinr_db = 10.0 * tf.math.log(sinr + 1e-8) / tf.math.log(10.0)
             sinr_db_val = sinr_db.numpy()
+            # Deep Diagnosis Logs 🔍
+            deep_diag_logger.info("==================== Run %d ====================" % (run_idx+1))
+            deep_diag_logger.info(f"Task: {task_name}, Doppler: {doppler:.2f} Hz, Speed: {speed_kmph:.2f} km/h")
+            deep_diag_logger.info(f"Raw |h| mean: {tf.reduce_mean(tf.abs(h_mixed)).numpy():.5f}, std: {tf.math.reduce_std(tf.abs(h_mixed)).numpy():.5f}")
+            deep_diag_logger.info(f"Beamforming weights sample [0,0,:5]: {w[0,0,:5].numpy()}")
+            deep_diag_logger.info(f"Desired Power: {desired_power.numpy():.5f}")
+            deep_diag_logger.info(f"Interference: {interference.numpy():.5f}")
+            deep_diag_logger.info(f"→ SINR (dB): {sinr_db_val:.4f}")
+
+            throughput_val = np.log2(1 + 10**(sinr_db_val / 10)) if not np.isnan(sinr_db_val) else 0.0
+            inference_debug_logger.info(f"→ SINR (dB): {sinr_db_val:.4f}")
+            inference_debug_logger.info(f"→ Throughput (bps/Hz): {throughput_val:.4f}")
+
             throughput_val = np.log2(1 + 10**(sinr_db_val / 10)) if not np.isnan(sinr_db_val) else 0.0
             sinr_values.append(sinr_db_val)
             if sinr > best_sinr:
