@@ -194,190 +194,88 @@ DAILY_COMPOSITION = {
 # ==============================
 class BeamformingMetaAttentionModel(tf.keras.Model):
     def __init__(self, num_antennas):
-        super(BeamformingMetaAttentionModel, self).__init__()
+        super().__init__()
         self.num_antennas = num_antennas
         self.input_conv = tf.keras.layers.Conv1D(filters=64, kernel_size=1, activation="relu")
         self.shared_transformer = layers.MultiHeadAttention(num_heads=4, key_dim=64)
-        # Adaptive regularization flags per group
-        self.replay_usage = {
-            "Static": False,
-            "Pedestrian": True,
-            "Vehicular": True,
-            "Aerial": True,
-            "Mixed": True
-        }
-        self.fisher_usage = {
-            "Static": True,
-            "Pedestrian": True,
-            "Vehicular": False,  # channel too fast to retain info
-            "Aerial": False,
-            "Mixed": False
-        }
-        self.weight_decay_per_task = {
-            "Static": 1e-4,
-            "Pedestrian": 5e-5,
-            "Vehicular": 1e-5,
-            "Aerial": 5e-6,
-            "Mixed": 1e-6
-        }
-
-        # defaults (fallback)
-        self.use_replay = True
-        self.use_fisher = False
-
 
         self.heads = {
             "Static": layers.GRU(128, return_sequences=True),
             "Pedestrian": layers.GRU(128, return_sequences=True),
-            "Vehicular": layers.GRU(128, return_sequences=True),
-            "Aerial": layers.GRU(128, return_sequences=True),
+            "Vehicular": layers.LSTM(128, return_sequences=True),  # ← تغییر اینجا
+            "Aerial": layers.LSTM(128, return_sequences=True),      # ← تغییر اینجا
             "Mixed": layers.GRU(128, return_sequences=True)
         }
 
-        dummy_input = tf.zeros([1, MAX_USERS, 64], dtype=tf.float32)
-        for name, head in self.heads.items():
-            _ = head(dummy_input)
-
         self.cond_dense = layers.Dense(64, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(1e-5))
-        self.attn_gating = layers.MultiHeadAttention(
-            num_heads=2,
-            key_dim=32,
-            dropout=0.1,
-            kernel_regularizer=tf.keras.regularizers.l2(1e-5)
-        )
+        self.attn_gating = layers.MultiHeadAttention(num_heads=2, key_dim=32, dropout=0.1)
 
         self.norm = layers.LayerNormalization()
         self.dense1 = layers.Dense(256, activation='relu')
         self.dense2 = layers.Dense(128, activation='relu')
-        self.output_layer = layers.Dense(2 * self.num_antennas)  # اصلاح شده برای خروجی مختلط
+        self.output_layer = layers.Dense(2 * self.num_antennas)
 
+        # Buffers
         self.buffer_x = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
         self.buffer_h = tf.zeros([REPLAY_BUFFER_SIZE, 64, num_antennas], dtype=tf.complex64)
         self.buffer_count = 0
         self.old_params = {}
         self.fisher = {}
-        self.lambda_reg = LAMBDA_REG
-        self.task_reg_lambda = {"Mixed": 0.1}
+
+        # Flags
+        self.use_replay = tf.constant(True)
+        self.use_fisher = tf.constant(True)
         self.lambda_reg = 0.1
-        self.task_weights = {
-            "Static": 1.0,
-            "Pedestrian": 1.0,
-            "Vehicular": 1.5,
-            "Aerial": 1.3
-        }
-        self.task_reg_lambda = {
-            "Static": 10.0,
-            "Pedestrian": 5.0,
-            "Vehicular": 8.0,
-            "Aerial": 6.0
-        }
 
-        # Dummy input warm-up to build the model and initialize weights
-        try:
-            dummy_h = tf.complex(
-                tf.random.normal([1, MAX_USERS, self.num_antennas], dtype=tf.float32),
-                tf.random.normal([1, MAX_USERS, self.num_antennas], dtype=tf.float32)
-            )
-            output = self.call(
-                dummy_h,
-                task_name="Static",
-                doppler=tf.zeros([1]),
-                delay_spread=tf.zeros([1]),
-                training=False
-            )
-            tf.print("[DEBUG] Warmup output shape:", tf.shape(output))
-        except Exception as e:
-            tf.print("[INIT] Skipped warmup:", e)
-
-    def save_old_params(self):
-        for w in self.trainable_weights:
-            self.old_params[w.name] = tf.identity(w)
-        tf.print("[CHECKPOINT-Fisher] Saved old parameters for task")
+        self.task_weights = {"Static": 1.0, "Pedestrian": 1.0, "Vehicular": 1.5, "Aerial": 1.3}
+        self.weight_decay_per_task = {"Static": 1e-4, "Pedestrian": 5e-5, "Vehicular": 1e-5, "Aerial": 5e-6, "Mixed": 1e-6}
+        self.task_reg_lambda = {"Static": 10.0, "Pedestrian": 5.0, "Vehicular": 8.0, "Aerial": 6.0}
 
     def call(self, h, task_name=None, doppler=None, delay_spread=None, training=False):
         B = tf.shape(h)[0]
         U = tf.shape(h)[1]
 
-        h_real = tf.math.real(h)
-        h_imag = tf.math.imag(h)
-        h_real = tf.clip_by_value(h_real, -10.0, 10.0)
-        h_imag = tf.clip_by_value(h_imag, -10.0, 10.0)
-        h_real = tf.where(tf.math.is_finite(h_real), h_real, tf.zeros_like(h_real))
-        h_imag = tf.where(tf.math.is_finite(h_imag), h_imag, tf.zeros_like(h_imag))
-        x = tf.concat([h_real, h_imag], axis=-1)  # [B, U, 2*num_antennas] = [1, 64, 128]
-        x = self.input_conv(x)                   # → [B, U, 64]
+        h_real, h_imag = tf.math.real(h), tf.math.imag(h)
+        x = tf.concat([h_real, h_imag], axis=-1)
+        x = self.input_conv(x)
         x = self.shared_transformer(x, x, training=training)
 
-        if doppler is None or delay_spread is None:
-            doppler = tf.zeros([B], dtype=tf.float32)
-            delay_spread = tf.zeros([B], dtype=tf.float32)
+        if doppler is None: doppler = tf.zeros([B], dtype=tf.float32)
+        if delay_spread is None: delay_spread = tf.zeros([B], dtype=tf.float32)
 
         snr_estimate = tf.reduce_mean(tf.square(tf.abs(h)), axis=[1, 2])
-        context = tf.stack([doppler, delay_spread, snr_estimate], axis=-1)
-        context = self.cond_dense(context)
-        context_exp = tf.expand_dims(context, axis=1)
-
+        context = self.cond_dense(tf.stack([doppler, delay_spread, snr_estimate], axis=-1))
         head_key = task_name if task_name in self.heads else "Static"
         head_output = self.heads[head_key](x)
         head_output = tf.math.l2_normalize(head_output, axis=-1)
-        x_aligned = self.norm(head_output)  # LayerNorm
-        out = self.dense1(x_aligned)
 
-
-        head_key = task_name if task_name in self.heads else "Static"
-        head_output = self.heads[head_key](x)
-        head_output = tf.math.l2_normalize(head_output, axis=-1)
-        out = self.norm(head_output)
-        #temp
-
-
-        out = self.dense1(out)
-        out = self.dense2(out)
-        out = self.output_layer(out)
+        x = self.norm(head_output)
+        x = self.dense1(x)
+        x = self.dense2(x)
+        out = self.output_layer(x)
 
         out = tf.reshape(out, [B, U, self.num_antennas, 2])
-        w_real = out[..., 0]
-        w_imag = out[..., 1]
-        w = tf.complex(w_real, w_imag)
+        w = tf.complex(out[..., 0], out[..., 1])
         w = tf.math.l2_normalize(w, axis=-1) * tf.cast(tf.sqrt(tf.cast(self.num_antennas, tf.complex64)), tf.complex64)
         return w
 
     def update_memory(self, x, h, loss):
-        if not self.use_replay:
-            return
-
-        store_as_complex = True  # set to False to split into real+imag if needed
-
+        if not self.use_replay: return
         batch_size = tf.shape(x)[0]
         current_users = tf.shape(x)[1]
         pad_users = MAX_USERS - current_users
 
-        if tf.reduce_mean(loss) > 0.0 and self.buffer_count < REPLAY_BUFFER_SIZE:
-            for i in range(batch_size):
-                if self.buffer_count >= REPLAY_BUFFER_SIZE:
-                    break
+        for i in range(batch_size):
+            if self.buffer_count >= REPLAY_BUFFER_SIZE:
+                break
+            x_pad = tf.pad(x[i], [[0, pad_users], [0, 0]])
+            h_pad = tf.pad(h[i], [[0, pad_users], [0, 0]])
+            self.buffer_x = tf.tensor_scatter_nd_update(self.buffer_x, [[self.buffer_count]], [x_pad])
+            self.buffer_h = tf.tensor_scatter_nd_update(self.buffer_h, [[self.buffer_count]], [h_pad])
+            self.buffer_count += 1
 
-                idx = self.buffer_count
-                x_sample = x[i]
-                h_sample = h[i]
-
-                if store_as_complex:
-                    x_padded = tf.pad(x_sample, [[0, pad_users], [0, 0]])
-                    h_padded = tf.pad(h_sample, [[0, pad_users], [0, 0]])
-                else:
-                    x_real = tf.pad(tf.math.real(x_sample), [[0, pad_users], [0, 0]])
-                    h_real = tf.pad(tf.math.real(h_sample), [[0, pad_users], [0, 0]])
-                    x_padded = tf.complex(x_real, tf.zeros_like(x_real))
-                    h_padded = tf.complex(h_real, tf.zeros_like(h_real))
-
-                self.buffer_x = tf.tensor_scatter_nd_update(self.buffer_x, [[idx]], [x_padded])
-                self.buffer_h = tf.tensor_scatter_nd_update(self.buffer_h, [[idx]], [h_padded])
-                self.buffer_count += 1
-                tf.print("[CHECKPOINT-Replay] Updated buffer | buffer_count:", self.buffer_count, "| loss_mean:", tf.reduce_mean(loss))
-    
     def generate_replay(self, num_samples):
-        if self.buffer_count == 0:
-            return None, None
+        if self.buffer_count == 0: return None, None
         sample_size = min(num_samples, self.buffer_count)
         indices = tf.random.shuffle(tf.range(self.buffer_count))[:sample_size]
         return tf.gather(self.buffer_x, indices), tf.gather(self.buffer_h, indices)
@@ -385,10 +283,7 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
     def regularization_loss(self, task_name=None):
         if not self.use_fisher or task_name not in self.task_reg_lambda:
             return 0.0
-
         reg_loss = 0.0
-        lambda_task = self.task_reg_lambda.get(task_name, self.lambda_reg)
-
         for w in self.trainable_weights:
             if w.name in self.old_params:
                 old_w = tf.convert_to_tensor(self.old_params[w.name], dtype=w.dtype)
@@ -396,8 +291,12 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
                 reg_loss += tf.reduce_sum(fisher_w * tf.square(w - old_w))
             else:
                 self.old_params[w.name] = tf.identity(w)
+        return self.task_reg_lambda[task_name] * reg_loss
 
-        return lambda_task * reg_loss
+    def save_old_params(self):
+        for w in self.trainable_weights:
+            self.old_params[w.name] = tf.identity(w)
+
 
 def generate_channel(task, num_slots, batch_size, num_users):
     speeds = np.random.uniform(task["speed_range"][0], task["speed_range"][1], num_users)
@@ -408,16 +307,14 @@ def generate_channel(task, num_slots, batch_size, num_users):
     effective_duration = num_slots * 0.01  # 10 ms per slot
 
     def apply_beamspace(h):
-        h = tf.reshape(h, [tf.shape(h)[0], -1, NUM_ANTENNAS])  # [B, U, A]
-        dft_matrix = tf.signal.fft(tf.eye(NUM_ANTENNAS, dtype=tf.complex64))  # [A, A]
+        assert len(h.shape) == 3, f"Expected rank 3 input [B, U, A], got shape {h.shape}"
+        dft_matrix = tf.signal.fft(tf.eye(NUM_ANTENNAS, dtype=tf.complex64)) / tf.sqrt(tf.cast(NUM_ANTENNAS, tf.complex64))
         return tf.einsum("bua,ac->buc", h, dft_matrix)
 
     def steering_vector(theta, num_antennas):
         n = tf.cast(tf.range(num_antennas), tf.float32)
         phase = 2 * np.pi * n * tf.math.sin(theta)
-        phase_c = tf.cast(phase, tf.complex64)  # 👈 تبدیل به complex
-        return tf.exp(tf.complex(0.0, 1.0) * phase_c)
-
+        return tf.exp(tf.complex(0.0, 1.0) * tf.cast(phase, tf.complex64))
 
     user_channels = []
 
@@ -428,17 +325,22 @@ def generate_channel(task, num_slots, batch_size, num_users):
 
         if task["channel"] == "TDL":
             tf.print("→ Using TDL model:", task["model"])
+            assert NUM_ANTENNAS == 64, "Expected 64 antennas"
             tdl = TDL(
                 model=task.get("model", "A"),
                 delay_spread=delay,
                 carrier_frequency=FREQ,
-                num_tx_ant=NUM_ANTENNAS,
+                num_tx_ant=64,  # ⬅ همینجا مقیدش کن
                 num_rx_ant=1,
+            
                 min_speed=task["speed_range"][0],
                 max_speed=task["speed_range"][1]
             )
             h_t, _ = tdl(batch_size=batch_size, num_time_steps=num_slots, sampling_frequency=sampling_freq)
-            h_t = tf.reduce_mean(h_t, axis=[-1, -2])     # [B, A]
+            h_t = tf.reduce_mean(h_t, axis=[2, 4])  # [B, T, A]
+            assert len(h_t.shape) == 3 and h_t.shape[-1] == NUM_ANTENNAS, f"Expected shape [B, T, A], got {h_t.shape}"
+            h_t = tf.reduce_mean(h_t, axis=1)  # → [B, A]
+
         else:
             tf.print("→ Using Rayleigh block fading")
             rb = RayleighBlockFading(
@@ -447,10 +349,11 @@ def generate_channel(task, num_slots, batch_size, num_users):
                 num_tx=1,
                 num_tx_ant=NUM_ANTENNAS
             )
-            h_t, _ = rb(batch_size=batch_size, num_time_steps=1)  # [B,1,A]
-            h_t = tf.squeeze(h_t, axis=1)  # [B, A]
+            h_t, _ = rb(batch_size=batch_size, num_time_steps=1)
+            tf.print("Rayleigh shape before reshape:", tf.shape(h_t))  # Debug log
+            h_t = tf.reshape(h_t, [batch_size, NUM_ANTENNAS])  # → [B, A]
 
-        h_t = h_t * steer  # Apply angular selectivity
+        h_t = h_t * steer  # [B, A] * [1, A]
         h_beam = apply_beamspace(tf.expand_dims(h_t, axis=1))  # [B, 1, A]
 
         if effective_duration > coherence_time:
@@ -458,12 +361,11 @@ def generate_channel(task, num_slots, batch_size, num_users):
             scale = tf.clip_by_value(scale, 0.5, 1.0)
             h_beam *= tf.cast(scale, tf.complex64)
 
-        user_channels.append(h_beam[:, 0, :])        # [B, A] ✅ درست
+        user_channels.append(h_beam[:, 0, :])  # [B, A]
 
     h = tf.stack(user_channels, axis=1)  # [B, U, A]
     h_norm = tf.reduce_mean(tf.norm(h, axis=-1, keepdims=True))
     h = h / tf.cast(h_norm + 1e-6, tf.complex64)
-
 
     # Logging
     checkpoint_logger.info(f"[CHECKPOINT-2] Task={task['name']} | Raw |h| mean={tf.reduce_mean(tf.abs(h)).numpy():.5f} | shape={h.shape}")
@@ -489,6 +391,10 @@ def generate_channel(task, num_slots, batch_size, num_users):
     channel_diag_logger.info(f"[{task['name']}] 🔄 Avg inter-user correlation: {avg_corr:.5f}")
 
     return h
+
+
+
+
 
 DAILY_PERIODS = ["morning", "noon", "evening"]
 PERIOD_HOURS = [8, 4, 12]
@@ -580,7 +486,7 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
         h_hermitian = tf.transpose(tf.math.conj(h_batch), [0, 2, 1])
         h_hh = tf.matmul(h_hermitian, h_batch)
         alpha = NOISE_POWER / POWER
-        reg_matrix = h_hh + alpha * tf.eye(A, dtype=tf.complex64)
+        reg_matrix = h_hh + alpha * tf.eye(A, dtype=tf.complex64) + 1e-6 * tf.eye(A, dtype=tf.complex64)
         X = tf.linalg.solve(reg_matrix, tf.transpose(h_batch, [0, 2, 1]))
         w_mmse = tf.transpose(X, [0, 2, 1])
         condition = tf.math.is_nan(tf.reduce_sum(tf.abs(w), axis=[1, 2], keepdims=False))
@@ -684,11 +590,12 @@ def train_step(model, x_batch, h_batch, optimizer, channel_stats, epoch):
 
         total_loss = (
             loss_main
-            + 0.5 * replay_loss
-            + 1.5 * alignment_loss
-            + 0.3 * angle_offset_loss
-            + 0.5 * orthogonality_loss
+            + 0.25 * replay_loss
+            + 1.2 * alignment_loss
+            + 0.25 * angle_offset_loss
+            + 0.3 * orthogonality_loss
         )
+
 
     grads = tape.gradient(total_loss, model.trainable_variables)
     grads = [tf.clip_by_norm(g, 1.0) if g is not None else g for g in grads]
@@ -790,7 +697,7 @@ def main(seed):
                             checkpoint_logger.info(f"[CHECKPOINT-Main] [Epoch {epoch+1} | Task={task['name']}] mean|h|: {mean_h.numpy():.5f}")
                             checkpoint_logger.info(f"[CHECKPOINT-Main] [Epoch {epoch+1} | Task={task['name']}] loss: {loss_val.numpy():.5f}, snr: {snr_val.numpy():.5f}, sinr_db: {sinr_db_val.numpy():.2f}")
                             checkpoint_logger.info(f"[CHECKPOINT-Main] 🔚 End of Epoch={epoch+1} | Task={task['name']} | Loss={loss_val.numpy():.2f} | SINR={sinr_db_val.numpy():.2f}dB")
-                if task_idx < len(TASKS[:-1]) - 1:
+                if model.use_fisher and task_idx == len(TASKS[:-1]) - 1:
                     model.save_old_params()
 
     model.save_weights(f"weights_seed_{seed}.h5")
