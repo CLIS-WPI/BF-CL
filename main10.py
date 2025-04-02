@@ -7,6 +7,7 @@ from tqdm import tqdm
 import time
 from tensorflow.keras import layers
 import os
+import sys
 
 gpus = tf.config.list_physical_devices('GPU')
 if gpus:
@@ -51,6 +52,7 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         self.hidden_dim = 128
         self.lambda_reg = 10.0
         self.concat_proj = tf.keras.layers.Dense(self.hidden_dim)
+        self.feat_proj = tf.keras.layers.Dense(64, activation='relu')
 
         self.conv1 = tf.keras.layers.Conv1D(64, 1, activation='relu')
         self.mha_shared = tf.keras.layers.MultiHeadAttention(num_heads=4, key_dim=64)
@@ -83,31 +85,37 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         batch_size = tf.shape(x)[0]
 
         # Convert complex → real
+        channel_feat_proj = self.feat_proj(channel_features)
         real = tf.math.real(x)
         imag = tf.math.imag(x)
-        x_split = tf.concat([real, imag], axis=-1)
-        x_split = tf.cast(x_split, tf.float32)
-
-        # Conv + Channel Feature concat
+        x_split = tf.concat([real, imag], axis=-1)  # [B, U, 2*A]
         x_feat = self.conv1(x_split)
-        x_feat = tf.concat([x_feat, channel_features], axis=-1)
-        x_feat = self.concat_proj(x_feat)  # 🔁 تبدیل به [B, U, 128]
+
+
+        x_feat = tf.concat([x_feat, channel_feat_proj], axis=-1)
+        x_feat = self.concat_proj(x_feat)
 
 
         # Shared attention
         x_attn = self.mha_shared(x_feat, x_feat)
 
-        # Task-specific GRU & Gate (must use getattr to avoid variable creation mid-call)
-        gru_layer = getattr(self, f"gru_task_{task_idx}")
-        gate_layer = getattr(self, f"gate_task_{task_idx}")
+        # Task-specific GRU & Gate
+        # ⚠️ We use all GRUs in training, and blend their output
+        gated_outputs = []
+        for i in range(self.num_tasks):
+            gru_layer = getattr(self, f"gru_task_{i}")
+            gate_layer = getattr(self, f"gate_task_{i}")
+            gru_out = gru_layer(x_attn)
+            gate = gate_layer(x_attn)
+            gated = tf.multiply(gru_out, gate)
+            weight = 1.0 if i == task_idx else 0.0  # only active task contributes
+            gated_outputs.append(weight * gated)
 
-        gru_out = gru_layer(x_attn)
-        gate = gate_layer(x_attn)
-        x_gated = tf.multiply(gate, gru_out)
+        x_gated = tf.add_n(gated_outputs)
 
         # Projection + Norm
-        x_feat_proj = self.x_feat_proj_layer(x_feat)
-        x_norm = self.norm(x_gated + x_feat_proj)
+        x_proj = self.x_feat_proj_layer(x_feat)
+        x_norm = self.norm(x_gated + x_proj)
 
         # MLP → Beamforming Weights
         x_flat = tf.reduce_mean(x_norm, axis=1)
@@ -127,31 +135,50 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
 
         scale = tf.cast(tf.sqrt(tf.cast(self.num_users, tf.float32)), tf.complex64)
         w = w / norm * scale
+        tf.print("📡 Norm(w) =", tf.reduce_mean(tf.norm(w, axis=-1)), output_stream=sys.stdout, summarize=-1)
+
 
         return w
 
 
 
+
     def update_replay(self, x, h, task_idx):
-        if not self.use_replay: return
+        if not self.use_replay:
+            return
         if len(self.replay_x[task_idx]) >= self.replay_limit:
-            self.replay_x[task_idx] = self.replay_x[task_idx][-self.replay_limit//2:]
-            self.replay_h[task_idx] = self.replay_h[task_idx][-self.replay_limit//2:]
-        self.replay_x[task_idx].extend(tf.unstack(x))
+            self.replay_x[task_idx] = self.replay_x[task_idx][-self.replay_limit // 2:]
+            self.replay_h[task_idx] = self.replay_h[task_idx][-self.replay_limit // 2:]
+
+        # ✅ Split real & imag parts and store as float32
+        real = tf.math.real(x)
+        imag = tf.math.imag(x)
+        x_split = tf.concat([real, imag], axis=-1)  # shape: [B, U, 2*A]
+        self.replay_x[task_idx].extend(tf.unstack(x_split))
         self.replay_h[task_idx].extend(tf.unstack(h))
+
 
     def sample_replay(self, task_idx, num_samples):
         if not self.use_replay or len(self.replay_x[task_idx]) == 0:
             return None, None
         idx = np.random.choice(len(self.replay_x[task_idx]), size=num_samples)
-        x = tf.stack([self.replay_x[task_idx][i] for i in idx])
-        h = tf.stack([self.replay_h[task_idx][i] for i in idx])
-        return x, h
+        x = tf.stack([self.replay_x[task_idx][i] for i in idx])  # shape: [B, U, 2*A]
+        h = tf.stack([self.replay_h[task_idx][i] for i in idx])  # shape: [B, U, A]
+
+        # ✅ Convert back to complex
+        a = self.num_antennas
+        real = x[..., :a]
+        imag = x[..., a:]
+        x_complex = tf.complex(real, imag)  # shape: [B, U, A]
+
+        return x_complex, h
+
 
     def update_fisher_info(self, x, h, task_idx):
         if not self.use_fisher: return
         with tf.GradientTape() as tape:
-            channel_dummy = tf.zeros_like(tf.math.real(x[..., :3]))  # cast to float32
+            channel_dummy = tf.zeros([tf.shape(x)[0], tf.shape(x)[1], 3], dtype=tf.float32)
+
             w = self(x, channel_dummy, task_idx, training=True)
 
             loss = tf.reduce_mean(tf.abs(w)**2)
@@ -205,7 +232,8 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         h = tf.stack(h_users, axis=1)  # [B, U, A]
         h = h / (tf.reduce_mean(tf.norm(h, axis=-1, keepdims=True)) + 1e-6)
         feats = tf.stack(features, axis=1)  # [B, U, 3]
-        return h, h, tf.cast(feats, tf.float32)  # x, h, features
+        return tf.identity(h), tf.identity(h), feats  # ولی شاید بهتر باشه x یه چیز جدای از h باشه.
+
 
 
     def eval_kpi(self, w, h, noise_power=1e-3):
@@ -291,6 +319,17 @@ def compute_metrics(h, w=None, power=1.0, noise_power=1e-3):
     latency = (time.time() - start) * 1000  # ms
     return float(sinr), float(throughput), latency
 
+def compute_mmse_weights(h, noise_power=1e-3):
+    B, U, A = h.shape
+    h_herm = tf.transpose(h, [0, 2, 1])
+    H_H = tf.matmul(h_herm, h, adjoint_b=False)
+    identity = tf.eye(A, batch_shape=[B], dtype=tf.complex64)
+    inv_term = tf.linalg.inv(H_H + tf.cast(noise_power, tf.complex64) * identity)
+    w_mmse = tf.matmul(inv_term, h_herm)
+    w_mmse = tf.transpose(w_mmse, [0, 2, 1])  # [B, U, A]
+    return w_mmse
+
+
 def compute_mmse(h, noise_power=1e-3, power=1.0):
     start = time.time()
     B, U, A = h.shape
@@ -315,16 +354,28 @@ def compute_mmse(h, noise_power=1e-3, power=1.0):
     latency = (time.time() - start) * 1000  # ms
     return float(sinr), float(throughput), latency
 
-@tf.function
+#@tf.function
 def train_step(model, optimizer, x, h, channel_features, task_idx, loss_weights):
     with tf.GradientTape() as tape:
+        w_mmse = compute_mmse_weights(h)  # 🎯 Teacher weights for supervision
         w_pred = model(x, channel_features, task_idx, training=True)
+        tf.print("📡 Norm(h) =", tf.reduce_mean(tf.norm(h, axis=-1)), output_stream=sys.stdout, summarize=-1)
+
 
         # --- MMSE fallback ---
         h_adj = tf.transpose(h, [0, 2, 1])  # [B, A, U]
         signal_matrix = tf.matmul(w_pred, h_adj)
         desired = tf.linalg.diag_part(signal_matrix)
         desired_power = tf.reduce_mean(tf.abs(desired)**2)
+        mask = 1.0 - tf.eye(model.num_users, dtype=tf.float32)
+        mask = tf.tile(mask[None, :, :], [tf.shape(x)[0], 1, 1])
+        interference = tf.reduce_sum(tf.abs(signal_matrix)**2 * mask, axis=-1)
+        interference_power = tf.reduce_mean(interference)
+
+        tf.print("⚡ Desired Power:", desired_power)
+        tf.print("🔥 Interference Power:", interference_power)
+
+
 
         mask = 1.0 - tf.eye(model.num_users, dtype=tf.float32)
         mask = tf.tile(mask[None, :, :], [tf.shape(x)[0], 1, 1])
@@ -332,6 +383,7 @@ def train_step(model, optimizer, x, h, channel_features, task_idx, loss_weights)
         interference_power = tf.reduce_mean(interference)
 
         sinr = desired_power / (interference_power + 1e-3)
+        mse_loss = tf.reduce_mean(tf.abs(w_pred - w_mmse) ** 2)
         main_loss = -tf.reduce_mean(tf.math.log(1.0 + sinr))  # maximize SINR
 
         # --- Alignment loss (cosine similarity) ---
@@ -339,6 +391,7 @@ def train_step(model, optimizer, x, h, channel_features, task_idx, loss_weights)
         w_norm = tf.nn.l2_normalize(w_pred, axis=-1)
         dot = tf.reduce_sum(tf.math.real(h_norm * tf.math.conj(w_norm)), axis=-1)
         align_loss = 1.0 - tf.reduce_mean(dot)
+        tf.print("Dot alignment mean:", tf.reduce_mean(dot))  # ✅ چاپ کن
 
         # --- Orthogonality loss (between beams) ---
         w_orth = tf.matmul(w_pred, w_pred, adjoint_b=True)  # [B, U, U]
@@ -382,15 +435,23 @@ def train_step(model, optimizer, x, h, channel_features, task_idx, loss_weights)
         # --- Total loss ---
         total_loss = (
             main_loss +
+            loss_weights["mse"] * mse_loss +  # ✅ اضافه شد
             loss_weights["align"] * align_loss +
             loss_weights["orth"] * orth_loss +
             loss_weights["replay"] * replay_loss +
             loss_weights["fisher"] * fisher_reg
         )
 
+
     grads = tape.gradient(total_loss, model.trainable_variables)
+    for var, grad in zip(model.trainable_variables, grads):
+        tf.print("Variable:", var.name, " - Grad norm:", tf.norm(grad))
     optimizer.apply_gradients(zip(grads, model.trainable_variables))
+
     
+    tf.print("➡️  SINR=", 10.0 * tf.math.log(sinr) / tf.math.log(10.0),
+         "Alignment loss=", align_loss,
+         "Orthogonality loss=", orth_loss)
 
     return {
         "total_loss": total_loss,
@@ -399,6 +460,7 @@ def train_step(model, optimizer, x, h, channel_features, task_idx, loss_weights)
         "orth_loss": orth_loss,
         "replay_loss": replay_loss,
         "fisher_reg": fisher_reg,
+        "mse_loss": mse_loss,
         "sinr": 10.0 * tf.math.log(sinr) / tf.math.log(10.0)
     }
 
@@ -415,11 +477,14 @@ def training_loop(model, optimizer, tasks, num_epochs=5, batch_size=8):
             # Generate synthetic batch for this task
             x_batch, h_batch, channel_feats = model.generate_synthetic_batch(task, batch_size)
             metrics = train_step(model, optimizer, x_batch, h_batch, channel_feats, task_idx, {
-                "align": 1.0,
+                "mse": 0.01,
+                "align": 5.0,  # ⬅️ افزایش بدی!
                 "orth": 0.1,
-                "replay": 1.0,
-                "fisher": 0.5 if model.use_fisher else 0.0,
+                "replay": 0.0,
+                "fisher": 0.0,
+
             })
+
             model.update_replay(x_batch, h_batch, task_idx)
             print(f"[{task['name']}][Epoch {epoch+1}] 🎯 SINR: {metrics['sinr'].numpy():.2f} dB | Loss: {metrics['total_loss'].numpy():.4f}")
             losses["sinr"].append(metrics["sinr"].numpy())
@@ -483,8 +548,16 @@ if __name__ == "__main__":
     print(f"🎲 Random Beamforming → SINR: {np.mean(results['sinr_random']):.2f} dB | Throughput: {np.mean(results['thrpt_random']):.4f} bps/Hz | Latency: {np.mean(results['latency_random']):.2f} ms")
     print(f"🎯 MMSE Beamforming   → SINR: {10*np.log10(np.mean(results['sinr_mmse'])):.2f} dB | Throughput: {np.mean(results['thrpt_mmse']):.4f} bps/Hz | Latency: {np.mean(results['latency_mmse']):.2f} ms")
     print("\n🚀 Starting Continual Learning Training...")
-    model = BeamformingMetaAttentionModel(num_antennas=NUM_ANTENNAS, num_users=NUM_USERS, num_tasks=len(TASKS))
-    optimizer = tf.keras.optimizers.Adam(1e-3)
+    model = BeamformingMetaAttentionModel(
+    num_antennas=NUM_ANTENNAS,
+    num_users=NUM_USERS,
+    num_tasks=len(TASKS),
+    use_replay=False,
+    use_fisher=False
+    )
+    optimizer = tf.keras.optimizers.Adam(1e-4)
+
+
 
     # 👇 Warmup GRUs to avoid tf.function variable creation error
     for task_idx in range(len(TASKS)):
@@ -494,4 +567,38 @@ if __name__ == "__main__":
         _ = gru_layer(dummy_input)
         _ = gate_layer(dummy_input)
 
-    kpis = training_loop(model, optimizer, TASKS, num_epochs=3, batch_size=8)
+    # ✅ Test Norm(w) and Norm(h) before training loop
+    print("\n🧪 Testing Norm(w) and Norm(h) before training loop...\n")
+    task = TASKS[0]  # e.g. Static
+    x_batch, h_batch, feats = model.generate_synthetic_batch(task, batch_size=8)
+    w = model(x_batch, feats, task_idx=0, training=True)
+
+    # Print norms
+    tf.print("📡 Norm(w) =", tf.reduce_mean(tf.norm(w, axis=-1)), output_stream=sys.stdout)
+    tf.print("📡 Norm(h) =", tf.reduce_mean(tf.norm(h_batch, axis=-1)), output_stream=sys.stdout)
+
+    kpis = training_loop(model, optimizer, TASKS, num_epochs=100, batch_size=8)
+
+
+
+#if __name__ == "__main__":
+    print("\n🧪 Testing Norm(w) and Norm(h) before training loop...\n")
+
+    model = BeamformingMetaAttentionModel(
+        num_antennas=NUM_ANTENNAS,
+        num_users=NUM_USERS,
+        num_tasks=len(TASKS),
+        use_replay=False,
+        use_fisher=False
+    )
+
+    dummy_task = TASKS[0]
+    x_batch, h_batch, feats = model.generate_synthetic_batch(dummy_task, batch_size=4)
+
+    # Force EAGER evaluation for w
+    w = model(x_batch, feats, task_idx=0, training=False)
+    norm_w = tf.reduce_mean(tf.norm(w, axis=-1)).numpy()
+    norm_h = tf.reduce_mean(tf.norm(h_batch, axis=-1)).numpy()
+
+    print(f"📡 Norm(w) = {norm_w:.4f}")
+    print(f"📡 Norm(h) = {norm_h:.4f}")
