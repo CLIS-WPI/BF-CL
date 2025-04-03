@@ -122,14 +122,10 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
 
         # Normalize (per-user)
         w = tf.nn.l2_normalize(w, axis=-1)
-        # Add this right after w = tf.nn.l2_normalize(...):
+        # ✅ Print mean norm to force execution
         norm_mean = tf.reduce_mean(tf.norm(w, axis=-1))
         tf.print("📡 Norm(w) =", norm_mean, output_stream=sys.stdout)
-        _ = tf.identity(norm_mean)  # Force execution
-
-        norm_mean = tf.reduce_mean(tf.norm(w, axis=-1))
-        tf.print("📡 Norm(w) =", norm_mean, output_stream=sys.stdout)
-        _ = tf.identity(norm_mean)  # ✅ force execution
+        _ = tf.identity(norm_mean)
 
         return w
 
@@ -223,21 +219,41 @@ class BeamformingMetaAttentionModel(tf.keras.Model):
         feats = tf.stack(features, axis=1)  # [B, U, 3]
         return tf.identity(h), tf.identity(h), feats  # ولی شاید بهتر باشه x یه چیز جدای از h باشه.
 
-    def eval_kpi(self, w_pred, h_true):
-        h_adj = tf.transpose(h_true, [0, 2, 1])
-        signal_matrix = tf.matmul(w_pred, h_adj)
-        desired = tf.linalg.diag_part(signal_matrix)
+    def eval_kpi(self, w, h):
+        """
+        Evaluate SINR, throughput, and latency.
+        - w: beamforming weights [B, U, A]
+        - h: channel [B, U, A]
+        Returns: (SINR_dB, throughput_bps_per_Hz, latency_ms)
+        """
+        # --- SINR ---
+        h_adj = tf.transpose(h, [0, 2, 1])  # [B, A, U]
+        signal_matrix = tf.matmul(w, h_adj)  # [B, U, U]
+        desired = tf.linalg.diag_part(signal_matrix)  # [B, U]
         desired_power = tf.reduce_mean(tf.abs(desired)**2)
-        mask = 1.0 - tf.eye(self.num_users, dtype=tf.float32)
-        mask = tf.tile(mask[None, :, :], [tf.shape(h_true)[0], 1, 1])
+
+        # --- SINR ---
+        h_adj = tf.transpose(h, [0, 2, 1])  # [B, A, U]
+        signal_matrix = tf.matmul(w, h_adj)  # [B, U, U]
+        desired = tf.linalg.diag_part(signal_matrix)  # [B, U]
+        desired_power = tf.reduce_mean(tf.abs(desired)**2)
+
+        # ✅ Fixed mask dtype
+        mask = tf.ones_like(tf.abs(signal_matrix)) - tf.eye(self.num_users)[None, :, :]
         interference = tf.reduce_sum(tf.abs(signal_matrix)**2 * mask, axis=-1)
         interference_power = tf.reduce_mean(interference)
+        
+        sinr_linear = desired_power / (interference_power + 1e-3)
+        sinr_dB = tf.cast(10.0 * tf.math.log(sinr_linear) / tf.math.log(10.0), tf.float32)
 
-        sinr = desired_power / (interference_power + 1e-3)
-        throughput = tf.reduce_mean(tf.math.log(1.0 + sinr) / tf.math.log(2.0))  # bps/Hz
-        latency = tf.constant(2.0) * (1.0 / (1.0 + sinr)) * 10  # dummy model → scale if needed
-        sinr_db = 10.0 * tf.math.log(sinr) / tf.math.log(10.0)
-        return float(tf.reduce_mean(sinr_db)), float(throughput), float(tf.reduce_mean(latency))
+        # --- Throughput ---
+        thrpt = tf.math.log(1.0 + sinr_linear) / tf.math.log(2.0)
+        thrpt_mean = tf.reduce_mean(thrpt)
+
+        # --- Latency (fake model) ---
+        latency_ms = tf.cast(1000.0 / (1.0 + thrpt_mean), tf.float32)  # just for eval
+
+        return sinr_dB.numpy().item(), thrpt_mean.numpy().item(), latency_ms.numpy().item()
 
     def get_task_weights(self, task_idx):
         return [v.numpy() for v in self.trainable_variables]
@@ -342,14 +358,16 @@ def compute_mmse(h, noise_power=1e-3, power=1.0):
     return float(sinr), float(throughput), latency
 
 #@tf.function
+# ✅ Final Clean Version
 def train_step(model, optimizer, x, h, channel_features, task_idx, epoch, loss_weights):
     alpha = tf.minimum(tf.cast(epoch, tf.float32) / 50.0, 1.0)
-    alpha_c = tf.complex(alpha, 0.0)
 
     with tf.GradientTape() as tape:
         w_mmse = compute_mmse_weights(h)  # 🎯 Teacher
         w_pred = model(x, channel_features, task_idx, training=True)
 
+        # ✅ α-blending
+        alpha_c = tf.complex(alpha, 0.0)
         w_blend = alpha_c * w_pred + (1.0 - alpha_c) * w_mmse
 
         # --- SINR Loss ---
@@ -374,12 +392,12 @@ def train_step(model, optimizer, x, h, channel_features, task_idx, epoch, loss_w
         # --- Phase Loss ---
         angle_penalty = tf.reduce_mean(tf.abs(tf.math.angle(complex_dot)))
 
-        # --- Orthogonality Loss ---
+        # --- Orthogonality ---
         w_orth = tf.matmul(w_blend, w_blend, adjoint_b=True)
         eye = tf.eye(model.num_users, dtype=tf.complex64)
-        orth_loss = tf.math.log(1. + tf.reduce_mean(tf.abs(w_orth * (1.0 - eye))))
+        orth_loss = tf.reduce_mean(tf.abs(w_orth * (1.0 - eye)))
 
-        # --- Replay Loss ---
+        # --- Replay & Fisher ---
         replay_loss = 0.0
         if model.use_replay:
             replay_x, replay_h = model.sample_replay(task_idx, 8)
@@ -404,39 +422,52 @@ def train_step(model, optimizer, x, h, channel_features, task_idx, epoch, loss_w
             loss_weights["fisher"] * fisher_reg
         )
 
+    # ✅ Gradient update
     grads = tape.gradient(total_loss, model.trainable_variables)
-    optimizer.apply_gradients(zip(grads, model.trainable_variables))
+    grads_and_vars = [(g, v) for g, v in zip(grads, model.trainable_variables) if g is not None]
+    optimizer.apply_gradients(grads_and_vars)
 
-    # --- Logging to terminal every 20 epochs ---
+    # ✅ Norms (fixing ? issue)
+    norm_w_scalar = tf.reduce_mean(tf.norm(w_pred, axis=-1))
+    norm_h_scalar = tf.reduce_mean(tf.norm(h, axis=-1))
+    _ = tf.identity(norm_w_scalar)
+    _ = tf.identity(norm_h_scalar)
+    tf.print("📡 Norm(w) =", norm_w_scalar, output_stream=sys.stdout)
+    tf.print("📡 Norm(h) =", norm_h_scalar, output_stream=sys.stdout)
+
+
+    # 🧠 Per-user dot diagnostics
+    log_lines = []
+    w0 = w_pred[0]
+    h0 = h[0]
+    for u in range(model.num_users):
+        w_u = tf.nn.l2_normalize(w0[u])
+        h_u = tf.nn.l2_normalize(h0[u])
+        complex_dot_u = tf.reduce_sum(h_u * tf.math.conj(w_u))
+        dot_real = tf.math.real(complex_dot_u)
+        dot_abs = tf.abs(complex_dot_u)
+        angle = tf.math.angle(complex_dot_u)
+        if (dot_abs < 0.3) or (tf.abs(angle) > 0.8):
+            line = f"User {u:02d} | dot={dot_real:.4f} | angle={angle:.4f} rad | |dot|={dot_abs:.4f}"
+            log_lines.append(line)
+
+    if epoch % 20 == 0 and log_lines:
+        with open("per_user_diag.log", "a") as f:
+            f.write(f"[Epoch {task_idx}:{epoch}] ----\n")
+            for line in log_lines:
+                f.write(line + "\n")
+
+    # 📈 KPI logging
+    sinr_val, thrpt_val, lat_val = model.eval_kpi(w_pred, h)
     if epoch % 20 == 0:
-        sinr_db = (10.0 * tf.math.log(sinr) / tf.math.log(10.0)).numpy()
-        tf.print(f"➡️  SINR[dB]= {sinr_db:.2f} | Align={align_loss:.4f} | |dot|={tf.reduce_mean(abs_dot):.4f} | Interf={interference_power:.4f}")
-
-    # --- Logging to file ---
-    if epoch % 20 == 0:
-        # Per-user log
-        w0, h0 = w_pred[0], h[0]
-        lines = []
-        for u in range(model.num_users):
-            w_u = tf.nn.l2_normalize(w0[u])
-            h_u = tf.nn.l2_normalize(h0[u])
-            c_dot = tf.reduce_sum(h_u * tf.math.conj(w_u))
-            if tf.abs(tf.math.angle(c_dot)) > 1.0 or tf.abs(c_dot) < 0.3:
-                lines.append(f"User {u:02d} | dot={tf.math.real(c_dot):.4f} | angle={tf.math.angle(c_dot):.4f} rad | |dot|={tf.abs(c_dot):.4f}")
-        if lines:
-            with open("per_user_diag.log", "a") as f:
-                f.write(f"[Epoch {task_idx}:{epoch}] ----\n")
-                for line in lines:
-                    f.write(line + "\n")
-
-        # KPI log
-        sinr_val, thrpt_val, lat_val = model.eval_kpi(w_pred, h)
         with open("summary_kpi.log", "a") as f:
             f.write(f"[Epoch {task_idx}:{epoch}] SINR={sinr_val:.2f} dB | Thrpt={thrpt_val:.4f} bps/Hz | "
                     f"Latency={lat_val:.2f} ms | Loss={total_loss.numpy():.4f} | "
                     f"Align={align_loss.numpy():.4f} | Orth={orth_loss.numpy():.4f} | "
                     f"Replay={replay_loss:.4f} | Fisher={fisher_reg:.4f}\n")
 
+    # ✅ Return actual SINR dB
+    sinr_dB = 10.0 * tf.math.log(sinr) / tf.math.log(10.0)
     return {
         "total_loss": total_loss,
         "main_loss": main_loss,
@@ -444,10 +475,8 @@ def train_step(model, optimizer, x, h, channel_features, task_idx, epoch, loss_w
         "orth_loss": orth_loss,
         "replay_loss": replay_loss,
         "fisher_reg": fisher_reg,
-        "sinr": 10.0 * tf.math.log(sinr) / tf.math.log(10.0)
+        "sinr": sinr_dB
     }
-
-
     
 def training_loop(model, optimizer, tasks, num_epochs=5, batch_size=8):
     for task_idx, task in enumerate(tasks):
@@ -458,7 +487,7 @@ def training_loop(model, optimizer, tasks, num_epochs=5, batch_size=8):
                 "align": 1.0,
                 "orth": 0.5,
                 "phase": 0.3,
-                "replay": 1.0,
+                "replay": 3.0,
                 "fisher": 1.0
             })
             model.update_replay(x_batch, h_batch, task_idx)
@@ -466,7 +495,10 @@ def training_loop(model, optimizer, tasks, num_epochs=5, batch_size=8):
             print(f"[{task['name']}][Epoch {epoch}] 🎯 SINR: {metrics['sinr'].numpy():.2f} dB | Loss: {metrics['total_loss'].numpy():.4f}")
 
         if model.use_fisher:
-            model.update_fisher_info(x_batch, h_batch, task_idx)
+            print(f"📥 Updating Fisher info for task {task['name']}")
+            x_fish, h_fish, feats = model.generate_synthetic_batch(task, batch_size=32)
+            model.update_fisher_info(x_fish, h_fish, task_idx)
+
 
 
 # Main
@@ -476,6 +508,7 @@ if __name__ == "__main__":
         "sinr_random": [], "thrpt_random": [], "latency_random": [],
         "sinr_mmse": [], "thrpt_mmse": [], "latency_mmse": []
     }
+
     hour = 0
     for period in ["morning", "noon", "evening"]:
         for _ in tqdm(range(PERIOD_HOURS[period]), desc=f"{period.upper()}"):
@@ -495,35 +528,57 @@ if __name__ == "__main__":
             hour += 1
 
     print("\n📊 Daily Summary (mean over 24h):")
-    print(f"🎲 Random Beamforming → SINR: {np.mean(results['sinr_random']):.2f} dB | Throughput: {np.mean(results['thrpt_random']):.4f} bps/Hz | Latency: {np.mean(results['latency_random']):.2f} ms")
-    print(f"🎯 MMSE Beamforming   → SINR: {10*np.log10(np.mean(results['sinr_mmse'])):.2f} dB | Throughput: {np.mean(results['thrpt_mmse']):.4f} bps/Hz | Latency: {np.mean(results['latency_mmse']):.2f} ms")
+    print(f"🎲 Random Beamforming → SINR: {np.mean(results['sinr_random']):.2f} dB | "
+          f"Throughput: {np.mean(results['thrpt_random']):.4f} bps/Hz | "
+          f"Latency: {np.mean(results['latency_random']):.2f} ms")
+    print(f"🎯 MMSE Beamforming   → SINR: {10*np.log10(np.mean(results['sinr_mmse'])):.2f} dB | "
+          f"Throughput: {np.mean(results['thrpt_mmse']):.4f} bps/Hz | "
+          f"Latency: {np.mean(results['latency_mmse']):.2f} ms")
+
     print("\n🚀 Starting Continual Learning Training...")
+
     model = BeamformingMetaAttentionModel(
-    num_antennas=NUM_ANTENNAS,
-    num_users=NUM_USERS,
-    num_tasks=len(TASKS),
-    use_replay=False,
-    use_fisher=False
+        num_antennas=NUM_ANTENNAS,
+        num_users=NUM_USERS,
+        num_tasks=len(TASKS),
+        use_replay=True,
+        use_fisher=True
     )
     optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4)
 
-    # 👇 Warmup GRUs to avoid tf.function variable creation error
+    # ⬇️ Initialize model once to build variables
+    _ = model(tf.zeros((1, NUM_USERS, NUM_ANTENNAS), dtype=tf.complex64),
+            tf.zeros((1, NUM_USERS, 3), dtype=tf.float32),
+            task_idx=0, training=False)
+
+    # ⬇️ Build optimizer with model variables
+    optimizer.build(model.trainable_variables)
+
+
+    # ✅ Warm-up GRUs
     for task_idx in range(len(TASKS)):
         dummy_input = tf.zeros((1, NUM_USERS, model.hidden_dim), dtype=tf.float32)
-        gru_layer = getattr(model, f"gru_task_{task_idx}")
-        gate_layer = getattr(model, f"gate_task_{task_idx}")
-        _ = gru_layer(dummy_input)
-        _ = gate_layer(dummy_input)
+        _ = getattr(model, f"gru_task_{task_idx}")(dummy_input)
+        _ = getattr(model, f"gate_task_{task_idx}")(dummy_input)
 
-    # ✅ Test Norm(w) and Norm(h) before training loop
+    # ✅ Build optimizer with all variables before training
+    _ = model(tf.zeros((1, NUM_USERS, NUM_ANTENNAS), dtype=tf.complex64),
+              tf.zeros((1, NUM_USERS, 3), dtype=tf.float32),
+              task_idx=0, training=False)
+    optimizer.build(model.trainable_variables)
+
+    # ✅ Test Norms before training
     print("\n🧪 Testing Norm(w) and Norm(h) before training loop...\n")
-    task = TASKS[0]  # e.g. Static
+    task = TASKS[0]
     x_batch, h_batch, feats = model.generate_synthetic_batch(task, batch_size=8)
     w = model(x_batch, feats, task_idx=0, training=True)
 
-    # Print norms
-    
-    tf.print("📡 Norm(w) =", tf.reduce_mean(tf.norm(w, axis=-1)), output_stream=sys.stdout)
-    tf.print("📡 Norm(h) =", tf.reduce_mean(tf.norm(h_batch, axis=-1)), output_stream=sys.stdout)
+    norm_w = tf.reduce_mean(tf.norm(w, axis=-1))
+    norm_h = tf.reduce_mean(tf.norm(h_batch, axis=-1))
+    _ = tf.identity(norm_w)
+    _ = tf.identity(norm_h)
+    tf.print("📡 Norm(w) =", norm_w, output_stream=sys.stdout)
+    tf.print("📡 Norm(h) =", norm_h, output_stream=sys.stdout)
 
+    # 🔁 Start training loop
     kpis = training_loop(model, optimizer, TASKS, num_epochs=50, batch_size=8)
