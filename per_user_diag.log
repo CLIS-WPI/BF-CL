@@ -1,280 +1,83 @@
 [Epoch 0:0] ----
-User 00 | dot=0.0021 | angle=-1.5448 rad | |dot|=0.0817
-User 01 | dot=-0.0642 | angle=2.3651 rad | |dot|=0.0900
-User 02 | dot=-0.0824 | angle=1.9538 rad | |dot|=0.2204
-User 03 | dot=-0.1082 | angle=3.1266 rad | |dot|=0.1082
-User 04 | dot=0.0036 | angle=1.5400 rad | |dot|=0.1154
-User 05 | dot=-0.0579 | angle=2.1241 rad | |dot|=0.1102
-[Epoch 0:10] ----
-User 00 | dot=0.2099 | angle=0.2265 rad | |dot|=0.2154
-User 01 | dot=-0.0322 | angle=-2.0807 rad | |dot|=0.0660
-User 02 | dot=-0.0915 | angle=-2.5168 rad | |dot|=0.1129
-User 03 | dot=0.0334 | angle=1.1649 rad | |dot|=0.0845
-User 04 | dot=0.1333 | angle=-0.2240 rad | |dot|=0.1367
-User 05 | dot=-0.0792 | angle=-2.4337 rad | |dot|=0.1043
+User 00 | dot=0.1529 | angle=0.2826 rad | |dot|=0.1592
+User 01 | dot=0.0085 | angle=1.3402 rad | |dot|=0.0371
+User 02 | dot=0.0774 | angle=-0.7169 rad | |dot|=0.1026
+User 03 | dot=-0.0386 | angle=-1.9442 rad | |dot|=0.1059
+User 04 | dot=0.0701 | angle=0.2648 rad | |dot|=0.0726
+User 05 | dot=0.1415 | angle=-0.1428 rad | |dot|=0.1429
 [Epoch 0:20] ----
-User 00 | dot=0.0517 | angle=-1.2123 rad | |dot|=0.1474
-User 01 | dot=-0.0601 | angle=-2.3199 rad | |dot|=0.0882
-User 02 | dot=-0.1224 | angle=2.5636 rad | |dot|=0.1462
-User 03 | dot=0.0196 | angle=1.3195 rad | |dot|=0.0788
-User 04 | dot=-0.0218 | angle=1.9317 rad | |dot|=0.0618
-User 05 | dot=-0.1620 | angle=2.3678 rad | |dot|=0.2265
-[Epoch 0:30] ----
-User 00 | dot=-0.0549 | angle=1.9630 rad | |dot|=0.1437
-User 01 | dot=0.1220 | angle=-0.7034 rad | |dot|=0.1600
-User 02 | dot=-0.0744 | angle=-2.7396 rad | |dot|=0.0808
-User 03 | dot=0.2128 | angle=0.1343 rad | |dot|=0.2148
-User 04 | dot=0.0751 | angle=-0.0977 rad | |dot|=0.0754
-User 05 | dot=-0.0119 | angle=-1.7555 rad | |dot|=0.0647
+User 00 | dot=-0.0372 | angle=2.6766 rad | |dot|=0.0417
+User 01 | dot=0.0782 | angle=0.9427 rad | |dot|=0.1332
+User 02 | dot=-0.0150 | angle=-2.7245 rad | |dot|=0.0164
+User 03 | dot=0.0481 | angle=0.1329 rad | |dot|=0.0486
+User 04 | dot=0.1123 | angle=-0.0712 rad | |dot|=0.1126
+User 05 | dot=0.2095 | angle=-0.6199 rad | |dot|=0.2574
 [Epoch 0:40] ----
-User 00 | dot=-0.0102 | angle=2.4311 rad | |dot|=0.0135
-User 01 | dot=0.0454 | angle=1.2269 rad | |dot|=0.1347
-User 02 | dot=0.0238 | angle=1.1865 rad | |dot|=0.0634
-User 03 | dot=0.1239 | angle=-0.1005 rad | |dot|=0.1245
-User 04 | dot=-0.0367 | angle=2.1361 rad | |dot|=0.0684
-User 05 | dot=0.0786 | angle=0.9873 rad | |dot|=0.1427
+User 00 | dot=-0.0180 | angle=1.6671 rad | |dot|=0.1875
+User 01 | dot=-0.0362 | angle=-3.0143 rad | |dot|=0.0365
+User 02 | dot=-0.0389 | angle=-2.6158 rad | |dot|=0.0450
+User 03 | dot=0.0142 | angle=1.3839 rad | |dot|=0.0766
+User 04 | dot=0.0171 | angle=1.4302 rad | |dot|=0.1223
+User 05 | dot=0.0760 | angle=-0.1146 rad | |dot|=0.0765
 [Epoch 1:0] ----
-User 00 | dot=-0.0154 | angle=2.0516 rad | |dot|=0.0332
-User 01 | dot=0.0530 | angle=1.2716 rad | |dot|=0.1799
-User 02 | dot=-0.1266 | angle=3.0558 rad | |dot|=0.1271
-User 03 | dot=-0.0012 | angle=1.6577 rad | |dot|=0.0135
-User 04 | dot=0.0365 | angle=-0.6734 rad | |dot|=0.0466
-User 05 | dot=0.0014 | angle=-1.5634 rad | |dot|=0.1831
-[Epoch 1:10] ----
-User 00 | dot=-0.1462 | angle=-3.0097 rad | |dot|=0.1475
-User 01 | dot=0.1731 | angle=-0.0643 rad | |dot|=0.1735
-User 02 | dot=0.0188 | angle=-1.3359 rad | |dot|=0.0806
-User 03 | dot=-0.0752 | angle=-1.9778 rad | |dot|=0.1900
-User 04 | dot=0.0161 | angle=0.9577 rad | |dot|=0.0280
-User 05 | dot=0.0674 | angle=0.6263 rad | |dot|=0.0831
+User 00 | dot=-0.0052 | angle=1.6261 rad | |dot|=0.0932
+User 01 | dot=0.0911 | angle=-0.0509 rad | |dot|=0.0912
+User 02 | dot=-0.0424 | angle=-2.2062 rad | |dot|=0.0714
+User 03 | dot=0.0229 | angle=-0.4328 rad | |dot|=0.0252
+User 04 | dot=-0.0740 | angle=2.7924 rad | |dot|=0.0788
+User 05 | dot=0.0051 | angle=-1.3105 rad | |dot|=0.0200
 [Epoch 1:20] ----
-User 00 | dot=0.0174 | angle=-0.6852 rad | |dot|=0.0225
-User 01 | dot=0.0599 | angle=0.0617 rad | |dot|=0.0600
-User 02 | dot=-0.0497 | angle=-2.3976 rad | |dot|=0.0676
-User 03 | dot=0.1925 | angle=0.0506 rad | |dot|=0.1928
-User 04 | dot=0.0873 | angle=-0.3393 rad | |dot|=0.0926
-User 05 | dot=-0.0383 | angle=-1.8013 rad | |dot|=0.1676
-[Epoch 1:30] ----
-User 00 | dot=-0.0148 | angle=2.1063 rad | |dot|=0.0290
-User 01 | dot=-0.0193 | angle=1.6802 rad | |dot|=0.1770
-User 02 | dot=0.0225 | angle=-0.5216 rad | |dot|=0.0260
-User 03 | dot=0.1065 | angle=0.0262 rad | |dot|=0.1066
-User 04 | dot=-0.0155 | angle=-2.9228 rad | |dot|=0.0158
-User 05 | dot=-0.1190 | angle=-2.3397 rad | |dot|=0.1711
+User 00 | dot=0.0735 | angle=-0.9538 rad | |dot|=0.1270
+User 01 | dot=0.0627 | angle=-1.0682 rad | |dot|=0.1302
+User 02 | dot=-0.0150 | angle=2.5464 rad | |dot|=0.0182
+User 03 | dot=0.0952 | angle=-0.1644 rad | |dot|=0.0965
+User 04 | dot=-0.1685 | angle=-2.9365 rad | |dot|=0.1721
+User 05 | dot=0.2526 | angle=0.1627 rad | |dot|=0.2560
 [Epoch 1:40] ----
-User 00 | dot=-0.1060 | angle=-2.4878 rad | |dot|=0.1336
-User 01 | dot=-0.0415 | angle=-2.3492 rad | |dot|=0.0591
-User 02 | dot=0.0393 | angle=1.3121 rad | |dot|=0.1536
-User 03 | dot=-0.1078 | angle=2.6781 rad | |dot|=0.1205
-User 04 | dot=0.0233 | angle=-0.8771 rad | |dot|=0.0365
-User 05 | dot=0.0881 | angle=-0.2799 rad | |dot|=0.0917
+User 00 | dot=0.0334 | angle=-1.2438 rad | |dot|=0.1040
+User 01 | dot=0.0190 | angle=1.4755 rad | |dot|=0.1993
+User 02 | dot=0.1076 | angle=0.5602 rad | |dot|=0.1270
+User 03 | dot=0.0109 | angle=1.3860 rad | |dot|=0.0593
+User 04 | dot=-0.0015 | angle=1.5926 rad | |dot|=0.0683
+User 05 | dot=-0.0003 | angle=-1.5737 rad | |dot|=0.1193
 [Epoch 2:0] ----
-User 00 | dot=0.1192 | angle=-0.4357 rad | |dot|=0.1315
-User 01 | dot=0.0973 | angle=0.8039 rad | |dot|=0.1402
-User 02 | dot=0.1514 | angle=-0.3723 rad | |dot|=0.1626
-User 03 | dot=0.0538 | angle=-1.1085 rad | |dot|=0.1206
-User 04 | dot=-0.0405 | angle=2.1475 rad | |dot|=0.0744
-User 05 | dot=0.0054 | angle=-1.4950 rad | |dot|=0.0709
-[Epoch 2:10] ----
-User 00 | dot=-0.0238 | angle=2.0895 rad | |dot|=0.0480
-User 01 | dot=0.0718 | angle=-0.1569 rad | |dot|=0.0727
-User 02 | dot=0.0130 | angle=-1.3692 rad | |dot|=0.0651
-User 03 | dot=0.1006 | angle=-0.6272 rad | |dot|=0.1242
-User 04 | dot=-0.0957 | angle=2.7747 rad | |dot|=0.1025
-User 05 | dot=0.0464 | angle=1.0976 rad | |dot|=0.1018
+User 00 | dot=-0.0083 | angle=1.6480 rad | |dot|=0.1071
+User 01 | dot=-0.0898 | angle=2.8718 rad | |dot|=0.0931
+User 02 | dot=0.0403 | angle=-0.9710 rad | |dot|=0.0714
+User 03 | dot=-0.1838 | angle=-2.7534 rad | |dot|=0.1986
+User 04 | dot=0.0396 | angle=-0.9714 rad | |dot|=0.0701
+User 05 | dot=-0.1091 | angle=-2.2110 rad | |dot|=0.1826
 [Epoch 2:20] ----
-User 00 | dot=0.0582 | angle=1.0253 rad | |dot|=0.1122
-User 01 | dot=-0.0116 | angle=-1.7109 rad | |dot|=0.0831
-User 02 | dot=0.0255 | angle=1.2622 rad | |dot|=0.0840
-User 03 | dot=0.0880 | angle=0.4642 rad | |dot|=0.0984
-User 04 | dot=0.0067 | angle=1.4525 rad | |dot|=0.0572
-User 05 | dot=0.0414 | angle=1.1559 rad | |dot|=0.1028
-[Epoch 2:30] ----
-User 00 | dot=-0.0469 | angle=-2.2472 rad | |dot|=0.0749
-User 01 | dot=-0.0928 | angle=2.8141 rad | |dot|=0.0981
-User 02 | dot=-0.1201 | angle=-2.2059 rad | |dot|=0.2024
-User 03 | dot=0.0777 | angle=0.5556 rad | |dot|=0.0914
-User 04 | dot=-0.0334 | angle=3.1035 rad | |dot|=0.0334
-User 05 | dot=-0.0773 | angle=2.2238 rad | |dot|=0.1272
+User 00 | dot=0.0273 | angle=0.8412 rad | |dot|=0.0409
+User 01 | dot=0.0090 | angle=-1.5169 rad | |dot|=0.1670
+User 02 | dot=-0.0178 | angle=-2.1381 rad | |dot|=0.0330
+User 03 | dot=-0.0100 | angle=1.6956 rad | |dot|=0.0807
+User 04 | dot=-0.0119 | angle=-1.6357 rad | |dot|=0.1830
+User 05 | dot=0.0786 | angle=1.1691 rad | |dot|=0.2010
 [Epoch 2:40] ----
-User 00 | dot=-0.0049 | angle=-1.7954 rad | |dot|=0.0221
-User 01 | dot=-0.0335 | angle=-2.0200 rad | |dot|=0.0770
-User 02 | dot=-0.0595 | angle=-1.8505 rad | |dot|=0.2157
-User 03 | dot=0.0897 | angle=-0.5772 rad | |dot|=0.1070
-User 04 | dot=0.0330 | angle=-1.0793 rad | |dot|=0.0699
-User 05 | dot=0.0427 | angle=0.9126 rad | |dot|=0.0698
+User 00 | dot=0.1123 | angle=0.8380 rad | |dot|=0.1678
+User 01 | dot=0.0704 | angle=0.8416 rad | |dot|=0.1056
+User 02 | dot=0.0964 | angle=-0.8138 rad | |dot|=0.1403
+User 03 | dot=0.1245 | angle=0.4999 rad | |dot|=0.1419
+User 05 | dot=-0.1054 | angle=2.9405 rad | |dot|=0.1075
 [Epoch 3:0] ----
-User 00 | dot=0.0305 | angle=-1.3347 rad | |dot|=0.1305
-User 01 | dot=-0.0441 | angle=-1.8603 rad | |dot|=0.1545
-User 02 | dot=0.2420 | angle=0.6177 rad | |dot|=0.2968
-User 03 | dot=0.0063 | angle=1.4222 rad | |dot|=0.0424
-User 04 | dot=-0.1066 | angle=-1.9322 rad | |dot|=0.3015
-User 05 | dot=0.0316 | angle=1.2671 rad | |dot|=0.1057
-[Epoch 3:10] ----
-User 00 | dot=-0.1254 | angle=-2.4422 rad | |dot|=0.1638
-User 01 | dot=-0.0801 | angle=2.2277 rad | |dot|=0.1311
-User 02 | dot=0.1706 | angle=0.3185 rad | |dot|=0.1797
-User 03 | dot=-0.0478 | angle=1.8673 rad | |dot|=0.1635
-User 04 | dot=0.2082 | angle=-0.3640 rad | |dot|=0.2228
-User 05 | dot=0.0309 | angle=-0.6871 rad | |dot|=0.0400
+User 00 | dot=0.1042 | angle=-0.5336 rad | |dot|=0.1210
+User 01 | dot=-0.2920 | angle=-3.1042 rad | |dot|=0.2922
+User 02 | dot=-0.1016 | angle=2.3029 rad | |dot|=0.1519
+User 03 | dot=0.1507 | angle=-0.0016 rad | |dot|=0.1507
+User 04 | dot=0.0214 | angle=0.6326 rad | |dot|=0.0266
+User 05 | dot=0.1590 | angle=0.3311 rad | |dot|=0.1682
 [Epoch 3:20] ----
-User 00 | dot=-0.0161 | angle=-1.6457 rad | |dot|=0.2145
-User 01 | dot=-0.0271 | angle=-3.0080 rad | |dot|=0.0273
-User 02 | dot=0.0172 | angle=0.8472 rad | |dot|=0.0259
-User 03 | dot=0.0107 | angle=1.3478 rad | |dot|=0.0485
-User 04 | dot=-0.0388 | angle=-2.1394 rad | |dot|=0.0721
-User 05 | dot=0.0507 | angle=0.9029 rad | |dot|=0.0818
-[Epoch 3:30] ----
-User 00 | dot=0.0684 | angle=-0.2990 rad | |dot|=0.0716
-User 01 | dot=0.0740 | angle=1.2102 rad | |dot|=0.2098
-User 02 | dot=0.0752 | angle=-0.7852 rad | |dot|=0.1064
-User 03 | dot=-0.1503 | angle=-2.8112 rad | |dot|=0.1589
-User 04 | dot=0.0951 | angle=0.8577 rad | |dot|=0.1454
-User 05 | dot=0.0612 | angle=0.1560 rad | |dot|=0.0619
+User 00 | dot=-0.0483 | angle=2.3306 rad | |dot|=0.0701
+User 01 | dot=0.0515 | angle=-0.7939 rad | |dot|=0.0734
+User 02 | dot=-0.0612 | angle=-2.3539 rad | |dot|=0.0868
+User 03 | dot=-0.0206 | angle=1.8100 rad | |dot|=0.0871
+User 04 | dot=0.0276 | angle=1.0397 rad | |dot|=0.0544
+User 05 | dot=0.0141 | angle=-1.3056 rad | |dot|=0.0538
 [Epoch 3:40] ----
-User 00 | dot=-0.1368 | angle=2.4021 rad | |dot|=0.1851
-User 01 | dot=-0.0287 | angle=2.2601 rad | |dot|=0.0452
-User 02 | dot=0.0244 | angle=0.3457 rad | |dot|=0.0260
-User 03 | dot=-0.1167 | angle=2.9812 rad | |dot|=0.1182
-User 04 | dot=-0.0488 | angle=2.9385 rad | |dot|=0.0498
-User 05 | dot=0.0892 | angle=0.2800 rad | |dot|=0.0928
-[Epoch 0:0] ----
-User 00 | dot=-0.0013 | angle=-1.5819 rad | |dot|=0.1171
-User 01 | dot=0.0383 | angle=-1.1433 rad | |dot|=0.0925
-User 02 | dot=0.0504 | angle=1.0171 rad | |dot|=0.0959
-User 03 | dot=0.0895 | angle=-0.9266 rad | |dot|=0.1490
-User 04 | dot=0.0742 | angle=-1.0236 rad | |dot|=0.1427
-User 05 | dot=-0.1566 | angle=2.8213 rad | |dot|=0.1650
-[Epoch 0:10] ----
-User 00 | dot=0.0051 | angle=1.4468 rad | |dot|=0.0411
-User 01 | dot=0.0194 | angle=-1.0923 rad | |dot|=0.0422
-User 02 | dot=0.0061 | angle=-1.3087 rad | |dot|=0.0235
-User 03 | dot=-0.0564 | angle=2.7496 rad | |dot|=0.0610
-User 04 | dot=0.0877 | angle=-0.2400 rad | |dot|=0.0903
-User 05 | dot=0.0149 | angle=1.2490 rad | |dot|=0.0471
-[Epoch 0:20] ----
-User 00 | dot=-0.0198 | angle=-2.0023 rad | |dot|=0.0474
-User 01 | dot=0.0223 | angle=1.0647 rad | |dot|=0.0459
-User 02 | dot=0.0557 | angle=0.9902 rad | |dot|=0.1016
-User 03 | dot=0.0994 | angle=0.4383 rad | |dot|=0.1098
-User 04 | dot=-0.1058 | angle=-2.8233 rad | |dot|=0.1113
-User 05 | dot=-0.0070 | angle=-2.5118 rad | |dot|=0.0087
-[Epoch 0:30] ----
-User 00 | dot=-0.1025 | angle=2.5646 rad | |dot|=0.1223
-User 01 | dot=0.1162 | angle=-0.7542 rad | |dot|=0.1595
-User 02 | dot=-0.0933 | angle=2.2013 rad | |dot|=0.1583
-User 03 | dot=-0.0341 | angle=-1.9293 rad | |dot|=0.0972
-User 04 | dot=-0.0570 | angle=2.6741 rad | |dot|=0.0638
-User 05 | dot=-0.0198 | angle=1.8029 rad | |dot|=0.0862
-[Epoch 0:40] ----
-User 00 | dot=0.0861 | angle=1.0536 rad | |dot|=0.1742
-User 01 | dot=0.0790 | angle=-0.3946 rad | |dot|=0.0856
-User 02 | dot=0.0317 | angle=0.7416 rad | |dot|=0.0429
-User 03 | dot=0.0812 | angle=-0.5355 rad | |dot|=0.0944
-User 04 | dot=0.0366 | angle=1.0219 rad | |dot|=0.0701
-User 05 | dot=-0.0546 | angle=-1.9678 rad | |dot|=0.1413
-[Epoch 1:0] ----
-User 00 | dot=0.0037 | angle=-1.5422 rad | |dot|=0.1305
-User 01 | dot=-0.0730 | angle=-2.6926 rad | |dot|=0.0811
-User 02 | dot=0.0978 | angle=-0.7537 rad | |dot|=0.1341
-User 03 | dot=0.0095 | angle=-1.4001 rad | |dot|=0.0561
-User 04 | dot=-0.1274 | angle=-2.0438 rad | |dot|=0.2797
-User 05 | dot=-0.0766 | angle=2.5061 rad | |dot|=0.0952
-[Epoch 1:10] ----
-User 00 | dot=-0.0580 | angle=-1.9600 rad | |dot|=0.1528
-User 01 | dot=0.0454 | angle=-1.0487 rad | |dot|=0.0911
-User 02 | dot=0.0801 | angle=0.7055 rad | |dot|=0.1052
-User 03 | dot=-0.0633 | angle=3.0306 rad | |dot|=0.0637
-User 04 | dot=-0.0023 | angle=-1.5916 rad | |dot|=0.1092
-User 05 | dot=0.0299 | angle=0.1200 rad | |dot|=0.0301
-[Epoch 1:20] ----
-User 00 | dot=0.1219 | angle=0.0328 rad | |dot|=0.1220
-User 01 | dot=-0.0771 | angle=-2.1990 rad | |dot|=0.1312
-User 02 | dot=0.1052 | angle=0.8661 rad | |dot|=0.1623
-User 03 | dot=-0.1207 | angle=2.3762 rad | |dot|=0.1674
-User 04 | dot=0.1675 | angle=0.5509 rad | |dot|=0.1966
-User 05 | dot=-0.0455 | angle=-2.2303 rad | |dot|=0.0742
-[Epoch 1:30] ----
-User 00 | dot=0.0213 | angle=-1.2823 rad | |dot|=0.0747
-User 01 | dot=-0.0797 | angle=-2.6691 rad | |dot|=0.0895
-User 02 | dot=0.0136 | angle=-1.3417 rad | |dot|=0.0597
-User 03 | dot=0.0198 | angle=-1.4037 rad | |dot|=0.1191
-User 04 | dot=0.0648 | angle=0.8554 rad | |dot|=0.0988
-User 05 | dot=0.1347 | angle=0.3040 rad | |dot|=0.1411
-[Epoch 1:40] ----
-User 00 | dot=-0.0594 | angle=2.2289 rad | |dot|=0.0971
-User 01 | dot=-0.0058 | angle=1.7322 rad | |dot|=0.0360
-User 02 | dot=0.1940 | angle=0.2208 rad | |dot|=0.1989
-User 03 | dot=0.0109 | angle=1.4050 rad | |dot|=0.0659
-User 04 | dot=0.0116 | angle=-1.2497 rad | |dot|=0.0366
-User 05 | dot=0.0434 | angle=-1.2423 rad | |dot|=0.1346
-[Epoch 2:0] ----
-User 00 | dot=0.0022 | angle=1.5286 rad | |dot|=0.0533
-User 01 | dot=0.0076 | angle=-1.4930 rad | |dot|=0.0978
-User 02 | dot=-0.0077 | angle=1.8867 rad | |dot|=0.0247
-User 03 | dot=-0.0521 | angle=2.1112 rad | |dot|=0.1013
-User 04 | dot=-0.1133 | angle=-2.4804 rad | |dot|=0.1435
-User 05 | dot=0.0116 | angle=-1.3781 rad | |dot|=0.0603
-[Epoch 2:10] ----
-User 00 | dot=0.0348 | angle=1.2629 rad | |dot|=0.1148
-User 01 | dot=-0.0420 | angle=-2.7841 rad | |dot|=0.0448
-User 02 | dot=0.0255 | angle=-0.5814 rad | |dot|=0.0305
-User 03 | dot=-0.2113 | angle=2.9771 rad | |dot|=0.2142
-User 04 | dot=0.1597 | angle=-0.5226 rad | |dot|=0.1843
-User 05 | dot=0.1592 | angle=0.4656 rad | |dot|=0.1782
-[Epoch 2:20] ----
-User 00 | dot=-0.1678 | angle=-3.0915 rad | |dot|=0.1680
-User 01 | dot=0.0676 | angle=0.4006 rad | |dot|=0.0734
-User 02 | dot=-0.0017 | angle=-1.5889 rad | |dot|=0.0915
-User 03 | dot=0.0588 | angle=-1.0072 rad | |dot|=0.1101
-User 04 | dot=-0.0236 | angle=-2.6261 rad | |dot|=0.0272
-User 05 | dot=0.0009 | angle=-1.5507 rad | |dot|=0.0429
-[Epoch 2:30] ----
-User 00 | dot=-0.0138 | angle=1.8053 rad | |dot|=0.0594
-User 01 | dot=0.0318 | angle=1.3829 rad | |dot|=0.1702
-User 02 | dot=-0.0253 | angle=1.7287 rad | |dot|=0.1609
-User 03 | dot=-0.0082 | angle=-1.6229 rad | |dot|=0.1583
-User 04 | dot=0.0267 | angle=-0.3378 rad | |dot|=0.0283
-User 05 | dot=0.0872 | angle=0.5858 rad | |dot|=0.1046
-[Epoch 2:40] ----
-User 00 | dot=-0.0688 | angle=2.3061 rad | |dot|=0.1026
-User 01 | dot=0.0475 | angle=1.2885 rad | |dot|=0.1705
-User 02 | dot=-0.0810 | angle=-2.7643 rad | |dot|=0.0871
-User 03 | dot=-0.0245 | angle=-1.8915 rad | |dot|=0.0777
-User 04 | dot=-0.0632 | angle=-2.1350 rad | |dot|=0.1182
-User 05 | dot=0.0184 | angle=1.4478 rad | |dot|=0.1500
-[Epoch 3:0] ----
-User 00 | dot=-0.1053 | angle=-2.3555 rad | |dot|=0.1490
-User 01 | dot=-0.0809 | angle=2.1526 rad | |dot|=0.1471
-User 02 | dot=-0.1785 | angle=-3.1279 rad | |dot|=0.1785
-User 03 | dot=0.1267 | angle=-1.0271 rad | |dot|=0.2449
-User 04 | dot=0.0468 | angle=0.7136 rad | |dot|=0.0619
-User 05 | dot=0.0021 | angle=-1.5376 rad | |dot|=0.0629
-[Epoch 3:10] ----
-User 00 | dot=-0.0991 | angle=-2.9911 rad | |dot|=0.1002
-User 01 | dot=-0.1382 | angle=-2.9691 rad | |dot|=0.1403
-User 02 | dot=-0.0728 | angle=1.9494 rad | |dot|=0.1969
-User 03 | dot=0.1070 | angle=-0.0430 rad | |dot|=0.1071
-User 04 | dot=0.0440 | angle=1.1256 rad | |dot|=0.1021
-User 05 | dot=-0.0062 | angle=-1.6608 rad | |dot|=0.0686
-[Epoch 3:20] ----
-User 00 | dot=0.0686 | angle=0.3892 rad | |dot|=0.0741
-User 01 | dot=0.1730 | angle=-0.4110 rad | |dot|=0.1887
-User 02 | dot=0.0280 | angle=-1.3734 rad | |dot|=0.1429
-User 03 | dot=-0.0238 | angle=-3.0580 rad | |dot|=0.0239
-User 04 | dot=-0.0339 | angle=2.3184 rad | |dot|=0.0499
-User 05 | dot=0.1289 | angle=-0.5233 rad | |dot|=0.1488
-[Epoch 3:30] ----
-User 00 | dot=-0.1685 | angle=-2.9994 rad | |dot|=0.1703
-User 01 | dot=0.0165 | angle=1.3724 rad | |dot|=0.0837
-User 02 | dot=-0.0983 | angle=-2.3318 rad | |dot|=0.1425
-User 03 | dot=-0.0712 | angle=2.8337 rad | |dot|=0.0747
-User 04 | dot=0.0936 | angle=0.9203 rad | |dot|=0.1546
-User 05 | dot=0.0003 | angle=1.5641 rad | |dot|=0.0461
-[Epoch 3:40] ----
-User 00 | dot=-0.0574 | angle=-2.2820 rad | |dot|=0.0880
-User 01 | dot=-0.1065 | angle=2.5825 rad | |dot|=0.1256
-User 02 | dot=0.0557 | angle=1.2157 rad | |dot|=0.1602
-User 03 | dot=-0.0724 | angle=2.6724 rad | |dot|=0.0812
-User 04 | dot=-0.1039 | angle=-2.0029 rad | |dot|=0.2482
-User 05 | dot=0.0757 | angle=0.3002 rad | |dot|=0.0792
+User 00 | dot=-0.0378 | angle=1.7592 rad | |dot|=0.2018
+User 01 | dot=-0.0384 | angle=1.8956 rad | |dot|=0.1204
+User 02 | dot=-0.0014 | angle=-1.5849 rad | |dot|=0.0990
+User 03 | dot=-0.0405 | angle=2.5146 rad | |dot|=0.0500
+User 04 | dot=0.0908 | angle=0.4379 rad | |dot|=0.1002
+User 05 | dot=0.2281 | angle=0.0060 rad | |dot|=0.2281
