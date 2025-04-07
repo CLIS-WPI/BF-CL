@@ -1,84 +1,91 @@
 [Epoch 0:0] ----
-User 00 | dot=0.0695 | angle=0.5241 rad | |dot|=0.0802
-User 01 | dot=0.0071 | angle=1.4619 rad | |dot|=0.0656
-User 02 | dot=0.1005 | angle=-0.0102 rad | |dot|=0.1005
-User 03 | dot=0.0849 | angle=0.5250 rad | |dot|=0.0982
-User 04 | dot=0.0372 | angle=1.0562 rad | |dot|=0.0757
-User 05 | dot=0.0669 | angle=-0.2420 rad | |dot|=0.0689
+User 00 | dot=-0.1113 | angle=-2.7491 rad | |dot|=0.1205 | SINR=9.59 bps/Hz
+User 01 | dot=-0.0348 | angle=-1.7965 rad | |dot|=0.1557 | SINR=9.79 bps/Hz
+User 02 | dot=-0.0079 | angle=1.6169 rad | |dot|=0.1722 | SINR=9.82 bps/Hz
+User 03 | dot=-0.1343 | angle=-2.9997 rad | |dot|=0.1357 | SINR=9.27 bps/Hz
+User 04 | dot=-0.0620 | angle=2.0376 rad | |dot|=0.1378 | SINR=9.77 bps/Hz
+User 05 | dot=-0.0823 | angle=2.9227 rad | |dot|=0.0843 | SINR=9.42 bps/Hz
+[Epoch 0:0] ----
+User 00 | dot=0.0809 | angle=0.5051 rad | |dot|=0.0925 | SINR=9.63 bps/Hz
+User 01 | dot=-0.1356 | angle=2.9998 rad | |dot|=0.1370 | SINR=9.78 bps/Hz
+User 02 | dot=0.0468 | angle=0.4283 rad | |dot|=0.0515 | SINR=9.64 bps/Hz
+User 03 | dot=-0.0116 | angle=2.0554 rad | |dot|=0.0249 | SINR=9.46 bps/Hz
+User 04 | dot=0.1142 | angle=-0.1348 rad | |dot|=0.1153 | SINR=9.78 bps/Hz
+User 05 | dot=0.0559 | angle=-1.1617 rad | |dot|=0.1406 | SINR=9.18 bps/Hz
 [Epoch 0:20] ----
-User 00 | dot=-0.1255 | angle=-3.0233 rad | |dot|=0.1264
-User 01 | dot=0.0168 | angle=0.9787 rad | |dot|=0.0301
-User 02 | dot=0.0495 | angle=0.7367 rad | |dot|=0.0668
-User 03 | dot=-0.1427 | angle=-2.4476 rad | |dot|=0.1856
-User 04 | dot=0.1305 | angle=-0.2426 rad | |dot|=0.1344
-User 05 | dot=0.0601 | angle=-0.7619 rad | |dot|=0.0830
+User 00 | dot=0.0573 | angle=-0.8437 rad | |dot|=0.0863 | SINR=4.76 bps/Hz
+User 01 | dot=0.0675 | angle=-1.1767 rad | |dot|=0.1759 | SINR=4.37 bps/Hz
+User 02 | dot=0.0201 | angle=-1.0723 rad | |dot|=0.0420 | SINR=5.02 bps/Hz
+User 03 | dot=0.1391 | angle=-0.8618 rad | |dot|=0.2137 | SINR=4.39 bps/Hz
+User 04 | dot=-0.1631 | angle=-2.7198 rad | |dot|=0.1788 | SINR=4.69 bps/Hz
+User 05 | dot=0.0615 | angle=0.7636 rad | |dot|=0.0851 | SINR=4.10 bps/Hz
 [Epoch 0:40] ----
-User 00 | dot=0.1150 | angle=-0.0698 rad | |dot|=0.1153
-User 01 | dot=-0.0051 | angle=1.6441 rad | |dot|=0.0697
-User 02 | dot=-0.0815 | angle=1.9860 rad | |dot|=0.2021
-User 03 | dot=-0.0304 | angle=2.5288 rad | |dot|=0.0372
-User 04 | dot=-0.1246 | angle=2.6748 rad | |dot|=0.1395
-User 05 | dot=-0.1054 | angle=2.8344 rad | |dot|=0.1106
+User 00 | dot=-0.1033 | angle=-2.8514 rad | |dot|=0.1078 | SINR=0.80 bps/Hz
+User 01 | dot=0.0321 | angle=1.2995 rad | |dot|=0.1197 | SINR=0.22 bps/Hz
+User 02 | dot=0.0058 | angle=1.4727 rad | |dot|=0.0594 | SINR=0.20 bps/Hz
+User 03 | dot=0.1360 | angle=0.2764 rad | |dot|=0.1414 | SINR=1.11 bps/Hz
+User 04 | dot=0.0761 | angle=-1.0862 rad | |dot|=0.1633 | SINR=1.09 bps/Hz
+User 05 | dot=-0.0558 | angle=2.9735 rad | |dot|=0.0566 | SINR=1.37 bps/Hz
 [Epoch 1:0] ----
-User 00 | dot=-0.0710 | angle=-2.2595 rad | |dot|=0.1117
-User 01 | dot=0.0664 | angle=-0.2499 rad | |dot|=0.0686
-User 02 | dot=0.1353 | angle=1.0052 rad | |dot|=0.2525
-User 03 | dot=-0.0558 | angle=2.6343 rad | |dot|=0.0638
-User 04 | dot=-0.0688 | angle=-2.6725 rad | |dot|=0.0772
-User 05 | dot=-0.0094 | angle=-2.2100 rad | |dot|=0.0158
+User 00 | dot=0.0736 | angle=-0.8928 rad | |dot|=0.1174 | SINR=9.63 bps/Hz
+User 01 | dot=-0.0651 | angle=-2.1193 rad | |dot|=0.1249 | SINR=9.69 bps/Hz
+User 02 | dot=-0.0803 | angle=3.1015 rad | |dot|=0.0803 | SINR=9.66 bps/Hz
+User 03 | dot=-0.1783 | angle=-3.1401 rad | |dot|=0.1783 | SINR=9.74 bps/Hz
+User 04 | dot=0.0278 | angle=-1.1808 rad | |dot|=0.0732 | SINR=9.73 bps/Hz
+User 05 | dot=0.1326 | angle=-0.6489 rad | |dot|=0.1664 | SINR=9.58 bps/Hz
 [Epoch 1:20] ----
-User 00 | dot=0.0245 | angle=-0.2512 rad | |dot|=0.0253
-User 01 | dot=0.0277 | angle=1.1585 rad | |dot|=0.0691
-User 02 | dot=0.0122 | angle=-1.2853 rad | |dot|=0.0432
-User 03 | dot=0.0480 | angle=0.6365 rad | |dot|=0.0597
-User 04 | dot=0.0515 | angle=-0.3635 rad | |dot|=0.0551
-User 05 | dot=-0.1541 | angle=3.0691 rad | |dot|=0.1545
+User 00 | dot=0.1342 | angle=-0.5623 rad | |dot|=0.1587 | SINR=5.27 bps/Hz
+User 01 | dot=0.0260 | angle=-1.1153 rad | |dot|=0.0590 | SINR=4.64 bps/Hz
+User 02 | dot=-0.0698 | angle=-2.4918 rad | |dot|=0.0877 | SINR=4.32 bps/Hz
+User 03 | dot=-0.0695 | angle=-2.7851 rad | |dot|=0.0741 | SINR=4.82 bps/Hz
+User 04 | dot=-0.0060 | angle=1.6111 rad | |dot|=0.1489 | SINR=4.42 bps/Hz
+User 05 | dot=-0.0808 | angle=2.9500 rad | |dot|=0.0823 | SINR=4.63 bps/Hz
 [Epoch 1:40] ----
-User 00 | dot=0.0283 | angle=1.2961 rad | |dot|=0.1042
-User 01 | dot=-0.0111 | angle=-1.8077 rad | |dot|=0.0475
-User 02 | dot=-0.0338 | angle=2.8876 rad | |dot|=0.0349
-User 03 | dot=0.1199 | angle=0.2719 rad | |dot|=0.1244
-User 04 | dot=-0.0643 | angle=-2.5707 rad | |dot|=0.0764
-User 05 | dot=-0.0788 | angle=-2.1055 rad | |dot|=0.1546
+User 00 | dot=-0.0088 | angle=-3.0867 rad | |dot|=0.0088 | SINR=0.61 bps/Hz
+User 01 | dot=0.0796 | angle=0.1376 rad | |dot|=0.0804 | SINR=0.50 bps/Hz
+User 02 | dot=-0.0402 | angle=2.9021 rad | |dot|=0.0414 | SINR=1.34 bps/Hz
+User 03 | dot=-0.0458 | angle=1.7837 rad | |dot|=0.2169 | SINR=1.00 bps/Hz
+User 04 | dot=-0.0778 | angle=-2.6150 rad | |dot|=0.0899 | SINR=1.27 bps/Hz
+User 05 | dot=0.0332 | angle=1.0974 rad | |dot|=0.0729 | SINR=0.84 bps/Hz
 [Epoch 2:0] ----
-User 00 | dot=-0.1318 | angle=2.4589 rad | |dot|=0.1698
-User 01 | dot=-0.0210 | angle=1.6483 rad | |dot|=0.2707
-User 02 | dot=-0.0033 | angle=-1.6210 rad | |dot|=0.0662
-User 03 | dot=0.0585 | angle=-1.1036 rad | |dot|=0.1298
-User 04 | dot=0.0003 | angle=1.5653 rad | |dot|=0.0603
-User 05 | dot=0.1233 | angle=0.5727 rad | |dot|=0.1467
+User 00 | dot=-0.0711 | angle=-2.3454 rad | |dot|=0.1016 | SINR=9.68 bps/Hz
+User 01 | dot=0.0083 | angle=1.1625 rad | |dot|=0.0208 | SINR=9.59 bps/Hz
+User 02 | dot=-0.0984 | angle=-2.5891 rad | |dot|=0.1156 | SINR=9.61 bps/Hz
+User 03 | dot=0.0281 | angle=1.3563 rad | |dot|=0.1322 | SINR=9.78 bps/Hz
+User 04 | dot=0.1679 | angle=-0.6960 rad | |dot|=0.2188 | SINR=9.70 bps/Hz
+User 05 | dot=0.1336 | angle=-0.0041 rad | |dot|=0.1336 | SINR=9.76 bps/Hz
 [Epoch 2:20] ----
-User 00 | dot=-0.0070 | angle=1.8983 rad | |dot|=0.0216
-User 01 | dot=0.0182 | angle=-1.3791 rad | |dot|=0.0957
-User 02 | dot=0.0584 | angle=0.8682 rad | |dot|=0.0903
-User 03 | dot=-0.0873 | angle=1.9989 rad | |dot|=0.2102
-User 04 | dot=-0.0444 | angle=-2.3896 rad | |dot|=0.0608
-User 05 | dot=-0.0040 | angle=-1.6144 rad | |dot|=0.0927
+User 00 | dot=-0.0166 | angle=-1.8000 rad | |dot|=0.0732 | SINR=5.45 bps/Hz
+User 01 | dot=0.0172 | angle=-1.1119 rad | |dot|=0.0387 | SINR=5.64 bps/Hz
+User 02 | dot=0.0716 | angle=0.9083 rad | |dot|=0.1164 | SINR=6.19 bps/Hz
+User 03 | dot=-0.1726 | angle=-2.3002 rad | |dot|=0.2590 | SINR=4.48 bps/Hz
+User 04 | dot=0.0866 | angle=-1.1604 rad | |dot|=0.2170 | SINR=4.39 bps/Hz
+User 05 | dot=-0.0066 | angle=1.6121 rad | |dot|=0.1602 | SINR=4.31 bps/Hz
 [Epoch 2:40] ----
-User 00 | dot=0.0383 | angle=-1.2358 rad | |dot|=0.1166
-User 01 | dot=0.0083 | angle=1.3169 rad | |dot|=0.0329
-User 02 | dot=0.0539 | angle=-1.1279 rad | |dot|=0.1258
-User 03 | dot=0.0092 | angle=1.4573 rad | |dot|=0.0809
-User 04 | dot=0.0102 | angle=1.4279 rad | |dot|=0.0716
-User 05 | dot=-0.0373 | angle=-2.2466 rad | |dot|=0.0596
+User 00 | dot=0.0737 | angle=0.9230 rad | |dot|=0.1222 | SINR=1.60 bps/Hz
+User 01 | dot=-0.0634 | angle=2.9030 rad | |dot|=0.0653 | SINR=0.99 bps/Hz
+User 02 | dot=-0.1428 | angle=-2.6267 rad | |dot|=0.1641 | SINR=1.66 bps/Hz
+User 03 | dot=0.2089 | angle=0.0223 rad | |dot|=0.2090 | SINR=0.39 bps/Hz
+User 04 | dot=0.0747 | angle=0.8304 rad | |dot|=0.1107 | SINR=0.84 bps/Hz
+User 05 | dot=-0.2238 | angle=-3.0626 rad | |dot|=0.2245 | SINR=1.81 bps/Hz
 [Epoch 3:0] ----
-User 00 | dot=-0.0883 | angle=2.4169 rad | |dot|=0.1180
-User 01 | dot=0.1318 | angle=0.7075 rad | |dot|=0.1734
-User 02 | dot=0.1195 | angle=0.6716 rad | |dot|=0.1526
-User 03 | dot=-0.0316 | angle=1.7563 rad | |dot|=0.1715
-User 04 | dot=0.1217 | angle=-0.7362 rad | |dot|=0.1642
-User 05 | dot=0.0721 | angle=-0.4645 rad | |dot|=0.0807
+User 00 | dot=0.0525 | angle=-0.7170 rad | |dot|=0.0697 | SINR=9.75 bps/Hz
+User 01 | dot=0.0844 | angle=1.0201 rad | |dot|=0.1612 | SINR=9.72 bps/Hz
+User 02 | dot=0.0131 | angle=-0.3468 rad | |dot|=0.0140 | SINR=9.71 bps/Hz
+User 03 | dot=0.0164 | angle=1.4686 rad | |dot|=0.1606 | SINR=9.53 bps/Hz
+User 04 | dot=0.0970 | angle=-0.5853 rad | |dot|=0.1164 | SINR=9.47 bps/Hz
+User 05 | dot=-0.0999 | angle=2.5644 rad | |dot|=0.1192 | SINR=9.39 bps/Hz
 [Epoch 3:20] ----
-User 00 | dot=-0.0835 | angle=2.2693 rad | |dot|=0.1299
-User 01 | dot=0.1045 | angle=0.0586 rad | |dot|=0.1047
-User 02 | dot=-0.1150 | angle=2.4732 rad | |dot|=0.1465
-User 03 | dot=0.0752 | angle=0.1321 rad | |dot|=0.0759
-User 04 | dot=0.0242 | angle=0.0452 rad | |dot|=0.0242
-User 05 | dot=0.0832 | angle=0.8907 rad | |dot|=0.1323
+User 00 | dot=-0.1016 | angle=-2.7308 rad | |dot|=0.1108 | SINR=3.77 bps/Hz
+User 01 | dot=0.1542 | angle=-0.3481 rad | |dot|=0.1641 | SINR=4.92 bps/Hz
+User 02 | dot=-0.0870 | angle=-3.1243 rad | |dot|=0.0870 | SINR=4.82 bps/Hz
+User 03 | dot=0.0101 | angle=-1.1144 rad | |dot|=0.0230 | SINR=3.98 bps/Hz
+User 04 | dot=0.0519 | angle=1.0529 rad | |dot|=0.1048 | SINR=4.42 bps/Hz
+User 05 | dot=0.0973 | angle=-0.3781 rad | |dot|=0.1047 | SINR=4.53 bps/Hz
 [Epoch 3:40] ----
-User 00 | dot=0.1135 | angle=-0.8086 rad | |dot|=0.1643
-User 01 | dot=0.0031 | angle=-1.5381 rad | |dot|=0.0955
-User 02 | dot=0.1064 | angle=0.5076 rad | |dot|=0.1218
-User 03 | dot=-0.0149 | angle=-1.8557 rad | |dot|=0.0529
-User 04 | dot=-0.0619 | angle=-2.8632 rad | |dot|=0.0644
-User 05 | dot=0.0126 | angle=-1.4425 rad | |dot|=0.0983
+User 00 | dot=-0.1238 | angle=2.1648 rad | |dot|=0.2212 | SINR=2.09 bps/Hz
+User 01 | dot=-0.1217 | angle=2.2644 rad | |dot|=0.1903 | SINR=0.85 bps/Hz
+User 02 | dot=0.1223 | angle=-0.3511 rad | |dot|=0.1302 | SINR=0.46 bps/Hz
+User 03 | dot=0.1374 | angle=0.5233 rad | |dot|=0.1586 | SINR=1.10 bps/Hz
+User 04 | dot=-0.0223 | angle=-1.6847 rad | |dot|=0.1965 | SINR=1.41 bps/Hz
+User 05 | dot=0.0782 | angle=1.0477 rad | |dot|=0.1565 | SINR=0.44 bps/Hz
