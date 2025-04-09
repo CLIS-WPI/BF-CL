@@ -1,0 +1,32 @@
+[Task 0 - Static][Epoch 10] Avg Loss=0.007100 (T=0.007100, EWC=0.000000) | Avg SINR=10.08 dB | Avg Thrpt=3.3481 | Avg |dot|=0.8061
+[Task 0 - Static][Epoch 20] Avg Loss=0.002827 (T=0.002827, EWC=0.000000) | Avg SINR=11.47 dB | Avg Thrpt=3.7670 | Avg |dot|=0.9480
+[Task 0 - Static][Epoch 30] Avg Loss=0.001962 (T=0.001962, EWC=0.000000) | Avg SINR=11.71 dB | Avg Thrpt=3.8423 | Avg |dot|=0.9766
+[Task 0 - Static][Epoch 40] Avg Loss=0.001627 (T=0.001627, EWC=0.000000) | Avg SINR=11.84 dB | Avg Thrpt=3.8863 | Avg |dot|=0.9871
+[Task 0 - Static][Epoch 50] Avg Loss=0.001478 (T=0.001478, EWC=0.000000) | Avg SINR=11.88 dB | Avg Thrpt=3.8957 | Avg |dot|=0.9925
+[Task 1 - Pedestrian][Epoch 10] Avg Loss=0.001558 (T=0.001557, EWC=0.000002) | Avg SINR=11.77 dB | Avg Thrpt=3.8657 | Avg |dot|=0.9902
+[Task 1 - Pedestrian][Epoch 20] Avg Loss=0.001400 (T=0.001398, EWC=0.000002) | Avg SINR=11.84 dB | Avg Thrpt=3.8881 | Avg |dot|=0.9954
+[Task 1 - Pedestrian][Epoch 30] Avg Loss=0.001349 (T=0.001345, EWC=0.000003) | Avg SINR=11.89 dB | Avg Thrpt=3.9018 | Avg |dot|=0.9969
+[Task 1 - Pedestrian][Epoch 40] Avg Loss=0.001312 (T=0.001308, EWC=0.000004) | Avg SINR=11.95 dB | Avg Thrpt=3.9154 | Avg |dot|=0.9977
+[Task 1 - Pedestrian][Epoch 50] Avg Loss=0.001308 (T=0.001304, EWC=0.000004) | Avg SINR=11.94 dB | Avg Thrpt=3.9099 | Avg |dot|=0.9981
+[Task 2 - Vehicular][Epoch 10] Avg Loss=0.001436 (T=0.001418, EWC=0.000017) | Avg SINR=11.90 dB | Avg Thrpt=3.9009 | Avg |dot|=0.9943
+[Task 2 - Vehicular][Epoch 20] Avg Loss=0.001324 (T=0.001306, EWC=0.000018) | Avg SINR=11.90 dB | Avg Thrpt=3.9056 | Avg |dot|=0.9982
+[Task 2 - Vehicular][Epoch 30] Avg Loss=0.001309 (T=0.001290, EWC=0.000019) | Avg SINR=11.92 dB | Avg Thrpt=3.9115 | Avg |dot|=0.9984
+[Task 2 - Vehicular][Epoch 40] Avg Loss=0.001313 (T=0.001294, EWC=0.000019) | Avg SINR=11.88 dB | Avg Thrpt=3.9028 | Avg |dot|=0.9986
+[Task 2 - Vehicular][Epoch 50] Avg Loss=0.001296 (T=0.001277, EWC=0.000019) | Avg SINR=11.96 dB | Avg Thrpt=3.9173 | Avg |dot|=0.9987
+[Task 3 - Aerial][Epoch 10] Avg Loss=0.001431 (T=0.001392, EWC=0.000039) | Avg SINR=11.90 dB | Avg Thrpt=3.9022 | Avg |dot|=0.9951
+[Task 3 - Aerial][Epoch 20] Avg Loss=0.001337 (T=0.001297, EWC=0.000040) | Avg SINR=11.88 dB | Avg Thrpt=3.8983 | Avg |dot|=0.9987
+[Task 3 - Aerial][Epoch 30] Avg Loss=0.001322 (T=0.001282, EWC=0.000040) | Avg SINR=11.92 dB | Avg Thrpt=3.9110 | Avg |dot|=0.9988
+[Task 3 - Aerial][Epoch 40] Avg Loss=0.001322 (T=0.001282, EWC=0.000040) | Avg SINR=11.90 dB | Avg Thrpt=3.9035 | Avg |dot|=0.9989
+[Task 3 - Aerial][Epoch 50] Avg Loss=0.001311 (T=0.001271, EWC=0.000040) | Avg SINR=11.95 dB | Avg Thrpt=3.9174 | Avg |dot|=0.9989
+
+--- CL Metrics Summary (EWC Single GPU) ---
+  Average Final |dot| (Acc): 0.9971 (StdDev: 0.0026)
+  Average Final SINR: 11.91 dB (StdDev: 0.06)
+  Average Final Throughput: 3.9047 bps/Hz (StdDev: 0.0148)
+  Average Computational Latency: 0.0513 ms/sample
+  Backward Transfer |dot| (BWT): -0.3844
+  Backward Transfer SINR (BWT): -4.17 dB
+  Backward Transfer Thrpt (BWT): -1.2405 bps/Hz
+  Total Training Time: 859.59 s
+  Estimated Training Energy: 343835.17 J (0.0955 kWh)
+  Operational Efficiency Proxy: 76.0456 (bps/Hz)/(ms/sample)
