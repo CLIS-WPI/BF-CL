@@ -61,7 +61,7 @@ NUM_BATCHES_PER_EPOCH = 50
 ZF_REG = 1e-5
 
 # --- Continual Learning Configuration ---
-EWC_LAMBDA = 1000.0        # EWC regularization strength (needs tuning)
+EWC_LAMBDA = 500#1000.0        # EWC regularization strength (needs tuning)
 # FISHER_DECAY = 0.99      # Not using decay, using simple accumulation/averaging
 
 # --- Evaluation / Metrics ---
