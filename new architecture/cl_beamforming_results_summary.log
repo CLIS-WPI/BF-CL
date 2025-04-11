@@ -1,0 +1,16 @@
+2025-04-11 17:59:23,330 - INFO - ✅ Using GPUs: ['/physical_device:GPU:0', '/physical_device:GPU:1']
+2025-04-11 17:59:23,664 - INFO - Using MirroredStrategy with devices ('/job:localhost/replica:0/task:0/device:GPU:0', '/job:localhost/replica:0/task:0/device:GPU:1')
+2025-04-11 17:59:23,689 - INFO - 
+==================================================
+  RUNNING BASELINE: Full Retraining
+==================================================
+2025-04-11 17:59:23,689 - INFO - 
+🧠 Starting Baseline Training: Retraining...
+2025-04-11 17:59:23,689 - INFO - 
+--- Retraining | Task 1/4: Static ---
+2025-04-11 17:59:23,689 - INFO -   Initializing new model and optimizer...
+2025-04-11 17:59:23,689 - INFO -   Creating new MultiHeadCVNNModel instance...
+2025-04-11 17:59:23,717 - INFO -   Building all task heads for the baseline model...
+2025-04-11 17:59:23,886 - INFO -   Finished calling model for all task heads.
+2025-04-11 17:59:23,963 - INFO -   Model/Optimizer initialized/reset for Task 0.
+2025-04-11 17:59:24,638 - INFO - Collective all_reduce tensors: 12 all_reduces, num_devices = 2, group_size = 2, implementation = CommunicationImplementation.NCCL, num_packs = 1

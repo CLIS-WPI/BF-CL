@@ -64,7 +64,7 @@ TASKS = [
 NUM_TASKS = len(TASKS) # ***** DEFINE NUM_TASKS HERE *****
 
 # --- Training Configuration ---
-NUM_EPOCHS_PER_TASK = 50 # Keep relatively low for reasonable total runtime
+NUM_EPOCHS_PER_TASK = 1 # Keep relatively low for reasonable total runtime
 LEARNING_RATE = 1e-4
 BATCH_SIZE = 32            # Global batch size for single GPU
 NUM_BATCHES_PER_EPOCH = 50
@@ -89,6 +89,33 @@ PLOT_DOT_FILE = f"{LOG_FILE_BASE}_matrix_dot.png"
 PLOT_SINR_FILE = f"{LOG_FILE_BASE}_matrix_sinr.png"
 PLOT_THRPT_FILE = f"{LOG_FILE_BASE}_matrix_thrpt.png" # Added plot for throughput
 
+# --- Replay Buffer for Continual Learning ---
+class ReplayBuffer:
+    def __init__(self, capacity_per_task=200):
+        self.capacity_per_task = capacity_per_task
+        self.buffer = {}  # Dictionary to store samples per task
+
+    def add_samples(self, task_idx, h_batch, w_zf_target):
+        if task_idx not in self.buffer:
+            self.buffer[task_idx] = []
+        batch_size = tf.shape(h_batch)[0]
+        for i in range(batch_size):
+            sample = (h_batch[i], w_zf_target[i])
+            if len(self.buffer[task_idx]) < self.capacity_per_task:
+                self.buffer[task_idx].append(sample)
+            else:
+                # Random replacement
+                if random.random() > 0.5:
+                    idx = random.randint(0, self.capacity_per_task - 1)
+                    self.buffer[task_idx][idx] = sample
+
+    def get_samples(self, task_idx, batch_size):
+        if not self.buffer[task_idx]:  # چک کن بافر خالی نباشه
+            return None, None
+        num_samples = tf.minimum(batch_size, tf.shape(self.buffer[task_idx])[0])
+        samples = tf.random.shuffle(self.buffer[task_idx])[:num_samples]
+        return samples[:, 0], samples[:, 1]  # h_replay, w_replay
+    
 # --- GPU Setup (SINGLE GPU) ---
 print("--- Setting up for Single GPU Training ---")
 gpus = tf.config.list_physical_devices('GPU')
@@ -222,9 +249,14 @@ def calculate_metrics_for_logging(h, w_pred_norm, noise_power=1e-3):
 
     return tf.identity(sinr_dB_batch_mean), tf.identity(mean_dot_abs), tf.identity(avg_throughput), log_lines
 
-def calculate_metrics(h, w_pred_raw, noise_power=1e-3):
+def calculate_metrics(h, w_pred_raw, task_idx, noise_power=1e-3):
     """ Calculates |dot|, SINR (dB), Avg Thrpt (bps/Hz) from raw prediction. Returns numpy values. """
     w_pred_norm = tf.nn.l2_normalize(w_pred_raw, axis=-1, epsilon=1e-8)
+    # چک کردن NaN برای قسمت واقعی و خیالی جداگانه
+    w_pred_norm_real = tf.math.real(w_pred_norm)
+    w_pred_norm_imag = tf.math.imag(w_pred_norm)
+    if tf.reduce_any(tf.math.is_nan(w_pred_norm_real)) or tf.reduce_any(tf.math.is_nan(w_pred_norm_imag)):
+        print(f"NaN in w_pred_norm for Task {task_idx}")
     sinr_dB = np.nan; mean_dot = np.nan; avg_thrpt = np.nan
     try:
         # Use tf.stop_gradient to ensure metric calculation doesn't affect training gradients
@@ -248,7 +280,7 @@ def calculate_metrics(h, w_pred_raw, noise_power=1e-3):
         sinr_per_user_bps = tf.math.log(1.0 + sinr_linear) / tf.math.log(2.0)
         avg_thrpt = tf.reduce_mean(sinr_per_user_bps).numpy() # Convert to numpy
     except Exception as e:
-        print(f"Warning: Error during metric calculation: {e}", file=sys.stderr)
+        print(f"Warning: Error during metric calculation for Task {task_idx}: {e}", file=sys.stderr)
     return sinr_dB, mean_dot, avg_thrpt
 #------------------------------------------------------
 # MULTI-HEAD COMPLEX-VALUED MODEL (CVNN)
@@ -273,7 +305,6 @@ class MultiHeadCVNNModel(tf.keras.Model):
         selected_head = self.output_heads[task_idx]
         w = selected_head(x2)
         return w # Return raw weights
-
 #------------------------------------------------------
 # EWC Related Function
 #------------------------------------------------------
@@ -293,7 +324,6 @@ def compute_ewc_loss(model, optimal_params_agg_np, fisher_info_agg_np, ewc_lambd
                 ewc_loss += tf.reduce_sum(fisher_val * tf.cast(sq_diff_mag, tf.float32))
             except Exception as e: tf.print(f"Warning: EWC calc error {var.name}: {e}", output_stream=sys.stderr)
     return 0.5 * ewc_lambda * tf.cast(ewc_loss, dtype=tf.float32)
-
 #------------------------------------------------------
 # TRAINING STEP Functions (Baseline and EWC for Single GPU)
 #------------------------------------------------------
@@ -336,24 +366,50 @@ def train_step_cl_ewc_single_gpu(model, optimizer, h_batch, task_idx,
     # Return necessary info including grads for Fisher update
     return total_loss, current_task_loss, ewc_loss_term, w_pred_raw, grads_and_vars
 
+# --- EWC + Replay Train Step (Single GPU) ---
+@tf.function
+def train_step_cl_ewc_replay(model, optimizer, h_batch, task_idx, replay_buffer,
+                             optimal_params_agg_np, fisher_info_prev_agg,
+                             ewc_lambda, replay_lambda=0.5):
+    w_zf_target = compute_zf_weights(h_batch, ZF_REG)
+    with tf.GradientTape() as tape:
+        # Current task loss
+        w_pred_raw = model(h_batch, task_idx=task_idx, training=True)
+        if tf.reduce_any(tf.math.is_nan(w_pred_raw)) or tf.reduce_any(tf.math.is_inf(w_pred_raw)):
+            print(f"NaN or Inf in w_pred_raw for Task {task_idx}")
+        w_pred_norm = tf.nn.l2_normalize(w_pred_raw, axis=-1, epsilon=1e-8)
+        error_current = w_pred_norm - w_zf_target
+        current_task_loss = tf.reduce_mean(tf.math.real(error_current * tf.math.conj(error_current)))
 
-#------------------------------------------------------
-# Training Loop Functions (Baseline and EWC for Single GPU)
-#------------------------------------------------------
+        # EWC loss
+        ewc_loss_term = tf.constant(0.0, dtype=tf.float32)
+        if task_idx > 0:
+            ewc_loss_term = compute_ewc_loss(model, optimal_params_agg_np, fisher_info_prev_agg, ewc_lambda)
 
+        # Replay loss
+        replay_loss = tf.constant(0.0, dtype=tf.float32)
+        if task_idx > 0:
+            for prev_task_idx in range(task_idx):
+                h_replay, w_replay = replay_buffer.get_samples(prev_task_idx, tf.shape(h_batch)[0])
+                if h_replay is not None:
+                    w_pred_replay_raw = model(h_replay, task_idx=prev_task_idx, training=True)
+                    w_pred_replay_norm = tf.nn.l2_normalize(w_pred_replay_raw, axis=-1, epsilon=1e-8)
+                    error_replay = w_pred_replay_norm - w_replay
+                    replay_loss += tf.reduce_mean(tf.math.real(error_replay * tf.math.conj(error_replay)))
+
+        # Total loss
+        total_loss = current_task_loss + ewc_loss_term + replay_lambda * replay_loss
+
+    trainable_vars = model.trainable_variables
+    grads = tape.gradient(total_loss, trainable_vars)
+    grads_and_vars = [(g, v) for g, v in zip(grads, trainable_vars) if g is not None]
+    optimizer.apply_gradients(grads_and_vars)
+
+    return total_loss, current_task_loss, ewc_loss_term, replay_loss, w_pred_raw, grads_and_vars
 # --- Baseline Training Loop (Retraining / Finetuning) ---
 #------------------------------------------------------
 # Training Loop Functions (Baseline and EWC for Single GPU)
-#------------------------------------------------------
-
-# --- Baseline Training Loop (Retraining / Finetuning) ---
-#------------------------------------------------------
-# Training Loop Functions (Baseline and EWC for Single GPU)
-#------------------------------------------------------
-
-# --- Baseline Training Loop (Retraining / Finetuning - CORRECTED) ---
-# --- Baseline Training Loop (Retraining / Finetuning - CORRECTED Build Step) ---
-# REPLACE THIS ENTIRE FUNCTION
+#-----------------------------------------------------
 def training_loop_baseline(baseline_name, create_model_func, tasks, num_epochs_per_task, batch_size, learning_rate, reset_model_per_task=True):
     """ Runs baseline training (Full Retraining or Finetuning). Includes full head build. """
     print(f"\n🧠 Starting Baseline Training: {baseline_name}...")
@@ -515,7 +571,7 @@ def training_loop_baseline(baseline_name, create_model_func, tasks, num_epochs_p
     op_energy_efficiency_proxy = avg_thrpt / avg_lat if avg_lat > 0 and not np.isnan(avg_thrpt) and not np.isnan(avg_lat) else np.nan
 
     results = {
-        "name": "EWC",
+        "name": baseline_name,
         "avg_dot": avg_acc_dot,
         "std_dot": std_dev_dot,
         "bwt_dot": bwt_dot,
@@ -546,30 +602,24 @@ def training_loop_baseline(baseline_name, create_model_func, tasks, num_epochs_p
 
     return results
 
-
-
 # --- EWC Training Loop (Single GPU - EMA Fisher) ---
-#------------------------------------------------------
-# CONTINUAL LEARNING Training Loop (EWC - EMA Fisher, Single GPU - CORRECTED Fisher Update)
-#------------------------------------------------------
 def training_loop_cl_ewc_single_gpu(create_model_func, tasks, num_epochs_per_task, batch_size, learning_rate, ewc_lambda):
     print(f"\n🧠 Starting Continual Learning Training Loop with EWC (EMA Fisher, Single GPU)...")
     log_file = EWC_LOG_FILE
-    log_file_diag = "per_user_diag_cl_ewc_ema_singleGPU.log"
+    log_file_diag = "per_user_diag_cl_ewc_singleGPU.log"
     open(log_file, "w").close()
     open(log_file_diag, "w").close()
 
-    # --- Performance Tracking ---
+    # Performance Tracking
     final_task_performance_dot = {}
     final_task_performance_sinr = {}
     final_task_performance_thrpt = {}
     final_task_comp_latency = {}
-
     performance_history_dot = {}
     performance_history_sinr = {}
     performance_history_thrpt = {}
 
-    # --- CL State Storage ---
+    # CL State Storage
     optimal_params = {}
     fisher_information = {}
 
@@ -628,12 +678,15 @@ def training_loop_cl_ewc_single_gpu(create_model_func, tasks, num_epochs_per_tas
 
             for i_batch in range(NUM_BATCHES_PER_EPOCH):
                 h_batch = generate_synthetic_batch(task, batch_size, NUM_ANTENNAS, NUM_USERS, NUM_SLOTS, FREQ)
+                w_zf_target = compute_zf_weights(h_batch, ZF_REG)
 
-                loss, task_loss, ewc_loss_term, w_pred_norm, grads_and_vars = train_step_cl_ewc_single_gpu(
+                # Training step
+                total_loss, task_loss, ewc_loss_term, w_pred_raw, grads_and_vars = train_step_cl_ewc_single_gpu(
                     model, optimizer, h_batch, task_idx,
                     optimal_params_prev_agg, fisher_info_prev_agg, ewc_lambda
                 )
 
+                # Update Fisher EMA
                 var_to_grad = {v.ref(): g for g, v in grads_and_vars}
                 for var_name, fisher_variable in current_task_fisher_ema.items():
                     target_var = next((v_model for v_model in model.trainable_variables if v_model.name == var_name), None)
@@ -646,24 +699,27 @@ def training_loop_cl_ewc_single_gpu(create_model_func, tasks, num_epochs_per_tas
                                              ((1.0 - FISHER_EMA_DECAY) * avg_sq_grad_mag_this_step)
                             fisher_variable.assign(new_fisher_val)
 
-                epoch_total_loss += loss.numpy()
+                epoch_total_loss += total_loss.numpy()
                 epoch_task_loss += task_loss.numpy()
                 epoch_ewc_loss += ewc_loss_term.numpy()
 
                 if i_batch == NUM_BATCHES_PER_EPOCH - 1:
-                    sinr_db, mean_dot, avg_thrpt, log_lines = calculate_metrics_for_logging(h_batch, w_pred_norm)
+                    sinr_db, mean_dot, avg_thrpt, log_lines = calculate_metrics_for_logging(h_batch, w_pred_raw)
                     epoch_sinr = sinr_db.numpy()
                     epoch_dot = mean_dot.numpy()
                     epoch_thrpt = avg_thrpt.numpy()
                     epoch_log_lines = log_lines
+                if np.isnan(epoch_sinr) or np.isnan(epoch_dot) or np.isnan(epoch_thrpt):
+                    print(f"Warning: NaN detected in metrics for Task {task_idx}, Epoch {epoch+1}")
 
             avg_epoch_loss = epoch_total_loss / NUM_BATCHES_PER_EPOCH
 
             if (epoch + 1) % 10 == 0:
                 log_str = (
                     f"[EWC][Task {task_idx} - {task_name}][Epoch {epoch+1}] "
-                    f"Avg Loss={avg_epoch_loss:.6f} | Last SINR={epoch_sinr:.2f} dB | "
-                    f"Last Thrpt={epoch_thrpt:.4f} | Last |dot|={epoch_dot:.4f}\n"
+                    f"Avg Loss={avg_epoch_loss:.6f} | Task Loss={epoch_task_loss/NUM_BATCHES_PER_EPOCH:.6f} | "
+                    f"EWC Loss={epoch_ewc_loss/NUM_BATCHES_PER_EPOCH:.6f} | "
+                    f"Last SINR={epoch_sinr:.2f} dB | Last Thrpt={epoch_thrpt:.4f} | Last |dot|={epoch_dot:.4f}\n"
                 )
                 print(log_str, end='')
                 with open(log_file, "a") as f:
@@ -678,15 +734,302 @@ def training_loop_cl_ewc_single_gpu(create_model_func, tasks, num_epochs_per_tas
         task_end_time = time.time()
         print(f"  Finished training Task {task_idx + 1} (EWC) in {task_end_time - task_start_time:.2f}s")
 
+        # Store optimal parameters and Fisher info
         optimal_params[task_idx] = {v.name: v.numpy() for v in model.trainable_variables}
         fisher_information[task_idx] = {
             name: ema_var.numpy() for name, ema_var in current_task_fisher_ema.items()
             if name in optimal_params[task_idx]
         }
-
         print(f"  Stored optimal parameters and Fisher info (EMA) for Task {task_idx}.")
 
-        # --- Evaluation ---
+        # Evaluation
+        print(f"  Evaluating performance...")
+        dot_sum = 0.0
+        sinr_sum = 0.0
+        thrpt_sum = 0.0
+        lat_sum = 0.0
+        eval_steps = 0
+        for _ in range(EVAL_BATCHES):
+            h_eval = generate_synthetic_batch(tasks[task_idx], batch_size, NUM_ANTENNAS, NUM_USERS, NUM_SLOTS, FREQ)
+            t0 = time.time()
+            w_pred = model(h_eval, task_idx=task_idx, training=False)
+            t1 = time.time()
+            sinr_db, dot_val, thrpt_val = calculate_metrics(h_eval, w_pred, task_idx)  # اضافه کردن task_idx
+            latency_ms = (t1 - t0) * 1000 / batch_size
+            if not np.isnan(dot_val): dot_sum += dot_val
+            if not np.isnan(sinr_db): sinr_sum += sinr_db
+            if not np.isnan(thrpt_val): thrpt_sum += thrpt_val
+            if not np.isnan(latency_ms): lat_sum += latency_ms
+            eval_steps += 1
+
+        final_task_performance_dot[task_idx] = dot_sum / eval_steps
+        final_task_performance_sinr[task_idx] = sinr_sum / eval_steps
+        final_task_performance_thrpt[task_idx] = thrpt_sum / eval_steps
+        final_task_comp_latency[task_idx] = lat_sum / eval_steps
+        print(f"  Perf Task {task_idx}: |dot|={final_task_performance_dot[task_idx]:.4f}, "
+              f"SINR={final_task_performance_sinr[task_idx]:.2f} dB, "
+              f"Thrpt={final_task_performance_thrpt[task_idx]:.4f}, "
+              f"Latency={final_task_comp_latency[task_idx]:.4f} ms")
+
+        # Evaluate previous tasks for performance history
+        if task_idx > 0:
+            print("  Evaluating on previous tasks...")
+            performance_history_dot[task_idx] = {}
+            performance_history_sinr[task_idx] = {}
+            performance_history_thrpt[task_idx] = {}
+            for prev_task_idx in range(task_idx):
+                prev_task_name = tasks[prev_task_idx]['name']
+                prev_dot_sum = 0.0
+                prev_sinr_sum = 0.0
+                prev_thrpt_sum = 0.0
+                num_prev_eval_steps = 0
+                for _ in range(EVAL_BATCHES):
+                    h_eval_prev = generate_synthetic_batch(tasks[prev_task_idx], batch_size, NUM_ANTENNAS, NUM_USERS, NUM_SLOTS, FREQ)
+                    w_pred_prev = model(h_eval_prev, task_idx=prev_task_idx, training=False)
+                    sinr_db, mean_dot, avg_thrpt = calculate_metrics(h_eval_prev, w_pred_prev)
+                    if not np.isnan(mean_dot): prev_dot_sum += mean_dot
+                    if not np.isnan(sinr_db): prev_sinr_sum += sinr_db
+                    if not np.isnan(avg_thrpt): prev_thrpt_sum += avg_thrpt
+                    num_prev_eval_steps += 1
+                avg_prev_dot = prev_dot_sum / num_prev_eval_steps if num_prev_eval_steps > 0 else np.nan
+                avg_prev_sinr = prev_sinr_sum / num_prev_eval_steps if num_prev_eval_steps > 0 else np.nan
+                avg_prev_thrpt = prev_thrpt_sum / num_prev_eval_steps if num_prev_eval_steps > 0 else np.nan
+                performance_history_dot[task_idx][prev_task_idx] = avg_prev_dot
+                performance_history_sinr[task_idx][prev_task_idx] = avg_prev_sinr
+                performance_history_thrpt[task_idx][prev_task_idx] = avg_prev_thrpt
+                print(f"    Perf on Task {prev_task_idx} ({prev_task_name}): |dot|={avg_prev_dot:.4f}, SINR={avg_prev_sinr:.2f} dB, Thrpt={avg_prev_thrpt:.4f} bps/Hz")
+
+        tf.keras.backend.clear_session()
+        gc.collect()
+
+    # Wrap Up
+    overall_end_time = time.time()
+    total_training_time = overall_end_time - overall_start_time
+    total_energy_joules = GPU_POWER_DRAW * total_training_time
+
+    # Final Metric Summary
+    avg_dot = np.nanmean(list(final_task_performance_dot.values()))
+    avg_sinr = np.nanmean(list(final_task_performance_sinr.values()))
+    avg_thrpt = np.nanmean(list(final_task_performance_thrpt.values()))
+    avg_lat = np.nanmean(list(final_task_comp_latency.values()))
+
+    std_dev_dot = np.nanstd(list(final_task_performance_dot.values()))
+    std_dev_sinr = np.nanstd(list(final_task_performance_sinr.values()))
+    std_dev_thrpt = np.nanstd(list(final_task_performance_thrpt.values()))
+
+    # Backward Transfer (BWT)
+    bwt_dot = np.nan
+    bwt_sinr = np.nan
+    bwt_thrpt = np.nan
+    if len(tasks) > 1:
+        bwt_terms_dot = []
+        bwt_terms_sinr = []
+        bwt_terms_thrpt = []
+        last_task_idx = len(tasks) - 1
+        for i in range(last_task_idx):
+            perf_i_i_dot = final_task_performance_dot.get(i, np.nan)
+            perf_i_N_dot = performance_history_dot.get(last_task_idx, {}).get(i, np.nan)
+            if not np.isnan(perf_i_i_dot) and not np.isnan(perf_i_N_dot):
+                bwt_terms_dot.append(perf_i_N_dot - perf_i_i_dot)
+
+            perf_i_i_sinr = final_task_performance_sinr.get(i, np.nan)
+            perf_i_N_sinr = performance_history_sinr.get(last_task_idx, {}).get(i, np.nan)
+            if not np.isnan(perf_i_i_sinr) and not np.isnan(perf_i_N_sinr):
+                bwt_terms_sinr.append(perf_i_N_sinr - perf_i_i_sinr)
+
+            perf_i_i_thrpt = final_task_performance_thrpt.get(i, np.nan)
+            perf_i_N_thrpt = performance_history_thrpt.get(last_task_idx, {}).get(i, np.nan)
+            if not np.isnan(perf_i_i_thrpt) and not np.isnan(perf_i_N_thrpt):
+                bwt_terms_thrpt.append(perf_i_N_thrpt - perf_i_i_thrpt)
+
+        if bwt_terms_dot: bwt_dot = np.nanmean(bwt_terms_dot)
+        if bwt_terms_sinr: bwt_sinr = np.nanmean(bwt_terms_sinr)
+        if bwt_terms_thrpt: bwt_thrpt = np.nanmean(bwt_terms_thrpt)
+
+    # Performance matrices
+    perf_matrix_dot = {i: {i: final_task_performance_dot[i]} for i in range(len(tasks))}
+    perf_matrix_sinr = {i: {i: final_task_performance_sinr[i]} for i in range(len(tasks))}
+    perf_matrix_thrpt = {i: {i: final_task_performance_thrpt[i]} for i in range(len(tasks))}
+    for i in range(len(tasks)):
+        for j in range(i):
+            perf_matrix_dot[i][j] = performance_history_dot.get(i, {}).get(j, np.nan)
+            perf_matrix_sinr[i][j] = performance_history_sinr.get(i, {}).get(j, np.nan)
+            perf_matrix_thrpt[i][j] = performance_history_thrpt.get(i, {}).get(j, np.nan)
+
+    results = {
+        "name": "EWC",
+        "avg_dot": avg_dot,
+        "std_dot": std_dev_dot,
+        "bwt_dot": bwt_dot,
+        "avg_sinr": avg_sinr,
+        "std_sinr": std_dev_sinr,
+        "bwt_sinr": bwt_sinr,
+        "avg_thrpt": avg_thrpt,
+        "std_thrpt": std_dev_thrpt,
+        "bwt_thrpt": bwt_thrpt,
+        "avg_lat": avg_lat,
+        "energy_j": total_energy_joules,
+        "time": total_training_time,
+        "final_perf_dot": final_task_performance_dot,
+        "final_perf_sinr": final_task_performance_sinr,
+        "final_perf_thrpt": final_task_performance_thrpt,
+        "final_perf_lat": final_task_comp_latency,
+        "perf_matrix_dot": perf_matrix_dot,
+        "perf_matrix_sinr": perf_matrix_sinr,
+        "perf_matrix_thrpt": perf_matrix_thrpt,
+    }
+
+    return results
+
+# --- EWC + Replay Training Loop (Single GPU - EMA Fisher) ---
+def training_loop_cl_ewc_replay(create_model_func, tasks, num_epochs_per_task, batch_size, learning_rate, ewc_lambda, replay_lambda=0.5):
+    print(f"\n🧠 Starting Continual Learning Training Loop with EWC + Replay (EMA Fisher, Single GPU)...")
+    log_file = "cl_beamforming_results_ewc_replay.log"
+    log_file_diag = "per_user_diag_cl_ewc_replay_singleGPU.log"
+    open(log_file, "w").close()
+    open(log_file_diag, "w").close()
+
+    # Performance Tracking
+    final_task_performance_dot = {}
+    final_task_performance_sinr = {}
+    final_task_performance_thrpt = {}
+    final_task_comp_latency = {}
+    performance_history_dot = {}
+    performance_history_sinr = {}
+    performance_history_thrpt = {}
+
+    # CL State Storage
+    optimal_params = {}
+    fisher_information = {}
+    replay_buffer = ReplayBuffer(capacity_per_task=200)
+
+    model = create_model_func()
+    optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
+
+    print("  Initializing EWC+Replay model and optimizer...")
+    dummy_h = tf.zeros((1, NUM_USERS, NUM_ANTENNAS), dtype=tf.complex64)
+    try:
+        for i in range(NUM_TASKS):
+            _ = model(dummy_h, task_idx=i, training=False)
+        optimizer.build(model.trainable_variables)
+        print("  EWC+Replay Model and Optimizer built successfully.")
+        model.summary()
+    except Exception as e:
+        print(f"❌ Error building EWC+Replay model/opt: {e}")
+        sys.exit(1)
+
+    overall_start_time = time.time()
+
+    for task_idx, task in enumerate(tasks):
+        task_name = task['name']
+        print(f"\n--- EWC+Replay | Task {task_idx + 1}/{len(tasks)}: {task_name} ---")
+        optimizer.learning_rate.assign(learning_rate)
+
+        task_start_time = time.time()
+
+        # Initialize Fisher EMA for current task
+        current_task_fisher_ema = {
+            v.name: tf.Variable(tf.zeros_like(v, dtype=tf.float32), trainable=False)
+            for v in model.trainable_variables
+        }
+
+        # Aggregate Fisher/Params from previous tasks
+        optimal_params_prev_agg = {}
+        fisher_info_prev_agg = {}
+        if task_idx > 0:
+            for prev_idx in range(task_idx):
+                if prev_idx in optimal_params and prev_idx in fisher_information:
+                    for var_name, param_val in optimal_params[prev_idx].items():
+                        if var_name not in optimal_params_prev_agg:
+                            optimal_params_prev_agg[var_name] = param_val
+                        fisher_info_prev_agg[var_name] = (
+                            fisher_info_prev_agg.get(var_name, 0.0) +
+                            fisher_information[prev_idx].get(var_name, 0.0)
+                        )
+
+        for epoch in tqdm(range(num_epochs_per_task), desc=f"EWC+Replay {task_name}", leave=False):
+            epoch_total_loss = 0.0
+            epoch_task_loss = 0.0
+            epoch_ewc_loss = 0.0
+            epoch_replay_loss = 0.0
+            epoch_sinr = np.nan
+            epoch_dot = np.nan
+            epoch_thrpt = np.nan
+            epoch_log_lines = []
+
+            for i_batch in range(NUM_BATCHES_PER_EPOCH):
+                h_batch = generate_synthetic_batch(task, batch_size, NUM_ANTENNAS, NUM_USERS, NUM_SLOTS, FREQ)
+                if tf.reduce_any(tf.math.is_nan(h_batch)) or tf.reduce_any(tf.math.is_inf(h_batch)):
+                    print(f"NaN or Inf in h_batch for Task {task_idx}, Epoch {epoch+1}")
+                w_zf_target = compute_zf_weights(h_batch, ZF_REG)
+
+                # Add samples to replay buffer
+                replay_buffer.add_samples(task_idx, h_batch, w_zf_target)
+
+                # Training step
+                total_loss, task_loss, ewc_loss_term, replay_loss, w_pred_raw, grads_and_vars = train_step_cl_ewc_replay(
+                    model, optimizer, h_batch, task_idx, replay_buffer,
+                    optimal_params_prev_agg, fisher_info_prev_agg, ewc_lambda, replay_lambda  # اصلاح اینجا
+                )
+
+                # Update Fisher EMA
+                var_to_grad = {v.ref(): g for g, v in grads_and_vars}
+                for var_name, fisher_variable in current_task_fisher_ema.items():
+                    target_var = next((v_model for v_model in model.trainable_variables if v_model.name == var_name), None)
+                    if target_var is not None:
+                        g = var_to_grad.get(target_var.ref())
+                        if g is not None:
+                            grad_sq_mag = tf.cast(tf.math.real(g * tf.math.conj(g)), dtype=tf.float32)
+                            avg_sq_grad_mag_this_step = tf.reduce_mean(grad_sq_mag)
+                            new_fisher_val = (FISHER_EMA_DECAY * fisher_variable) + \
+                                             ((1.0 - FISHER_EMA_DECAY) * avg_sq_grad_mag_this_step)
+                            fisher_variable.assign(new_fisher_val)
+
+                epoch_total_loss += total_loss.numpy()
+                epoch_task_loss += task_loss.numpy()
+                epoch_ewc_loss += ewc_loss_term.numpy()
+                epoch_replay_loss += replay_loss.numpy()
+
+                if i_batch == NUM_BATCHES_PER_EPOCH - 1:
+                    sinr_db, mean_dot, avg_thrpt, log_lines = calculate_metrics_for_logging(h_batch, w_pred_raw)
+                    epoch_sinr = sinr_db.numpy()
+                    epoch_dot = mean_dot.numpy()
+                    epoch_thrpt = avg_thrpt.numpy()
+                    epoch_log_lines = log_lines
+                if np.isnan(epoch_sinr) or np.isnan(epoch_dot) or np.isnan(epoch_thrpt):
+                    print(f"Warning: NaN detected in metrics for Task {task_idx}, Epoch {epoch+1}")
+
+            avg_epoch_loss = epoch_total_loss / NUM_BATCHES_PER_EPOCH
+
+            if (epoch + 1) % 10 == 0:
+                log_str = (
+                    f"[EWC+Replay][Task {task_idx} - {task_name}][Epoch {epoch+1}] "
+                    f"Avg Loss={avg_epoch_loss:.6f} | Task Loss={epoch_task_loss/NUM_BATCHES_PER_EPOCH:.6f} | "
+                    f"EWC Loss={epoch_ewc_loss/NUM_BATCHES_PER_EPOCH:.6f} | Replay Loss={epoch_replay_loss/NUM_BATCHES_PER_EPOCH:.6f} | "
+                    f"Last SINR={epoch_sinr:.2f} dB | Last Thrpt={epoch_thrpt:.4f} | Last |dot|={epoch_dot:.4f}\n"
+                )
+                print(log_str, end='')
+                with open(log_file, "a") as f:
+                    f.write(log_str)
+
+            if (epoch + 1) % 20 == 0 and epoch_log_lines:
+                with open(log_file_diag, "a") as f:
+                    f.write(f"[Task {task_idx} - {task_name}][Epoch {epoch+1}] ----\n")
+                    for line in epoch_log_lines:
+                        f.write(line + "\n")
+
+        task_end_time = time.time()
+        print(f"  Finished training Task {task_idx + 1} (EWC+Replay) in {task_end_time - task_start_time:.2f}s")
+
+        # Store optimal parameters and Fisher info
+        optimal_params[task_idx] = {v.name: v.numpy() for v in model.trainable_variables}
+        fisher_information[task_idx] = {
+            name: ema_var.numpy() for name, ema_var in current_task_fisher_ema.items()
+            if name in optimal_params[task_idx]
+        }
+        print(f"  Stored optimal parameters and Fisher info (EMA) for Task {task_idx}.")
+
+        # Evaluation (بقیه بدون تغییر باقی می‌مونه)
         print(f"  Evaluating performance...")
         dot_sum = 0.0
         sinr_sum = 0.0
@@ -715,15 +1058,42 @@ def training_loop_cl_ewc_single_gpu(create_model_func, tasks, num_epochs_per_tas
               f"Thrpt={final_task_performance_thrpt[task_idx]:.4f}, "
               f"Latency={final_task_comp_latency[task_idx]:.4f} ms")
 
-        tf.keras.backend.clear_session()
-        gc.collect()
+        # Evaluate previous tasks for performance history
+        if task_idx > 0:
+            print("  Evaluating on previous tasks...")
+            performance_history_dot[task_idx] = {}
+            performance_history_sinr[task_idx] = {}
+            performance_history_thrpt[task_idx] = {}
+            for prev_task_idx in range(task_idx):
+                prev_task_name = tasks[prev_task_idx]['name']
+                prev_dot_sum = 0.0
+                prev_sinr_sum = 0.0
+                prev_thrpt_sum = 0.0
+                num_prev_eval_steps = 0
+                for _ in range(EVAL_BATCHES):
+                    h_eval_prev = generate_synthetic_batch(tasks[prev_task_idx], batch_size, NUM_ANTENNAS, NUM_USERS, NUM_SLOTS, FREQ)
+                    w_pred_prev = model(h_eval_prev, task_idx=prev_task_idx, training=False)
+                    sinr_db, mean_dot, avg_thrpt = calculate_metrics(h_eval_prev, w_pred_prev)
+                    if not np.isnan(mean_dot): prev_dot_sum += mean_dot
+                    if not np.isnan(sinr_db): prev_sinr_sum += sinr_db
+                    if not np.isnan(avg_thrpt): prev_thrpt_sum += avg_thrpt
+                    num_prev_eval_steps += 1
+                avg_prev_dot = prev_dot_sum / num_prev_eval_steps if num_prev_eval_steps > 0 else np.nan
+                avg_prev_sinr = prev_sinr_sum / num_prev_eval_steps if num_prev_eval_steps > 0 else np.nan  # اصلاح np.nano به np.nan
+                avg_prev_thrpt = prev_thrpt_sum / num_prev_eval_steps if num_prev_eval_steps > 0 else np.nan
+                performance_history_dot[task_idx][prev_task_idx] = avg_prev_dot
+                performance_history_sinr[task_idx][prev_task_idx] = avg_prev_sinr
+                performance_history_thrpt[task_idx][prev_task_idx] = avg_prev_thrpt
+                print(f"    Perf on Task {prev_task_idx} ({prev_task_name}): |dot|={avg_prev_dot:.4f}, SINR={avg_prev_sinr:.2f} dB, Thrpt={avg_prev_thrpt:.4f} bps/Hz")
+                tf.keras.backend.clear_session()
+                gc.collect()
 
-    # --- Wrap Up ---
+    # Wrap Up (بقیه بدون تغییر باقی می‌مونه)
     overall_end_time = time.time()
     total_training_time = overall_end_time - overall_start_time
     total_energy_joules = GPU_POWER_DRAW * total_training_time
 
-        # --- Final Metric Summary ---
+    # Final Metric Summary
     avg_dot = np.nanmean(list(final_task_performance_dot.values()))
     avg_sinr = np.nanmean(list(final_task_performance_sinr.values()))
     avg_thrpt = np.nanmean(list(final_task_performance_thrpt.values()))
@@ -733,58 +1103,56 @@ def training_loop_cl_ewc_single_gpu(create_model_func, tasks, num_epochs_per_tas
     std_dev_sinr = np.nanstd(list(final_task_performance_sinr.values()))
     std_dev_thrpt = np.nanstd(list(final_task_performance_thrpt.values()))
 
-    # Backward Transfer (BWT), Forward Transfer (FWT), Forgetting
-    bwt_dot = np.nanmean([
-        final_task_performance_dot[i] - final_task_performance_dot.get(i - 1, 0.0)
-        for i in range(1, len(tasks))
-    ])
-    fwt_dot = np.nanmean([
-        final_task_performance_dot.get(i, 0.0) - final_task_performance_dot.get(0, 0.0)
-        for i in range(1, len(tasks))
-    ])
-    forgetting_dot = np.nanmean([
-        max(final_task_performance_dot[j] for j in range(i + 1)) - final_task_performance_dot[i]
-        for i in range(len(tasks) - 1)
-    ])
+    # Backward Transfer (BWT)
+    bwt_dot = np.nan
+    bwt_sinr = np.nan
+    bwt_thrpt = np.nan
+    if len(tasks) > 1:
+        bwt_terms_dot = []
+        bwt_terms_sinr = []
+        bwt_terms_thrpt = []
+        last_task_idx = len(tasks) - 1
+        for i in range(last_task_idx):
+            perf_i_i_dot = final_task_performance_dot.get(i, np.nan)
+            perf_i_N_dot = performance_history_dot.get(last_task_idx, {}).get(i, np.nan)
+            if not np.isnan(perf_i_i_dot) and not np.isnan(perf_i_N_dot):
+                bwt_terms_dot.append(perf_i_N_dot - perf_i_i_dot)
 
-    bwt_sinr = np.nanmean([
-        final_task_performance_sinr[i] - final_task_performance_sinr.get(i - 1, 0.0)
-        for i in range(1, len(tasks))
-    ])
-    fwt_sinr = np.nanmean([
-        final_task_performance_sinr.get(i, 0.0) - final_task_performance_sinr.get(0, 0.0)
-        for i in range(1, len(tasks))
-    ])
-    forgetting_sinr = np.nanmean([
-        max(final_task_performance_sinr[j] for j in range(i + 1)) - final_task_performance_sinr[i]
-        for i in range(len(tasks) - 1)
-    ])
+            perf_i_i_sinr = final_task_performance_sinr.get(i, np.nan)
+            perf_i_N_sinr = performance_history_sinr.get(last_task_idx, {}).get(i, np.nan)
+            if not np.isnan(perf_i_i_sinr) and not np.isnan(perf_i_N_sinr):
+                bwt_terms_sinr.append(perf_i_N_sinr - perf_i_i_sinr)
 
-    bwt_thrpt = np.nanmean([
-        final_task_performance_thrpt[i] - final_task_performance_thrpt.get(i - 1, 0.0)
-        for i in range(1, len(tasks))
-    ])
-    fwt_thrpt = np.nanmean([
-        final_task_performance_thrpt.get(i, 0.0) - final_task_performance_thrpt.get(0, 0.0)
-        for i in range(1, len(tasks))
-    ])
-    forgetting_thrpt = np.nanmean([
-        max(final_task_performance_thrpt[j] for j in range(i + 1)) - final_task_performance_thrpt[i]
-        for i in range(len(tasks) - 1)
-    ])
+            perf_i_i_thrpt = final_task_performance_thrpt.get(i, np.nan)
+            perf_i_N_thrpt = performance_history_thrpt.get(last_task_idx, {}).get(i, np.nan)
+            if not np.isnan(perf_i_i_thrpt) and not np.isnan(perf_i_N_thrpt):
+                bwt_terms_thrpt.append(perf_i_N_thrpt - perf_i_i_thrpt)
 
-    # Add perf_matrix for plotting (diagonal-only since full eval isn't done)
+        if bwt_terms_dot: bwt_dot = np.nanmean(bwt_terms_dot)
+        if bwt_terms_sinr: bwt_sinr = np.nanmean(bwt_terms_sinr)
+        if bwt_terms_thrpt: bwt_thrpt = np.nanmean(bwt_terms_thrpt)
+
+    # Performance matrices
     perf_matrix_dot = {i: {i: final_task_performance_dot[i]} for i in range(len(tasks))}
     perf_matrix_sinr = {i: {i: final_task_performance_sinr[i]} for i in range(len(tasks))}
+    perf_matrix_thrpt = {i: {i: final_task_performance_thrpt[i]} for i in range(len(tasks))}
+    for i in range(len(tasks)):
+        for j in range(i):
+            perf_matrix_dot[i][j] = performance_history_dot.get(i, {}).get(j, np.nan)
+            perf_matrix_sinr[i][j] = performance_history_sinr.get(i, {}).get(j, np.nan)
+            perf_matrix_thrpt[i][j] = performance_history_thrpt.get(i, {}).get(j, np.nan)
 
     results = {
-        "name": "EWC",
+        "name": "EWC+Replay",
         "avg_dot": avg_dot,
         "std_dot": std_dev_dot,
+        "bwt_dot": bwt_dot,
         "avg_sinr": avg_sinr,
         "std_sinr": std_dev_sinr,
+        "bwt_sinr": bwt_sinr,
         "avg_thrpt": avg_thrpt,
         "std_thrpt": std_dev_thrpt,
+        "bwt_thrpt": bwt_thrpt,
         "avg_lat": avg_lat,
         "energy_j": total_energy_joules,
         "time": total_training_time,
@@ -792,43 +1160,34 @@ def training_loop_cl_ewc_single_gpu(create_model_func, tasks, num_epochs_per_tas
         "final_perf_sinr": final_task_performance_sinr,
         "final_perf_thrpt": final_task_performance_thrpt,
         "final_perf_lat": final_task_comp_latency,
-        "bwt_dot": bwt_dot,
-        "fwt_dot": fwt_dot,
-        "forgetting_dot": forgetting_dot,
-        "bwt_sinr": bwt_sinr,
-        "fwt_sinr": fwt_sinr,
-        "forgetting_sinr": forgetting_sinr,
-        "bwt_thrpt": bwt_thrpt,
-        "fwt_thrpt": fwt_thrpt,
-        "forgetting_thrpt": forgetting_thrpt,
         "perf_matrix_dot": perf_matrix_dot,
         "perf_matrix_sinr": perf_matrix_sinr,
+        "perf_matrix_thrpt": perf_matrix_thrpt,
     }
 
     return results
-
 #------------------------------------------------------
 # Plotting Function
 #------------------------------------------------------
 def plot_performance_matrix(results_dict, metric='dot', title_suffix="", filename="perf_matrix.png"):
     """ Plots the performance matrix using seaborn heatmap. """
     if plt is None or sns is None: return # Skip if libs not installed
-    if metric not in ['dot', 'sinr']: return # Only plot these for now
+    if metric not in ['dot', 'sinr', 'thrpt']: return # Support thrpt
 
     num_tasks = len(TASKS)
     perf_matrix = np.full((num_tasks, num_tasks), np.nan)
     perf_data_key = f"perf_matrix_{metric}"
-    fmt = ".3f" if metric == 'dot' else ".1f" # Format based on metric
-    cmap = "viridis" if metric == 'dot' else "magma"
-    cbar_label = f'Avg |dot|' if metric == 'dot' else 'Avg SINR (dB)'
+    fmt = ".3f" if metric in ['dot', 'thrpt'] else ".1f"
+    cmap = "viridis" if metric == 'dot' else "magma" if metric == 'sinr' else "plasma"
+    cbar_label = f'Avg |dot|' if metric == 'dot' else 'Avg SINR (dB)' if metric == 'sinr' else 'Avg Throughput (bps/Hz)'
 
     if perf_data_key not in results_dict:
         print(f"Error plotting: Key '{perf_data_key}' not found in results dictionary.")
         return
 
     perf_map = results_dict[perf_data_key]
-    for i in range(num_tasks): # Task Learned Up To (Row)
-        for j in range(num_tasks): # Task Evaluated On (Column)
+    for i in range(num_tasks):
+        for j in range(num_tasks):
              perf_matrix[i, j] = perf_map.get(i, {}).get(j, np.nan)
 
     plt.figure(figsize=(8, 6))
@@ -836,7 +1195,7 @@ def plot_performance_matrix(results_dict, metric='dot', title_suffix="", filenam
                 xticklabels=[t["name"] for t in TASKS],
                 yticklabels=[t["name"] for t in TASKS],
                 linewidths=.5, cbar_kws={'label': cbar_label},
-                annot_kws={"size": 10}) # Adjust font size if needed
+                annot_kws={"size": 10})
     plt.xlabel("Evaluation Task")
     plt.ylabel("Task Learned Up To")
     plt.title(f"Performance Matrix ({metric.upper()}) - {results_dict['name']}{title_suffix}")
@@ -892,8 +1251,6 @@ def plot_time_vs_efficiency(results_list, labels, filename='time_vs_efficiency.p
     plt.tight_layout()
     plt.savefig(filename)
     plt.close()
-
-
 #------------------------------------------------------
 # Main Execution Block
 #------------------------------------------------------
@@ -904,7 +1261,7 @@ if __name__ == "__main__":
          print("  Creating new MultiHeadCVNNModel instance...")
          return MultiHeadCVNNModel(num_antennas=NUM_ANTENNAS, num_users=NUM_USERS, num_tasks=NUM_TASKS)
 
-    all_results_list = [] # Store results from all runs
+    all_results_list = []  # Store results from all runs
 
     # --- Run Baseline: Full Retraining ---
     print("\n" + "="*50); print("  RUNNING BASELINE: Full Retraining"); print("="*50)
@@ -922,37 +1279,79 @@ if __name__ == "__main__":
         learning_rate=LEARNING_RATE, reset_model_per_task=False )
     all_results_list.append(results_finetuning)
 
-    # --- Run CL Method: EWC (EMA Fisher) ---
-    print("\n" + "="*50); print("  RUNNING CL METHOD: EWC (EMA Fisher)"); print("="*50)
-    results_ewc = training_loop_cl_ewc_single_gpu(
-        create_model_func=create_fresh_model, tasks=TASKS,
-        num_epochs_per_task=NUM_EPOCHS_PER_TASK, batch_size=GLOBAL_BATCH_SIZE,
-        learning_rate=LEARNING_RATE, ewc_lambda=EWC_LAMBDA )
-    all_results_list.append(results_ewc)
+    # --- Run CL Methods with all lambda values ---
+    lambda_values = [50]#[1, 25, 50, 75, 250, 750, 2500, 10000]
+    for lam in lambda_values:
+        # EWC
+        print(f"\n" + "="*50); print(f"  RUNNING CL METHOD: EWC (EMA Fisher) with λ = {lam}"); print("="*50)
+        res_ewc = training_loop_cl_ewc_single_gpu(
+            create_model_func=create_fresh_model,
+            tasks=TASKS,
+            num_epochs_per_task=NUM_EPOCHS_PER_TASK,
+            batch_size=GLOBAL_BATCH_SIZE,
+            learning_rate=LEARNING_RATE,
+            ewc_lambda=lam
+        )
+        all_results_list.append(res_ewc)
+        with open(f'ewc_lambda_{lam}_results.txt', 'w') as f:
+            f.write(f"EWC Results for λ = {lam}\n")
+            f.write(str(res_ewc) + "\n")
+
+        # EWC + Replay
+        print(f"\n" + "="*50); print(f"  RUNNING CL METHOD: EWC + Replay with λ = {lam}"); print("="*50)
+        res_ewc_replay = training_loop_cl_ewc_replay(
+            create_model_func=create_fresh_model,
+            tasks=TASKS,
+            num_epochs_per_task=NUM_EPOCHS_PER_TASK,
+            batch_size=GLOBAL_BATCH_SIZE,
+            learning_rate=LEARNING_RATE,
+            ewc_lambda=lam,
+            replay_lambda=0.5
+        )
+        all_results_list.append(res_ewc_replay)
+        with open(f'ewc_replay_lambda_{lam}_results.txt', 'w') as f:
+            f.write(f"EWC+Replay Results for λ = {lam}\n")
+            f.write(str(res_ewc_replay) + "\n")
 
     # --- Final Comparative Summary ---
     print("\n" + "="*70); print("--- FINAL COMPARATIVE SUMMARY ---"); print("="*70)
 
-    headers = ["Metric", "Retraining", "Finetuning", "EWC"]
+    # Update headers to include all lambda runs
+    headers = ["Metric", "Retraining", "Finetuning"] + \
+              [f"EWC λ={lam}" for lam in lambda_values] + \
+              [f"EWC+Replay λ={lam}" for lam in lambda_values]
     data = []
     def format_metric(val, precision=4):
         return f"{val:.{precision}f}" if not np.isnan(val) else "N/A"
 
-    data.append(["Avg Final |dot|", format_metric(results_retraining['avg_dot']), format_metric(results_finetuning['avg_dot']), format_metric(results_ewc['avg_dot'])])
-    data.append(["Std Dev |dot|", format_metric(results_retraining['std_dot']), format_metric(results_finetuning['std_dot']), format_metric(results_ewc['std_dot'])])
-    data.append(["BWT |dot|", format_metric(results_retraining['bwt_dot']), format_metric(results_finetuning['bwt_dot']), format_metric(results_ewc['bwt_dot'])])
-    data.append(["-"]*4)
-    data.append(["Avg Final SINR (dB)", format_metric(results_retraining['avg_sinr'], 2), format_metric(results_finetuning['avg_sinr'], 2), format_metric(results_ewc['avg_sinr'], 2)])
-    data.append(["Std Dev SINR (dB)", format_metric(results_retraining['std_sinr'], 2), format_metric(results_finetuning['std_sinr'], 2), format_metric(results_ewc['std_sinr'], 2)])
-    data.append(["BWT SINR (dB)", format_metric(results_retraining['bwt_sinr'], 2), format_metric(results_finetuning['bwt_sinr'], 2), format_metric(results_ewc['bwt_sinr'], 2)])
-    data.append(["-"]*4)
-    data.append(["Avg Final Thrpt (bps/Hz)", format_metric(results_retraining['avg_thrpt'], 3), format_metric(results_finetuning['avg_thrpt'], 3), format_metric(results_ewc['avg_thrpt'], 3)])
-    data.append(["Std Dev Thrpt", format_metric(results_retraining['std_thrpt'], 3), format_metric(results_finetuning['std_thrpt'], 3), format_metric(results_ewc['std_thrpt'], 3)])
-    data.append(["BWT Thrpt", format_metric(results_retraining['bwt_thrpt'], 3), format_metric(results_finetuning['bwt_thrpt'], 3), format_metric(results_ewc['bwt_thrpt'], 3)])
-    data.append(["-"]*4)
-    data.append(["Avg Comp Latency (ms/sample)", format_metric(results_retraining['avg_lat'], 4), format_metric(results_finetuning['avg_lat'], 4), format_metric(results_ewc['avg_lat'], 4)])
-    data.append(["Total Train Time (s)", f"{results_retraining['time']:.1f}", f"{results_finetuning['time']:.1f}", f"{results_ewc['time']:.1f}"])
-    data.append(["Est. Train Energy (J)", f"{results_retraining['energy_j']:.0f}", f"{results_finetuning['energy_j']:.0f}", f"{results_ewc['energy_j']:.0f}"])
+    # Populate data for all metrics
+    data.append(["Avg Final |dot|"] + 
+                [format_metric(r['avg_dot']) for r in all_results_list])
+    data.append(["Std Dev |dot|"] + 
+                [format_metric(r['std_dot']) for r in all_results_list])
+    data.append(["BWT |dot|"] + 
+                [format_metric(r['bwt_dot']) for r in all_results_list])
+    data.append(["-"] * len(headers))
+    data.append(["Avg Final SINR (dB)"] + 
+                [format_metric(r['avg_sinr'], 2) for r in all_results_list])
+    data.append(["Std Dev SINR (dB)"] + 
+                [format_metric(r['std_sinr'], 2) for r in all_results_list])
+    data.append(["BWT SINR (dB)"] + 
+                [format_metric(r['bwt_sinr'], 2) for r in all_results_list])
+    data.append(["-"] * len(headers))
+    data.append(["Avg Final Thrpt (bps/Hz)"] + 
+                [format_metric(r['avg_thrpt'], 3) for r in all_results_list])
+    data.append(["Std Dev Thrpt"] + 
+                [format_metric(r['std_thrpt'], 3) for r in all_results_list])
+    data.append(["BWT Thrpt"] + 
+                [format_metric(r['bwt_thrpt'], 3) for r in all_results_list])
+    data.append(["-"] * len(headers))
+    data.append(["Avg Comp Latency (ms/sample)"] + 
+                [format_metric(r['avg_lat'], 4) for r in all_results_list])
+    data.append(["Total Train Time (s)"] + 
+                [f"{r['time']:.1f}" for r in all_results_list])
+    data.append(["Est. Train Energy (J)"] + 
+                [f"{r['energy_j']:.0f}" for r in all_results_list])
 
     # Print Summary Table
     col_widths = [max(len(str(item)) for item in col) for col in zip(*([headers] + data))]
@@ -965,7 +1364,7 @@ if __name__ == "__main__":
 
     # Save summary table to main log file
     try:
-        with open(SUMMARY_LOG_FILE, "w") as f: # Overwrite summary log with final table
+        with open(SUMMARY_LOG_FILE, "w") as f:
             f.write("="*70 + "\n"); f.write("--- FINAL COMPARATIVE SUMMARY ---\n"); f.write("="*70 + "\n")
             f.write(header_line + "\n"); f.write("-" * len(header_line) + "\n")
             for row in data:
@@ -975,49 +1374,49 @@ if __name__ == "__main__":
             f.write("\n\n--- Detailed Logs ---\n")
             f.write(f"Retraining: {RT_LOG_FILE}\n")
             f.write(f"Finetuning: {FT_LOG_FILE}\n")
-            f.write(f"EWC: {EWC_LOG_FILE}\n")
-            f.write(f"Performance Plots: {PLOT_DOT_FILE}, {PLOT_SINR_FILE}\n")
+            for lam in lambda_values:
+                f.write(f"EWC λ={lam}: ewc_lambda_{lam}_results.txt\n")
+                f.write(f"EWC+Replay λ={lam}: ewc_replay_lambda_{lam}_results.txt\n")
+            f.write(f"Performance Plots: {PLOT_DOT_FILE}, {PLOT_SINR_FILE}, {PLOT_THRPT_FILE}\n")
         print(f"Final comparative summary saved to {SUMMARY_LOG_FILE}")
     except Exception as e: print(f"Error writing final summary to file: {e}")
 
     # --- Plotting ---
     if plt and sns:
-        plot_performance_matrix(results_ewc, metric='dot', title_suffix=" (EWC)", filename=PLOT_DOT_FILE.replace(".png", "_ewc.png"))
-        plot_performance_matrix(results_ewc, metric='sinr', title_suffix=" (EWC)", filename=PLOT_SINR_FILE.replace(".png", "_ewc.png"))
+        # Plot performance matrices for selected runs
+        plot_performance_matrix(results_retraining, metric='dot', title_suffix=" (Retraining)", filename=PLOT_DOT_FILE.replace(".png", "_rt.png"))
+        plot_performance_matrix(results_retraining, metric='sinr', title_suffix=" (Retraining)", filename=PLOT_SINR_FILE.replace(".png", "_rt.png"))
         plot_performance_matrix(results_finetuning, metric='dot', title_suffix=" (Finetuning)", filename=PLOT_DOT_FILE.replace(".png", "_ft.png"))
         plot_performance_matrix(results_finetuning, metric='sinr', title_suffix=" (Finetuning)", filename=PLOT_SINR_FILE.replace(".png", "_ft.png"))
+        
+        # Plot for each lambda (example for one lambda, you can loop if needed)
+        ewc_runs = [r for r in all_results_list if r['name'] == 'EWC']
+        ewc_replay_runs = [r for r in all_results_list if r['name'] == 'EWC+Replay']
+        for i, lam in enumerate(lambda_values):
+            plot_performance_matrix(ewc_runs[i], metric='dot', title_suffix=f" (EWC λ={lam})", filename=f"perf_matrix_dot_ewc_lambda_{lam}.png")
+            plot_performance_matrix(ewc_runs[i], metric='sinr', title_suffix=f" (EWC λ={lam})", filename=f"perf_matrix_sinr_ewc_lambda_{lam}.png")
+            plot_performance_matrix(ewc_replay_runs[i], metric='dot', title_suffix=f" (EWC+Replay λ={lam})", filename=f"perf_matrix_dot_ewc_replay_lambda_{lam}.png")
+            plot_performance_matrix(ewc_replay_runs[i], metric='sinr', title_suffix=f" (EWC+Replay λ={lam})", filename=f"perf_matrix_sinr_ewc_replay_lambda_{lam}.png")
+            plot_performance_matrix(ewc_replay_runs[i], metric='thrpt', title_suffix=f" (EWC+Replay λ={lam})", filename=f"perf_matrix_thrpt_ewc_replay_lambda_{lam}.png")
 
-        # Additional plots
-        plot_final_task_bars(results_ewc, filename_prefix="final_ewc")
-        plot_final_task_bars(results_finetuning, filename_prefix="final_ft")
+        # Plot final task bars
         plot_final_task_bars(results_retraining, filename_prefix="final_rt")
+        plot_final_task_bars(results_finetuning, filename_prefix="final_ft")
+        for i, lam in enumerate(lambda_values):
+            plot_final_task_bars(ewc_runs[i], filename_prefix=f"final_ewc_lambda_{lam}")
+            plot_final_task_bars(ewc_replay_runs[i], filename_prefix=f"final_ewc_replay_lambda_{lam}")
 
+        # Plot BWT vs Lambda
+        plot_bwt_vs_lambda(lambda_values, ewc_runs, metric='dot', filename='bwt_vs_lambda_dot_ewc.png')
+        plot_bwt_vs_lambda(lambda_values, ewc_runs, metric='sinr', filename='bwt_vs_lambda_sinr_ewc.png')
+        plot_bwt_vs_lambda(lambda_values, ewc_replay_runs, metric='dot', filename='bwt_vs_lambda_dot_ewc_replay.png')
+        plot_bwt_vs_lambda(lambda_values, ewc_replay_runs, metric='sinr', filename='bwt_vs_lambda_sinr_ewc_replay.png')
+
+        # Plot time vs efficiency
         plot_time_vs_efficiency(
-            [results_retraining, results_finetuning, results_ewc],
-            labels=["Retraining", "Finetuning", "EWC"],
+            all_results_list,
+            labels=["Retraining", "Finetuning"] + [f"EWC λ={lam}" for lam in lambda_values] + [f"EWC+Replay λ={lam}" for lam in lambda_values],
             filename="time_vs_efficiency.png"
         )
 
-        # Optional: Multiple runs with different λ to plot BWT vs λ
-        lambda_values = [1, 25, 50, 75, 250, 750, 2500, 10000]
-        ewc_runs = []
-        for lam in lambda_values:
-            print(f"\nRunning EWC with λ = {lam} ...")
-            res = training_loop_cl_ewc_single_gpu(
-                create_model_func=create_fresh_model,
-                tasks=TASKS,
-                num_epochs_per_task=NUM_EPOCHS_PER_TASK,
-                batch_size=GLOBAL_BATCH_SIZE,
-                learning_rate=LEARNING_RATE,
-                ewc_lambda=lam
-            )
-            ewc_runs.append(res)
-            # ذخیره نتایج توی فایل
-            with open(f'ewc_lambda_{lam}_results.txt', 'w') as f:
-                f.write(f"Results for λ = {lam}\n")
-                f.write(str(res) + "\n")
-
-        plot_bwt_vs_lambda(lambda_values, ewc_runs, metric='dot', filename='bwt_vs_lambda_dot.png')
-        plot_bwt_vs_lambda(lambda_values, ewc_runs, metric='sinr', filename='bwt_vs_lambda_sinr.png')
-
-        print("\n--- All Training, Evaluation, and Plotting Finished ---")
+    print("\n--- All Training, Evaluation, and Plotting Finished ---")
