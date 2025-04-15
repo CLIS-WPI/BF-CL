@@ -1,0 +1,29 @@
+======================================================================
+--- FINAL COMPARATIVE SUMMARY ---
+======================================================================
+Metric                       | Retraining | Finetuning | EWC λ=50 | EWC+Replay λ=50
+-----------------------------------------------------------------------------------
+Avg Final |dot|              | 0.1889     | 0.3872     | 0.3869   | 0.4118         
+Std Dev |dot|                | 0.0019     | 0.1377     | 0.1369   | 0.1579         
+BWT |dot|                    | N/A        | 0.1964     | 0.2058   | 0.2720         
+-----------------------------------------------------------------------------------
+Avg Final SINR (dB)          | -1.91      | 3.19       | 3.21     | 3.66           
+Std Dev SINR (dB)            | 0.08       | 3.33       | 3.34     | 3.63           
+BWT SINR (dB)                | N/A        | 4.40       | 4.52     | 5.45           
+-----------------------------------------------------------------------------------
+Avg Final Thrpt (bps/Hz)     | 0.642      | 1.618      | 1.619    | 1.733          
+Std Dev Thrpt                | 0.009      | 0.672      | 0.674    | 0.760          
+BWT Thrpt                    | N/A        | 0.950      | 0.990    | 1.251          
+-----------------------------------------------------------------------------------
+Avg Comp Latency (ms/sample) | 0.0536     | 0.0573     | 0.0533   | 0.0533         
+Total Train Time (s)         | 20.8       | 23.0       | 26.0     | 30.1           
+Est. Train Energy (J)        | 8315       | 9200       | 10413    | 12059          
+======================================================================
+
+
+--- Detailed Logs ---
+Retraining: cl_beamforming_results_rt_details.log
+Finetuning: cl_beamforming_results_ft_details.log
+EWC λ=50: ewc_lambda_50_results.txt
+EWC+Replay λ=50: ewc_replay_lambda_50_results.txt
+Performance Plots: cl_beamforming_results_matrix_dot.png, cl_beamforming_results_matrix_sinr.png, cl_beamforming_results_matrix_thrpt.png

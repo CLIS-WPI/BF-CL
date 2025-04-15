@@ -109,12 +109,15 @@ class ReplayBuffer:
                     idx = random.randint(0, self.capacity_per_task - 1)
                     self.buffer[task_idx][idx] = sample
 
-    def get_samples(self, task_idx, batch_size):
-        if not self.buffer[task_idx]:  # چک کن بافر خالی نباشه
-            return None, None
-        num_samples = tf.minimum(batch_size, tf.shape(self.buffer[task_idx])[0])
-        samples = tf.random.shuffle(self.buffer[task_idx])[:num_samples]
-        return samples[:, 0], samples[:, 1]  # h_replay, w_replay
+    def get_samples(self, task_idx, num_samples):
+        if isinstance(num_samples, tf.Tensor):
+            num_samples = tf.get_static_value(num_samples)
+            if num_samples is None:
+                raise ValueError("Cannot get number of samples from symbolic tensor.")
+        samples = random.sample(self.buffer[task_idx], int(num_samples))
+        h_samples, w_samples = zip(*samples)
+        return np.array(h_samples), np.array(w_samples)
+
     
 # --- GPU Setup (SINGLE GPU) ---
 print("--- Setting up for Single GPU Training ---")
@@ -251,11 +254,17 @@ def calculate_metrics_for_logging(h, w_pred_norm, noise_power=1e-3):
 
 def calculate_metrics(h, w_pred_raw, task_idx, noise_power=1e-3):
     """ Calculates |dot|, SINR (dB), Avg Thrpt (bps/Hz) from raw prediction. Returns numpy values. """
+
     w_pred_norm = tf.nn.l2_normalize(w_pred_raw, axis=-1, epsilon=1e-8)
-    # چک کردن NaN برای قسمت واقعی و خیالی جداگانه
     w_pred_norm_real = tf.math.real(w_pred_norm)
     w_pred_norm_imag = tf.math.imag(w_pred_norm)
     if tf.reduce_any(tf.math.is_nan(w_pred_norm_real)) or tf.reduce_any(tf.math.is_nan(w_pred_norm_imag)):
+        print(f"NaN in w_pred_norm for Task {task_idx}")
+        print(f"Debug - w_pred_raw sample: {w_pred_raw[0, 0, :5]}")  # نمونه از خروجی مدل
+    if tf.reduce_any(tf.math.is_nan(tf.math.real(h))) or tf.reduce_any(tf.math.is_nan(tf.math.imag(h))):
+        print(f"NaN in h for Task {task_idx}")
+        print(f"Debug - h sample: {h[0, 0, :5]}")  # ن
+
         print(f"NaN in w_pred_norm for Task {task_idx}")
     sinr_dB = np.nan; mean_dot = np.nan; avg_thrpt = np.nan
     try:
@@ -285,26 +294,43 @@ def calculate_metrics(h, w_pred_raw, task_idx, noise_power=1e-3):
 #------------------------------------------------------
 # MULTI-HEAD COMPLEX-VALUED MODEL (CVNN)
 #------------------------------------------------------
+from cvnn.initializers import ComplexGlorotUniform
 class MultiHeadCVNNModel(tf.keras.Model):
     def __init__(self, num_antennas, num_users, num_tasks):
         super().__init__()
-        self.num_antennas = num_antennas; self.num_users = num_users; self.num_tasks = num_tasks
-        hidden_dim1 = 128; hidden_dim2 = 256
-        initializer = 'glorot_uniform'; activation = complex_activations.cart_relu
+        self.num_antennas = num_antennas
+        self.num_users = num_users
+        self.num_tasks = num_tasks
+
+        hidden_dim1 = 128
+        hidden_dim2 = 256
+
+        initializer = ComplexGlorotUniform(seed=42)  # ✅ اصلاح initializer
+        activation = complex_activations.cart_relu
+
         self.dense1 = complex_layers.ComplexDense(hidden_dim1, activation=activation, kernel_initializer=initializer)
         self.dense2 = complex_layers.ComplexDense(hidden_dim2, activation=activation, kernel_initializer=initializer)
+
         self.output_heads = []
         for i in range(num_tasks):
-            head = complex_layers.ComplexDense(self.num_antennas, activation='linear', kernel_initializer=initializer, name=f'head_task_{i}')
+            head = complex_layers.ComplexDense(
+                self.num_antennas,
+                activation='linear',
+                kernel_initializer=initializer,
+                name=f'head_task_{i}'
+            )
             self.output_heads.append(head)
 
     def call(self, inputs, task_idx, training=False):
-        x1 = self.dense1(inputs); x2 = self.dense2(x1)
-        if not (0 <= task_idx < self.num_tasks): raise ValueError(f"Invalid task_idx: {task_idx}.")
-        # Access head safely, build if needed (though pre-building is done in main)
+        x1 = self.dense1(inputs)
+        x2 = self.dense2(x1)
+
+        if not (0 <= task_idx < self.num_tasks):
+            raise ValueError(f"Invalid task_idx: {task_idx}.")
+
         selected_head = self.output_heads[task_idx]
         w = selected_head(x2)
-        return w # Return raw weights
+        return w
 #------------------------------------------------------
 # EWC Related Function
 #------------------------------------------------------
@@ -366,18 +392,39 @@ def train_step_cl_ewc_single_gpu(model, optimizer, h_batch, task_idx,
     # Return necessary info including grads for Fisher update
     return total_loss, current_task_loss, ewc_loss_term, w_pred_raw, grads_and_vars
 
-# --- EWC + Replay Train Step (Single GPU) ---
+# --- EWC + Replay Train Step (Safe) ---
+# --- EWC + Replay Train Step (Safe) ---
 @tf.function
 def train_step_cl_ewc_replay(model, optimizer, h_batch, task_idx, replay_buffer,
                              optimal_params_agg_np, fisher_info_prev_agg,
-                             ewc_lambda, replay_lambda=0.5):
+                             ewc_lambda, replay_lambda=0.5, num_samples=8):
+
     w_zf_target = compute_zf_weights(h_batch, ZF_REG)
+
     with tf.GradientTape() as tape:
-        # Current task loss
+        # Forward pass
         w_pred_raw = model(h_batch, task_idx=task_idx, training=True)
-        if tf.reduce_any(tf.math.is_nan(w_pred_raw)) or tf.reduce_any(tf.math.is_inf(w_pred_raw)):
-            print(f"NaN or Inf in w_pred_raw for Task {task_idx}")
-        w_pred_norm = tf.nn.l2_normalize(w_pred_raw, axis=-1, epsilon=1e-8)
+
+        # Check for NaNs/Infs
+        w_real = tf.math.real(w_pred_raw)
+        w_imag = tf.math.imag(w_pred_raw)
+        if (
+            tf.reduce_any(tf.math.is_nan(w_real)) or tf.reduce_any(tf.math.is_nan(w_imag)) or
+            tf.reduce_any(tf.math.is_inf(w_real)) or tf.reduce_any(tf.math.is_inf(w_imag))
+        ):
+            tf.print("⚠️ NaN or Inf in w_pred_raw for Task", task_idx)
+
+        # Clip and normalize
+        real_clip = tf.clip_by_value(w_real, -1e3, 1e3)
+        imag_clip = tf.clip_by_value(w_imag, -1e3, 1e3)
+        w_pred_raw = tf.complex(real_clip, imag_clip)
+
+        norm = tf.norm(w_pred_raw, axis=-1, keepdims=True)
+        norm_real = tf.math.abs(norm)
+        norm_real_safe = tf.where(norm_real < 1e-8, tf.ones_like(norm_real), norm_real)
+        w_pred_norm = w_pred_raw / tf.cast(norm_real_safe, tf.complex64)
+
+        # Main loss
         error_current = w_pred_norm - w_zf_target
         current_task_loss = tf.reduce_mean(tf.math.real(error_current * tf.math.conj(error_current)))
 
@@ -390,22 +437,41 @@ def train_step_cl_ewc_replay(model, optimizer, h_batch, task_idx, replay_buffer,
         replay_loss = tf.constant(0.0, dtype=tf.float32)
         if task_idx > 0:
             for prev_task_idx in range(task_idx):
-                h_replay, w_replay = replay_buffer.get_samples(prev_task_idx, tf.shape(h_batch)[0])
+                h_replay, w_replay = replay_buffer.get_samples(prev_task_idx, num_samples)
                 if h_replay is not None:
+                    h_replay = tf.convert_to_tensor(h_replay, dtype=tf.complex64)
+                    w_replay = tf.convert_to_tensor(w_replay, dtype=tf.complex64)
+
+                    # Validate input dtype
+                    if h_replay.dtype != tf.complex64 or w_replay.dtype != tf.complex64:
+                        tf.print("❌ Invalid dtype in replay tensors for task", prev_task_idx)
+
                     w_pred_replay_raw = model(h_replay, task_idx=prev_task_idx, training=True)
+
+                    # NaN/Inf check
+                    if (
+                        tf.reduce_any(tf.math.is_nan(tf.math.real(w_pred_replay_raw))) or
+                        tf.reduce_any(tf.math.is_nan(tf.math.imag(w_pred_replay_raw))) or
+                        tf.reduce_any(tf.math.is_inf(tf.math.real(w_pred_replay_raw))) or
+                        tf.reduce_any(tf.math.is_inf(tf.math.imag(w_pred_replay_raw)))
+                    ):
+                        tf.print("⚠️ NaN/Inf in replay prediction for Task", prev_task_idx)
+
                     w_pred_replay_norm = tf.nn.l2_normalize(w_pred_replay_raw, axis=-1, epsilon=1e-8)
                     error_replay = w_pred_replay_norm - w_replay
                     replay_loss += tf.reduce_mean(tf.math.real(error_replay * tf.math.conj(error_replay)))
 
-        # Total loss
         total_loss = current_task_loss + ewc_loss_term + replay_lambda * replay_loss
 
+    # Backprop and apply gradients
     trainable_vars = model.trainable_variables
     grads = tape.gradient(total_loss, trainable_vars)
     grads_and_vars = [(g, v) for g, v in zip(grads, trainable_vars) if g is not None]
     optimizer.apply_gradients(grads_and_vars)
 
     return total_loss, current_task_loss, ewc_loss_term, replay_loss, w_pred_raw, grads_and_vars
+
+
 # --- Baseline Training Loop (Retraining / Finetuning) ---
 #------------------------------------------------------
 # Training Loop Functions (Baseline and EWC for Single GPU)
@@ -754,7 +820,7 @@ def training_loop_cl_ewc_single_gpu(create_model_func, tasks, num_epochs_per_tas
             t0 = time.time()
             w_pred = model(h_eval, task_idx=task_idx, training=False)
             t1 = time.time()
-            sinr_db, dot_val, thrpt_val = calculate_metrics(h_eval, w_pred, task_idx)  # اضافه کردن task_idx
+            sinr_db, dot_val, thrpt_val = calculate_metrics(h_eval, w_pred, task_idx)  # اصلاح شده
             latency_ms = (t1 - t0) * 1000 / batch_size
             if not np.isnan(dot_val): dot_sum += dot_val
             if not np.isnan(sinr_db): sinr_sum += sinr_db
@@ -786,7 +852,7 @@ def training_loop_cl_ewc_single_gpu(create_model_func, tasks, num_epochs_per_tas
                 for _ in range(EVAL_BATCHES):
                     h_eval_prev = generate_synthetic_batch(tasks[prev_task_idx], batch_size, NUM_ANTENNAS, NUM_USERS, NUM_SLOTS, FREQ)
                     w_pred_prev = model(h_eval_prev, task_idx=prev_task_idx, training=False)
-                    sinr_db, mean_dot, avg_thrpt = calculate_metrics(h_eval_prev, w_pred_prev)
+                    sinr_db, mean_dot, avg_thrpt = calculate_metrics(h_eval_prev, w_pred_prev, prev_task_idx)  # اصلاح شده
                     if not np.isnan(mean_dot): prev_dot_sum += mean_dot
                     if not np.isnan(sinr_db): prev_sinr_sum += sinr_db
                     if not np.isnan(avg_thrpt): prev_thrpt_sum += avg_thrpt
@@ -880,7 +946,6 @@ def training_loop_cl_ewc_single_gpu(create_model_func, tasks, num_epochs_per_tas
     }
 
     return results
-
 # --- EWC + Replay Training Loop (Single GPU - EMA Fisher) ---
 def training_loop_cl_ewc_replay(create_model_func, tasks, num_epochs_per_task, batch_size, learning_rate, ewc_lambda, replay_lambda=0.5):
     print(f"\n🧠 Starting Continual Learning Training Loop with EWC + Replay (EMA Fisher, Single GPU)...")
@@ -959,7 +1024,14 @@ def training_loop_cl_ewc_replay(create_model_func, tasks, num_epochs_per_task, b
 
             for i_batch in range(NUM_BATCHES_PER_EPOCH):
                 h_batch = generate_synthetic_batch(task, batch_size, NUM_ANTENNAS, NUM_USERS, NUM_SLOTS, FREQ)
-                if tf.reduce_any(tf.math.is_nan(h_batch)) or tf.reduce_any(tf.math.is_inf(h_batch)):
+                h_real = tf.math.real(h_batch)
+                h_imag = tf.math.imag(h_batch)
+
+                if (
+                    tf.reduce_any(tf.math.is_nan(h_real)) or tf.reduce_any(tf.math.is_nan(h_imag)) or
+                    tf.reduce_any(tf.math.is_inf(h_real)) or tf.reduce_any(tf.math.is_inf(h_imag))
+                ):
+
                     print(f"NaN or Inf in h_batch for Task {task_idx}, Epoch {epoch+1}")
                 w_zf_target = compute_zf_weights(h_batch, ZF_REG)
 
@@ -1041,7 +1113,7 @@ def training_loop_cl_ewc_replay(create_model_func, tasks, num_epochs_per_task, b
             t0 = time.time()
             w_pred = model(h_eval, task_idx=task_idx, training=False)
             t1 = time.time()
-            sinr_db, dot_val, thrpt_val = calculate_metrics(h_eval, w_pred)
+            sinr_db, dot_val, thrpt_val = calculate_metrics(h_eval, w_pred, task_idx)
             latency_ms = (t1 - t0) * 1000 / batch_size
             if not np.isnan(dot_val): dot_sum += dot_val
             if not np.isnan(sinr_db): sinr_sum += sinr_db
@@ -1073,7 +1145,7 @@ def training_loop_cl_ewc_replay(create_model_func, tasks, num_epochs_per_task, b
                 for _ in range(EVAL_BATCHES):
                     h_eval_prev = generate_synthetic_batch(tasks[prev_task_idx], batch_size, NUM_ANTENNAS, NUM_USERS, NUM_SLOTS, FREQ)
                     w_pred_prev = model(h_eval_prev, task_idx=prev_task_idx, training=False)
-                    sinr_db, mean_dot, avg_thrpt = calculate_metrics(h_eval_prev, w_pred_prev)
+                    sinr_db, mean_dot, avg_thrpt = calculate_metrics(h_eval_prev, w_pred_prev, task_idx)
                     if not np.isnan(mean_dot): prev_dot_sum += mean_dot
                     if not np.isnan(sinr_db): prev_sinr_sum += sinr_db
                     if not np.isnan(avg_thrpt): prev_thrpt_sum += avg_thrpt
